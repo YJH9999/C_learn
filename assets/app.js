@@ -211,13 +211,22 @@
 
   toc.addEventListener('click',function(e){
     var tw=e.target.closest('.tw');
-    if(tw){
+    if(tw && !tw.classList.contains('sp')){
       tw.closest('.node').classList.toggle('open');
       e.preventDefault();
       return;
     }
     var a=e.target.closest('a.tx');
-    if(a){ e.preventDefault(); go(a.getAttribute('href').slice(1)); }
+    if(a){
+      e.preventDefault();
+      /* 分支标题（有子目录）：只展开/收起详细目录，不跳转；叶子小标题才进入 */
+      var node=a.closest('.node');
+      if(node && node.querySelector(':scope > .kids')){
+        node.classList.toggle('open');
+        return;
+      }
+      go(a.getAttribute('href').slice(1));
+    }
   });
 
   /* ---------- 当前项高亮（滚动联动，同步目录与右栏大纲） ---------- */
