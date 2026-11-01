@@ -284,6 +284,15 @@
     var wantErr=fErr.checked, wantHot=fHot.checked, wantCode=fCode.checked;
     var any=wantErr||wantHot||wantCode;
     document.body.classList.toggle('focus-on',any);
+    var fbar=document.getElementById('fbar');
+    if(fbar){
+      var n=(wantErr?1:0)+(wantHot?1:0)+(wantCode?1:0);
+      fbar.classList.toggle('has',n>0);
+      var badge=document.getElementById('fb-badge');
+      if(badge) badge.textContent=n||'';
+      var sum=fbar.querySelector('.fb-sum');
+      if(sum) sum.classList.toggle('on',n>0);
+    }
     $$('#content>.nf').forEach(function(el){el.classList.remove('nf')});
     if(!any) return;
     var kids=contentEl.children;
