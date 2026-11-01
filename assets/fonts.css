@@ -1,0 +1,10 @@
+/* 字体均为 SIL OFL 1.1 许可，允许商用 */
+@font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Inter-400.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/Inter-500.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Inter-600.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Inter-700.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/JBMono-400.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/JBMono-700.woff2') format('woff2')}
+@font-face{font-family:'Noto Sans SC';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/NotoSansSC-400.woff2') format('woff2')}
+@font-face{font-family:'Noto Sans SC';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/NotoSansSC-700.woff2') format('woff2')}
+@font-face{font-family:'Noto Sans Mono CJK SC';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/NotoSansMonoCJK-400.woff2') format('woff2')}
