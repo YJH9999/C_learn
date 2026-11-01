@@ -1,0 +1,242 @@
+<h2 id="hm-09-分支结构应用题第五次实验">HM 09　分支结构应用题（第五次实验）</h2>
+<blockquote class="callout c-plain">
+<p>🧩 来源：《分支结构的应用小程序》实验题集，共 9 题。重点练 <strong>if-else 链、switch（含嵌套与字符匹配）、区间边界校验</strong>。</p>
+</blockquote>
+<h3 id="1c-game-damage-calculator游戏伤害计算器">1.c　Game Damage Calculator（游戏伤害计算器）</h3>
+<p>基础伤害 = 攻击力 × 0.5；boss ×1.5；技能 ×2；向下取整输出。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">atk</span><span class="p">,</span><span class="w"> </span><span class="n">is_boss</span><span class="p">,</span><span class="w"> </span><span class="n">use_skill</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">damage</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d %d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">atk</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">is_boss</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">use_skill</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">damage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w">             </span><span class="cm">/* 基础伤害 */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_boss</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">damage</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mf">1.5</span><span class="p">;</span><span class="w">  </span><span class="cm">/* boss 增伤 50% */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">use_skill</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">damage</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 技能翻倍 */</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">damage</span><span class="p">);</span><span class="w">      </span><span class="cm">/* 向下取整输出 */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="2c-package-delivery-fee快递运费计算">2.c　Package Delivery Fee（快递运费计算）</h3>
+<p>基础费 10 元；超重每 kg +5（不足按 1kg）；超距每 5km +3；偏远 +20。ceil 向上取整。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="w">   </span><span class="cm">/* for ceil() */</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">remote</span><span class="p">,</span><span class="w"> </span><span class="n">fee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%f %f %d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">distance</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">remote</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">  </span><span class="n">fee</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">ceil</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="n">fee</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">ceil</span><span class="p">((</span><span class="n">distance</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">remote</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">fee</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">fee</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="3c-pizza-order披萨订单">3.c　Pizza Order（披萨订单）</h3>
+<p>S/M/L = 30/45/60 元；配料每个 +5（最多按 3 个）；周二 -10；保底不为负。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">toppings</span><span class="p">,</span><span class="w"> </span><span class="n">day</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">" %c %d %d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">toppings</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">day</span><span class="p">);</span><span class="w">  </span><span class="cm">/* 空格跳过空白 */</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">'S'</span><span class="p">)</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">'M'</span><span class="p">)</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">45</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">'L'</span><span class="p">)</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">toppings</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="n">toppings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">    </span><span class="n">price</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">toppings</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">day</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">price</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="4c-traffic-light-timer交通灯倒计时">4.c　Traffic Light Timer（交通灯倒计时）</h3>
+<p>红 60s / 绿 45s / 黄 5s；输入灯状态和已亮时间，超时长输出 invalid。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">light</span><span class="p">,</span><span class="w"> </span><span class="n">time_passed</span><span class="p">;</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">light</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">time_passed</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">light</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                       </span><span class="cm">/* 红灯 */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">time_passed</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">time_passed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"invalid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_passed</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">light</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                  </span><span class="cm">/* 绿灯 */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">time_passed</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">time_passed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">45</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"invalid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_passed</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">light</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                  </span><span class="cm">/* 黄灯 */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">time_passed</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">time_passed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"invalid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_passed</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"invalid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="5c-vending-machine自动售货机">5.c　Vending Machine（自动售货机）</h3>
+<p>switch 定价 + if 判余额：可乐 5 / 薯片 8 / 巧克力 10 / 水 3，输出找零或余额不足。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">item</span><span class="p">,</span><span class="w"> </span><span class="n">money</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">item</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">money</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Invalid item!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">money</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Success, change: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">money</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">price</span><span class="p">);</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Insufficient money</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="6c-movie-rating电影分级">6.c　Movie Rating（电影分级）</h3>
+<p>按 G / PG / R 输出分级说明；PG 需要再读一个字符二次判断。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">rating</span><span class="p">;</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">" %c"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rating</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">rating</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">'G'</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"General Audiences - All ages admitted.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">'P'</span><span class="p">:</span><span class="w">                       </span><span class="cm">/* 先匹配 'P' 再判断后续 */</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getchar</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">'G'</span><span class="p">)</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">"Parental Guidance Suggested.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">"invalid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">'R'</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"Restricted - Under 17 requires accompanying adult.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"invalid</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="7c-weather-alert天气预警系统">7.c　Weather Alert（天气预警系统）</h3>
+<p>switch 天气代码 + if 温度阈值：晴 &gt;35℃ / 雨 &lt;10℃ / 雪 &lt;-5℃ 高温、寒雨、暴雪预警。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">weather_code</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %f"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">weather_code</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">temp</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">weather_code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"Sunny day. "</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">35</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"High temperature warning! Stay indoors.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Good weather for outdoor activities.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"Rainy day. "</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Cold rain warning! Wear warm clothes.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Don't forget your umbrella.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"Snowy day. "</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">-5</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Blizzard warning! Avoid traveling.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Roads may be slippery.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Windy day. Strong wind alert!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Hazy day. Haze warning! Wear a mask.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Invalid weather code!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="8c-adventure-game-choice冒险游戏选择">8.c　Adventure Game Choice（冒险游戏选择）</h3>
+<p>switch 四方向剧情分支，部分分支用 rand() 做随机事件判定。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">choice</span><span class="p">;</span>
+<span class="w">    </span><span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">choice</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">choice</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"You found a treasure box! "</span><span class="p">);</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"Got %d gold coins!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">41</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"An NPC appears! "</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"You received a key.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"You received a map.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"A monster attacks! "</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"You won the battle!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"You lost the battle...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">4</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"You returned to the starting point.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"Invalid direction!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="9c-fast-food-order快餐点餐系统">9.c　Fast Food Order（快餐点餐系统）</h3>
+<p>switch 嵌套：套餐 1 汉堡再选饮料大小（S/M/L +3/5/7），套餐 2 可加酱，套餐 3 固定价。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">add_sauce</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">package</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">package</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w">                          </span><span class="cm">/* 汉堡套餐 */</span>
+<span class="w">            </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+<span class="w">            </span><span class="n">scanf</span><span class="p">(</span><span class="s">" %c"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+<span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="sc">'S'</span><span class="p">:</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="sc">'M'</span><span class="p">:</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="sc">'L'</span><span class="p">:</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"Invalid size!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w">                          </span><span class="cm">/* 炸鸡套餐 */</span>
+<span class="w">            </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="p">;</span>
+<span class="w">            </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">add_sauce</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">add_sauce</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span><span class="w">                          </span><span class="cm">/* 披萨套餐 */</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"50 (free drink included)</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"Invalid package!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>

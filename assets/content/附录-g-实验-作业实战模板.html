@@ -1,0 +1,211 @@
+<h2 id="附录-g-实验-作业实战模板">附录 G　实验 / 作业实战模板</h2>
+<h3 id="g1-标准程序骨架几乎所有实验题都用这个">G.1 标准程序骨架（几乎所有实验题都用这个）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="w">      </span><span class="cm">/* 需要开方/三角函数时 */</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="w">    </span><span class="cm">/* 需要字符串函数时 */</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="w">    </span><span class="cm">/* 需要 malloc/rand 时 */</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="cm">/* ① 变量定义 */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* ② 输入（带提示信息） */</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入a和b："</span><span class="p">);</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* ③ 数据处理 */</span>
+<span class="w">    </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w">      </span><span class="cm">/* ⚠️ 2.0 避免整数除法 */</span>
+
+<span class="w">    </span><span class="cm">/* ④ 输出 */</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"s = %.2f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="g2-常见题型速查">G.2 常见题型速查</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>题型</th>
+<th>关键代码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>求三角形面积</td>
+<td><code>s=(a+b+c)/2.0; area=sqrt(s*(s-a)*(s-b)*(s-c));</code></td>
+</tr>
+<tr>
+<td>判断闰年</td>
+<td><code>(y%4==0 &amp;&amp; y%100!=0) || y%400==0</code></td>
+</tr>
+<tr>
+<td>一元二次方程</td>
+<td>判 <code>a==0</code> → 判 <code>disc=b*b-4*a*c</code></td>
+</tr>
+<tr>
+<td>各位数拆分</td>
+<td><code>num/1000</code>, <code>num/100%10</code>, <code>num/10%10</code>, <code>num%10</code></td>
+</tr>
+<tr>
+<td>数字反转</td>
+<td><code>j = j*10 + m%10; m = m/10;</code></td>
+</tr>
+<tr>
+<td>回文数</td>
+<td>反转后与原数比较</td>
+</tr>
+<tr>
+<td>统计数字个数</td>
+<td><code>while (n) { n/=10; count++; }</code></td>
+</tr>
+<tr>
+<td>成绩分段</td>
+<td><code>switch(score/10)</code> 或 <code>if</code> 链</td>
+</tr>
+<tr>
+<td>素数判断</td>
+<td>试除到 √n</td>
+</tr>
+<tr>
+<td>最大公约数</td>
+<td>辗转相除 <code>gcd(a,b)=gcd(b,a%b)</code></td>
+</tr>
+<tr>
+<td>阶乘</td>
+<td>循环累乘；大数用 <code>long</code>/<code>double</code></td>
+</tr>
+<tr>
+<td>斐波那契</td>
+<td><code>f[i]=f[i-1]+f[i-2]</code></td>
+</tr>
+<tr>
+<td>排序</td>
+<td>选择 / 冒泡</td>
+</tr>
+<tr>
+<td>查找</td>
+<td>顺序 / 二分（需有序）</td>
+</tr>
+<tr>
+<td>矩阵转置</td>
+<td><code>b[j][i]=a[i][j]</code></td>
+</tr>
+<tr>
+<td>杨辉三角</td>
+<td><code>a[i][j]=a[i-1][j-1]+a[i-1][j]</code></td>
+</tr>
+<tr>
+<td>文件读写</td>
+<td><code>fopen</code> → 判 <code>NULL</code> → 循环 → <code>fclose</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="g3-提交到-cg-平台前的检查清单" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>G.3  提交到 CG 平台前的检查清单</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th>检查项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td><strong>文件另存为 UTF-8</strong></td>
+<td>用记事本编辑 → 另存为 → 底部编码选 <strong>utf8</strong>。<br>否则 CG 编译器无法解析中文，显示 <code>???</code>，<strong>影响评测正确率</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td>只提交 <code>.c</code> 文件</td>
+<td>不要提交 <code>.exe</code>、<code>.obj</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td>有且只有一个 <code>main</code></td>
+<td>多个 main 会 LNK2005</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td><code>#include</code> 齐全</td>
+<td><code>stdio.h</code> / <code>math.h</code> / <code>string.h</code> / <code>stdlib.h</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td>所有变量都已声明</td>
+<td>C99 要求先声明后使用</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td><code>scanf</code> 的 <code>&amp;</code> 正确</td>
+<td>普通变量加 <code>&amp;</code>，字符数组不加</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td>无编译警告</td>
+<td>特别是 C4700（未初始化）</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td>除法是否需要浮点</td>
+<td><code>a/b</code> vs <code>a/(double)b</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td>数组长度足够</td>
+<td>字符串 +1</td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td>循环能正常终止</td>
+<td>检查 <code>continue</code> 是否跳过控制语句</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-plain">
+<p>📌 实验原文提醒：「这次实验的前几题是<strong>填空题</strong>，要求脱离计算机人工书写答案。
+建议大家自己写出答案后<strong>亲自编程上机验证</strong>，看看人工填写的答案是否正确，
+从而进一步巩固理解，并好好总结一下。」</p>
+</blockquote>
+<hr />
+<h3 id="g7-随机数-rand-srand-专题实验高频">G.7 随机数 rand / srand 专题（实验高频）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="nf">rand</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w">              </span><span class="cm">/* 返回 [0, RAND_MAX] 的伪随机整数 */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">srand</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="n">seed</span><span class="p">);</span><span class="w">   </span><span class="cm">/* 设置种子；通常 srand(time(NULL)) */</span>
+</code></pre></div>
+<p>种子相同 → 伪随机序列完全相同。<code>srand(time(NULL))</code> 用当前时间做种子，程序每次运行序列才不同；<strong>srand 只调用一次</strong>，放进循环里会得到相同值。</p>
+<p><strong>范围公式</strong>（最小差值为 1）：</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>目标区间</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[a, b)</code></td>
+<td><code>rand() % (b - a) + a</code></td>
+</tr>
+<tr>
+<td><code>[a, b]</code></td>
+<td><code>rand() % (b - a + 1) + a</code></td>
+</tr>
+<tr>
+<td><code>(a, b]</code></td>
+<td><code>rand() % (b - a) + a + 1</code></td>
+</tr>
+<tr>
+<td>0 ~ 1 浮点</td>
+<td><code>rand() / (double)RAND_MAX</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>带最小差值 d 的随机小数</strong>（d = 10⁻ᵏ）：先放大 <code>scale = 10ᵏ</code> 转成整数问题，生成后再除回去。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* [1.0, 2.0] 内差值 ≥ 0.01 的随机小数 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">101</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 整数域 [100, 200] */</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">100.0</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 还原 → 1.00 ~ 2.00 */</span>
+</code></pre></div>
+<p><strong>负随机数</strong>：按上述公式生成正数后取负即可。</p>

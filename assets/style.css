@@ -434,43 +434,43 @@ details.route-block>summary:hover .route-bar span{color:var(--ac)}
 .route-body{padding-top:2px}
 
 /* 篇标题 */
-.main>h1{
+#content>h1{
   position:relative;margin:64px 0 22px;padding:0 0 14px;
   font-size:25px;font-weight:700;color:var(--hi);letter-spacing:-.022em;
   scroll-margin-top:calc(var(--tb-h) + 18px);
 }
-.main>h1::after{
+#content>h1::after{
   content:'';position:absolute;left:0;bottom:0;width:46px;height:2.5px;border-radius:2px;background:var(--grad);
 }
-.main>h1 .hpart,.route-sum h1 .hpart{
+#content>h1 .hpart,.route-sum h1 .hpart{
   display:inline-block;font:600 10.5px/1 var(--sans);color:#fff;background:var(--grad);
   padding:4.5px 9px;border-radius:6px;margin-right:11px;vertical-align:3px;letter-spacing:.02em;
   box-shadow:0 1px 3px rgba(10,132,255,.3);
 }
 
 /* 章标题 */
-.main>h2{
+#content>h2{
   font-size:19.5px;color:var(--hi);font-weight:700;margin:40px 0 14px;
   letter-spacing:-.015em;line-height:1.35;scroll-margin-top:calc(var(--tb-h) + 18px);
 }
-.main>h3{
+#content>h3{
   font-size:16px;color:var(--hi);font-weight:650;margin:28px 0 10px;
   letter-spacing:-.01em;scroll-margin-top:calc(var(--tb-h) + 18px);
 }
-.main>h4{font-size:14.5px;color:var(--fg);font-weight:650;margin:22px 0 9px;
+#content>h4{font-size:14.5px;color:var(--fg);font-weight:650;margin:22px 0 9px;
   scroll-margin-top:calc(var(--tb-h) + 18px)}
-.main>h5{font-size:13.5px;color:var(--fg);font-weight:600;margin:16px 0 7px}
-.main>p{margin:11px 0}
-.main>ul,.main>ol{margin:11px 0;padding-left:23px}
-.main>li{margin:4px 0}
-.main>ul>li>ul,.main>ol>li>ol{margin:3px 0}
-.main>strong{color:var(--hi);font-weight:650}
-.main>hr{border:0;border-top:.5px solid var(--line);margin:30px 0}
-.main>em{color:var(--fg-2)}
+#content>h5{font-size:13.5px;color:var(--fg);font-weight:600;margin:16px 0 7px}
+#content>p{margin:11px 0}
+#content>ul,#content>ol{margin:11px 0;padding-left:23px}
+#content>li{margin:4px 0}
+#content>ul>li>ul,#content>ol>li>ol{margin:3px 0}
+#content>strong{color:var(--hi);font-weight:650}
+#content>hr{border:0;border-top:.5px solid var(--line);margin:30px 0}
+#content>em{color:var(--fg-2)}
 
 /* 列表标记：macOS 风格圆点 */
-.main>ul>li::marker{color:var(--fg-3)}
-.main>ol>li::marker{color:var(--fg-3);font-weight:600;font-size:.9em}
+#content>ul>li::marker{color:var(--fg-3)}
+#content>ol>li::marker{color:var(--fg-3);font-weight:600;font-size:.9em}
 
 /* 表格：外层滚动容器统一承担圆角 / 描边 / 滚动，内层 table 撑满整行，
    避免表头灰条与斑马纹只铺到内容宽度、右侧留白的割裂感 */
@@ -496,7 +496,7 @@ body.dark .tscroll tbody tr:nth-child(even){background:rgba(255,255,255,.03)}
 .tscroll tbody tr:hover{background:var(--ac-dim)}
 
 /* 行内代码 */
-.main>code,.main li>code,.main td>code,.main p>code{
+#content>code,.main li>code,.main td>code,.main p>code{
   background:var(--panel-2);padding:1.5px 5.5px;border-radius:5px;font-size:.86em;
   color:var(--ac);border:.5px solid var(--line);
   font-variant-ligatures:none;font-weight:500;
@@ -545,15 +545,15 @@ body.dark .rkchip.rk-hot{background:rgba(255,159,10,.16);border-color:rgba(255,1
 body.dark .rkchip.rk-tip{background:rgba(64,200,224,.16);border-color:rgba(64,200,224,.40)}
 
 /* 风险标题的彩色短下划线（与 h1 渐变导轨同语言） */
-.main>h2[class*="rk-"],.main>h3[class*="rk-"]{position:relative}
-.main>h2[class*="rk-"]::after,.main>h3[class*="rk-"]::after{
+#content>h2[class*="rk-"],#content>h3[class*="rk-"]{position:relative}
+#content>h2[class*="rk-"]::after,#content>h3[class*="rk-"]::after{
   content:'';position:absolute;left:0;bottom:-7px;width:42px;height:2.5px;
   border-radius:2px;background:var(--grad);opacity:.65;
 }
-.main>h2.rk-error::after,.main>h3.rk-error::after{background:var(--err)}
-.main>h2.rk-hard::after,.main>h3.rk-hard::after{background:var(--hard)}
-.main>h2.rk-hot::after,.main>h3.rk-hot::after{background:var(--hot)}
-.main>h2.rk-tip::after,.main>h3.rk-tip::after{background:var(--tip)}
+#content>h2.rk-error::after,#content>h3.rk-error::after{background:var(--err)}
+#content>h2.rk-hard::after,#content>h3.rk-hard::after{background:var(--hard)}
+#content>h2.rk-hot::after,#content>h3.rk-hot::after{background:var(--hot)}
+#content>h2.rk-tip::after,#content>h3.rk-tip::after{background:var(--tip)}
 
 /* 徽章（正文行内标记） */
 .badge{
@@ -696,10 +696,10 @@ body.dark mark{background:rgba(255,214,10,.28);color:#ffe08a}
   .main{padding:0 18px 120px}
   .hero{padding:26px 20px 22px;margin-top:18px;border-radius:14px}
   .hero h1{font-size:24px}
-  .main>h1{font-size:21px;margin-top:48px}
+  #content>h1{font-size:21px;margin-top:48px}
   .route-sum h1{font-size:21px}
-  .main>h2{font-size:17.5px}
-  .main>h3{font-size:15px}
+  #content>h2{font-size:17.5px}
+  #content>h3{font-size:15px}
   .brand span{display:none}
   .srch kbd{display:none}
   .tg-b{grid-template-columns:1fr}

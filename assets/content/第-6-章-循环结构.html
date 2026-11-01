@@ -1,0 +1,266 @@
+<h2 id="第-6-章-循环结构">第 6 章　循环结构</h2>
+<h3 id="61-三种循环的语法与执行流程" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>6.1 三种循环的语法与执行流程</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* ① for —— 初始化、条件判断、条件控制写在一起 */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">初始化语句</span><span class="p">;</span><span class="w"> </span><span class="n">条件判断语句</span><span class="p">;</span><span class="w"> </span><span class="n">条件控制语句</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">循环体语句</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* ② while —— 先判断，后执行 */</span>
+<span class="n">初始化</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">条件判断语句</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">循环体语句</span><span class="p">;</span>
+<span class="w">    </span><span class="n">条件控制语句</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* ③ do...while —— 先执行，后判断（至少执行一次！） */</span>
+<span class="n">初始化</span><span class="p">;</span>
+<span class="k">do</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">循环体语句</span><span class="p">;</span>
+<span class="w">    </span><span class="n">条件控制语句</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">条件判断语句</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="62-for-vs-while-vs-do-while-的执行次数对比" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>6.2  for vs while vs do-while 的执行次数对比</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>循环</th>
+<th>判断时机</th>
+<th>循环体执行次数</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>for</code> / <code>while</code></td>
+<td><strong>先判断，后执行</strong></td>
+<td><strong>0 次 ~ n 次</strong></td>
+<td>次数可能为 0</td>
+</tr>
+<tr>
+<td><code>do...while</code></td>
+<td><strong>先执行，后判断</strong></td>
+<td><strong>1 次 ~ n 次</strong></td>
+<td>循环体<strong>至少执行一次</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>教材经典对比</strong>（附录 D 第 18 条）：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>
+
+<span class="cm">/* while：先判断 */</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="o">+</span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="cm">/* do-while：先执行 */</span>
+<span class="k">do</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="o">+</span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="p">);</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><strong>当输入 <code>i &gt; 10</code> 时</strong>：<code>while</code> 的循环体<strong>一次都不执行</strong>（a 保持 0）；
+<code>do-while</code> 的循环体<strong>执行一次</strong>（a = i）。
+<strong>这就是二者结果不同的原因。</strong></p>
+<p><span class="badge b-hot">高频考点</span> <strong>高频辨析题</strong>：「do-while 循环至少执行一次」——对，这是它与 for/while 唯一的本质差别。</p>
+</blockquote>
+<h3 id="63-易错点-22for-后多写分号" class="rk-error"><span class="rkchip rk-error" title="易错点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>易错点</span>6.3  易错点 22：for 后多写分号</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">);</span><span class="w">      </span><span class="c1">// ❌ 循环体变成空语句！</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 本意：输入 5 个数并输出；实际：只输入 1 个数就输出，然后结束</span>
+</code></pre></div>
+<blockquote class="callout c-plain">
+<p>附录 D 原文：「由于 for() 后多加了一个分号，使循环体变为空语句，此时只能输入一个数并输出它」</p>
+</blockquote>
+<h3 id="64-循环的三大语句" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>6.4 循环的三大语句</h3>
+<h4 id="641-break-跳出循环">6.4.1 <code>break</code> —— 跳出循环</h4>
+<ul>
+<li>作用：<strong>立即结束整个循环</strong>；</li>
+<li>只能跳出<strong>最内层</strong>的那一层循环；</li>
+<li>在 <code>switch</code> 中，<code>break</code> 结束的是 <strong>switch</strong>（不是循环）。</li>
+</ul>
+<h4 id="642-continue-跳过本次循环">6.4.2 <code>continue</code> —— 跳过本次循环</h4>
+<ul>
+<li>作用：<strong>结束本次循环，跳到下一次循环</strong>；</li>
+<li>⚠️ 在 <code>for</code> 循环中，<code>continue</code> 会<strong>跳到条件控制语句</strong>（即 <code>i++</code>），然后重新判断条件；</li>
+<li>⚠️ 在 <code>while</code> / <code>do-while</code> 中，<code>continue</code> 会<strong>跳到条件判断语句</strong>——
+  ⚠️ <strong>如果条件控制语句写在循环体末尾，<code>continue</code> 会导致它被跳过 → 死循环！</strong></li>
+</ul>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* ❌ 死循环 */</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span><span class="w">   </span><span class="c1">// 跳过了 i++</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* ✔ 正确：把 i++ 提到 continue 之前，或改用 for */</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>高频考点</strong>：这就是为什么 <code>for</code> 比 <code>while</code> 更安全——<code>for</code> 的 <code>i++</code> 在循环头，<strong>不会被 <code>continue</code> 跳过</strong>。</p>
+</blockquote>
+<h4 id="643-goto-无条件跳转" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>6.4.3 <code>goto</code> —— 无条件跳转</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="nl">label1</span><span class="p">:</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">goto</span><span class="w"> </span><span class="n">label1</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>配合<strong>标号</strong>使用：<code>标号名: 语句</code></li>
+<li>可以跳到<strong>任意位置</strong>；</li>
+<li><span class="badge b-tip">辨析延伸</span> <strong>一般只用于跳出循环</strong>（如多层嵌套循环中直接跳到最外层）；</li>
+<li><span class="badge b-error">易错点</span> <strong>工程建议</strong>：能用 <code>break</code>/<code>continue</code> 就不要用 <code>goto</code>，可读性差、易出错。</li>
+</ul>
+<h3 id="65-循环嵌套" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>6.5 循环嵌套</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d %d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>内层循环<strong>完整执行完毕</strong>后，外层才继续；</li>
+<li>总执行次数 = 各层循环次数<strong>相乘</strong>（上例 2×2×2 = 8 次）；</li>
+<li><code>break</code> 只跳出<strong>它所在的那一层</strong>循环。</li>
+</ul>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>经典题</strong>：3 层嵌套 <code>for</code>，问 <code>printf</code> 执行几次、最后一次打印什么？
+答：3×3×3=27 次；最后一次 <code>i=2, j=2, k=2</code>（若从 0 开始到 2）。</p>
+</blockquote>
+<h3 id="66-循环中的常见算法模式">6.6 循环中的常见算法模式</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>代码</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>累加</td>
+<td><code>sum += i;</code></td>
+<td>求和</td>
+</tr>
+<tr>
+<td>累乘（阶乘）</td>
+<td><code>s = s * i;</code></td>
+<td>阶乘、连乘积</td>
+</tr>
+<tr>
+<td>计数</td>
+<td><code>count++;</code></td>
+<td>满足条件的个数</td>
+</tr>
+<tr>
+<td>求最大值</td>
+<td><code>if (a[i] &gt; max) max = a[i];</code></td>
+<td>注意 <strong>max 要用第一个元素初始化</strong></td>
+</tr>
+<tr>
+<td>求最小值</td>
+<td><code>if (a[i] &lt; min) min = a[i];</code></td>
+<td>同上</td>
+</tr>
+<tr>
+<td>逆序输出</td>
+<td><code>for (i = n-1; i &gt;= 0; i--)</code></td>
+<td>倒序</td>
+</tr>
+<tr>
+<td>数字反转</td>
+<td><code>j = j*10 + m%10; m = m/10;</code></td>
+<td>回文数判断</td>
+</tr>
+<tr>
+<td>位数统计</td>
+<td><code>n = n / 10;</code> 循环次数即位数</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 23（求最值初值陷阱）</strong>：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">              </span><span class="c1">// ❌ 若数组全是负数，结果错误！</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w">           </span><span class="c1">// ✔ 用第一个元素初始化</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="67-循环中的常见输入处理技巧">6.7 循环中的常见输入处理技巧</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 技巧 1：限制输入范围，非法则重输（教材 lt02-15.c） */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">;</span><span class="w">        </span><span class="c1">// 相当于重新输入这一轮</span>
+<span class="p">}</span>
+
+<span class="cm">/* 技巧 2：输入字符直到回车（教材 lt06-04.c） */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">getchar</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\n'</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">;</span>
+
+<span class="cm">/* 技巧 3：配合 while 读多行（教材 lt06-09.c） */</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\n'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\r'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Esc</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getch</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Esc</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"%c"</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-plain">
+<p>⚠️ <strong>注意</strong>：技巧 1 中若 <code>scanf</code> 读到非法字符（如字母），该字符会<strong>滞留在输入缓冲区</strong>导致死循环。
+稳妥做法：<code>scanf(" %d", &amp;a[i]);</code> 或在循环里 <code>fflush(stdin);</code>。</p>
+</blockquote>
+<h3 id="68-死循环与循环控制综合">6.8 死循环与循环控制综合</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>死循环写法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>while(1){...}</code></td>
+<td>合法，配合 <code>break</code> 使用（教材 <code>lt06-09.c</code>）</td>
+</tr>
+<tr>
+<td><code>for(;;){...}</code></td>
+<td>合法，无限循环</td>
+</tr>
+<tr>
+<td><code>continue</code> 跳过了条件控制语句</td>
+<td>逻辑死循环</td>
+</tr>
+<tr>
+<td><code>scanf</code> 读入非法字符未清除</td>
+<td>输入型死循环</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> 教材 <code>lt06-09.c</code> 的"无限循环 + Esc 键退出"是经典题型：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;conio.h&gt;</span>
+<span class="cp">#define Esc 27</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                      </span><span class="cm">/* 无限循环 */</span>
+<span class="w">     </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">;</span><span class="w">                     </span><span class="cm">/* 初始化值 */</span>
+<span class="w">     </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\n'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\r'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Esc</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getch</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Esc</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"%c"</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Esc</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 按 Esc 跳出无限循环 */</span>
+<span class="w">     </span><span class="n">i</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">The No. is %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">"The end."</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</blockquote>
+<hr />

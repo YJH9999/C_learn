@@ -1,0 +1,268 @@
+<h2 id="附录-b-编译-链接错误速查表">附录 B　编译 / 链接错误速查表</h2>
+<h3 id="b1-严重错误fatal-error">B.1 严重错误（fatal error）</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>含义</th>
+<th>常见原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C1004: unexpected end of file found</code></td>
+<td>文件意外结束</td>
+<td>少一个 <code>}</code>，或字符串/注释未闭合</td>
+</tr>
+<tr>
+<td><code>C1083: Cannot open include file: 'xxxx.h'</code></td>
+<td>找不到包含文件</td>
+<td>头文件路径错 / 拼写错 / 忘了加 <code>#include</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="b2-编译错误error">B.2 编译错误（error）</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>含义</th>
+<th>常见原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C2001: newline in constant</code></td>
+<td>常量中出现换行</td>
+<td>字符/字符串常量缺 <code>'</code> 或 <code>"</code>；多行字符串需续行符 <code>\</code></td>
+</tr>
+<tr>
+<td><code>C2006: #include expected a filename</code></td>
+<td><code>#include</code> 缺文件名</td>
+<td>写成 <code>#include &lt;stdio.h&gt;</code> 漏了尖括号或引号</td>
+</tr>
+<tr>
+<td><code>C2008: '=' : unexpected in macro definition</code></td>
+<td>宏定义中不该有 <code>=</code></td>
+<td>宏定义写成 <code>#define A = 1</code>（<strong>不要写 <code>=</code></strong>）</td>
+</tr>
+<tr>
+<td><code>C2015: too many characters in constant</code></td>
+<td>字符常量字符太多</td>
+<td><code>'ab'</code> 是非法的（只能 1 个字符）</td>
+</tr>
+<tr>
+<td><code>C2018: unknown character '0x##'</code></td>
+<td>未知字符</td>
+<td><strong>全角符号</strong>、全角字母、汉字</td>
+</tr>
+<tr>
+<td><code>C2041: illegal digit '#' for base '8'</code></td>
+<td>八进制非法数字</td>
+<td>八进制数里出现了 8 或 9</td>
+</tr>
+<tr>
+<td><code>C2057: expected constant expression</code></td>
+<td>需要常量表达式</td>
+<td><code>case</code> 后跟了变量；<code>int a[n]</code> 中 n 是变量</td>
+</tr>
+<tr>
+<td><code>C2059: syntax error</code></td>
+<td>语法错误</td>
+<td>附近有错（常是上一行漏分号）</td>
+</tr>
+<tr>
+<td><code>C2061: syntax error : identifier 'main'</code></td>
+<td><code>main</code> 附近语法错</td>
+<td>常见于漏分号、括号不配对</td>
+</tr>
+<tr>
+<td><code>C2064: term does not evaluate to a function</code></td>
+<td>项不是函数</td>
+<td>忘了 <code>#include</code> 头文件；函数名写错</td>
+</tr>
+<tr>
+<td><code>C2065: 'xxxx' : undeclared identifier</code></td>
+<td>标识符未定义</td>
+<td>变量没声明就用；名字拼写错误</td>
+</tr>
+<tr>
+<td><code>C2078: too many initializers</code></td>
+<td>初始化值太多</td>
+<td>数组长度小于初值个数</td>
+</tr>
+<tr>
+<td><code>C2105: '++' needs l-value</code></td>
+<td><code>++</code> 需要可赋值量</td>
+<td>对常量或表达式自增：<code>5++</code></td>
+</tr>
+<tr>
+<td><code>C2106: '=' : left operand must be l-value</code></td>
+<td>左边必须可赋值</td>
+<td><code>a+b = c</code></td>
+</tr>
+<tr>
+<td><code>C2109: subscript requires array or pointer type</code></td>
+<td>下标只用于数组或指针</td>
+<td>对普通变量用 <code>[]</code></td>
+</tr>
+<tr>
+<td><code>C2133: 'xxx' : unknown size</code></td>
+<td>不知道大小</td>
+<td>数组未定义大小又未初始化</td>
+</tr>
+<tr>
+<td><code>C2137: empty character constant</code></td>
+<td>空字符常量</td>
+<td><code>''</code> 两个单引号之间没内容</td>
+</tr>
+<tr>
+<td><code>C2143: syntax error : missing ';' before ...</code></td>
+<td>少分号</td>
+<td><strong>最常见的语法错误</strong></td>
+</tr>
+<tr>
+<td><code>C2146: syntax error : missing ... before identifier</code></td>
+<td>缺类型</td>
+<td>变量漏写类型</td>
+</tr>
+<tr>
+<td><code>C1966: case value 'x' already used</code></td>
+<td>case 值重复</td>
+<td><code>switch</code> 中两个 <code>case</code> 值相同</td>
+</tr>
+<tr>
+<td><code>C2198: 'xxx' : too few actual parameters</code></td>
+<td>实参太少</td>
+<td>函数调用参数个数不够</td>
+</tr>
+<tr>
+<td><code>C2224: left of '.xxx' must have struct/union type</code></td>
+<td>左边必须是结构体</td>
+<td>对非结构体用 <code>.</code></td>
+</tr>
+<tr>
+<td><code>C2374: 'xxxx' : redefinition; multiple initialization</code></td>
+<td>重复定义</td>
+<td>同一变量定义两次</td>
+</tr>
+<tr>
+<td><code>C2449: found '{' at file scope</code></td>
+<td>文件范围出现 <code>{</code></td>
+<td>少函数首部，或多了 <code>{</code></td>
+</tr>
+<tr>
+<td><code>C2466: cannot allocate an array of constant size 0</code></td>
+<td>数组大小为 0</td>
+<td><code>int a[0];</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="b3-警告warning-仍能编译但大概率是错">B.3 警告（warning）—— 仍能编译，但<strong>大概率是错</strong></h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>含义</th>
+<th>真实风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C4013: 'printf' undefined</code></td>
+<td>printf 未定义</td>
+<td>⚠️ <strong>忘了 <code>#include &lt;stdio.h&gt;</code></strong></td>
+</tr>
+<tr>
+<td><code>C4024: different types for formal and actual parameter</code></td>
+<td>形参与实参类型不同</td>
+<td>隐式转换，可能出错</td>
+</tr>
+<tr>
+<td><code>C4035: 'f': no return value</code></td>
+<td>return 没有返回值</td>
+<td>函数声明与定义不一致</td>
+</tr>
+<tr>
+<td><code>C4047: '=' : 'char *' differs from 'char[2]'</code></td>
+<td>字符指针与字符数组不兼容</td>
+<td><code>scanf("%s", &amp;str)</code></td>
+</tr>
+<tr>
+<td><code>C4133: '=' : incompatible types - from 'int *' to 'float *'</code></td>
+<td>指针类型不兼容</td>
+<td>严重错误，必须改</td>
+</tr>
+<tr>
+<td><code>C4244: conversion from 'int' to 'float', possible loss of data</code></td>
+<td>可能丢失数据</td>
+<td>隐式类型转换，注意截断</td>
+</tr>
+<tr>
+<td><code>C4305: truncation from 'const double' to 'float'</code></td>
+<td>双精度截断为单精度</td>
+<td>精度损失</td>
+</tr>
+<tr>
+<td><code>C4307: '+' : integral constant overflow</code></td>
+<td>整型常量溢出</td>
+<td>改用 <code>L</code> 后缀或拆开</td>
+</tr>
+<tr>
+<td><code>C4552: '&lt;' : operator has no effect</code></td>
+<td>操作符无效</td>
+<td>多余的运算符</td>
+</tr>
+<tr>
+<td><code>C4700: local variable 'xxx' used without having been initialized</code></td>
+<td><strong>局部变量未初始化</strong></td>
+<td><span class="badge b-error">易错点</span> <strong>最高危警告</strong>，结果随机</td>
+</tr>
+<tr>
+<td><code>C4716: 'fun' : must return a value</code></td>
+<td>需要返回值</td>
+<td>函数会返回垃圾值</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>重点关注</strong>：<code>C4013</code>（忘头文件）、<code>C4700</code>（未初始化）、<code>C4133</code>（指针类型不兼容）、
+<code>C4047</code>（数组名加了 <code>&amp;</code>）—— 这四个是本课程最高频的警告。</p>
+</blockquote>
+<h3 id="b4-链接错误link-error">B.4 链接错误（link error）</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>含义</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LNK1168: cannot open Debug/P1.exe for writing</code></td>
+<td>无法写入 exe</td>
+<td><strong>程序还在运行</strong>，先关掉</td>
+</tr>
+<tr>
+<td><code>LNK2001: unresolved external symbol _main</code></td>
+<td>找不到 main</td>
+<td>缺少 <code>main</code> 函数，或拼写错误</td>
+</tr>
+<tr>
+<td><code>LNK2001: unresolved external symbol xxx</code></td>
+<td>找不到符号</td>
+<td>① 调用库函数但忘写头文件；② 自定义函数名写错；③ 该函数在<strong>另一个 .c 文件</strong>中且未加入工程</td>
+</tr>
+<tr>
+<td><code>LNK2005: _main already defined in xxx.obj</code></td>
+<td>main 重复定义</td>
+<td>一个工程里有<strong>两个 main</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>经典教训</strong>：教材 <code>lt08-20.c</code> 就是把 <code>file1.c</code> 和 <code>file2.c</code> 合并在一个文件里的版本——
+如果直接复制粘贴两个文件的内容到同一个 .c 文件，会出现 <code>LNK2005: _main already defined</code>。</p>
+</blockquote>
+<hr />

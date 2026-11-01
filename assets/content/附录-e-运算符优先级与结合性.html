@@ -1,0 +1,170 @@
+<h2 id="附录-e-运算符优先级与结合性" class="rk-hard"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span>附录 E　运算符优先级与结合性</h2>
+<h3 id="e1-优先级总表从高到低" class="rk-hard"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span>E.1 优先级总表（从高到低）</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th style="text-align: center;">级别</th>
+<th>运算符</th>
+<th>类别</th>
+<th>结合性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td><code>()</code> <code>[]</code> <code>.</code> <code>-&gt;</code></td>
+<td>强制转换、下标、成员访问</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td><code>!</code> <code>~</code> <code>++</code> <code>--</code> <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code> <code>&amp;</code> <code>^</code> <code>|</code> <code>sizeof</code></td>
+<td>一元运算符</td>
+<td>右→左</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td><code>*</code> <code>/</code> <code>%</code></td>
+<td>乘除模</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td><code>+</code> <code>-</code></td>
+<td>加减</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td><code>&lt;&lt;</code> <code>&gt;&gt;</code></td>
+<td>移位</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td>
+<td>关系</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td><code>==</code> <code>!=</code></td>
+<td>相等</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td><code>&amp;</code></td>
+<td>按位与</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td><code>^</code></td>
+<td>按位异或</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td><code>|</code></td>
+<td>按位或</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td><code>&amp;&amp;</code></td>
+<td>逻辑与</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">12</td>
+<td><code>||</code></td>
+<td>逻辑或</td>
+<td>左→右</td>
+</tr>
+<tr>
+<td style="text-align: center;">13</td>
+<td><code>?:</code></td>
+<td>条件运算符</td>
+<td>右→左</td>
+</tr>
+<tr>
+<td style="text-align: center;">14</td>
+<td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code> <code>&lt;&lt;=</code> <code>&gt;&gt;=</code> <code>&amp;=</code> <code>|=</code> <code>^=</code></td>
+<td>赋值</td>
+<td>右→左</td>
+</tr>
+<tr>
+<td style="text-align: center;">15</td>
+<td><code>,</code></td>
+<td>逗号</td>
+<td>左→右</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="e2-记忆口诀">E.2 记忆口诀</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">TXT</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code>从高到低：
+    括号下标点箭头      （最高，四个一起记）
+    一元运算符          （! ~ ++ -- + - * / % &amp; ^ | sizeof）
+    乘除模
+    加减
+    移位
+    关系
+    相等
+    按位与
+    按位异或
+    按位或
+    逻辑与
+    逻辑或
+    条件 ?:
+    赋值                （最低的算术类）
+    逗号                （最低）
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>口诀</strong>："<strong>单目 &gt; 乘除 &gt; 加减 &gt; 移位 &gt; 比较 &gt; 逻辑 &gt; 赋值</strong>"。</p>
+</blockquote>
+<h3 id="e3-三个高频优先级判定题">E.3 三个高频优先级判定题</h3>
+<p><strong>① <code>a &lt; b &amp;&amp; c &gt; d</code></strong>：<code>&amp;&amp;</code> 的优先级<strong>低于</strong>关系运算符 → <code>(a&lt;b) &amp;&amp; (c&gt;d)</code> ✔</p>
+<p><strong>② <code>a = b &gt; c</code></strong>：<code>&gt;</code> 优先级<strong>高于</strong> <code>=</code> → <code>a = (b &gt; c)</code> ✔</p>
+<p><strong>③ <code>x | y &amp;&amp; z == w</code></strong>：
+<code>==</code> &gt; <code>&amp;&amp;</code> &gt; <code>|</code> → <code>x | (y &amp;&amp; (z == w))</code> ✔</p>
+<h3 id="e4-教材原题解析lt05-02c-lt05-03c" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>E.4 教材原题解析（<code>lt05-02.c</code> / <code>lt05-03.c</code>）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="sc">'k'</span><span class="p">;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="mf">3e+5</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">;</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="sc">'a'</span><span class="o">+</span><span class="mi">5</span><span class="o">&lt;</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="mi">-2</span><span class="o">*</span><span class="n">j</span><span class="o">&gt;=</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+<span class="cm">/* 'a'+5 = 97+5 = 102; 102 &lt; 'k'(107) → 1 */</span>
+<span class="cm">/* -i-2*j = -1-4 = -5;  k+1 = 4;  -5 &gt;= 4 → 0 */</span>
+<span class="cm">/* 输出：1,0 */</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">&lt;</span><span class="n">j</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="mf">-5.25</span><span class="o">&lt;=</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">);</span>
+<span class="cm">/* 1&lt;j&lt;5 → (1&lt;j)&lt;5 → 1&lt;5 → 1 */</span>
+<span class="cm">/* x-5.25 &lt;= x+y → 减 5.25 必然更小 → 1 */</span>
+<span class="cm">/* 输出：1,1 */</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="o">==</span><span class="mi">-2</span><span class="o">*</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="o">==</span><span class="n">j</span><span class="o">==</span><span class="n">i</span><span class="o">+</span><span class="mi">5</span><span class="p">);</span>
+<span class="cm">/* i+j+k = 6;  -2*j = -4;  6 == -4 → 0 */</span>
+<span class="cm">/* k==j → 3==2 → 0;  0 == (i+5=6) → 0 */</span>
+<span class="cm">/* 输出：0,0 */</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">!</span><span class="n">x</span><span class="o">*!</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="o">!!!</span><span class="n">x</span><span class="p">);</span>
+<span class="cm">/* !x = 0 (x非0为真), !y = 0 → 0*0 = 0 */</span>
+<span class="cm">/* !!!x = !(!(!x)) = !(!0) = !1 = 0 */</span>
+<span class="cm">/* 输出：0,0 */</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">||</span><span class="n">i</span><span class="o">&amp;&amp;</span><span class="n">j</span><span class="mi">-3</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">j</span><span class="o">&amp;&amp;</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span><span class="p">);</span>
+<span class="cm">/* &amp;&amp; 高于 || → x || (i &amp;&amp; (j-3)) → x非0为真 → 1 */</span>
+<span class="cm">/* i&lt;j → 1; x&lt;y → 3e5 &lt; 0.85 → 0 → 1&amp;&amp;0 = 0 */</span>
+<span class="cm">/* 输出：1,0 */</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">==</span><span class="mi">5</span><span class="o">&amp;&amp;</span><span class="n">c</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">||</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="p">);</span>
+<span class="cm">/* = 优先级低于 &amp;&amp; 和 || → 但 (j=8) 有括号，不影响解析 */</span>
+<span class="cm">/* 真正起作用的是 &amp;&amp; 短路：i==5 为假 → (j=8) 根本不执行 → 0 */</span>
+<span class="cm">/* x+y 非0为真 → || 短路 → 1 */</span>
+<span class="cm">/* 输出：0,1 */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>注意</strong>：<code>i==5&amp;&amp;c&amp;&amp;(j=8)</code> 中，因为 <code>i==5</code> 为假，<strong><code>&amp;&amp;</code> 短路</strong>，
+所以 <code>(j=8)</code> <strong>根本没有执行</strong>，<code>j</code> 仍然是 2。这是<strong>短路效应</strong>的经典考题。
+上面整段代码在 <strong>GCC 16 下实测输出</strong>为 <code>1,0 / 1,1 / 0,0 / 0,0 / 1,0 / 0,1</code>，与解析完全一致。</p>
+</blockquote>
+<hr />

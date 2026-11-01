@@ -1,0 +1,189 @@
+<h2 id="第-14-章-堆内存管理与文件进阶hm-课程讲义" class="rk-hard"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span>第 14 章　堆内存管理与文件进阶（HM 课程讲义）</h2>
+<blockquote class="callout c-plain">
+<p>🧩 来源：HM 课程讲义 09–12（字符串和内存管理 / 结构体联合体 / 文件进阶）。栈由系统自动管理，<strong>堆（heap）自己申请、自己释放</strong>——这一章是 C 语言"能写大程序"的分水岭。</p>
+</blockquote>
+<h3 id="141-malloc-calloc-realloc-free">14.1 malloc / calloc / realloc / free</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>原型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>malloc</code></td>
+<td><code>void *malloc(size_t size)</code></td>
+<td>申请 size 字节，<strong>内容是垃圾值</strong></td>
+</tr>
+<tr>
+<td><code>calloc</code></td>
+<td><code>void *calloc(size_t n, size_t size)</code></td>
+<td>申请 n×size 字节，<strong>自动清零</strong></td>
+</tr>
+<tr>
+<td><code>realloc</code></td>
+<td><code>void *realloc(void *p, size_t size)</code></td>
+<td>把 p 指向的空间调整为 size（可扩可缩），返回<strong>新地址</strong>（可能搬移）</td>
+</tr>
+<tr>
+<td><code>free</code></td>
+<td><code>void free(void *p)</code></td>
+<td>释放；只能 free 堆地址，free 后<strong>立刻置 NULL</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>标准四步曲</strong>：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                       </span><span class="cm">/* 1. 必须判空！ */</span>
+<span class="w">    </span><span class="n">perror</span><span class="p">(</span><span class="s">"malloc error"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/* 2. 使用 p[0] ~ p[9] */</span>
+<span class="n">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span><span class="w">                               </span><span class="cm">/* 3. 释放 */</span>
+<span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">                              </span><span class="cm">/* 4. 防野指针 */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> 常见错误：malloc 后不判 NULL 就用；free 两次（double free）；free 后继续读写（野指针）；只 free 内层不 free 外层（泄漏）。</p>
+</blockquote>
+<h3 id="142-二级指针与堆上的二维空间">14.2 二级指针与堆上的"二维"空间</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 外层：3 个 int* 的数组；内层：每个指向 5 个 int */</span>
+<span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+
+<span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 使用：等价 *(*(p+i)+j) */</span>
+
+<span class="cm">/* 释放：先内层，后外层 —— 顺序不能反 */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">free</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="n">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</code></pre></div>
+<blockquote class="callout c-hard">
+<p><span class="badge b-hard">重难点</span> <code>char **p</code> 存字符串时写 <code>p[i] = "hello"</code> 是<strong>错的</strong>（把 heap 指针改指向只读常量区，free 时崩溃），要用 <code>strcpy(p[i], "hello")</code>。</p>
+</blockquote>
+<h3 id="143-内存操作函数stringh">14.3 内存操作函数（string.h）</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>原型</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memset</code></td>
+<td><code>void *memset(void *s, int c, size_t n)</code></td>
+<td><strong>按字节</strong>设置；heap 申请后清零用 <code>memset(p, 0, n)</code>。⚠️ 置 1 是每字节都是 1：int 数组会变成 <code>0x01010101</code> = 16843009，<strong>不是 1</strong>！</td>
+</tr>
+<tr>
+<td><code>memcpy</code></td>
+<td><code>void *memcpy(void *d, const void *s, size_t n)</code></td>
+<td>按字节拷贝任意内存（strcpy 只能拷字符串）；src/dest <strong>重叠时行为未定义</strong></td>
+</tr>
+<tr>
+<td><code>memmove</code></td>
+<td>同 memcpy</td>
+<td><strong>重叠安全版</strong>，拿不准就用它</td>
+</tr>
+<tr>
+<td><code>memcmp</code></td>
+<td><code>int memcmp(const void *s1, const void *s2, size_t n)</code></td>
+<td>按字节比较，返回 0 / 正 / 负</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="144-sprintf-sscanf-家族一份数据三个去向">14.4 sprintf / sscanf 家族：一份数据三个去向</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>数据流向</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>printf</code></td>
+<td>内存 → 屏幕</td>
+<td>调试输出</td>
+</tr>
+<tr>
+<td><code>sprintf</code></td>
+<td>内存 → <strong>字符数组 buf</strong></td>
+<td>拼接/格式化字符串（buf 要够大）</td>
+</tr>
+<tr>
+<td><code>fprintf</code></td>
+<td>内存 → <strong>文件 fp</strong></td>
+<td>格式化写文件</td>
+</tr>
+<tr>
+<td><code>scanf</code></td>
+<td>键盘 → 内存</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sscanf</code></td>
+<td><strong>字符串 str</strong> → 内存</td>
+<td>从字符串里"抠"数据</td>
+</tr>
+<tr>
+<td><code>fscanf</code></td>
+<td><strong>文件 fp</strong> → 内存</td>
+<td>格式化读文件</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回值</strong>：<code>fprintf</code> 成功返回写入的字符个数，失败 -1；<code>fscanf</code> 成功返回<strong>正确匹配的个数</strong>，失败 -1。</p>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <code>fscanf</code> 读数据前把接收缓冲区清空（<code>memset(buf, 0, sizeof(buf))</code>），否则残留旧数据会造成边界溢出；读不到匹配时会提前结束（feof 为真）。</p>
+</blockquote>
+<h3 id="145-按块读写-fwrite-fread-与-feof-判定">14.5 按块读写 fwrite / fread 与 feof 判定</h3>
+<p><code>fgetc/fputc</code>、<code>fgets/fputs</code>、<code>fprintf/fscanf</code> 三组默认处理<strong>文本文件</strong>；<code>fwrite/fread</code> 文本、二进制通吃：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">size_t</span><span class="w"> </span><span class="nf">fwrite</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+<span class="kt">size_t</span><span class="w"> </span><span class="nf">fread</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+<span class="cm">/* 例：fwrite(&amp;stu, sizeof(stu), 1, fp);  整块结构体写入 */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>feof 经典坑</strong>：<code>while(!feof(fp))</code> 先判断后读会<strong>多执行一次</strong>（读到 EOF 标志才置位）。正确姿势是<strong>先读后判</strong>：</p>
+</blockquote>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">feof</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 先存储，后判断，防止最后一个元素丢失 */</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="146-综合案例文件版随机数排序">14.6 综合案例：文件版随机数排序</h3>
+<p>生成 10 个随机数写文件 → 读出排序 → 写回同一文件：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">void</span><span class="w"> </span><span class="nf">write_rand</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">"test03.txt"</span><span class="p">,</span><span class="w"> </span><span class="s">"w"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">perror</span><span class="p">(</span><span class="s">"fopen error"</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/* read_rand：fscanf 循环读入（先读后判 feof）→ 冒泡排序</span>
+<span class="cm">   → 再以 "w" 重新打开同一文件写入排好序的结果 */</span>
+</code></pre></div>
+<h3 id="147-strstr-与字符串函数补充">14.7 strstr 与字符串函数补充</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">strstr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">substr</span><span class="p">);</span>
+<span class="cm">/* 成功：返回子串在原串中的位置（地址）；失败：NULL */</span>
+
+<span class="cm">/* 统计 substr 在 str 中出现次数：找到后指针跳过子串长度继续找 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">substr_times</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">substr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strstr</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">substr</span><span class="p">);</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">p</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">substr</span><span class="p">);</span><span class="w">   </span><span class="cm">/* 跳过本次命中的子串 */</span>
+<span class="w">        </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strstr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">substr</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-plain">
+<p>⚠️ <code>strcpy</code> <strong>不检查 dest 空间是否足够</strong>，是不安全函数；建议 <code>strncpy</code>（只拷 n 字节）并保证 n ≤ dest 大小。</p>
+</blockquote>

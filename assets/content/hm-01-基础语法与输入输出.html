@@ -1,0 +1,299 @@
+<h2 id="hm-01-基础语法与输入输出">HM 01　基础语法与输入输出</h2>
+<h3 id="1c-输出保留-3-位小数">1.c　输出保留 3 位小数</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%.3f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="mf">1.9</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>%.3f</code> 是 printf 精度控制：小数点后保留 3 位，<strong>四舍五入</strong>。</p>
+</blockquote>
+<h3 id="1_1c-二-八-十六进制字面量">1_1.c　二 / 八 / 十六进制字面量</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span><span class="p">;</span><span class="w"> </span><span class="c1">//16进制</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mo">010</span><span class="p">;</span><span class="w"> </span><span class="c1">//8进制</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">0b10</span><span class="p">;</span><span class="w"> </span><span class="c1">//2进制</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d %d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>0x10</code>=16、<code>010</code>=8、<code>0b10</code>=2（C23 前二进制是编译器扩展），用 <code>%d</code> 都按十进制输出。</p>
+</blockquote>
+<h3 id="1_2c-long-类型与-ld">1_2.c　long 类型与 %ld</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1000L</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%ld"</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="2c-输入年龄并回显">2.c　输入年龄并回显</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入您的年龄："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">age</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"您的年龄为：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">age</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>scanf("%d", &amp;a)</code> 必须写 <code>&amp;</code> 取地址；提示语用 printf 单独输出。</p>
+</blockquote>
+<h3 id="3c-读入两个整数求和">3.c　读入两个整数求和</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>int a, b = 0;</code> 只有 b 初始化了，a 未初始化——但随后 scanf 会覆盖，无碍。规范的写法是两个都初始化。</p>
+</blockquote>
+<h3 id="4c-长方体各面面积与体积">4.c　长方体各面面积与体积</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入长&amp;宽&amp;高(保留2位小数)："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%f %f %f"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span><span class="o">&amp;</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">s1</span><span class="o">=</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">s2</span><span class="o">=</span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">s3</span><span class="o">=</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"A的面积为%.2f</span><span class="se">\n</span><span class="s">B的面积为%.2f</span><span class="se">\n</span><span class="s">C的面积为%.2f</span><span class="se">\n</span><span class="s">体积为%.2f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">,</span><span class="n">s3</span><span class="p">,</span><span class="n">v</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+
+
+<span class="c1">//用double更好！</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 原注释就是最好的总结：「用 double 更好」——float 精度只有约 7 位有效数字。</p>
+</blockquote>
+<h3 id="5c-三位数拆个位-十位-百位">5.c　三位数拆个位 / 十位 / 百位</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//键盘录入一个三位数，将其拆分为个位、十位、百位并打印。</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入一个三位数："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">num</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num</span><span class="o">%</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="o">%</span><span class="mi">100</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num</span><span class="o">/</span><span class="mi">100</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"个位为：%d</span><span class="se">\n</span><span class="s">十位为：%d</span><span class="se">\n</span><span class="s">百位为：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 拆位三板斧：个位 <code>n%10</code>、十位 <code>n/10%10</code>、百位 <code>n/100</code>。</p>
+</blockquote>
+<h3 id="6c-字符的-ascii-码值">6.c　字符的 ASCII 码值</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="sc">'a'</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="sc">'A'</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="sc">'0'</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 字符本质是整数：<code>'a'</code>=97、<code>'A'</code>=65、<code>'0'</code>=48，大小写相差 32。</p>
+</blockquote>
+<h3 id="7c-逻辑表达式两位数是否与-7-有关">7.c　逻辑表达式：两位数是否与 7 有关</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入一个两位整数："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,(</span><span class="n">a</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="mi">7</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,((</span><span class="n">a</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="mi">7</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="mi">7</span><span class="p">)</span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 「不含 7」= <code>(a/10)!=7 &amp;&amp; (a%10)!=7</code>；「既不含 7 又不是 7 的倍数」再 <code>&amp;&amp; (a%7)!=0</code>。逻辑运算的结果是 0 或 1。</p>
+</blockquote>
+<h3 id="8c-三元运算符嵌套求最大值">8.c　三元运算符嵌套求最大值</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d %d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span><span class="o">&amp;</span><span class="n">c</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="c1">//超纲了</span>
+
+<span class="w">    </span><span class="c1">// if (a&gt;b &amp;&amp; a&gt;c)</span>
+
+<span class="w">    </span><span class="c1">// {</span>
+
+<span class="w">    </span><span class="c1">//     printf("%d\n",a);</span>
+
+
+
+<span class="w">    </span><span class="c1">// }</span>
+
+<span class="w">    </span><span class="c1">// else if(b&gt;a &amp;&amp; b&gt;c)</span>
+
+<span class="w">    </span><span class="c1">// {</span>
+
+<span class="w">    </span><span class="c1">//     printf("%d\n",b);</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+<span class="w">    </span><span class="c1">// else{</span>
+
+<span class="w">    </span><span class="c1">//     printf("%d\n",c);</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+
+
+<span class="w">    </span><span class="c1">//三元运算符！！！</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">s</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>int t = a&gt;b ? a : b;</code> 再拿 t 和 c 比，两步搞定三数取大，比 if-else 链简洁。</p>
+</blockquote>
+<h3 id="9c-if-else-双分支">9.c　if-else 双分支</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入好感度："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">degree</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">degree</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">60</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"999"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"666"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>

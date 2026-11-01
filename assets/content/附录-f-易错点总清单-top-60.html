@@ -1,0 +1,550 @@
+<h2 id="附录-f-易错点总清单-top-60">附录 F　易错点总清单 TOP 60</h2>
+<blockquote class="callout c-plain">
+<p>按"出现频率 × 杀伤力"排序。前 20 条是<strong>必背</strong>。</p>
+</blockquote>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th>分类</th>
+<th>陷阱</th>
+<th>正确做法</th>
+<th>出处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td>I/O</td>
+<td><code>scanf("%f",&amp;d)</code> 读 double</td>
+<td>用 <code>%lf</code></td>
+<td>§3.8.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td>I/O</td>
+<td><code>printf("%lf",d)</code> 输出 double</td>
+<td>用 <code>%f</code></td>
+<td>§4.3.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td>I/O</td>
+<td><code>scanf("%c")</code> 吞掉空格/回车</td>
+<td><code>scanf(" %c")</code></td>
+<td>§4.3.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td>I/O</td>
+<td><code>scanf("%s",&amp;str)</code></td>
+<td>去掉 <code>&amp;</code></td>
+<td>§4.3.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td>I/O</td>
+<td><code>printf("%d", sizeof(x))</code></td>
+<td>用 <code>%zu</code></td>
+<td>§3.7</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td>I/O</td>
+<td><code>scanf("%7.2f")</code> 精度</td>
+<td>scanf 不能用精度</td>
+<td>§4.3.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td>I/O</td>
+<td><code>scanf("%d\n",&amp;a)</code></td>
+<td>去掉 <code>\n</code> 或用 <code>" %d"</code></td>
+<td>§4.3.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td>I/O</td>
+<td>格式符与类型不匹配（不报错）</td>
+<td>严格对照格式符表</td>
+<td>§3.8.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td>浮点</td>
+<td><code>if (x == 0.3)</code></td>
+<td><code>fabs(x-0.3) &lt; 1e-9</code></td>
+<td>§3.6.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td>浮点</td>
+<td>浮点除 0 无警告</td>
+<td>整数除 0 有警告，浮点得 inf/nan</td>
+<td>§3.6.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td>浮点</td>
+<td><code>float</code> 精度只 6~7 位</td>
+<td>关键数据用 <code>double</code></td>
+<td>§3.6.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">12</td>
+<td>浮点</td>
+<td><code>int</code> 除法丢小数</td>
+<td><code>(double)a / b</code></td>
+<td>§3.9.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">13</td>
+<td>浮点</td>
+<td>强制转换是截断不是四舍五入</td>
+<td><code>(int)(x+0.5)</code></td>
+<td>§3.8.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">14</td>
+<td>宏</td>
+<td><code>#define A 1+2</code> 优先级</td>
+<td>整体加括号 <code>(1+2)</code></td>
+<td>§12.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">15</td>
+<td>宏</td>
+<td>函数式宏参数没括号</td>
+<td><code>#define SQ(y) ((y)*(y))</code></td>
+<td>§12.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">16</td>
+<td>宏</td>
+<td>宏定义写成 <code>#define A = 1</code></td>
+<td>不要写 <code>=</code></td>
+<td>附录 B</td>
+</tr>
+<tr>
+<td style="text-align: center;">17</td>
+<td>宏</td>
+<td><code>#define PI 3.14;</code> 多分号</td>
+<td>去掉分号</td>
+<td>附录 D</td>
+</tr>
+<tr>
+<td style="text-align: center;">18</td>
+<td>类型</td>
+<td>有符号与无符号比较</td>
+<td>先统一类型</td>
+<td>§3.4.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">19</td>
+<td>类型</td>
+<td><code>unsigned</code> 只能配 int/char</td>
+<td>不能写 <code>unsigned double</code></td>
+<td>§3.4.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">20</td>
+<td>类型</td>
+<td>长整型赋给短整型</td>
+<td>截断取低位</td>
+<td>§3.8.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">21</td>
+<td>类型</td>
+<td>整数溢出是未定义行为</td>
+<td>别依赖溢出结果</td>
+<td>§3.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">22</td>
+<td>运算符</td>
+<td><code>=</code> 与 <code>==</code> 混淆</td>
+<td>比较用 <code>==</code></td>
+<td>§3.9.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">23</td>
+<td>运算符</td>
+<td><code>a &lt;= x &lt;= b</code></td>
+<td>改 <code>a&lt;=x &amp;&amp; x&lt;=b</code></td>
+<td>§3.9.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">24</td>
+<td>运算符</td>
+<td><code>%</code> 用于浮点数</td>
+<td>只能用于整数</td>
+<td>§3.9.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">25</td>
+<td>运算符</td>
+<td><code>5++</code></td>
+<td><code>++</code> 需要左值</td>
+<td>§3.9.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">26</td>
+<td>运算符</td>
+<td><code>^</code> 是异或不是幂</td>
+<td>幂用 <code>pow()</code></td>
+<td>§13.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">27</td>
+<td>运算符</td>
+<td><code>1.2333*10^4^</code></td>
+<td>用 <code>1.2333e4</code></td>
+<td>§3.2.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">28</td>
+<td>运算符</td>
+<td><code>&amp;</code> 与 <code>&amp;&amp;</code> 混淆</td>
+<td>逻辑用 <code>&amp;&amp;</code>/<code>||</code></td>
+<td>§3.9.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">29</td>
+<td>运算符</td>
+<td>移位数 ≥ 类型宽度</td>
+<td><code>1u &lt;&lt; 31</code></td>
+<td>§13.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">30</td>
+<td>分支</td>
+<td><code>if (a%3==0);</code> 多分号</td>
+<td>删分号</td>
+<td>§5.1.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">31</td>
+<td>分支</td>
+<td>if/else 后单语句没加花括号</td>
+<td>总是加花括号</td>
+<td>§5.1.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">32</td>
+<td>分支</td>
+<td>悬空 else</td>
+<td>加花括号</td>
+<td>§5.1.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">33</td>
+<td>分支</td>
+<td><code>switch</code> 漏 <code>break</code></td>
+<td>每个分支加 break</td>
+<td>§5.2.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">34</td>
+<td>分支</td>
+<td><code>case</code> 后跟变量</td>
+<td>必须是常量</td>
+<td>§5.2.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">35</td>
+<td>循环</td>
+<td><code>for(...);</code> 多分号</td>
+<td>删分号</td>
+<td>§6.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">36</td>
+<td>循环</td>
+<td><code>while</code> 中 <code>continue</code> 跳过 <code>i++</code></td>
+<td>改用 <code>for</code></td>
+<td>§6.4.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">37</td>
+<td>循环</td>
+<td>以为 do-while 和 while 一样</td>
+<td>do-while 至少执行一次</td>
+<td>§6.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">38</td>
+<td>循环</td>
+<td><code>break</code> 想跳出多层循环</td>
+<td>只跳一层，用 <code>goto</code> 或标志变量</td>
+<td>§6.4.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">39</td>
+<td>循环</td>
+<td>求最值 <code>max</code> 初始化为 0</td>
+<td>用 <code>a[0]</code> 初始化</td>
+<td>§6.6</td>
+</tr>
+<tr>
+<td style="text-align: center;">40</td>
+<td>循环</td>
+<td>死循环（scanf 非法字符）</td>
+<td><code>" %d"</code> 或 <code>fflush(stdin)</code></td>
+<td>§6.7</td>
+</tr>
+<tr>
+<td style="text-align: center;">41</td>
+<td>数组</td>
+<td>数组长度用变量</td>
+<td>用 <code>#define</code> 常量</td>
+<td>§7.1.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">42</td>
+<td>数组</td>
+<td>数组整体赋值</td>
+<td>只能逐元素赋值</td>
+<td>§7.1.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">43</td>
+<td>数组</td>
+<td>字符串数组少算 <code>'\0'</code></td>
+<td>长度 = 字符数 + 1</td>
+<td>§7.3.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">44</td>
+<td>数组</td>
+<td>字符数组未补 <code>'\0'</code> 却用 <code>%s</code></td>
+<td>补 <code>'\0'</code></td>
+<td>§7.3.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">45</td>
+<td>数组</td>
+<td>二维数组行数列数写反</td>
+<td>核对下标顺序</td>
+<td>§7.2.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">46</td>
+<td>数组</td>
+<td>二维数组作参数写成 <code>int a[]</code></td>
+<td>必须写列数 <code>int a[][4]</code></td>
+<td>§7.2.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">47</td>
+<td>数组</td>
+<td><code>sizeof</code> 宏用于指针失效</td>
+<td>只用于真数组</td>
+<td>§7.1.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">48</td>
+<td>数组</td>
+<td>数组越界不报错</td>
+<td>手动检查下标</td>
+<td>§7.1.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">49</td>
+<td>字符串</td>
+<td><code>strcmp</code> 按 ASCII 比较</td>
+<td><code>"Z" &lt; "a"</code></td>
+<td>§7.3.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">50</td>
+<td>字符串</td>
+<td><code>strcpy/strcat</code> 不检查长度</td>
+<td>确保目标够大</td>
+<td>§7.3.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">51</td>
+<td>字符串</td>
+<td><code>gets</code> 不安全</td>
+<td>用 <code>fgets</code></td>
+<td>§4.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">52</td>
+<td>函数</td>
+<td>形参漏写类型</td>
+<td>每个形参都写类型</td>
+<td>§8.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">53</td>
+<td>函数</td>
+<td>值传递改不了实参</td>
+<td>用指针传址</td>
+<td>§8.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">54</td>
+<td>函数</td>
+<td>交换指针 ≠ 交换内容</td>
+<td><code>*p1 = *p2</code></td>
+<td>§8.2.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">55</td>
+<td>函数</td>
+<td>数组作参数不传长度</td>
+<td>额外传 n</td>
+<td>§8.2.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">56</td>
+<td>函数</td>
+<td>递归无终止条件</td>
+<td>加 base case</td>
+<td>§8.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">57</td>
+<td>函数</td>
+<td><code>void</code> 函数 <code>return 值;</code></td>
+<td>改返回类型</td>
+<td>§8.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">58</td>
+<td>作用域</td>
+<td>内层同名变量遮蔽外层</td>
+<td>注意生命周期</td>
+<td>§8.4.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">59</td>
+<td>指针</td>
+<td>野指针未初始化</td>
+<td>初始化为 NULL 或有效地址</td>
+<td>§9.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">60</td>
+<td>指针</td>
+<td><code>char *p="abc"; p[0]='X';</code></td>
+<td>用字符数组</td>
+<td>§9.8</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="f1-其他隐形高频错误">F.1 其他"隐形"高频错误</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th>陷阱</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">61</td>
+<td><code>struct</code> 定义漏分号</td>
+<td>引发连锁语法错误</td>
+</tr>
+<tr>
+<td style="text-align: center;">62</td>
+<td>结构体用 <code>==</code> 比较</td>
+<td>语法错误</td>
+</tr>
+<tr>
+<td style="text-align: center;">63</td>
+<td><code>pstu.num</code>（指针用点号）</td>
+<td>应为 <code>pstu-&gt;num</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">64</td>
+<td><code>stu1-&gt;num</code>（变量用箭头）</td>
+<td>应为 <code>stu1.num</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">65</td>
+<td><code>free(p)</code> 后不置 NULL</td>
+<td>悬空指针</td>
+</tr>
+<tr>
+<td style="text-align: center;">66</td>
+<td><code>malloc</code> 后直接 <code>p = "str"</code></td>
+<td>内存泄漏 + 非法 free</td>
+</tr>
+<tr>
+<td style="text-align: center;">67</td>
+<td><code>while (!feof(fp))</code></td>
+<td>正确写法是判断 <code>fgets</code> 返回值</td>
+</tr>
+<tr>
+<td style="text-align: center;">68</td>
+<td><code>fopen</code> 用 <code>"w"</code> 打开已有文件</td>
+<td>会清空原内容</td>
+</tr>
+<tr>
+<td style="text-align: center;">69</td>
+<td><code>tm_year</code> 忘记 <code>+1900</code></td>
+<td>输出错误年份</td>
+</tr>
+<tr>
+<td style="text-align: center;">70</td>
+<td>三角函数用了角度</td>
+<td>C 用弧度</td>
+</tr>
+<tr>
+<td style="text-align: center;">71</td>
+<td><code>sqrt</code> 忘 <code>#include &lt;math.h&gt;</code></td>
+<td>链接错误</td>
+</tr>
+<tr>
+<td style="text-align: center;">72</td>
+<td><code>abs</code> 写在 <code>&lt;math.h&gt;</code></td>
+<td><code>abs</code> 在 <code>&lt;stdlib.h&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">73</td>
+<td>随机数循环内调 <code>srand(time(NULL))</code></td>
+<td>每轮种子相同，序列不变</td>
+</tr>
+<tr>
+<td style="text-align: center;">74</td>
+<td><code>srand</code> 用 <code>time(NULL)</code> 未转 <code>unsigned</code></td>
+<td>警告</td>
+</tr>
+<tr>
+<td style="text-align: center;">75</td>
+<td><code>static</code> 局部变量每次都重初始化</td>
+<td>实际只初始化一次</td>
+</tr>
+<tr>
+<td style="text-align: center;">76</td>
+<td><code>extern</code> 全局变量跨文件时对方用了 <code>static</code></td>
+<td>链接失败</td>
+</tr>
+<tr>
+<td style="text-align: center;">77</td>
+<td>三角函数/开方返回 double 却赋给 int</td>
+<td>隐式截断</td>
+</tr>
+<tr>
+<td style="text-align: center;">78</td>
+<td>一个工程有两个 <code>main</code></td>
+<td>LNK2005 链接错误</td>
+</tr>
+<tr>
+<td style="text-align: center;">79</td>
+<td>头文件路径含 <code>\</code> 未转义</td>
+<td><code>"c:\\path\\file.txt"</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">80</td>
+<td>上传 CG 平台未存为 UTF-8</td>
+<td>中文变 <code>???</code> 影响评测</td>
+</tr>
+</tbody>
+</table></div>
+<hr />

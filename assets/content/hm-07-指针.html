@@ -1,0 +1,589 @@
+<h2 id="hm-07-指针">HM 07　指针</h2>
+<h3 id="40c-指针解引用与间接修改">40.c　指针解引用与间接修改</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="o">=&amp;</span><span class="n">a</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">p</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>*p</code> 读、<code>*p=200</code> 写——通过地址直接改内存，这是理解后面所有指针题的起点。</p>
+</blockquote>
+<h3 id="41c-指针作参数实现-swap">41.c　指针作参数实现 swap</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">p1</span><span class="o">=*</span><span class="n">p2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">p2</span><span class="o">=</span><span class="n">temp</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> C 语言函数传<strong>值</strong>，想改调用者的变量只能传地址：<code>swap(&amp;a, &amp;b)</code>。</p>
+</blockquote>
+<h3 id="42c-通过指针参数带回多个结果">42.c　通过指针参数带回多个结果</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">mm</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[],</span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">max</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">min</span><span class="p">){</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">max</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">max</span><span class="o">&lt;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]){</span>
+
+<span class="w">            </span><span class="o">*</span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">min</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">min</span><span class="o">&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]){</span>
+
+<span class="w">            </span><span class="o">*</span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">    </span><span class="n">mm</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">len</span><span class="p">,</span><span class="o">&amp;</span><span class="n">max</span><span class="p">,</span><span class="o">&amp;</span><span class="n">min</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d"</span><span class="p">,</span><span class="n">max</span><span class="p">,</span><span class="n">min</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 函数只能 return 一个值；想同时带回 max 和 min，就传两个地址进去写入——指针版的「多返回值」。</p>
+</blockquote>
+<h3 id="43c-void-通用交换按字节">43.c　void* 通用交换（按字节）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">// 函数：用来交换两个变量记录的数据</span>
+
+<span class="c1">// 修改一下函数，更具有通用性</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">p2</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">)</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 把void类型的指针，转成char类型的指针</span>
+
+<span class="w">    </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">pc1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">pc2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">pc1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="o">*</span><span class="n">pc1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">pc2</span><span class="p">;</span>
+
+<span class="w">        </span><span class="o">*</span><span class="n">pc2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">pc1</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">pc2</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 1.定义两个变量</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="c1">// 2.定义两个指针</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">short</span><span class="o">*</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="c1">// 3.输出打印</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="c1">// 不同类型的指针之间，是不能互相赋值的</span>
+
+<span class="w">    </span><span class="c1">// void类型的指针打破上面的观念</span>
+
+<span class="w">    </span><span class="c1">// void没有任何类型，好处可以接受任意类型指针记录的内存地址</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">p4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="c1">// 缺点: void类型的指针，无法获取变量里面的数据，也不能进行加、减的计算</span>
+
+<span class="w">    </span><span class="c1">// printf("%p\n", p3 + 1); // 这一行编译报错！void*不能+-整数</span>
+
+
+
+<span class="w">    </span><span class="c1">// 调用函数交换数据</span>
+
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"c = %d, d = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> void* 可接收任何指针，但<strong>不能解引用、不能加减整数</strong>；转成 char* 后逐字节交换，len 传 <code>sizeof(类型)</code>。这是泛型 swap 的雏形。</p>
+</blockquote>
+<h3 id="44c-指针遍历数组">44.c　指针遍历数组</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 1.定义数组</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">50</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="c1">// 2.获取数组的指针</span>
+
+<span class="w">    </span><span class="c1">// 实际上获取的：数组的首地址</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">//int* p2 = &amp;arr[0];</span>
+
+
+
+<span class="w">    </span><span class="c1">// 3.利用循环和指针遍历数组获取里面的每一个元素</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="o">++</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">//*p1++ &lt;==&gt; *p1);p1++;</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>*p1++</code> 等价于「取 *p1 的值，然后 p1 后移」——++ 优先级高于解引用，但后置 ++ 先用后加。</p>
+</blockquote>
+<h3 id="45c-sizeof-与-arr-不退化">45.c　sizeof 与 &amp;arr 不退化</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 1.定义数组</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 2.sizeof 运算的时候，不会退化，arr还是整体</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%zu</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">));</span><span class="c1">// 40</span>
+
+
+
+<span class="w">    </span><span class="c1">// 3.&amp;arr获取地址的时候，不会退化，记录的内存地址第一个元素的首地址，也是数组的首地址，步长: 数据类型 * 数组的长度 40</span>
+
+<span class="w">    </span><span class="c1">// arr参与计算的时候，会退化为第一个元素的指针，记录的内存地址第一个元素的首地址，也是数组的首地址，步长: 数据类型 int 4</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arr</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="c1">// 4</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="c1">// 40</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-hard">
+<p><span class="badge b-hard">重难点</span> <strong>注意</strong> <strong>重点辨析</strong>：<code>sizeof(arr)</code> 是 40（数组整体）；<code>&amp;arr</code> 步长 40；而 <code>arr</code> 参与运算时退化为首元素指针，<code>arr+1</code> 只走 4 字节。两类地址数值相同、类型不同。</p>
+</blockquote>
+<h3 id="46c-二维数组按索引遍历">46.c　二维数组按索引遍历</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 1.定义一个二维数组</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span>
+
+<span class="w">        </span><span class="p">{</span><span class="mi">11</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">33</span><span class="p">,</span><span class="mi">44</span><span class="p">,</span><span class="mi">55</span><span class="p">},</span>
+
+<span class="w">        </span><span class="p">{</span><span class="mi">111</span><span class="p">,</span><span class="mi">222</span><span class="p">,</span><span class="mi">333</span><span class="p">,</span><span class="mi">444</span><span class="p">,</span><span class="mi">555</span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 2.利用索引的方式进行遍历</span>
+
+<span class="w">    </span><span class="c1">// arr[0]:表示二维数组当中的第一个一维数组, {1,2,3,4,5}</span>
+
+<span class="w">    </span><span class="c1">// arr[1]:表示二维数组当中的第二个一维数组, {11,22,33,44,55}</span>
+
+<span class="w">    </span><span class="c1">// arr[2]:表示二维数组当中的第三个一维数组, {111,222,333,444,555}</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="c1">// i:依次表示二维数组中的索引</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">        </span><span class="p">{</span>
+
+<span class="w">            </span><span class="c1">// j:依次表示一维数组中的索引</span>
+
+<span class="w">            </span><span class="c1">// 内循环: 遍历每一个一维数组</span>
+
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 当内循环结束之后，表示一维数组遍历完毕了</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 二维数组是「一维数组的数组」：<code>arr[i]</code> 是第 i 个一维数组，<code>arr[i][j]</code> 再取其中元素。</p>
+</blockquote>
+<h3 id="47c-指针数组装三个不同长度的一维数组">47.c　指针数组装三个不同长度的一维数组</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 1.定义三个一维数组</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr2</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr3</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 预先计算每一个数组真实的长度</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr3</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="c1">// 再定义一个数组，装所有数组的长度</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">lenArr</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">len1</span><span class="p">,</span><span class="w"> </span><span class="n">len2</span><span class="p">,</span><span class="w"> </span><span class="n">len3</span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 2.把三个一维数组放入到指针数组当中</span>
+
+<span class="w">    </span><span class="c1">// 数组的数据类型，跟内部存储的元素类型保持一致</span>
+
+<span class="w">    </span><span class="c1">// arr1: 使用数组名进行计算的时候，退化为指向第一个元素的指针，此时不再表示数组的那个整体了</span>
+
+<span class="w">    </span><span class="c1">// 指针 --- 内存地址  64位win  8个字节</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">arr1</span><span class="p">,</span><span class="w"> </span><span class="n">arr2</span><span class="p">,</span><span class="w"> </span><span class="n">arr3</span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 3.利用索引遍历arr</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="c1">// i : 依次表示指针数组的索引 0 1 2</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lenArr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">        </span><span class="p">{</span>
+
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>int* arr[3]</code> 是<strong>指针数组</strong>（3 个 int*）；数组名赋值时退化为首元素指针，所以要另存长度数组。</p>
+</blockquote>
+<h3 id="48c-数组指针遍历二维数组">48.c　数组指针遍历二维数组</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 1.定义一个二维数组</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span>
+
+<span class="w">        </span><span class="p">{</span><span class="mi">11</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">33</span><span class="p">,</span><span class="mi">44</span><span class="p">,</span><span class="mi">55</span><span class="p">},</span>
+
+<span class="w">        </span><span class="p">{</span><span class="mi">111</span><span class="p">,</span><span class="mi">222</span><span class="p">,</span><span class="mi">333</span><span class="p">,</span><span class="mi">444</span><span class="p">,</span><span class="mi">555</span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 2.利用指针遍历二维数组</span>
+
+<span class="w">    </span><span class="c1">// 获取二维数组的指针</span>
+
+<span class="w">    </span><span class="c1">// 数组指针的数据类型: 要跟数组内部元素的类型保持一致</span>
+
+<span class="w">    </span><span class="c1">// 二维数组里面存储的是一维数组int[5]</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="c1">// 遍历一维数组</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">        </span><span class="p">{</span>
+
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">));</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 换行</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 移动二维数组的指针，继续遍历下一个一维数组</span>
+
+<span class="w">        </span><span class="n">p</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>int(*p)[5]</code> 是<strong>数组指针</strong>（指向含 5 个 int 的一维数组），与 int* arr[3] 恰是孪生易混点；<code>*(*p + j)</code> 取元素，<code>p++</code> 跳一整行。</p>
+</blockquote>
+<h3 id="49c-二级指针遍历">49.c　二级指针遍历</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// 1.定义三个一维数组</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr1</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr2</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">11</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">33</span><span class="p">,</span><span class="mi">44</span><span class="p">,</span><span class="mi">55</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr3</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">111</span><span class="p">,</span><span class="mi">222</span><span class="p">,</span><span class="mi">333</span><span class="p">,</span><span class="mi">444</span><span class="p">,</span><span class="mi">555</span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 2.把三个一维数组的内存地址，存入指针数组</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">arr1</span><span class="p">,</span><span class="w"> </span><span class="n">arr2</span><span class="p">,</span><span class="w"> </span><span class="n">arr3</span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="c1">// 3.获取二级指针</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="o">**</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="c1">// 4.遍历数组</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">        </span><span class="p">{</span>
+
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">));</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 换行</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 移动指针</span>
+
+<span class="w">        </span><span class="n">p</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>int** p = arr</code>（指针数组名退化为首元素地址，即 int**）；<code>*(*p+j)</code> 与 <code>p++</code> 配合遍历，逻辑与 48 题一致。</p>
+</blockquote>

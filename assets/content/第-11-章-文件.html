@@ -1,0 +1,291 @@
+<h2 id="第-11-章-文件">第 11 章　文件</h2>
+<h3 id="111-文件的基本概念">11.1 文件的基本概念</h3>
+<p><strong>文件</strong>是操作系统管理的一组相关数据。<strong>文本文件</strong>（ASCII，可读）与<strong>二进制文件</strong>（按内容存储）。</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>打开方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文本文件</td>
+<td><code>"r"</code> / <code>"w"</code> / <code>"a"</code> / <code>"r+"</code> / <code>"w+"</code> / <code>"a+"</code></td>
+<td>按字符读写，<code>\n</code> 可能被转换</td>
+</tr>
+<tr>
+<td>二进制文件</td>
+<td><code>"rb"</code> / <code>"wb"</code> / <code>"ab"</code> / <code>"rb+"</code> / <code>"wb+"</code> / <code>"ab+"</code></td>
+<td>按字节读写，不转换</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>模式说明</strong>：</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>含义</th>
+<th>文件不存在</th>
+<th>文件存在</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>r</code></td>
+<td>只读</td>
+<td><strong>打开失败</strong></td>
+<td>从头读</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td>只写</td>
+<td><strong>创建（清空）</strong></td>
+<td><strong>清空原内容</strong></td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>追加</td>
+<td>创建</td>
+<td>末尾追加</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>读写</td>
+<td>视基础模式</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>二进制</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>高频陷阱</strong>：<code>"w"</code> 模式会<strong>清空</strong>已有文件！想保留原内容追加要用 <code>"a"</code>。</p>
+</blockquote>
+<h3 id="112-文件的打开与关闭" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>11.2 文件的打开与关闭</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">"c:</span><span class="se">\\</span><span class="s">project</span><span class="se">\\</span><span class="s">example</span><span class="se">\\</span><span class="s">c1.txt"</span><span class="p">,</span><span class="w"> </span><span class="s">"rt"</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Cannot open file, strike any key exit!"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">getch</span><span class="p">();</span>
+<span class="w">    </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">          </span><span class="cm">/* 标准错误处理三步：报错 → 提示 → 退出 */</span>
+<span class="p">}</span>
+
+<span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fgetc</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">EOF</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">putchar</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fgetc</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+
+<span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w">            </span><span class="cm">/* ⚠️ 必须关闭！否则数据可能未写入磁盘 */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>标准错误处理模板</strong>（贯穿所有文件题）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">"file.txt"</span><span class="p">,</span><span class="w"> </span><span class="s">"rt"</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Cannot open file!"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">getch</span><span class="p">();</span>
+<span class="w">    </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><span class="badge b-tip">辨析延伸</span> <code>fopen</code> 的返回值是 <code>FILE *</code>（文件指针），类型定义在 <code>&lt;stdio.h&gt;</code>。
+<code>fopen</code> 的第一个参数是<strong>字符串</strong>，所以路径要写成 <code>"c:\\path\\file.txt"</code>（<code>\</code> 要转义为 <code>\\</code>）。</p>
+</blockquote>
+<h3 id="113-文件读写函数速查" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>11.3 文件读写函数速查</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>字符</strong></td>
+<td><code>fgetc(fp)</code></td>
+<td>读一个字符，返回 <code>int</code>（<strong>用 <code>int</code> 接，因为要能返回 EOF</strong>）</td>
+</tr>
+<tr>
+<td></td>
+<td><code>fputc(c, fp)</code></td>
+<td>写一个字符</td>
+</tr>
+<tr>
+<td></td>
+<td><code>getc(fp)</code> / <code>putc(c, fp)</code></td>
+<td>宏形式，同上</td>
+</tr>
+<tr>
+<td><strong>字符串</strong></td>
+<td><code>fgets(str, n, fp)</code></td>
+<td>读最多 n-1 个字符，<strong>安全</strong>，会加 <code>'\0'</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>fputs(str, fp)</code></td>
+<td>写字符串（<strong>不加分隔符</strong>）</td>
+</tr>
+<tr>
+<td><strong>块读写</strong></td>
+<td><code>fread(ptr, size, n, fp)</code></td>
+<td>读 n 个 size 字节的对象</td>
+</tr>
+<tr>
+<td></td>
+<td><code>fwrite(ptr, size, n, fp)</code></td>
+<td>写 n 个 size 字节的对象</td>
+</tr>
+<tr>
+<td><strong>定位</strong></td>
+<td><code>fseek(fp, offset, fromwhere)</code></td>
+<td>移动文件指针</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ftell(fp)</code></td>
+<td>返回当前位置（字节）</td>
+</tr>
+<tr>
+<td></td>
+<td><code>rewind(fp)</code></td>
+<td>移到文件开头</td>
+</tr>
+<tr>
+<td><strong>状态</strong></td>
+<td><code>feof(fp)</code></td>
+<td>是否已到文件末尾（<strong>非 0 表示已到</strong>）</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ferror(fp)</code></td>
+<td>是否有读写错误</td>
+</tr>
+<tr>
+<td></td>
+<td><code>clearerr(fp)</code></td>
+<td>清除错误和 EOF 标志</td>
+</tr>
+<tr>
+<td><strong>格式化</strong></td>
+<td><code>fscanf(fp, fmt, ...)</code></td>
+<td>从文件格式化读</td>
+</tr>
+<tr>
+<td></td>
+<td><code>fprintf(fp, fmt, ...)</code></td>
+<td>向文件格式化写</td>
+</tr>
+<tr>
+<td><strong>关闭</strong></td>
+<td><code>fclose(fp)</code></td>
+<td>关闭文件</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong><code>fseek</code> 的第三个参数</strong>：
+| 值 | 含义 |
+|---|---|
+| <code>SEEK_SET</code> (0) | 从文件<strong>开头</strong> |
+| <code>SEEK_CUR</code> (1) | 从<strong>当前位置</strong> |
+| <code>SEEK_END</code> (2) | 从文件<strong>末尾</strong> |</p>
+</blockquote>
+<h3 id="114-高频陷阱feof-的误用" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>11.4  高频陷阱：<code>feof</code> 的误用</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* ❌ 错误写法 —— 教材 lt11-11.c 中的 while (!feof(fin)) 就是这个坑 */</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">feof</span><span class="p">(</span><span class="n">fin</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fgets</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="n">fin</span><span class="p">);</span><span class="w">        </span><span class="cm">/* 最后一次会失败，str 保持旧内容 */</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* ✔ 正确写法 */</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="n">fin</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>原理</strong>：<code>feof()</code> 返回的是"<strong>上一次读取操作是否触及了文件末尾</strong>"的标志，
+而<strong>不是</strong>"当前是否在末尾"。所以最后一次循环开始时 <code>feof</code> 还是 0，
+但 <code>fgets</code> 会失败并返回 <code>NULL</code>，此时 <code>str</code> 里还是上一次的旧内容 → <strong>多打印一行重复内容</strong>。</p>
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt11-11.c</code> 的正确处理是 <code>if (!fgets(str,80,fin)) break;</code> —— 思路完全一致。</p>
+</blockquote>
+<h3 id="115-文件随机读写结构体二进制" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>11.5 文件随机读写（结构体二进制）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">addr</span><span class="p">[</span><span class="mi">15</span><span class="p">];</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">stu</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">qq</span><span class="p">;</span>
+<span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+
+<span class="n">qq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">stu</span><span class="p">;</span>
+<span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">"stu_list"</span><span class="p">,</span><span class="w"> </span><span class="s">"rb"</span><span class="p">);</span>
+<span class="n">rewind</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span><span class="w">                                  </span><span class="cm">/* 移到开头（rb 模式下打开即在开头） */</span>
+<span class="n">fseek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">    </span><span class="cm">/* 定位到第 i 个记录 */</span>
+<span class="n">fread</span><span class="p">(</span><span class="n">qq</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">fp</span><span class="p">);</span><span class="w">     </span><span class="cm">/* 读 1 个结构体 */</span>
+<span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>二进制文件存结构体</strong>的优点：一条记录定长，可用 <code>fseek</code> 直接定位，<strong>无需逐条扫描</strong>。
+教材 <code>lt11-08.c</code>（写）和 <code>lt11-09.c</code>（读）是一对完整示例。</p>
+</blockquote>
+<h3 id="116-命令行参数" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>11.6 命令行参数</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"have not enter file name!"</span><span class="p">);</span><span class="w"> </span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">fp1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="s">"rt"</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">fp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stdout</span><span class="p">;</span><span class="w">                  </span><span class="cm">/* 标准输出 */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">fp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="s">"wt+"</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>argc</code></td>
+<td>命令行参数的<strong>个数</strong>（含程序名本身）</td>
+</tr>
+<tr>
+<td><code>argv</code></td>
+<td>参数<strong>数组</strong>，<code>argv[0]</code> 是程序名，<code>argv[1]</code> 起是用户输入的参数</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt11-04.c</code> 是标准范例：程序名 + 输入文件 + 输出文件。</p>
+</blockquote>
+<h3 id="117-标准流">11.7 标准流</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>流</th>
+<th>指向</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stdin</code></td>
+<td>标准输入（键盘）</td>
+<td><code>scanf</code> 内部用的就是它</td>
+</tr>
+<tr>
+<td><code>stdout</code></td>
+<td>标准输出（屏幕）</td>
+<td><code>printf</code> 内部用的就是它</td>
+</tr>
+<tr>
+<td><code>stderr</code></td>
+<td>标准错误</td>
+<td>报错信息通常输出到这</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 用 <code>fprintf(stderr, ...)</code> 输出错误信息，不会被重定向到文件。</p>
+</blockquote>
+<hr />

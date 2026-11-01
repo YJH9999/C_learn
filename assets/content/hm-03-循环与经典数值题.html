@@ -1,0 +1,637 @@
+<h2 id="hm-03-循环与经典数值题">HM 03　循环与经典数值题</h2>
+<h3 id="15c-for-循环基础与公倍数统计">15.c　for 循环基础与公倍数统计</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="c1">// for(int i = 1 ; i &lt;= 10 ; i++){</span>
+
+<span class="w">    </span><span class="c1">//     printf("666\n");</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+
+
+<span class="w">    </span><span class="c1">// for (int i = 1 ; i &lt;=5 ; i++){</span>
+
+<span class="w">    </span><span class="c1">//     printf("%d\n",i);</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+<span class="w">    </span><span class="c1">// for (int i = 5 ; i &gt;=1 ; i--){</span>
+
+<span class="w">    </span><span class="c1">//     printf("%d\n",i);</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+
+
+
+
+<span class="w">    </span><span class="c1">// int a = 0;</span>
+
+
+
+<span class="w">    </span><span class="c1">// for (int i = 1 ; i &lt;=5 ; i++){</span>
+
+<span class="w">    </span><span class="c1">//     a = a+i;</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+
+
+<span class="w">    </span><span class="c1">// printf("%d\n",a);</span>
+
+
+
+<span class="w">    </span><span class="c1">// int sum = 0;</span>
+
+
+
+<span class="w">    </span><span class="c1">// for(int i = 1 ; i &lt;= 100 ; i++){</span>
+
+<span class="w">    </span><span class="c1">//     if(i % 2 == 0){</span>
+
+<span class="w">    </span><span class="c1">//         sum = sum + i;</span>
+
+<span class="w">    </span><span class="c1">//     }</span>
+
+<span class="w">    </span><span class="c1">//     else{</span>
+
+<span class="w">    </span><span class="c1">//         sum += 0;</span>
+
+<span class="w">    </span><span class="c1">//     }</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+<span class="w">    </span><span class="c1">// printf("%d\n",sum);</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Please input the range of the number(little-&gt;large):"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">//或者不用从小到大输入</span>
+
+<span class="w">    </span><span class="c1">//int min = a &lt; b ? a : b;</span>
+
+<span class="w">    </span><span class="c1">//int max = a &gt; b ? a : b;</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="n">a</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">b</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">6</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">i</span><span class="o">%</span><span class="mi">8</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">n</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"total number:%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+
+
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 注释里保留了 4 种 for 练手写法（固定次数 / 正序 / 倒序 / 累加求和）；主体统计区间内同时被 6 和 8 整除的数。</p>
+</blockquote>
+<h3 id="16c-判断一个数是否为-2-的幂">16.c　判断一个数是否为 2 的幂</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="c1">//2的幂</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Please input a number:"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"yes!"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="p">{</span>
+
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+
+<span class="w">        </span><span class="p">{</span>
+
+<span class="w">            </span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"yes"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">else</span><span class="p">{</span>
+
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"no"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 不断除 2 降幂，最后剩下 1 就是 2 的幂。进阶写法：<code>n&gt;0 &amp;&amp; (n &amp; (n-1))==0</code>。</p>
+</blockquote>
+<h3 id="17c-折纸过珠穆朗玛峰">17.c　折纸过珠穆朗玛峰</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//珠穆朗玛峰-折纸次数</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">a</span><span class="o">&lt;</span><span class="mi">88444300</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+
+
+
+
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 纸张厚度 1（单位可约去），每折一次 ×2，while 模拟到 8844430 为止——指数增长的威力。</p>
+</blockquote>
+<h3 id="18c-整数反转-123-321">18!!!.c　⭐ 整数反转 123 → 321</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//123-&gt;321</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Please input a number among all the range:"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="c1">// int b = a/100;//百位</span>
+
+<span class="w">    </span><span class="c1">// int c = a/10%10;//十位</span>
+
+<span class="w">    </span><span class="c1">// int d = a%10;//个位</span>
+
+
+
+<span class="w">    </span><span class="c1">// printf("%d%d%d\n",d,c,b);</span>
+
+
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="o">%</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="o">/</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="n">b</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <strong>通用套路</strong>（不限三位数）：<code>b = a%10</code> 取末位 → <code>c = c*10 + b</code> 拼到结果 → <code>a /= 10</code> 去掉末位，循环直到 a 为 0。注释里还保留了仅限三位数的拆位解法。</p>
+</blockquote>
+<h3 id="19c-不用-sqrt-的整数开方">19.c　不用 sqrt 的整数开方</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="c1">//开方，去掉小数部分</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入一个非负整数："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">&lt;=</span><span class="n">a</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">b</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">b</span><span class="mi">-1</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> <code>b*b &lt;= a</code> 一直试探，退出时 b-1 就是整数部分；输入很大时 b*b 可能溢出 int，可改用 long long。</p>
+</blockquote>
+<h3 id="20c-回文数判断">20.c　回文数判断</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入一个数字："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="o">%</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="o">/</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="n">b</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">c</span><span class="o">==</span><span class="n">x</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"回文数"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"不是回文数"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 先把数反转（同 18 题），再与原数比较。注意要<strong>先保存原值</strong>，循环里 a 被改掉了。</p>
+</blockquote>
+<h3 id="21c-不用乘除求商和余数">21.c　不用乘除求商和余数</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//不使用乘除和取余</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="c1">// //法I：加法</span>
+
+<span class="w">    </span><span class="c1">// int a = 0;</span>
+
+<span class="w">    </span><span class="c1">// int b = 0;</span>
+
+<span class="w">    </span><span class="c1">// printf("请输入一个被除数和一个除数：");</span>
+
+<span class="w">    </span><span class="c1">// scanf("%d %d",&amp;a,&amp;b);</span>
+
+<span class="w">    </span><span class="c1">// int c = b;</span>
+
+<span class="w">    </span><span class="c1">// int i = 0;</span>
+
+<span class="w">    </span><span class="c1">// while(b&lt;=a){</span>
+
+<span class="w">    </span><span class="c1">//     b+=c;</span>
+
+<span class="w">    </span><span class="c1">//     i++;</span>
+
+<span class="w">    </span><span class="c1">// }</span>
+
+<span class="w">    </span><span class="c1">// printf("商：%d\n",i);</span>
+
+<span class="w">    </span><span class="c1">// printf("余：%d\n",c-b+a);</span>
+
+
+
+<span class="w">    </span><span class="c1">//法II：减法</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入一个被除数和一个除数："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">b</span><span class="o">&lt;=</span><span class="n">a</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">a</span><span class="o">-=</span><span class="n">b</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"商：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"余：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 减法模拟：<code>while(b&lt;=a){ a-=b; i++; }</code>，循环结束时 i 是商、a 是余数。注释里还有加法版的思路。</p>
+</blockquote>
+<h3 id="24c-统计区间内质数个数">24.c　统计区间内质数个数</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//质数个数</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="c1">//输入最大值</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入一个正整数："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">num</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="c1">//定义质数个数</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">num</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="c1">//进入1-最大值范围的循环</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="c1">//定义内循环中对被除数取余为0的除数的个数</span>
+
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">i</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span><span class="c1">//进入1-i范围的循环</span>
+
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="n">j</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+
+<span class="w">                </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">                </span><span class="k">break</span><span class="p">;</span><span class="c1">//只要count!=0，就跳出该循环</span>
+
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">count</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span><span class="c1">//一次内循环中若除去1和i本身，无其他的公约数</span>
+
+<span class="w">            </span><span class="n">a</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"在1-%d的范围内共有%d个质数"</span><span class="p">,</span><span class="n">num</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 双重循环：外层枚举 2~n，内层用 2~i-1 试除，遇到因子就 break（count!=0 即合数）。这是试除法质数判定的入门模板。</p>
+</blockquote>
+<h3 id="25c-幂之和-1¹-2²-10¹⁰">25.c　幂之和 1¹ + 2² + … + 10¹⁰</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//1**1+2**2+...+10**10</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">10</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;=</span><span class="n">i</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">b</span><span class="o">*=</span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">a</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%lld"</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+
+
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 10¹⁰ 已超出 int（约 21 亿）甚至 long 的范围，必须用 <strong>long long</strong> 配 <code>%lld</code> 输出——不换类型就是溢出错题。</p>
+</blockquote>
+<h3 id="26c-各位数字之和为-x-的数">26.c　各位数字之和为 x 的数</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+
+
+<span class="c1">//在一定范围内，各位数字之和为x</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入一个正整数（最好不要太大）："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">x</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入范围的最大值："</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">z</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">z</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// for(int j=1;;j++){</span>
+
+<span class="w">        </span><span class="c1">//     if(y/10!=0){</span>
+
+<span class="w">        </span><span class="c1">//         a=a+y%10;</span>
+
+<span class="w">        </span><span class="c1">//         y/=10;</span>
+
+<span class="w">        </span><span class="c1">//     }</span>
+
+<span class="w">        </span><span class="c1">//     else{</span>
+
+<span class="w">        </span><span class="c1">//         a+=y;</span>
+
+<span class="w">        </span><span class="c1">//         break;</span>
+
+<span class="w">        </span><span class="c1">//     }</span>
+
+
+
+<span class="w">        </span><span class="c1">// }</span>
+
+
+
+<span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">y</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="o">+</span><span class="n">y</span><span class="o">%</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">y</span><span class="o">/=</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="o">==</span><span class="n">x</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 逐位累加：<code>while(y!=0){ a += y%10; y/=10; }</code>——「数位分离」的第二种常用形态（求和而非拼数）。</p>
+</blockquote>

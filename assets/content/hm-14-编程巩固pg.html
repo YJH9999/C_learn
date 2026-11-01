@@ -1,0 +1,505 @@
+<h2 id="hm-14-编程巩固pg">HM 14　编程巩固（PG/）</h2>
+<h3 id="1c-1c">1.c　1.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"和为：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="10c-10c">10.c　10.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="111c-111c">11.1.c　11.1.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">test</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">a</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">test</span><span class="w"> </span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="1121c-1121c">11.2.1.c　11.2.1.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="n">GGG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2026</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="1122c-1122c">11.2.2.c　11.2.2.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">GGG</span><span class="p">;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">GGG</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="1131c-1131c">11.3.1.c　11.3.1.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">Add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">z</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="1132c-1132c">11.3.2.c　11.3.2.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="nf">Add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">){</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="12c-define-num-100">12.c　#define NUM 100</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">// #define NUM 100</span>
+
+<span class="c1">// //定义标识符常量</span>
+
+
+
+<span class="c1">// int main(){</span>
+
+<span class="c1">//     printf("%d\n",NUM);</span>
+
+<span class="c1">//     return 0;</span>
+
+<span class="c1">// }</span>
+
+
+
+<span class="cp">#define ADD(x,y) ((x)+(y))</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ADD</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="2c-2c">2.c　2.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#define X "AAA"</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"和为：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">X</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="3c-3c">3.c　3.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="n">Sex</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="n">MALE</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">FEMALE</span><span class="p">,</span>
+
+<span class="w">    </span><span class="n">SECRET</span>
+
+<span class="p">};</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="n">Sex</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FEMALE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="4c-4c">4.c　4.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="sc">'a'</span><span class="p">,</span><span class="w"> </span><span class="sc">'b'</span><span class="p">,</span><span class="w"> </span><span class="sc">'c'</span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">strlen</span><span class="p">(</span><span class="n">arr</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="50c-50c">5.0.c　5.0.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"ABCDE</span><span class="se">\r</span><span class="s">123</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="51c-51c">5.1.c　5.1.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="mi">100</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">进度：%d%%"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="52c-printfcn123">5.2.c　printf("%c\n",'\123');</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="c1">//printf("%c\n",'\123');</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%c</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="sc">'\x60'</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="6c-6c">6.c　6.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Chose 1 or 0</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">input</span><span class="p">);</span><span class="c1">//不能加\n，scanf()函数会把\n当作一个输入字符，导致程序无法正常运行</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">input</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"666</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"999</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+
+
+<span class="p">}</span>
+
+
+
+
+
+<span class="cm">/*int main(){</span>
+
+<span class="cm">    int input = 0;</span>
+
+<span class="cm">    printf("Chose 1 or 0\n");</span>
+
+<span class="cm">    scanf("%d\n",&amp;input);</span>
+
+<span class="cm">    if(input == 1){</span>
+
+<span class="cm">        printf("666\n");</span>
+
+<span class="cm">    }</span>
+
+<span class="cm">    else{</span>
+
+<span class="cm">        printf("999\n");</span>
+
+<span class="cm">    }</span>
+
+<span class="cm">    return 0;</span>
+
+
+
+<span class="cm">}*/</span>
+</code></pre></div>
+<h3 id="7c-7c">7.c　7.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"自动加功德</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"功德：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">X</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">X</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="o">==</span><span class="mi">100</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"功德圆满！</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"继续努力！</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="8c-直接写return-xy括号有无无碍">8.c　直接写return （x+y）（括号有无无碍)</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">ADD</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">z</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="c1">//直接写return （x+y）（括号有无无碍)</span>
+
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ADD</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">sum</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="9c-9c">9.c　9.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">999</span><span class="p">,</span><span class="mi">888</span><span class="p">,</span><span class="mi">777</span><span class="p">,</span><span class="mi">666</span><span class="p">,</span><span class="mi">555</span><span class="p">,</span><span class="mi">444</span><span class="p">,</span><span class="mi">333</span><span class="p">,</span><span class="mi">222</span><span class="p">,</span><span class="mi">111</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"请输入数组下标(1-9): "</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"数组第%d个元素为:%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="p">[</span><span class="n">b</span><span class="mi">-1</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">9</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">        </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="test1c-写一个函数求两个整数的较大值">test1.c　写一个函数求两个整数的较大值</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="c1">// 写一个函数求两个整数的较大值</span>
+
+<span class="c1">// 如：</span>
+
+<span class="c1">// 输入：10 20</span>
+
+<span class="c1">// 输出较大值：20</span>
+
+
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">MAX</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">){</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="n">y</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="p">{</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MAX</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="test2c-test2c">test2.c　test2.c</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code>
+</code></pre></div>

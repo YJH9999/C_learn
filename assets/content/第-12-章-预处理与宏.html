@@ -1,0 +1,255 @@
+<h2 id="第-12-章-预处理与宏">第 12 章　预处理与宏</h2>
+<h3 id="121-预处理命令概述">12.1 预处理命令概述</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#include</code></td>
+<td><strong>文件包含</strong>：把指定头文件的内容插入到当前位置</td>
+</tr>
+<tr>
+<td><code>#define</code></td>
+<td><strong>宏定义</strong>：文本替换</td>
+</tr>
+<tr>
+<td><code>#undef</code></td>
+<td>取消宏定义</td>
+</tr>
+<tr>
+<td><code>#if</code> / <code>#ifdef</code> / <code>#ifndef</code> / <code>#elif</code> / <code>#else</code> / <code>#endif</code></td>
+<td><strong>条件编译</strong></td>
+</tr>
+<tr>
+<td><code>#error</code></td>
+<td>编译时出错</td>
+</tr>
+<tr>
+<td><code>#pragma</code></td>
+<td>编译器特定指令</td>
+</tr>
+<tr>
+<td><code>#line</code></td>
+<td>改变行号/文件名</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>关键理解</strong>：预处理发生在<strong>编译之前</strong>，是<strong>纯文本层面的操作</strong>，编译器还看不到这些指令。</p>
+</blockquote>
+<h3 id="122-define-宏-vs-const-只读变量重点对比" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>12.2  <code>#define</code> 宏 vs <code>const</code> 只读变量（重点对比）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define aa (23*34+5)      </span><span class="cm">/* 宏定义：预处理阶段文本替换 */</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">23</span><span class="o">*</span><span class="mi">34</span><span class="o">+</span><span class="mi">5</span><span class="p">;</span><span class="w">  </span><span class="cm">/* const 修饰的只读变量 */</span>
+</code></pre></div>
+<p>两者求值都是 <code>782 + 5 = 787</code>，但<strong>机制完全不同</strong>：</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>特性</th>
+<th><code>#define</code> 宏</th>
+<th><code>const</code> 只读变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>处理阶段</td>
+<td><strong>预处理</strong>（编译之前）</td>
+<td><strong>编译</strong>阶段</td>
+</tr>
+<tr>
+<td>本质</td>
+<td>纯<strong>文本替换</strong></td>
+<td>真正的<strong>变量</strong></td>
+</tr>
+<tr>
+<td>类型检查</td>
+<td>❌ 无</td>
+<td>✅ 有严格类型检查</td>
+</tr>
+<tr>
+<td>内存占用</td>
+<td>❌ 不占内存</td>
+<td>✅ 占内存（数据段）</td>
+</tr>
+<tr>
+<td>内存地址</td>
+<td>❌ 不能 <code>&amp;aa</code></td>
+<td>✅ 可以 <code>&amp;bb</code></td>
+</tr>
+<tr>
+<td>作用域</td>
+<td>从定义处到文件末尾（可 <code>undef</code>）</td>
+<td>遵循变量作用域规则（块级/函数级）</td>
+</tr>
+<tr>
+<td>调试支持</td>
+<td>❌ 调试器看不到（已被替换）</td>
+<td>✅ 可被调试器识别</td>
+</tr>
+<tr>
+<td>能否作数组长度</td>
+<td>C89 允许，C++ 允许</td>
+<td>C99+ 允许（C89 不允许）</td>
+</tr>
+<tr>
+<td>复杂类型</td>
+<td>❌ 多行需加 <code>\</code>，易错</td>
+<td>✅ 支持结构体等复杂类型</td>
+</tr>
+<tr>
+<td>可修改</td>
+<td>—</td>
+<td>❌ 修改编译报错</td>
+</tr>
+</tbody>
+</table></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">787</span><span class="p">;</span>
+<span class="n">bb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">    </span><span class="cm">/* ❌ 编译报错：只读 */</span>
+</code></pre></div>
+<h4 id="宏的最大陷阱优先级" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>宏的最大陷阱：优先级</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define A 1+2</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="o">*</span><span class="mi">3</span><span class="p">;</span>
+<span class="cm">/* 预处理后 → x = 1+2*3 = 7  （不是 9！） */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><strong>宏表达式外面必须加括号</strong>：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define A (1+2)</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="o">*</span><span class="mi">3</span><span class="p">;</span><span class="w">    </span><span class="cm">/* → (1+2)*3 = 9  ✔ */</span>
+</code></pre></div></p>
+<p><span class="badge b-hot">高频考点</span> <strong>函数式宏的参数也要加括号</strong>（教材 <code>lt12-05.c</code> ~ <code>lt12-08.c</code> 完整对比）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define SQ(y) (y)*(y)         </span><span class="cm">/* 参数没括号 */</span>
+<span class="cp">#define SQ(y) ((y)*(y))       </span><span class="cm">/* ✔ 正确形式 */</span>
+</code></pre></div>
+测试：<code>sq = SQ(a+1);</code>
+- <code>(y)*(y)</code> → <code>(a+1)*(a+1)</code> = 正确
+- <code>y*y</code> → <code>a+1*a+1</code> = <code>a + (1*a) + 1</code> = <strong>错</strong>！
+测试：<code>sq = 160/SQ(a+1);</code>
+- <code>(y)*(y)</code> → <code>160/(a+1)*(a+1)</code> = <strong>错</strong>（先算除再算乘）
+- <code>((y)*(y))</code> → <code>160/((a+1)*(a+1))</code> ✔</p>
+<p><span class="badge b-hot">高频考点</span> <strong>多参数宏的致命陷阱</strong>（教材 <code>lt12-11.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define SSSV(s1,s2,s3,v) s1=l*w;s2=l*h;s3=w*h;v=w*l*h;</span>
+</code></pre></div>
+这里 <code>s1=l*w;</code> 中的 <code>l</code>、<code>w</code>、<code>h</code> 是<strong>宏体内的自由变量</strong>，不是参数！
+必须写成：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define SSSV(l,w,h,s1,s2,s3,v) s1=l*w; s2=l*h; s3=w*h; v=w*l*h;</span>
+</code></pre></div></p>
+</blockquote>
+<h4 id="宏-vs-函数的选型">宏 vs 函数的选型</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>需要类型安全、需要调试、局部常量</td>
+<td><code>const</code></td>
+</tr>
+<tr>
+<td>条件编译 <code>#ifdef</code> / <code>#ifndef</code></td>
+<td><code>#define</code>（唯一选择）</td>
+</tr>
+<tr>
+<td>简单文本替换、头文件保护</td>
+<td><code>#define</code></td>
+</tr>
+<tr>
+<td>函数式宏（带参数）</td>
+<td><code>#define</code>（但要警惕参数重复计算）</td>
+</tr>
+<tr>
+<td>需要 <code>switch</code> 的 case 值</td>
+<td><code>#define</code>（const 变量在 C89 中不能作 case 值）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="123-头文件保护宏" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>12.3  头文件保护宏</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#ifndef __STUDENT_H</span>
+<span class="cp">#define __STUDENT_H</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+
+<span class="cp">#endif</span>
+</code></pre></div>
+<blockquote class="callout c-plain">
+<p>作用：<strong>防止同一个头文件被重复包含</strong>（重复包含会导致重复定义错误）。</p>
+</blockquote>
+<h3 id="124-条件编译" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>12.4  条件编译</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define NUM ok</span>
+
+<span class="cp">#ifdef NUM                 </span><span class="cm">/* 如果定义了 NUM */</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Number=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">);</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Name=%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+<span class="cp">#endif</span>
+</code></pre></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define R 1</span>
+<span class="cp">#if R                      </span><span class="cm">/* 相当于 #if 1 */</span>
+<span class="w">    </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="cp">#endif</span>
+</code></pre></div>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#if 表达式</code></td>
+<td>表达式为<strong>真</strong>（非 0）时编译</td>
+</tr>
+<tr>
+<td><code>#ifdef 标识符</code></td>
+<td>标识符<strong>已定义</strong>时编译</td>
+</tr>
+<tr>
+<td><code>#ifndef 标识符</code></td>
+<td>标识符<strong>未定义</strong>时编译</td>
+</tr>
+<tr>
+<td><code>#elif 表达式</code></td>
+<td>上一分支未成立时的次选</td>
+</tr>
+<tr>
+<td><code>#else</code></td>
+<td>最后的兜底</td>
+</tr>
+<tr>
+<td><code>#endif</code></td>
+<td>结束条件编译块</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt12-12.c</code> / <code>lt12-13.c</code> 是条件编译的标准范例。</p>
+</blockquote>
+<h3 id="125-宏定义的其他技巧">12.5 宏定义的其他技巧</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 宏 + 运算符 */</span>
+<span class="cp">#define PI 3.14159</span>
+<span class="cp">#define AREA(r) (PI * (r) * (r))</span>
+
+<span class="cm">/* 定义字符串宏 */</span>
+<span class="cp">#define P printf</span>
+<span class="cp">#define D "%d\n"</span>
+<span class="cp">#define F "%f\n"</span>
+<span class="n">P</span><span class="p">(</span><span class="n">D</span><span class="w"> </span><span class="n">F</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w">      </span><span class="cm">/* 展开为 printf("%d\n""%f\n", a, b); */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p>⚠️ <strong>相邻字符串常量会自动拼接</strong>：<code>"%d\n""%f\n"</code> → <code>"%d\n%f\n"</code>。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>宏定义的经典错误</strong>（教材 <code>lt12-01.c</code> 对照）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define M (y*y+3*y)     </span><span class="cm">/* 正确：整体加括号 */</span>
+<span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">M</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="n">M</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="o">*</span><span class="n">M</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 展开成 3*(y*y+3*y) + 4*(...) + 5*(...)  ✔ */</span>
+</code></pre></div>
+若写成 <code>#define M y*y+3*y</code>，则 <code>3*M</code> → <code>3*y*y+3*y</code> = <strong>完全错误</strong>。</p>
+</blockquote>
+<hr />

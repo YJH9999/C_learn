@@ -1,0 +1,165 @@
+<h2 id="第-10-章-结构体共用体与枚举">第 10 章　结构体、共用体与枚举</h2>
+<h3 id="101-结构体的定义" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>10.1 结构体的定义</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">struct</span><span class="w"> </span><span class="nc">student</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w">   </span><span class="n">num</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w">  </span><span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">char</span><span class="w">  </span><span class="n">sex</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">score</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>注意分号</strong>：结构体定义<strong>末尾必须有分号 <code>;</code></strong>！漏掉会引发一连串莫名其妙的编译错误。</p>
+</blockquote>
+<h3 id="102-结构体变量的定义与初始化">10.2 结构体变量的定义与初始化</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* ① 先定义类型再定义变量 */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="n">stu1</span><span class="p">;</span>
+
+<span class="cm">/* ② 定义类型的同时定义变量 */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">stu1</span><span class="p">,</span><span class="w"> </span><span class="n">stu2</span><span class="p">;</span>
+
+<span class="cm">/* ③ 定义类型的同时定义变量并初始化（按成员顺序，逗号分隔） */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="n">stu1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">102</span><span class="p">,</span><span class="w"> </span><span class="s">"Zhang ping"</span><span class="p">,</span><span class="w"> </span><span class="sc">'M'</span><span class="p">,</span><span class="w"> </span><span class="mf">78.5</span><span class="p">};</span>
+
+<span class="cm">/* ④ 结构体数组 */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="n">stu</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">{</span><span class="mi">101</span><span class="p">,</span><span class="w"> </span><span class="s">"Li ping"</span><span class="p">,</span><span class="w">   </span><span class="sc">'M'</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="mi">102</span><span class="p">,</span><span class="w"> </span><span class="s">"Zhang ping"</span><span class="p">,</span><span class="sc">'M'</span><span class="p">,</span><span class="w"> </span><span class="mf">62.5</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="mi">103</span><span class="p">,</span><span class="w"> </span><span class="s">"He fang"</span><span class="p">,</span><span class="w">   </span><span class="sc">'F'</span><span class="p">,</span><span class="w"> </span><span class="mf">92.5</span><span class="p">}</span>
+<span class="p">};</span>
+<span class="cm">/* 元素个数可由编译器推断：sizeof(stu)/sizeof(struct student) */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>初始化规则</strong>：
+- 未指定的成员<strong>自动置 0</strong>（<code>'\0'</code> / <code>0.0</code>）；
+- 字符数组成员可以用<strong>字符串直接初始化</strong>：<code>char name[20]</code> → <code>"Zhang ping"</code>；
+- 字符指针成员也可用字符串：<code>char *name;</code> → <code>"Zhang ping"</code>（⚠️ 指向字符串常量）。</p>
+</blockquote>
+<h3 id="103-结构体成员访问" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>10.3 结构体成员访问</h3>
+<p><strong>三种等价写法</strong>（教材 <code>lt10-04.c</code> / <code>lt10-06.c</code> 完整演示）：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">;</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">sex</span><span class="p">;</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">score</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">stu1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{...},</span><span class="w"> </span><span class="o">*</span><span class="n">pstu</span><span class="p">;</span>
+<span class="n">pstu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">stu1</span><span class="p">;</span>
+
+<span class="cm">/* 写法一：结构体变量 + 点号 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">stu1</span><span class="p">.</span><span class="n">num</span><span class="p">);</span>
+
+<span class="cm">/* 写法二：结构体指针 + 箭头等价的 (*).  */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">pstu</span><span class="p">).</span><span class="n">num</span><span class="p">);</span>
+
+<span class="cm">/* 写法三：结构体指针 + 箭头运算符 -&gt;  ★推荐 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">pstu</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">);</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-hot">高频考点</span> <strong>记忆口诀</strong>：
+- <strong><code>.</code> 用于结构体变量</strong>（或结构体数组元素 <code>stu[i].name</code>）
+- <strong><code>-&gt;</code> 用于结构体指针</strong>
+- <code>pstu-&gt;num</code> 完全等价于 <code>(*pstu).num</code></p>
+<p><span class="badge b-error">易错点</span> <strong>易错点 39</strong>：<code>pstu.num</code> 是<strong>语法错误</strong>（指针不能用点号）；<code>stu1-&gt;num</code> 也是<strong>语法错误</strong>（变量不能用箭头）。</p>
+<p><span class="badge b-tip">辨析延伸</span> <strong>结构体数组遍历</strong>（教材 <code>lt10-07.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stu</span><span class="p">;</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">stu</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">ps</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\t</span><span class="s">%s</span><span class="se">\t</span><span class="s">%c</span><span class="se">\t</span><span class="s">%f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="o">-&gt;</span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="o">-&gt;</span><span class="n">score</span><span class="p">);</span>
+<span class="cm">/* "5" 可改为 sizeof(stu)/sizeof(struct student) */</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="104-结构体赋值与比较" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>10.4 结构体赋值与比较</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="n">stu1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{...},</span><span class="w"> </span><span class="n">stu2</span><span class="p">;</span>
+<span class="n">stu2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stu1</span><span class="p">;</span><span class="w">        </span><span class="cm">/* ✔ 整体赋值：逐成员拷贝（数组也完整拷贝） */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 40</strong>：<strong>结构体不能用 <code>==</code> 比较</strong>！
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stu1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">stu2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c1">// ❌ 语法错误</span>
+</code></pre></div>
+必须逐成员比较，或用 <code>memcmp</code>。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>指针比较是可以的</strong>：<code>if (p1 == p2)</code> 比较地址。</p>
+</blockquote>
+<h3 id="105-共用体union" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>10.5 共用体（union）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">union</span><span class="w"> </span><span class="nc">u1</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w">   </span><span class="n">i</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 4 字节 */</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">f</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 4 字节 */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">u1</span><span class="p">;</span>
+
+<span class="n">u1</span><span class="p">.</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="mf">120.5</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d %o %x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">u1</span><span class="p">.</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">u1</span><span class="p">.</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">u1</span><span class="p">.</span><span class="n">i</span><span class="p">);</span>
+<span class="cm">/* 输出的是把 120.5 的 float 位模式按 int 解读的结果 */</span>
+</code></pre></div>
+<ul>
+<li>共用体的所有成员<strong>共享同一块内存</strong>；</li>
+<li>内存大小 = <strong>最大成员的大小</strong>；</li>
+<li>同一时刻<strong>只有一个成员的值有效</strong>；</li>
+<li>赋值一个成员会<strong>覆盖</strong>其他成员。</li>
+</ul>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt03-09.c</code> 演示了 union 的"类型双关"技巧；
+<code>lt10-12.c</code> 演示了 <strong>结构体中嵌套共用体</strong>。</p>
+</blockquote>
+<h3 id="106-枚举enum" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>10.6 枚举（enum）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">enum</span><span class="w"> </span><span class="n">weekday</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sun</span><span class="p">,</span><span class="w"> </span><span class="n">mon</span><span class="p">,</span><span class="w"> </span><span class="n">tue</span><span class="p">,</span><span class="w"> </span><span class="n">wed</span><span class="p">,</span><span class="w"> </span><span class="n">thu</span><span class="p">,</span><span class="w"> </span><span class="n">fri</span><span class="p">,</span><span class="w"> </span><span class="n">sat</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sun</span><span class="p">;</span><span class="w">  </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mon</span><span class="p">;</span><span class="w">  </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tue</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d,%d,%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w">   </span><span class="cm">/* 0,1,2 */</span>
+</code></pre></div>
+<p><strong>规则</strong>：</p>
+<ul>
+<li>枚举成员的值默认从 <strong>0</strong> 开始，依次 <strong>+1</strong>；</li>
+<li>可以显式指定：<code>enum { one=1, two=2, three=10, four };</code> → <code>four</code> = 11；</li>
+<li>枚举变量本质是 <strong>int</strong>，可以参与算术、可以用 <code>switch</code> 匹配。</li>
+</ul>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>枚举数组的经典应用</strong>（教材 <code>lt10-14.c</code>）：计算某月每天是星期几。
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">enum</span><span class="w"> </span><span class="n">body</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">one</span><span class="p">,</span><span class="w"> </span><span class="n">two</span><span class="p">,</span><span class="w"> </span><span class="n">three</span><span class="p">,</span><span class="w"> </span><span class="n">four</span><span class="p">,</span><span class="w"> </span><span class="n">five</span><span class="p">,</span><span class="w"> </span><span class="n">six</span><span class="p">,</span><span class="w"> </span><span class="n">seven</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">month</span><span class="p">[</span><span class="mi">31</span><span class="p">],</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">body</span><span class="p">)((</span><span class="n">i</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">month</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">seven</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">one</span><span class="p">;</span><span class="w">      </span><span class="cm">/* 超出最后一个枚举值就回到第一个 */</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="107-typedef-类型别名" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>10.7 <code>typedef</code> 类型别名</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">yyyymmdd</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">year</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">month</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">day</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">YMD</span><span class="p">;</span>
+
+<span class="n">YMD</span><span class="w"> </span><span class="n">date</span><span class="p">;</span><span class="w">                    </span><span class="cm">/* 等价于 struct yyyymmdd date */</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%d-%d-%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">date</span><span class="p">.</span><span class="n">year</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">date</span><span class="p">.</span><span class="n">month</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">date</span><span class="p">.</span><span class="n">day</span><span class="p">);</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt10-17.c</code> 用 <code>typedef</code> 定义了 <code>YMD</code> 简写，使代码更清晰。
+⚠️ <code>typedef</code> <strong>只是起别名，不创建新类型</strong>，不能写 <code>typedef int A; typedef B A;</code>（C 中非法）。</p>
+</blockquote>
+<h3 id="108-动态内存分配" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>10.8 动态内存分配</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="w">   </span><span class="cm">/* 或 &lt;malloc.h&gt; */</span>
+
+<span class="cm">/* 申请 */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="o">*</span><span class="n">ps</span><span class="p">;</span>
+<span class="n">ps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="p">));</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ps</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* 处理失败 */</span><span class="w"> </span><span class="p">}</span>
+
+<span class="cm">/* 使用 */</span>
+<span class="n">ps</span><span class="o">-&gt;</span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">102</span><span class="p">;</span>
+<span class="n">ps</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Zhang ping"</span><span class="p">;</span><span class="w">   </span><span class="cm">/* ⚠️ 见下方易错点 */</span>
+
+<span class="cm">/* 释放 */</span>
+<span class="n">free</span><span class="p">(</span><span class="n">ps</span><span class="p">);</span>
+<span class="n">ps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">   </span><span class="cm">/* ✔ 好习惯：释放后置空，避免悬空指针 */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 41（教材 <code>lt10-09.c</code> 明确演示）</strong>：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">   </span><span class="cm">/* p 指向申请的区域 */</span>
+<span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Hello"</span><span class="p">;</span><span class="w">              </span><span class="cm">/* ❌ 覆盖了指针！原 malloc 区域泄漏 + 变成字符串常量 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="n">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span><span class="w">                  </span><span class="cm">/* ❌ 释放的不是 malloc 分配的内存 → 运行出错 */</span>
+</code></pre></div>
+<strong>正确写法</strong>：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">strcpy</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="s">"Hello"</span><span class="p">);</span><span class="w">       </span><span class="cm">/* 用 strcpy，不要直接赋值 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="n">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</code></pre></div></p>
+<p><span class="badge b-error">易错点</span> <strong>易错点 42</strong>：<code>free(p)</code> 之后<strong>必须</strong> <code>p = NULL;</code>，否则 p 成为<strong>悬空指针</strong>。</p>
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt10-11.c</code> 演示了<strong>用链表保存动态分配的数据</strong>（<code>struct student *next;</code>）。</p>
+</blockquote>
+<hr />

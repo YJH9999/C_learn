@@ -1,0 +1,197 @@
+<h2 id="附录-c-逻辑错误与能跑但错清单">附录 C　逻辑错误与"能跑但错"清单</h2>
+<blockquote class="callout c-plain">
+<p>这一类<strong>不产生任何编译错误</strong>，但结果完全错误，是<strong>实验/考试扣分重灾区</strong>。</p>
+</blockquote>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th>错误代码</th>
+<th>问题</th>
+<th>修正</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td><code>int a; if (a=5)</code></td>
+<td><code>=</code> 写成 <code>==</code></td>
+<td><code>if (a == 5)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td><code>if (a &lt;= x &lt;= b)</code></td>
+<td>连续比较</td>
+<td><code>if (a &lt;= x &amp;&amp; x &lt;= b)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td><code>float f; printf("%d", f)</code></td>
+<td>格式符不匹配</td>
+<td><code>printf("%f", f)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td><code>double d; scanf("%f", &amp;d)</code></td>
+<td>float/double 混用</td>
+<td><code>scanf("%lf", &amp;d)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td><code>int a; printf("%f", a)</code></td>
+<td>整数按浮点解读</td>
+<td><code>printf("%d", a)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td><code>int max = 0;</code> 求数组最大值</td>
+<td>全负数时错</td>
+<td><code>int max = a[0];</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td><code>int sum = a / b;</code>（需小数）</td>
+<td>整数除法</td>
+<td><code>sum = (float)a / b;</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td><code>if (x == 0.3)</code></td>
+<td>浮点精度</td>
+<td><code>if (fabs(x - 0.3) &lt; 1e-9)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td><code>char s[5] = "hello";</code></td>
+<td>缺结束符空间</td>
+<td><code>char s[6]</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td><code>char s[6] = {'h','e','l','l','o'};</code></td>
+<td>缺 <code>'\0'</code></td>
+<td>补上 <code>'\0'</code> 或用 <code>printf("%c")</code> 逐个输出</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td><code>scanf("%c", &amp;ch)</code> 读不到预期</td>
+<td><code>%c</code> 吞空格</td>
+<td><code>scanf(" %c", &amp;ch)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">12</td>
+<td><code>scanf("%s", &amp;str)</code></td>
+<td>数组名不需 <code>&amp;</code></td>
+<td><code>scanf("%s", str)</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">13</td>
+<td><code>scanf("%s", s)</code> 数组太小</td>
+<td>缓冲区溢出</td>
+<td>加大数组 or 用 <code>%ns</code> 限宽</td>
+</tr>
+<tr>
+<td style="text-align: center;">14</td>
+<td><code>if (a%3==0);</code></td>
+<td>多分号</td>
+<td>删分号</td>
+</tr>
+<tr>
+<td style="text-align: center;">15</td>
+<td><code>for (i=0;i&lt;5;i++);</code></td>
+<td>多分号</td>
+<td>删分号</td>
+</tr>
+<tr>
+<td style="text-align: center;">16</td>
+<td><code>switch</code> 漏 <code>break</code></td>
+<td>case 穿透</td>
+<td>补 break</td>
+</tr>
+<tr>
+<td style="text-align: center;">17</td>
+<td><code>while</code> 中 <code>continue</code> 跳过 <code>i++</code></td>
+<td>死循环</td>
+<td>把 <code>i++</code> 提前或改用 <code>for</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">18</td>
+<td><code>do {...} while(cond);</code> 写成 <code>while</code></td>
+<td>至少执行一次</td>
+<td>注意区分</td>
+</tr>
+<tr>
+<td style="text-align: center;">19</td>
+<td><code>a = b / c;</code> 其中 b、c 是 int</td>
+<td>整数除法丢小数</td>
+<td>强制转换 <code>(double)b / c</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">20</td>
+<td><code>int *p; *p = 5;</code></td>
+<td>野指针</td>
+<td><code>int *p = &amp;a;</code> 或 <code>= NULL</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">21</td>
+<td><code>char *p = "abc"; p[0]='X';</code></td>
+<td>改字符串常量</td>
+<td>用 <code>char s[] = "abc";</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">22</td>
+<td><code>free(p)</code> 后不置 NULL</td>
+<td>悬空指针</td>
+<td><code>free(p); p = NULL;</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">23</td>
+<td>结构体用 <code>==</code> 比较</td>
+<td>语法错误</td>
+<td>逐成员比较</td>
+</tr>
+<tr>
+<td style="text-align: center;">24</td>
+<td><code>struct</code> 定义后漏 <code>;</code></td>
+<td>连锁语法错误</td>
+<td>补分号</td>
+</tr>
+<tr>
+<td style="text-align: center;">25</td>
+<td><code>printf("%5.2f", a)</code> 中 a 是 int</td>
+<td>格式错配</td>
+<td>先转 <code>(double)a</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">26</td>
+<td>二维数组 <code>a[i][j]</code> 下标写反</td>
+<td>结果错位</td>
+<td>核对行列含义</td>
+</tr>
+<tr>
+<td style="text-align: center;">27</td>
+<td><code>float avg = sum / n;</code>（sum、n 是 int）</td>
+<td>整数除法</td>
+<td><code>avg = (float)sum / n;</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">28</td>
+<td><code>int a[10]</code> 却 <code>scanf</code> 11 个数</td>
+<td>越界</td>
+<td>核对数组长度</td>
+</tr>
+<tr>
+<td style="text-align: center;">29</td>
+<td>局部变量未初始化就使用</td>
+<td>值随机（C4700 警告）</td>
+<td>声明时赋初值</td>
+</tr>
+<tr>
+<td style="text-align: center;">30</td>
+<td><code>main</code> 函数写 <code>void main()</code></td>
+<td>不标准</td>
+<td><code>int main(void)</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr />

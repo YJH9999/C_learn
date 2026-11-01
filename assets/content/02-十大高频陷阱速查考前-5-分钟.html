@@ -1,0 +1,73 @@
+<h2 id="02-十大高频陷阱速查考前-5-分钟">0.2 十大高频陷阱速查（考前 5 分钟）</h2>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th>陷阱</th>
+<th>正解</th>
+<th style="text-align: center;">章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td><code>scanf("%f", &amp;d)</code> 读取 double</td>
+<td>double 输入必须写 <code>%lf</code></td>
+<td style="text-align: center;">§3.9 / §4.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td><code>printf("%lf", d)</code> 输出 double</td>
+<td>输出 float/double 统一 <code>%f</code></td>
+<td style="text-align: center;">§3.9 / §4.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td><code>scanf("%c",&amp;ch)</code> 读不到预期字符</td>
+<td><code>%c</code> 会吞掉空格/回车，用 <code>" %c"</code></td>
+<td style="text-align: center;">§4.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td>浮点数用 <code>==</code> 比较</td>
+<td>用 <code>fabs(x) &lt; EPSILON</code></td>
+<td style="text-align: center;">§3.6</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td><code>#define A 1+2</code> 后 <code>A*3</code></td>
+<td>宏体必须整体加括号 <code>((1)+(2))</code></td>
+<td style="text-align: center;">§12.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td><code>if (a%3==0);</code> 多了分号</td>
+<td>分号把 if 变成空语句</td>
+<td style="text-align: center;">§5.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td><code>switch</code> 分支漏 <code>break</code></td>
+<td>造成 case 穿透</td>
+<td style="text-align: center;">§5.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td>字符数组开太小</td>
+<td>字符串末尾自动带 <code>'\0'</code>，长度 +1</td>
+<td style="text-align: center;">§3.5 / §7.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td>数组名加了 <code>&amp;</code></td>
+<td><code>scanf("%s", str)</code> 数组名即地址</td>
+<td style="text-align: center;">§4.3 / §7.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td>有符号与无符号比较</td>
+<td><code>int a=-1; unsigned b=2;</code> 结果是 <code>a &gt;= b</code></td>
+<td style="text-align: center;">§3.4</td>
+</tr>
+</tbody>
+</table></div>

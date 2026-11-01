@@ -1,0 +1,682 @@
+<h2 id="第-4-章-顺序结构与输入输出核心章节">第 4 章　顺序结构与输入输出（核心章节）</h2>
+<blockquote class="callout c-plain">
+<p>本章的 <code>printf</code> / <code>scanf</code> 格式控制是<strong>期末考试、实验、作业的绝对高频区</strong>，也是"程序能编译但结果错"的重灾区。</p>
+</blockquote>
+<h3 id="41-顺序结构的特点">4.1 顺序结构的特点</h3>
+<p>程序按语句书写顺序<strong>自上而下</strong>逐条执行，没有选择和循环。典型三段式：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="cm">/* ① 变量定义 */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">    </span><span class="cm">/* ② 输入 */</span>
+<span class="w">    </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="cm">/* ③ 数据处理 + 输出 */</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="42-printf-函数">4.2 <code>printf</code> 函数</h3>
+<p><strong>语法</strong>：<code>printf("格式控制字符串", 输出项表列);</code></p>
+<ul>
+<li>格式控制串中的<strong>普通字符</strong>原样输出；</li>
+<li><code>%</code> 开头的<strong>格式说明</strong>按对应类型转换输出；</li>
+<li>输出项表列中的<strong>参数个数必须与格式说明个数一一对应</strong>，多一个少一个都是未定义行为。</li>
+</ul>
+<h3 id="43-格式控制符总表" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3 格式控制符总表</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>格式符</th>
+<th>含义</th>
+<th>printf 适用</th>
+<th>scanf 适用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%d</code></td>
+<td>十进制有符号整数</td>
+<td><code>int</code></td>
+<td><code>int</code></td>
+<td>最常用</td>
+</tr>
+<tr>
+<td><code>%i</code></td>
+<td>十进制整数</td>
+<td><code>int</code></td>
+<td><code>int</code></td>
+<td>scanf 时能识别 <code>0</code> 八进制、<code>0x</code> 十六进制；printf 与 <code>%d</code> 几乎一致</td>
+</tr>
+<tr>
+<td><code>%u</code></td>
+<td>十进制无符号整数</td>
+<td><code>unsigned int</code></td>
+<td><code>unsigned int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>%o</code></td>
+<td>八进制（<strong>不带前导 0</strong>）</td>
+<td><code>unsigned int</code></td>
+<td><code>unsigned int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>%x</code></td>
+<td>十六进制小写（不带 <code>0x</code>）</td>
+<td><code>unsigned int</code></td>
+<td><code>unsigned int</code></td>
+<td>例：<code>a3</code></td>
+</tr>
+<tr>
+<td><code>%X</code></td>
+<td>十六进制大写</td>
+<td><code>unsigned int</code></td>
+<td><code>unsigned int</code></td>
+<td>例：<code>A3</code></td>
+</tr>
+<tr>
+<td><code>%f</code></td>
+<td>小数形式浮点数</td>
+<td><code>float</code>、<strong><code>double</code></strong></td>
+<td><strong><code>float</code>（仅 float）</strong></td>
+<td>printf 的 float/double 都用它</td>
+</tr>
+<tr>
+<td><code>%lf</code></td>
+<td>浮点数</td>
+<td>一般不用</td>
+<td><strong><code>double</code>（仅 double）</strong></td>
+<td><strong>printf 中不要用</strong></td>
+</tr>
+<tr>
+<td><code>%e</code></td>
+<td>科学计数法（小写 e）</td>
+<td><code>double</code></td>
+<td>float/double</td>
+<td><code>1.230000e+02</code></td>
+</tr>
+<tr>
+<td><code>%E</code></td>
+<td>科学计数法（大写 E）</td>
+<td><code>double</code></td>
+<td>float/double</td>
+<td><code>1.230000E+02</code></td>
+</tr>
+<tr>
+<td><code>%g</code></td>
+<td>自动选 <code>%f</code>/<code>%e</code>，去掉末尾多余的 0</td>
+<td><code>double</code></td>
+<td>float/double</td>
+<td>精简输出</td>
+</tr>
+<tr>
+<td><code>%G</code></td>
+<td>自动选 <code>%f</code>/<code>%E</code></td>
+<td><code>double</code></td>
+<td>float/double</td>
+<td></td>
+</tr>
+<tr>
+<td><code>%a</code></td>
+<td>十六进制 p 记数法（C99）</td>
+<td><code>double</code></td>
+<td>double</td>
+<td><code>0x1.8p+3</code></td>
+</tr>
+<tr>
+<td><code>%c</code></td>
+<td>单个字符</td>
+<td><code>char</code></td>
+<td><code>char</code></td>
+<td>⚠️ scanf 会读入空格、回车、Tab</td>
+</tr>
+<tr>
+<td><code>%s</code></td>
+<td>字符串</td>
+<td><code>char*</code> / char 数组</td>
+<td>char 数组</td>
+<td>读到空格停止；<strong>不加 <code>&amp;</code></strong></td>
+</tr>
+<tr>
+<td><code>%p</code></td>
+<td>指针地址（十六进制）</td>
+<td>指针</td>
+<td>不用</td>
+<td>打印变量地址</td>
+</tr>
+<tr>
+<td><code>%%</code></td>
+<td>输出一个 <code>%</code></td>
+<td>—</td>
+<td>—</td>
+<td>无类型字母</td>
+</tr>
+<tr>
+<td><code>%ld</code></td>
+<td>长整型</td>
+<td><code>long</code></td>
+<td><code>long</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>%lld</code></td>
+<td>长长整型</td>
+<td><code>long long</code></td>
+<td><code>long long</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>%hd</code></td>
+<td>短整型</td>
+<td><code>short</code></td>
+<td><code>short</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>%zu</code></td>
+<td><code>size_t</code></td>
+<td><code>size_t</code></td>
+<td>—</td>
+<td><strong>sizeof / strlen 的返回值</strong></td>
+</tr>
+<tr>
+<td><code>%Lf</code></td>
+<td>long double</td>
+<td><code>long double</code></td>
+<td><code>long double</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="431-关于-f-与-lf-的终极结论" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3.1 关于 <code>%f</code> 与 <code>%lf</code> 的终极结论</h4>
+<blockquote class="callout c-plain">
+<p><strong>输入 double 用 <code>%lf</code>，输入 float 用 <code>%f</code>；输出 double 和 float 统一用 <code>%f</code>。</strong></p>
+</blockquote>
+<p><strong>原因</strong>：
+- <code>printf</code> 的参数经过<strong>默认实参提升</strong>（default argument promotion）：<code>float</code> 被提升为 <code>double</code>。
+  所以 <code>printf</code> 里的 <code>%f</code> 必须能同时接住 <code>float</code>（已提升为 double）和 <code>double</code>，用 <code>%f</code> 即可。
+- <code>scanf</code> <strong>没有</strong>这种提升，它按格式符<strong>精确</strong>从内存读取指定字节数。
+  <code>%f</code> 只写 4 字节（float），<code>%lf</code> 写 8 字节（double）。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">float</span><span class="w"> </span><span class="n">f</span><span class="p">;</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="p">;</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%f"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">f</span><span class="p">);</span><span class="w">    </span><span class="c1">// ✔</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%lf"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">d</span><span class="p">);</span><span class="w">   </span><span class="c1">// ✔</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%f"</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span><span class="w">    </span><span class="c1">// ✔</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%f"</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span><span class="w">    </span><span class="c1">// ✔</span>
+</code></pre></div>
+<ul>
+<li>❌ <code>scanf("%f", &amp;d);</code> → 只填了低 4 字节，高 4 字节是<strong>未初始化的垃圾值</strong>；</li>
+<li>❌ <code>printf("%lf", d);</code> → <strong>不标准</strong>。虽然某些编译器兼容，但可移植性差，阅卷按标准判错。</li>
+</ul>
+<blockquote class="callout c-plain">
+<p>📌 实验要求原文：「在 C 语言标准中，<code>%lf</code> 被保留给 <code>scanf</code> 用于读取 double，<code>%f</code> 给 <code>scanf</code> 读取 float。输出 double 时应使用 <code>%f</code>。」</p>
+</blockquote>
+<h4 id="432-c-与-s-的关键区别" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3.2 <code>%c</code> 与 <code>%s</code> 的关键区别</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th></th>
+<th><code>%c</code></th>
+<th><code>%s</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>读入内容</td>
+<td><strong>1 个字符</strong></td>
+<td><strong>一整串字符</strong>（到空格/回车为止）</td>
+</tr>
+<tr>
+<td>空白处理</td>
+<td><strong>不跳过</strong>空格、回车、Tab ——它们都是有效字符</td>
+<td>自动跳过前导空白</td>
+</tr>
+<tr>
+<td>变量</td>
+<td><code>char ch;</code> → <code>scanf("%c", &amp;ch);</code></td>
+<td><code>char str[20];</code> → <code>scanf("%s", str);</code>（<strong>不加 <code>&amp;</code></strong>）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 14（经典陷阱）</strong>：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="n">ch1</span><span class="p">,</span><span class="w"> </span><span class="n">ch2</span><span class="p">,</span><span class="w"> </span><span class="n">ch3</span><span class="p">;</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%c%c%c"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ch1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ch2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ch3</span><span class="p">);</span>
+</code></pre></div>
+若输入 <code>a b c</code>，则：<code>ch1='a'</code>，<code>ch2=' '</code>（<strong>空格</strong>），<code>ch3='b'</code>。
+因为 <code>%c</code> 只取 1 个字符，不需要空格分隔。</p>
+<p><strong>解决办法</strong>：格式串中加空格跳过空白 → <code>scanf(" %c %c %c", &amp;ch1, &amp;ch2, &amp;ch3);</code>
+或改用 <code>scanf("%s", buf)</code> 读整行。</p>
+<p><span class="badge b-tip">辨析延伸</span> <code>scanf</code> 的 <strong>前导空格技巧</strong>：<code>scanf(" %c", &amp;ch);</code> —— 格式串开头的空格会先丢弃所有前导空白，是解决 <code>%c</code> 吞空格的通用手法。</p>
+</blockquote>
+<h4 id="433-什么时候加-取地址符" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3.3 什么时候加 <code>&amp;</code>（取地址符）</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>写法</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>普通变量 <code>int a;</code></td>
+<td><code>scanf("%d", &amp;a);</code></td>
+<td>需要传<strong>地址</strong>，scanf 才能写回</td>
+</tr>
+<tr>
+<td>字符数组 <code>char str[20];</code></td>
+<td><code>scanf("%s", str);</code></td>
+<td><strong>数组名本身即首元素地址</strong>，加了 <code>&amp;</code> 类型不匹配</td>
+</tr>
+<tr>
+<td>二维数组 <code>int a[3][4];</code></td>
+<td><code>scanf("%d", &amp;a[0][0]);</code></td>
+<td>取具体元素地址</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 15</strong>：<code>scanf("%s", &amp;str);</code> —— <code>&amp;str</code> 是<strong>整个数组</strong>的地址（<code>char (*)[20]</code>），
+与 <code>%s</code> 期望的 <code>char*</code> 不匹配。编译器会警告 "incompatible types"，<strong>行为未定义</strong>。
+附录 D 原文：「应改为 <code>scanf("%s",c);</code>」</p>
+</blockquote>
+<h4 id="434-scanf-的其他重要规则" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3.4 <code>scanf</code> 的其他重要规则</h4>
+<ol>
+<li><strong>不能对 scanf 使用精度</strong>：<code>scanf("%7.2f", &amp;a);</code> ❌ 非法。
+   宽度可以（<code>%4d</code>），精度不可以。</li>
+<li><strong>数据间隔</strong>：格式串中无非格式字符时，可用<strong>空格、TAB、回车</strong>分隔；
+   格式串中有非格式字符时，<strong>输入时也必须原样输入该字符</strong>。
+   <code>c
+   scanf("%d,%d", &amp;a, &amp;b);   // 必须输入：3,4    ✔
+   scanf("%d,%d", &amp;a, &amp;b);   // 输入 3 4      ✘ 逗号不匹配
+   scanf("a=%d,b=%d",&amp;a,&amp;b); // 必须输入：a=3,b=4</code></li>
+<li><strong>数据结束的判定</strong>：① 遇到空格、回车、TAB；② 满足宽度要求；③ 遇到非法字符。</li>
+<li><strong><code>\n</code> 不能用于输入</strong>：<code>scanf("%d\n",&amp;a);</code> ❌ —— 格式串里的 <code>\n</code> 要求输入一个换行符。
+   正确写法：<code>scanf("%d ", &amp;a);</code>（尾部空格用于吃掉残留换行）。</li>
+<li><strong><code>scanf</code> 读字符串会截断</strong>：<code>char s[5]; scanf("%s", s);</code> 输入 <code>abcdefgh</code> → 越界！
+   应写 <code>scanf("%4s", s);</code> 限制宽度。</li>
+</ol>
+<h4 id="435-printf-的修饰符语法" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3.5 <code>printf</code> 的修饰符语法</h4>
+<p><strong>通用模板</strong>：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">TXT</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code>% [标志][宽度][.精度]类型字母
+示例： %-8.2f
+</code></pre></div>
+<p><strong>标志（printf）</strong></p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-</code></td>
+<td><strong>左对齐</strong>（默认右对齐）</td>
+<td><code>%-8d</code></td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td>宽度不足时用 0 填充</td>
+<td><code>%05d</code> → <code>00042</code></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>正数也显示正号</td>
+<td><code>%+d</code> → <code>+42</code></td>
+</tr>
+<tr>
+<td>空格</td>
+<td>正数前留一个空格</td>
+<td><code>% d</code> → <code>42</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>宽度 <code>%6d</code></strong>：最少输出字符个数。内容超过宽度会<strong>自动扩展，不会截断</strong>。</p>
+<p><strong>精度 <code>.n</code>（高频考点）</strong></p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>printf 效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%.2f</code></td>
+<td>浮点数保留 2 位小数</td>
+</tr>
+<tr>
+<td><code>%.5s</code></td>
+<td>字符串<strong>最多</strong>输出 5 个字符</td>
+</tr>
+<tr>
+<td><code>%.4d</code></td>
+<td>整数至少 4 位，不足<strong>补前导 0</strong></td>
+</tr>
+<tr>
+<td><code>%.0f</code></td>
+<td>不输出小数部分（并四舍六入五成双）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>宽度 vs 精度</strong>：<code>%8.2f</code> = 至少 8 字符宽（不足补空格，右对齐）、保留 2 位小数。
+<code>%8.2f</code> 输出 <code>3.14</code>（共 8 字符）。</p>
+</blockquote>
+<p><strong>动态宽度与精度</strong>（第 4 次实验重点）⭐</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%*d</code></td>
+<td><code>*</code> 表示宽度，由后续实参提供</td>
+</tr>
+<tr>
+<td><code>%*.*f</code></td>
+<td>第一个 <code>*</code> = 总宽度，第二个 <code>*</code> = 小数位数</td>
+</tr>
+</tbody>
+</table></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"%*.*f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">);</span><span class="w">   </span><span class="c1">// 宽度10，保留3位 → "     3.142"</span>
+</code></pre></div>
+<h4 id="d-与--d用变量指定宽度的对齐输出" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span><code>%*d</code> 与 <code>%-*d</code>：用变量指定宽度的对齐输出</h4>
+<p><code>%*d</code> 中的 <code>*</code> 代表<strong>宽度由后面的变量指定</strong>：<code>printf("%*d", len1, n);</code> 中第一个实参 <code>len1</code> 是宽度，第二个实参 <code>n</code> 才是要输出的数。</p>
+<ul>
+<li><strong><code>%*d</code></strong> → <strong>右对齐</strong>（默认），占 <code>len1</code> 个字符宽度，数字靠右，<strong>前面补空格</strong>：</li>
+</ul>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"%*d"</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w">    </span><span class="c1">// 占7格，输出："      7"（前面6个空格）</span>
+</code></pre></div>
+<ul>
+<li><strong><code>%-*d</code></strong> → 加 <code>-</code> 标志变<strong>左对齐</strong>，占 <code>len1</code> 个字符宽度，数字靠左，<strong>后面补空格</strong>：</li>
+</ul>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"%-*d"</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w">   </span><span class="c1">// 占7格，输出："7      "（后面6个空格）</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>记忆法</strong>：<code>*</code> 吃掉格式串后面的<strong>第一个实参当宽度</strong>，真正要输出的数往后顺延一位；<code>-</code> 只管对齐方向（左），补空格方向随之相反。</p>
+</blockquote>
+<h4 id="436-f-与-g-的区别第-4-次实验明确要求" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3.6 <code>%f</code> 与 <code>%g</code> 的区别（第 4 次实验明确要求）</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th></th>
+<th><code>%f</code></th>
+<th><code>%g</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.14</td>
+<td><code>3.140000</code></td>
+<td><code>3.14</code></td>
+</tr>
+<tr>
+<td>0.00001</td>
+<td><code>0.000010</code></td>
+<td><code>1e-05</code></td>
+</tr>
+<tr>
+<td>1234567.0</td>
+<td><code>1234567.000000</code></td>
+<td><code>1.23457e+06</code></td>
+</tr>
+<tr>
+<td>123456.0</td>
+<td><code>123456.000000</code></td>
+<td><code>123456</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>%g</code> 规则：
+1. 按 <code>%e</code> 或 <code>%f</code> 中<strong>输出长度较短</strong>的方式输出；
+2. 仅当指数 <strong>&lt; −4 或 ≥ 精度参数（默认 6）</strong> 时才用 <code>%e</code>；
+3. 选定格式后，<strong>尾部的 0 被缩减</strong>；
+4. 缩减后，<strong>小数点后面有 1 个或多个数字时才显示小数点</strong>。</p>
+<h4 id="437-进制输出的前缀问题" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.3.7 进制输出的前缀问题</h4>
+<p><code>%o</code> 输出八进制、<code>%x</code> 输出十六进制，<strong>都不会自带前缀 <code>0</code> / <code>0x</code></strong>，需要手动拼接：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"0x%x"</span><span class="p">,</span><span class="w"> </span><span class="n">num</span><span class="p">);</span><span class="w">    </span><span class="c1">// 手动打印 0x 前缀</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%#x"</span><span class="p">,</span><span class="w"> </span><span class="n">num</span><span class="p">);</span><span class="w">     </span><span class="c1">// C 的标准做法，# 标志自动加前缀（gcc 支持）</span>
+</code></pre></div>
+<h4 id="438-完整代码示例">4.3.8 完整代码示例</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.1415</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w">   </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w">  </span><span class="n">s</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"hello"</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w">  </span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'A'</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%.2f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w">        </span><span class="c1">// 3.14</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d %o %x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">num</span><span class="p">,</span><span class="w"> </span><span class="n">num</span><span class="p">,</span><span class="w"> </span><span class="n">num</span><span class="p">);</span><span class="w">  </span><span class="c1">// 255 377 ff</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%.3s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w">        </span><span class="c1">// hel</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%c %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span><span class="w">  </span><span class="c1">// A 65</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%-8d|%8d|</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">);</span><span class="w">  </span><span class="c1">// 42      |      42|</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%05d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">);</span><span class="w">       </span><span class="c1">// 00042</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="44-转义字符" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.4 转义字符</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>转义</th>
+<th>含义</th>
+<th>ASCII</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\n</code></td>
+<td>换行</td>
+<td>10</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>水平制表（<strong>对齐用</strong>）</td>
+<td>9</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td>回车</td>
+<td>13</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>退格</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>\a</code></td>
+<td>响铃（警告）</td>
+<td>7</td>
+</tr>
+<tr>
+<td><code>\\</code></td>
+<td>反斜杠</td>
+<td>92</td>
+</tr>
+<tr>
+<td><code>\'</code></td>
+<td>单引号</td>
+<td>39</td>
+</tr>
+<tr>
+<td><code>\"</code></td>
+<td>双引号</td>
+<td>34</td>
+</tr>
+<tr>
+<td><code>\0</code></td>
+<td><strong>空字符 / 字符串结束标志</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>\ddd</code></td>
+<td><strong>八进制</strong>转义（最多 3 位八进制数字）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>\xhh</code></td>
+<td>十六进制转义</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"  ab  c</span><span class="se">\t</span><span class="s">de</span><span class="se">\r</span><span class="s">f</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w">        </span><span class="c1">// \t 制表 \r 回车 \n 换行</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"hijk</span><span class="se">\t</span><span class="s">L</span><span class="se">\b</span><span class="s">M</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w">            </span><span class="c1">// \b 退格，把 L 删掉</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"012x4y8s3</span><span class="se">\061</span><span class="s">4w2</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w">      </span><span class="c1">// \061 是八进制 '1'  → 输出 4</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"012x4y8s3</span><span class="se">\067</span><span class="s">4w2</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w">      </span><span class="c1">// \067 是八进制 '7'  → 输出 7</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"012x4y8s3</span><span class="se">\06</span><span class="s">84w</span><span class="se">\134</span><span class="s">2</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w">  </span><span class="c1">// \068 越界(非八进制) \134 = '\'</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 16</strong>：<code>\ddd</code> 是<strong>八进制</strong>，<code>\065</code> = <code>'5'</code>，<code>\067</code> = <code>'7'</code>，
+而 <code>\068</code> <strong>非法</strong>（8 不是八进制数字）；<strong>越界</strong>会导致警告或未定义行为。
+另外 <code>\0</code>（数字 0）才是空字符，<strong>不是</strong>字母 <code>O</code>。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>对齐技巧</strong>：<code>\t</code> 宽度默认是 8 的整数倍，可通过多写 <code>\t</code> 实现"视觉对齐"的表格输出。
+教材 <code>lt03-04.c</code> 就用 <code>\t</code> 做两列对齐。</p>
+</blockquote>
+<h3 id="45-字符输入输出函数">4.5 字符输入输出函数</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>头文件</th>
+<th>行为</th>
+<th>回显</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getchar()</code></td>
+<td><code>&lt;stdio.h&gt;</code></td>
+<td>从键盘读 1 个字符，等待回车</td>
+<td>显示</td>
+</tr>
+<tr>
+<td><code>putchar(c)</code></td>
+<td><code>&lt;stdio.h&gt;</code></td>
+<td>输出 1 个字符</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>gets(s)</code></td>
+<td><code>&lt;stdio.h&gt;</code></td>
+<td>读一整行到 <code>s</code></td>
+<td>显示</td>
+</tr>
+<tr>
+<td><code>puts(s)</code></td>
+<td><code>&lt;stdio.h&gt;</code></td>
+<td>输出字符串 + 自动换行</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>getch()</code></td>
+<td><code>&lt;conio.h&gt;</code></td>
+<td>读 1 个字符，<strong>不等待回车</strong></td>
+<td><strong>不显示</strong></td>
+</tr>
+<tr>
+<td><code>getche()</code></td>
+<td><code>&lt;conio.h&gt;</code></td>
+<td>读 1 个字符，不等待回车</td>
+<td>显示</td>
+</tr>
+<tr>
+<td><code>putch(c)</code></td>
+<td><code>&lt;conio.h&gt;</code></td>
+<td>输出 1 个字符</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>kbhit()</code></td>
+<td><code>&lt;conio.h&gt;</code></td>
+<td>检查是否有按键（返回非 0 表示有）</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-tip">
+<p>⚠️ <code>gets()</code> 存在<strong>缓冲区溢出漏洞</strong>，C11 起被移除。现代做法：<code>fgets(buf, size, stdin);</code>
+<span class="badge b-tip">辨析延伸</span> <code>getch/getche</code> 是 MS-DOS/Windows 的非标准函数，<strong>Linux 下不可用</strong>（教材实验环境为 Windows/VC）。</p>
+</blockquote>
+<h3 id="46-输入输出混用时的脏缓冲区问题" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.6 输入输出混用时的"脏缓冲区"问题</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">n</span><span class="p">);</span><span class="w">     </span><span class="c1">// 用户输入 12 然后回车</span>
+<span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getchar</span><span class="p">();</span><span class="w">     </span><span class="c1">// ⚠️ 读到的是 '\n'，不是用户想要的下一个字符！</span>
+</code></pre></div>
+<p><strong>解决办法</strong>：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">fflush</span><span class="p">(</span><span class="n">stdin</span><span class="p">);</span><span class="w">       </span><span class="c1">// 清除输入缓冲区（教材 lt07-26.c 使用）</span>
+<span class="c1">// 或者</span>
+<span class="n">getchar</span><span class="p">();</span><span class="w">          </span><span class="c1">// 吃掉那个换行</span>
+<span class="c1">// 或者（更好的做法）</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">" %c"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ch</span><span class="p">);</span><span class="w">   </span><span class="c1">// 格式串前导空格</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> 教材 <code>lt07-26.c</code>（字符串查找）就明确用了 <code>fflush(stdin);</code>。</p>
+</blockquote>
+<h3 id="47-顺序结构的经典题型模式">4.7 顺序结构的经典题型模式</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>题型</th>
+<th>骨架</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>已知三边求三角形面积</td>
+<td><code>s = (a+b+c)/2; area = sqrt(s*(s-a)*(s-b)*(s-c));</code> 需 <code>#include &lt;math.h&gt;</code></td>
+</tr>
+<tr>
+<td>百分制转五级制</td>
+<td><code>switch(idj)</code> 或 <code>if(score&gt;=90) grade='A';</code></td>
+</tr>
+<tr>
+<td>闰年判断</td>
+<td><code>(y%4==0 &amp;&amp; y%100!=0) || y%400==0</code></td>
+</tr>
+<tr>
+<td>一元二次方程实根</td>
+<td>先判 <code>a==0</code>，再判 <code>disc=b*b-4*a*c</code>，<code>disc&gt;0</code> 两根 / <code>=0</code> 一根 / <code>&lt;0</code> 无根</td>
+</tr>
+<tr>
+<td>各位数拆分</td>
+<td><code>num/1000</code>, <code>num/100%10</code>, <code>num/10%10</code>, <code>num%10</code></td>
+</tr>
+<tr>
+<td>数字反转</td>
+<td><code>j = j*10 + m%10; m = m/10;</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>闰年判定</strong>（高频）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">y</span><span class="o">%</span><span class="mi">4</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">y</span><span class="o">%</span><span class="mi">100</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">y</span><span class="o">%</span><span class="mi">400</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">"是闰年"</span><span class="p">);</span>
+</code></pre></div>
+等价写法：<code>if (!(y%4) &amp;&amp; y%100 || !(y%400))</code>（利用 0 为假、非 0 为真）。</p>
+</blockquote>
+<hr />
+<h3 id="48-nf-的四舍五入4-舍-6-入-5-成双实验五补充" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>4.8 <code>%.nf</code> 的四舍五入：4 舍 6 入 5 成双（实验五补充）</h3>
+<p>printf 的 <code>%.nf</code> 舍入与数学课的「四舍五入」<strong>不一样</strong>，它遵循 <strong>4 舍 6 入 5 成双</strong>（银行家舍入）：</p>
+<ol>
+<li>待约位 ≤ 4 → 舍去不进位；</li>
+<li>待约位 ≥ 6 → 进位；</li>
+<li>待约位 = 5 → 分两种情况：
+   - <strong>5 后面没有有效数字</strong>：看 5 前面一位——<strong>偶数不进、奇数进位</strong>（0 算偶数）；
+   - <strong>5 后面有非零有效数字</strong>：一律进位。</li>
+</ol>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"%.0f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mf">2.5</span><span class="p">);</span><span class="w">   </span><span class="cm">/* → 2   （5 前面是 2，偶数不进） */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%.0f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mf">3.5</span><span class="p">);</span><span class="w">   </span><span class="cm">/* → 4   （5 前面是 3，奇数进位） */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%.1f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="mf">0.25</span><span class="p">);</span><span class="w">  </span><span class="cm">/* → 0.2 */</span>
+</code></pre></div>
+<blockquote class="callout c-plain">
+<p>⚠️ 实际输出可能「不按规则」：浮点数按 IEEE 754 二进制存储，很多十进制小数（如 0.35）在内存里是<strong>略小/略大</strong>一点的近似值，5 的判定对象其实是那个近似值。遇到"明明该进位却没进"，先想想内存里的真值。</p>
+</blockquote>

@@ -1,0 +1,309 @@
+<h2 id="第-8-章-函数">第 8 章　函数</h2>
+<h3 id="81-函数的定义与声明" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>8.1 函数的定义与声明</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 函数定义 */</span>
+<span class="n">返回值类型</span><span class="w"> </span><span class="nf">函数名</span><span class="p">(</span><span class="n">形参表</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">函数体</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">返回值</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* 函数声明（原型）—— 放在调用之前 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 35</strong>：形参表中的<strong>每个参数都要独立写类型</strong>！
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">    </span><span class="c1">// ❌ 错误</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// ✔ 正确</span>
+</code></pre></div>
+教材 <code>lt08-02.c</code> 明确注释了这一点。</p>
+</blockquote>
+<p><strong>声明与定义的区别</strong>：</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th></th>
+<th>函数声明</th>
+<th>函数定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内容</td>
+<td><code>int max(int a, int b);</code></td>
+<td>带 <code>{ }</code> 的完整代码</td>
+</tr>
+<tr>
+<td>作用</td>
+<td>告诉编译器"有这么个函数"</td>
+<td>真正实现功能</td>
+</tr>
+<tr>
+<td>必需性</td>
+<td><strong>被调用在前</strong>时必需</td>
+<td>必需</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 若函数<strong>定义在调用之前</strong>，可以不写声明。教材 <code>lt08-02.c</code> 注释：「函数定义在函数使用前面，这里声明可省」。</p>
+</blockquote>
+<h3 id="82-参数传递" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>8.2 参数传递</h3>
+<h4 id="821-值传递默认">8.2.1 值传递（默认）</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">void</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// 形参是实参的副本</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span><span class="w">   </span><span class="c1">// ⚠️ 输出 1 2，值没变！</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>结论</strong>：<strong>值传递无法改变实参的值</strong>。函数内部改的都是副本。</p>
+<h4 id="822-地址传递指针-让实参真正改变">8.2.2 地址传递（指针）—— 让实参真正改变</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">void</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// 形参是指针</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">;</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">;</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">y</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span><span class="w">   </span><span class="c1">// ✔ 输出 2 1</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>教材对比实验</strong>（<code>lt09-04.c</code> vs <code>lt09-05.c</code>）是本知识点最经典的设计：
+- <code>lt09-04.c</code>：<strong>交换指针指向的内容</strong> → <code>*p1 = *p2</code> → 实参 a、b 的值交换 ✔
+- <code>lt09-05.c</code>：<strong>交换指针本身</strong>（只是让两个指针变量互换指向） → 实参 a、b 的值<strong>不变</strong> ✘</p>
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* lt09-05.c —— 看似正确，实则无效！ */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="p">;</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 只改了形参副本里的指针 */</span>
+<span class="p">}</span>
+</code></pre></div>
+</blockquote>
+<h4 id="823-数组作为参数-传递的是地址">8.2.3 数组作为参数 → 传递的是地址</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">void</span><span class="w"> </span><span class="nf">aver</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="cm">/* 等价于 void aver(float *a) */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">aver2</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="cm">/* 需同时传长度 */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>结论</strong>：把数组传给函数，函数内修改数组元素<strong>会影响实参</strong>（因为传的是首地址）。
+但<strong>数组长度不会传递</strong>，所以常需要额外传一个 <code>n</code> 参数（教材 <code>lt08-12.c</code>）。</p>
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt08-09.c</code> / <code>lt08-10.c</code> / <code>lt08-11.c</code> / <code>lt08-12.c</code> 是同一题的四种写法演化：
+固定长度 → 传长度参数 → <code>[]</code> 形式 → 带 <code>n</code> 参数。</p>
+</blockquote>
+<h3 id="83-返回值">8.3 返回值</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w">  </span><span class="nf">max</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">printLine</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"..."</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w">              </span><span class="cm">/* 无返回值 */</span>
+<span class="kt">double</span><span class="w"> </span><span class="nf">aver</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">av</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">             </span><span class="cm">/* 返回浮点 */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>规则</strong>：
+1. 函数只能<strong>返回一种类型</strong>；
+2. <code>void</code> 函数<strong>不能有返回值</strong>（<code>return;</code> 合法，<code>return 值;</code> 非法）；
+3. <code>return</code> 语句<strong>会立即结束函数</strong>；
+4. <code>int</code> 函数忘记写 <code>return</code> 会返回<strong>垃圾值</strong>（警告 <code>C4716: must return a value</code>）。</p>
+<p><span class="badge b-tip">辨析延伸</span> <strong>一个函数最多只能返回一个值</strong>。要返回多个值，用<strong>指针参数</strong>或<strong>结构体</strong>。
+教材 <code>lt10-08-1.c</code> 演示了用 <code>float *</code> 和 <code>int *</code> 参数返回"总分"和"不及格人数"两个值。</p>
+</blockquote>
+<h3 id="84-变量作用域与生命周期" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>8.4 变量作用域与生命周期</h3>
+<h4 id="841-四种存储类别" class="rk-hard"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span>8.4.1 四种存储类别</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>关键字</th>
+<th>作用域</th>
+<th>生命周期</th>
+<th>初值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>自动变量</strong></td>
+<td><code>auto</code>（默认）</td>
+<td>所在<strong>块</strong>内</td>
+<td>进入块创建，退出块释放</td>
+<td><strong>随机值</strong>（未初始化）</td>
+</tr>
+<tr>
+<td><strong>静态变量</strong></td>
+<td><code>static</code></td>
+<td><strong>文件/函数块</strong></td>
+<td><strong>整个程序运行期间</strong></td>
+<td><strong>0</strong>（自动初始化）</td>
+</tr>
+<tr>
+<td><strong>外部变量</strong></td>
+<td><code>extern</code></td>
+<td>从声明处到<strong>文件末尾</strong></td>
+<td>整个程序运行期间</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>寄存器变量</strong></td>
+<td><code>register</code></td>
+<td>所在块内</td>
+<td>同 auto</td>
+<td>随机值</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong><code>static</code> 局部变量的核心考点</strong>（教材 <code>lt08-16.c</code> / <code>lt08-17.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 每次调用都重新初始化为 0 */</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 只初始化一次，保留固定存储单元 */</span>
+<span class="w">    </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/* 3 次调用中 c 依次为 4、5、6（每次先 c=c+1 再 return） */</span>
+</code></pre></div>
+<span class="badge b-tip">辨析延伸</span> <strong>实测</strong>：<code>printf("%d %d %d\n", fun(1), fun(1), fun(1));</code> 输出 <code>6 5 4</code>
+（GCC 从右往左求值，所以显示为倒序；c 本身确实经历了 3→4→5→6）。
+<strong>static 变量在函数调用之间保值</strong>，可用于"计数器""状态保存"。</p>
+<p><span class="badge b-hot">高频考点</span> <strong><code>register</code></strong>：建议编译器把变量放在 CPU 寄存器中以加速。<strong>现代编译器基本忽略此关键字</strong>，
+且 <code>register</code> 变量<strong>不能取地址</strong>。</p>
+<p><span class="badge b-hot">高频考点</span> <strong><code>extern</code></strong>：用于跨文件访问全局变量（教材 <code>lt08-19.c</code> ~ <code>lt08-20-file2.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* file1.c */</span>
+<span class="k">extern</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 声明 A、B 在别处定义 */</span>
+<span class="cm">/* file2.c */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-8</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 实际定义 */</span>
+</code></pre></div>
+⚠️ 教材 <code>lt08-20.c</code> 的 <code>file2.c</code> 中 <code>static int A=13,B=-8;</code> 用了 <code>static</code>，
+意味着<strong>只有本文件可见</strong>，<code>file1.c</code> 中的 <code>extern A,B;</code> <strong>会链接失败</strong>。这是教材的瑕疵，
+实际应写 <code>int A=13, B=-8;</code>（去掉 <code>static</code>）才能跨文件访问。</p>
+</blockquote>
+<h4 id="842-作用域遮蔽shadowing" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>8.4.2 作用域遮蔽（Shadowing）</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+<span class="w">    </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w">                        </span><span class="cm">/* 内层块的新变量 k，遮蔽外层 k */</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);</span><span class="w">                </span><span class="cm">/* 输出 8 */</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);</span><span class="w">                    </span><span class="cm">/* 输出 5 —— 外层的 k 未被改变 */</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>与你的笔记对应</strong>：「main 函数内定义过一个 a，又在 for 循环中定义了另外一个 a，
+for 循环中的 a 生命周期只在 for 循环中，出循环后的 a 与 main 函数内的 a 一致」——
+原理是<strong>内层块变量遮蔽外层同名变量</strong>，且内层变量出了作用域就销毁。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>同名全局 vs 同名局部</strong>（教材 <code>lt08-15.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 全局 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="cm">/* 形参 a、b 遮蔽全局 a、b */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">    </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">     </span><span class="cm">/* 用的是形参 */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+规则：<strong>就近原则</strong>——局部优先于全局，形参优先于全局，块内优先于块外。</p>
+</blockquote>
+<h3 id="85-递归函数" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>8.5 递归函数</h3>
+<p><strong>定义</strong>：函数自己调用自己。<strong>必须有一个终止条件</strong>。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">long</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"n&lt;0, input error"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">      </span><span class="cm">/* 递归终止条件 */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func</span><span class="p">(</span><span class="n">n</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w">                  </span><span class="cm">/* 递归调用 */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>经典递归模型</strong>：</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>递推关系</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>阶乘</td>
+<td><code>n! = n × (n-1)!</code></td>
+<td>教材 <code>lt08-06.c</code></td>
+</tr>
+<tr>
+<td>斐波那契</td>
+<td><code>f(n) = f(n-1) + f(n-2)</code></td>
+<td>教材 <code>lt08-25.c</code></td>
+</tr>
+<tr>
+<td>汉诺塔</td>
+<td>移动 n-1 → 移 1 → 移 n-1</td>
+<td>教材 <code>lt08-07.c</code></td>
+</tr>
+<tr>
+<td>辗转相除求 gcd</td>
+<td><code>gcd(a,b) = gcd(b, a%b)</code></td>
+<td>教材 <code>lt08-33-2.c</code></td>
+</tr>
+<tr>
+<td>数位逆序输出</td>
+<td>先递归输出高位，再输出个位</td>
+<td>教材 <code>lt08-26.c</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>递归三要素</strong>：
+1. <strong>终止条件</strong>（base case）—— 没有它就是无限递归 → 栈溢出；
+2. <strong>递推关系</strong>—— 把大问题化为同类小问题；
+3. <strong>递归方向</strong>—— 必须收敛到终止条件。</p>
+<p><span class="badge b-tip">辨析延伸</span> <strong>数位逆序</strong>的巧妙写法（教材 <code>lt08-26.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">void</span><span class="w"> </span><span class="nf">convert</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">convert</span><span class="p">(</span><span class="n">i</span><span class="p">);</span><span class="w">   </span><span class="cm">/* 先处理高位 */</span>
+<span class="w">    </span><span class="n">putchar</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'0'</span><span class="p">);</span><span class="w">               </span><span class="cm">/* 再输出个位 */</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="86-函数中的常见错误">8.6 函数中的常见错误</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+<th>正确做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>形参漏写类型</td>
+<td>编译错误</td>
+<td>每个形参都写类型</td>
+</tr>
+<tr>
+<td>未声明就调用</td>
+<td>编译错误（C99+）</td>
+<td>先声明或先定义</td>
+</tr>
+<tr>
+<td><code>void</code> 函数 <code>return 值;</code></td>
+<td>编译错误</td>
+<td>改用 <code>return;</code> 或改返回类型</td>
+</tr>
+<tr>
+<td>数组参数漏传长度</td>
+<td>越界</td>
+<td>额外传 <code>n</code></td>
+</tr>
+<tr>
+<td><code>int</code> 函数无 return</td>
+<td>返回垃圾值</td>
+<td>补 <code>return</code></td>
+</tr>
+<tr>
+<td>递归无终止条件</td>
+<td>栈溢出崩溃</td>
+<td>加 base case</td>
+</tr>
+<tr>
+<td>全局变量同名遮蔽</td>
+<td>逻辑错误</td>
+<td>改名或用局部变量</td>
+</tr>
+</tbody>
+</table></div>
+<hr />

@@ -1,0 +1,257 @@
+<h2 id="附录-d-常用库函数速查">附录 D　常用库函数速查</h2>
+<h3 id="d1-头文件总览">D.1 头文件总览</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>头文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;stdio.h&gt;</code></td>
+<td>标准输入输出：<code>printf</code> <code>scanf</code> <code>getchar</code> <code>putchar</code> <code>gets</code> <code>puts</code> <code>fopen</code> <code>fclose</code> <code>fgets</code> <code>fputs</code> <code>fread</code> <code>fwrite</code> <code>fseek</code> <code>ftell</code> <code>feof</code> <code>ferror</code> <code>clearerr</code> <code>rewind</code> <code>remove</code> <code>rename</code> <code>sprintf</code> <code>sscanf</code> <code>fprintf</code> <code>fscanf</code></td>
+</tr>
+<tr>
+<td><code>&lt;stdlib.h&gt;</code></td>
+<td>通用工具：<code>malloc</code> <code>calloc</code> <code>realloc</code> <code>free</code> <code>exit</code> <code>abort</code> <code>atoi</code> <code>atof</code> <code>abs</code> <code>rand</code> <code>srand</code> <code>qsort</code> <code>system</code> <code>getenv</code></td>
+</tr>
+<tr>
+<td><code>&lt;string.h&gt;</code></td>
+<td>字符串：<code>strlen</code> <code>strcpy</code> <code>strncpy</code> <code>strcat</code> <code>strncat</code> <code>strcmp</code> <code>strncmp</code> <code>strstr</code> <code>strchr</code> <code>strrchr</code> <code>strtok</code> <code>memset</code> <code>memcpy</code> <code>memcmp</code></td>
+</tr>
+<tr>
+<td><code>&lt;math.h&gt;</code></td>
+<td>数学：<code>sqrt</code> <code>pow</code> <code>fabs</code> <code>fabsf</code> <code>fabsl</code> <code>sin</code> <code>cos</code> <code>tan</code> <code>asin</code> <code>acos</code> <code>atan</code> <code>atan2</code> <code>exp</code> <code>log</code> <code>log10</code> <code>ceil</code> <code>floor</code> <code>round</code> <code>fmod</code> <code>sinh</code> <code>cosh</code> <code>tanh</code> <code>hypot</code></td>
+</tr>
+<tr>
+<td><code>&lt;ctype.h&gt;</code></td>
+<td>字符分类：<code>isalpha</code> <code>isalnum</code> <code>isdigit</code> <code>islower</code> <code>isupper</code> <code>isspace</code> <code>iscntrl</code> <code>isgraph</code> <code>isprint</code> <code>ispunct</code> <code>isxdigit</code> <code>tolower</code> <code>toupper</code></td>
+</tr>
+<tr>
+<td><code>&lt;time.h&gt;</code></td>
+<td>时间：<code>time</code> <code>localtime</code> <code>clock</code> <code>difftime</code> <code>strftime</code></td>
+</tr>
+<tr>
+<td><code>&lt;conio.h&gt;</code></td>
+<td>控制台（<strong>非标准，MS 专用</strong>）：<code>getch</code> <code>getche</code> <code>putch</code> <code>clrscr</code> <code>kbhit</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="d2-数学函数附录-f4" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>D.2 数学函数（附录 F.4）</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+<th>头文件</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sqrt(x)</code></td>
+<td>平方根 √x</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>x ≥ 0；<strong>GCC 需 <code>-lm</code></strong></td>
+</tr>
+<tr>
+<td><code>pow(x, y)</code></td>
+<td>幂 x^y</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>返回 <code>double</code></td>
+</tr>
+<tr>
+<td><code>fabs(x)</code></td>
+<td>绝对值（double）</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>判断浮点是否接近 0 用它</td>
+</tr>
+<tr>
+<td><code>fabsf(x)</code></td>
+<td>绝对值（float）</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>与 float 精度配套</td>
+</tr>
+<tr>
+<td><code>fabsl(x)</code></td>
+<td>绝对值（long double）</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>exp(x)</code></td>
+<td>e^x</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>log(x)</code></td>
+<td>自然对数 ln x</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>x &gt; 0</td>
+</tr>
+<tr>
+<td><code>log10(x)</code></td>
+<td>常用对数 lg x</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>x &gt; 0</td>
+</tr>
+<tr>
+<td><code>sin/cos/tan(x)</code></td>
+<td>三角函数</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td><strong>单位是弧度</strong>，不是角度</td>
+</tr>
+<tr>
+<td><code>asin/acos/atan(x)</code></td>
+<td>反三角函数</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>返回弧度</td>
+</tr>
+<tr>
+<td><code>atan2(y, x)</code></td>
+<td>y/x 的反正切</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>能正确处理象限，<strong>推荐</strong></td>
+</tr>
+<tr>
+<td><code>ceil(x)</code></td>
+<td>向上取整</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>3.2 → 4.0</td>
+</tr>
+<tr>
+<td><code>floor(x)</code></td>
+<td>向下取整</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>3.8 → 3.0</td>
+</tr>
+<tr>
+<td><code>fmod(x, y)</code></td>
+<td>求余（浮点）</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td>浮点版的 <code>%</code></td>
+</tr>
+<tr>
+<td><code>abs(i)</code></td>
+<td>整数绝对值</td>
+<td><code>&lt;stdlib.h&gt;</code></td>
+<td><strong>不是</strong> <code>&lt;math.h&gt;</code></td>
+</tr>
+<tr>
+<td><code>labs(n)</code></td>
+<td>long 绝对值</td>
+<td><code>&lt;stdlib.h&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>hypot(x,y)</code></td>
+<td>斜边长 √(x²+y²)</td>
+<td><code>&lt;math.h&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>三角函数必背</strong>：<strong>弧度制</strong>！<code>sin(30)</code> 不是 0.5，<code>sin(30 * 3.14159 / 180)</code> 才是。
+<strong>头文件</strong>：数学函数在 <code>&lt;math.h&gt;</code>，<strong>不是</strong> <code>&lt;stdlib.h&gt;</code>（<code>abs</code> 在 stdlib）。</p>
+</blockquote>
+<h3 id="d3-字符串函数">D.3 字符串函数</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>strlen(s)</code></td>
+<td>字符串长度（不含 <code>'\0'</code>），返回 <code>size_t</code></td>
+</tr>
+<tr>
+<td><code>strcpy(d, s)</code></td>
+<td>复制（<strong>目标必须够大</strong>）</td>
+</tr>
+<tr>
+<td><code>strncpy(d, s, n)</code></td>
+<td>复制前 n 个字符（<strong>不补 <code>'\0'</code></strong>，需自己补）</td>
+</tr>
+<tr>
+<td><code>strcat(d, s)</code></td>
+<td>追加</td>
+</tr>
+<tr>
+<td><code>strncat(d, s, n)</code></td>
+<td>追加前 n 个字符</td>
+</tr>
+<tr>
+<td><code>strcmp(s1, s2)</code></td>
+<td>比较：0 / &gt;0 / &lt;0</td>
+</tr>
+<tr>
+<td><code>strncmp(s1, s2, n)</code></td>
+<td>比较前 n 个字符</td>
+</tr>
+<tr>
+<td><code>strstr(s1, s2)</code></td>
+<td>在 s1 中找 s2，返回地址</td>
+</tr>
+<tr>
+<td><code>strchr(s, c)</code></td>
+<td>找字符 c，返回地址</td>
+</tr>
+<tr>
+<td><code>strrchr(s, c)</code></td>
+<td>找<strong>最后</strong>一个 c</td>
+</tr>
+<tr>
+<td><code>strtok(s, sep)</code></td>
+<td>按分隔符切分字符串</td>
+</tr>
+<tr>
+<td><code>memset(p, c, n)</code></td>
+<td>用 c 填充 n 字节</td>
+</tr>
+<tr>
+<td><code>memcpy(d, s, n)</code></td>
+<td>复制 n 字节</td>
+</tr>
+<tr>
+<td><code>memcmp(p1, p2, n)</code></td>
+<td>比较 n 字节</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="d4-随机数" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>D.4 随机数</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="n">srand</span><span class="p">((</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span><span class="w">    </span><span class="cm">/* 用时间作为种子，只调用一次！ */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">        </span><span class="cm">/* 生成 0~99 的随机数 */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>关键</strong>：
+1. <code>srand()</code> <strong>每次循环前调用会得到相同序列</strong>（种子相同 → 序列相同）；
+2. <code>rand()</code> 返回 <code>0 ~ RAND_MAX</code> 的整数；
+3. <code>rand() % m</code> 生成 <code>0 ~ m-1</code>；
+4. <code>rand() % (b-a+1) + a</code> 生成 <code>a ~ b</code> 的闭区间。</p>
+<p>教材 <code>lt07-01.c</code> / <code>lt07-06.c</code> / <code>lt07-29.c</code> 都是这个模式。</p>
+</blockquote>
+<h3 id="d5-时间函数" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>D.5 时间函数</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="kt">time_t</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span><span class="w">                  </span><span class="cm">/* 当前时间戳 */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">localtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t</span><span class="p">);</span><span class="w">          </span><span class="cm">/* 转换为结构体 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d-%02d-%02d %02d:%02d:%02d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+<span class="w">       </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_year</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1900</span><span class="p">,</span><span class="w">               </span><span class="cm">/* ⚠️ 年份要 +1900！ */</span>
+<span class="w">       </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_mon</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">                   </span><span class="cm">/* ⚠️ 月份要 +1！ */</span>
+<span class="w">       </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_mday</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_hour</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_min</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">tm_sec</span><span class="p">);</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>高频陷阱</strong>：<code>tm_year</code> 是"<strong>从 1900 开始算的年数</strong>"（2026 年是 126），<code>tm_mon</code> 是"<strong>从 0 开始算的月份</strong>"（1 月是 0）。
+<strong>不加上偏移量就会输出 1900 年的时间。</strong></p>
+</blockquote>
+<hr />

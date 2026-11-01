@@ -1,0 +1,391 @@
+<h2 id="第-7-章-数组与字符串">第 7 章　数组与字符串</h2>
+<h3 id="71-一维数组">7.1 一维数组</h3>
+<h4 id="711-定义与初始化">7.1.1 定义与初始化</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* ① 不初始化，元素值为 0（静态存储期）或随机值（自动存储期） */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+
+<span class="cm">/* ② 部分初始化，未指定的元素自动置 0 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">};</span>
+
+<span class="cm">/* ③ 全部初始化，可以省略数组长度 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">};</span>
+
+<span class="cm">/* ④ 全部为 0 —— 长度 100 的数组被初始化为全 0 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="cm">/* ⑤ 只能初始化一次，定义后不能再整体赋值 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">};</span>
+<span class="c1">// a = {4,5,6};   ❌ 语法错误！数组不能整体赋值</span>
+<span class="c1">// a[0] = 4;     ✔ 只能逐个元素赋值</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 24</strong>：<strong>数组定义后不能整体赋值</strong>，只能逐元素修改。
+需要复制数组内容必须用循环或 <code>memcpy</code>。
+教材 <code>lt07-27.c</code> 演示了用循环实现 <code>strcpy</code> 的功能。</p>
+</blockquote>
+<h4 id="712-易错点-25数组长度必须是常量表达式" class="rk-error"><span class="rkchip rk-error" title="易错点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>易错点</span>7.1.2  易错点 25：数组长度必须是常量表达式</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">n</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="p">];</span><span class="w">      </span><span class="c1">// ❌ 编译错误（C89/C99 中 VLA 除外）—— 数组大小不能动态定义</span>
+</code></pre></div>
+<blockquote class="callout c-plain">
+<p>附录 D 原文：「数组名后用方括号括起来的是常量表达式，可以包括常量和符号常量。即 C 不允许对数组的大小作动态定义。」
+（C99 起支持变长数组 VLA，但不是所有编译器都支持，<strong>考试按不支持处理</strong>。）</p>
+</blockquote>
+<p><strong>正确做法</strong>：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define N 100</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</code></pre></div>
+<h4 id="713-元素访问与地址">7.1.3 元素访问与地址</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">      </span><span class="c1">// 下标法</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">    </span><span class="c1">// 指针法（完全等价）</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w">        </span><span class="c1">// 数组首地址</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w">    </span><span class="c1">// 与 a 相同</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span><span class="w">       </span><span class="c1">// ⚠️ 与 a 数值相同但类型不同（&amp;a 是 int(*)[10]）</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <code>a</code> 和 <code>&amp;a[0]</code> <strong>数值相同</strong>（都是首元素地址），但 <code>&amp;a</code> 的类型是"指向整个数组的指针"。</p>
+<p><span class="badge b-tip">辨析延伸</span> <strong>遍历数组长度的推荐宏</strong>（教材 <code>lt07-05.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#define ARRAY_TOTAL(a) (sizeof(a) / sizeof(a[0]))</span>
+</code></pre></div>
+⚠️ 只能用于<strong>真正的数组</strong>，不能用于指针（指针的 <code>sizeof</code> 是 8，公式失效）。</p>
+</blockquote>
+<h4 id="714-易错点-26数组越界" class="rk-error"><span class="rkchip rk-error" title="易错点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>易错点</span>7.1.4  易错点 26：数组越界</h4>
+<p>C 语言<strong>不检查数组越界</strong>——这是 C 的最大安全隐患之一。</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">]);</span><span class="w">   </span><span class="c1">// 编译通过！运行时读越界内存 → 乱码或崩溃</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 防御手段：使用前检查 <code>if (i &gt;= 0 &amp;&amp; i &lt; n)</code>。</p>
+</blockquote>
+<h3 id="72-二维数组" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>7.2 二维数组</h3>
+<h4 id="721-定义与初始化">7.2.1 定义与初始化</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span><span class="w">                        </span><span class="c1">// 3 行 4 列，共 12 个 int</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">},{</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">},{</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">}};</span><span class="w">   </span><span class="c1">// 按行初始化</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">};</span><span class="w">          </span><span class="c1">// 按顺序平铺</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">d</span><span class="p">[][</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">},{</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}};</span><span class="w">                   </span><span class="c1">// 行数可省，列数不可省</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">80</span><span class="p">,</span><span class="mi">75</span><span class="p">,</span><span class="mi">92</span><span class="p">},{</span><span class="mi">61</span><span class="p">,</span><span class="mi">65</span><span class="p">,</span><span class="mi">71</span><span class="p">}};</span><span class="w">               </span><span class="c1">// 部分初始化，未填的置 0</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>关键</strong>：<strong>行数可以省略，列数不可以</strong>。
+因为编译器需要通过列数计算每行的起始偏移量。</p>
+</blockquote>
+<h4 id="722-存储方式">7.2.2 存储方式</h4>
+<p><strong>按行存放（行优先）</strong>：<code>a[i][j]</code> 的地址 = <code>基地址 + (i * 列数 + j) * sizeof(int)</code></p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},{</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">}};</span>
+<span class="cm">/* 内存布局：1 2 3 | 4 5 6 */</span>
+<span class="cm">/* a[0][0]=1  a[0][1]=2  a[0][2]=3  a[1][0]=4 ... */</span>
+</code></pre></div>
+<h4 id="723-遍历与转置">7.2.3 遍历与转置</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 输入 */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+
+<span class="cm">/* 转置：a[2][3] → b[3][2] */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>易错点 27</strong>：<strong>行、列的下标不能写反</strong>。教材 <code>lt07-07.c</code> 与 <code>lt07-08.c</code> 是同一题的两种实现：
+- <code>lt07-07.c</code>：<code>scanf("%d", &amp;a[j][i])</code> 但循环是 <code>for(i=0;i&lt;3;i++) for(j=0;j&lt;5;j++)</code> —— <strong>存的是列在前</strong>；
+- <code>lt07-08.c</code>：数组已初始化，<code>s = s + a[j][i]</code> —— <strong>取的也是列在前</strong>。
+两段代码<strong>下标顺序一致</strong>才对。如果一个用 <code>a[i][j]</code> 另一个用 <code>a[j][i]</code>，结果就错了。</p>
+</blockquote>
+<h4 id="724-二维数组作为函数参数" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>7.2.4 二维数组作为函数参数</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">void</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[][</span><span class="mi">4</span><span class="p">]);</span><span class="w">      </span><span class="cm">/* 列数必须写 */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">]);</span><span class="w">     </span><span class="cm">/* 行数可写可不写 */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)[</span><span class="mi">4</span><span class="p">]);</span><span class="w">     </span><span class="cm">/* 等价的指针写法 */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 28</strong>：<code>void func(int a[])</code> 传二维数组是<strong>错误</strong>的，等价于一维数组，会只传第一行。</p>
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt08-32.c</code> 中 <code>void sort(int a[][N])</code> 正是这个用法。</p>
+</blockquote>
+<h3 id="73-字符数组与字符串" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>7.3 字符数组与字符串</h3>
+<h4 id="731-字符数组的两种初始化">7.3.1 字符数组的两种初始化</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"hello"</span><span class="p">;</span><span class="w">       </span><span class="cm">/* 字符串初始化：自动补 '\0'，占 6 字节 */</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"hello"</span><span class="p">;</span><span class="w">        </span><span class="cm">/* 长度可省，编译器算成 6 */</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="sc">'h'</span><span class="p">,</span><span class="sc">'e'</span><span class="p">,</span><span class="sc">'l'</span><span class="p">,</span><span class="sc">'l'</span><span class="p">,</span><span class="sc">'o'</span><span class="p">,</span><span class="sc">'\0'</span><span class="p">};</span><span class="w">   </span><span class="cm">/* 逐字符初始化：必须自己写 '\0' */</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">d</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"hello"</span><span class="p">;</span><span class="w">       </span><span class="cm">/* ❌ 错误！没有空间放 '\0'，越界 */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 29</strong>：<code>char d[5] = "hello";</code> 编译<strong>报错或警告</strong>（"initializer-string for char array is too long"）。
+字符串长度 5 → 需要 6 个字节（5 + 结束符）。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>对比</strong>：<code>char c[6] = {'h','e','l','l','o'};</code> （<strong>不写 <code>'\0'</code></strong>）—— 语法合法，
+但用 <code>printf("%s", c)</code> 打印会<strong>越界读取</strong>，因为没有结束标志！这是 C 的经典陷阱。</p>
+</blockquote>
+<h4 id="732-字符数组的输入输出">7.3.2 字符数组的输入输出</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="n">st</span><span class="p">[</span><span class="mi">15</span><span class="p">];</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span><span class="w"> </span><span class="n">st</span><span class="p">);</span><span class="w">      </span><span class="cm">/* 输入一个单词，遇空格停止 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">st</span><span class="p">);</span>
+<span class="n">puts</span><span class="p">(</span><span class="n">st</span><span class="p">);</span><span class="w">              </span><span class="cm">/* 输出并自动换行 */</span>
+<span class="n">gets</span><span class="p">(</span><span class="n">st</span><span class="p">);</span><span class="w">              </span><span class="cm">/* 输入一整行（含空格），⚠️ 不安全 */</span>
+<span class="n">fgets</span><span class="p">(</span><span class="n">st</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="n">stdin</span><span class="p">);</span><span class="w">  </span><span class="cm">/* ✔ 现代安全做法 */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 30</strong>：<code>scanf("%s", st)</code> <strong>不能读入含空格的字符串</strong>。
+要读整行必须用 <code>gets</code>（不安全）或 <code>fgets</code>（推荐）。</p>
+</blockquote>
+<h4 id="733-字符串与字符数组的本质">7.3.3 字符串与字符数组的本质</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th></th>
+<th><code>"hello"</code>（字符串常量）</th>
+<th><code>char st[6]</code>（字符数组）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>存储位置</td>
+<td><strong>只读存储区</strong>（代码段）</td>
+<td>栈 / 静态区 / 堆</td>
+</tr>
+<tr>
+<td>可否修改</td>
+<td>❌ 修改是<strong>未定义行为</strong></td>
+<td>✔</td>
+</tr>
+<tr>
+<td>结尾 <code>'\0'</code></td>
+<td>自动带</td>
+<td>需长度足够或手动补</td>
+</tr>
+<tr>
+<td>类型</td>
+<td><code>char *</code>（退化后）</td>
+<td><code>char[6]</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 31</strong>：<strong>不能对字符串常量赋值</strong>。
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"hello"</span><span class="p">;</span>
+<span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'H'</span><span class="p">;</span><span class="w">        </span><span class="c1">// ❌ 未定义行为，运行时可能崩溃</span>
+</code></pre></div></p>
+</blockquote>
+<h4 id="734-常用字符串函数-stringh" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>7.3.4 常用字符串函数 （<code>&lt;string.h&gt;</code>）</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+<th>教材例题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>strlen(s)</code></td>
+<td>返回字符串<strong>有效字符数</strong>（不含 <code>'\0'</code>）</td>
+<td><code>lt07-16.c</code></td>
+</tr>
+<tr>
+<td><code>strcpy(dest, src)</code></td>
+<td>复制字符串</td>
+<td><code>lt07-17.c</code></td>
+</tr>
+<tr>
+<td><code>strcat(dest, src)</code></td>
+<td>把 src 接到 dest 末尾</td>
+<td><code>lt07-18.c</code></td>
+</tr>
+<tr>
+<td><code>strcmp(s1, s2)</code></td>
+<td>比较：返回 0（相等）/ 正数（s1 大）/ 负数（s1 小）</td>
+<td><code>lt07-19.c</code></td>
+</tr>
+<tr>
+<td><code>strncpy(d, s, n)</code></td>
+<td>复制前 n 个字符</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>strstr(s1, s2)</code></td>
+<td>在 s1 中找 s2，返回首次出现的地址</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>strchr(s, c)</code></td>
+<td>找字符 c 首次出现的位置</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>strlwr(s)</code> / <code>strupr(s)</code></td>
+<td>转小写 / 转大写（<strong>非标准</strong>，Windows 特有）</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-hot">高频考点</span> <strong><code>strcmp</code> 的返回值用法</strong>（教材 <code>lt07-19.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strcmp</span><span class="p">(</span><span class="n">st1</span><span class="p">,</span><span class="w"> </span><span class="n">st2</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">"st1=st2</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">"st1&gt;st2</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">"st1&lt;st2</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+</code></pre></div>
+⚠️ <strong>注意</strong>：<code>strcmp</code> 是<strong>按字符的 ASCII 码逐个比较</strong>，
+所以 <code>"Z"</code> (90) &lt; <code>"a"</code> (97)。这与"字典序"直觉不同。</p>
+<p><span class="badge b-hot">高频考点</span> <strong><code>sizeof</code> vs <code>strlen</code></strong>（教材 <code>lt07-17.c</code> 明确对比）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="n">st1</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"...........is good."</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 19 个可见字符（11 个点 + "is good."） */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">st1</span><span class="p">),</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">st1</span><span class="p">));</span>
+<span class="cm">/* 实测输出：20 19   ← sizeof 含 '\0'，strlen 不含 */</span>
+</code></pre></div></p>
+<p><span class="badge b-error">易错点</span> <strong>易错点 32</strong>：<code>strcpy</code> / <code>strcat</code> <strong>不会检查目标数组是否够大</strong>，会溢出。
+教材 <code>lt07-18.c</code> 中 <code>char st1[30]="My name is ";</code> + <code>st2[10]</code> 恰好够用，但换个数据就崩。</p>
+</blockquote>
+<h4 id="735-用循环实现字符串操作考试要求">7.3.5 用循环实现字符串操作（考试要求）</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 复制（等价于 strcpy） */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">;</span><span class="w">           </span><span class="cm">/* ⚠️ 必须补结束符！ */</span>
+
+<span class="cm">/* 求长度（等价于 strlen） */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">;</span>
+<span class="cm">/* 或 while (st[i] != '\0') n++; */</span>
+
+<span class="cm">/* 比较（等价于 strcmp） */</span>
+<span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="cm">/* i 处即为第一个不同字符的位置 */</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>加分点</strong>：第 7 次实验要求实现"不调用库函数"的字符串操作。</p>
+</blockquote>
+<h3 id="74-排序算法" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>7.4 排序算法</h3>
+<h4 id="741-选择排序教材-lt07-04c-lt07-20c">7.4.1 选择排序（教材 <code>lt07-04.c</code> / <code>lt07-20.c</code>）</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">TXT</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code>思想：第 i 轮从 a[i..n-1] 中找出最小（或最大）的元素，与 a[i] 交换。
+      第 i 轮结束后，a[i] 就是第 i 个（或倒数第 i 个）元素就位。
+</code></pre></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">  </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w">              </span><span class="cm">/* 假设 a[i] 最小 */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">];</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">p</span><span class="p">];</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="cm">/* 必须判断 p != i */</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>比较次数：固定为 <code>n(n-1)/2</code>；</li>
+<li>移动次数：最多 <code>n-1</code> 次；</li>
+<li>⚠️ <strong>教材特别提醒</strong>：「p 不等于 i 需要交换」——若 p == i 仍交换，会把元素换到自己，逻辑上没错但多余。</li>
+</ul>
+<h4 id="742-冒泡排序教材-lt07-24c">7.4.2 冒泡排序（教材 <code>lt07-24.c</code>）</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">TXT</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code>思想：相邻两元素比较，若逆序就交换。每一趟把当前最大（或最小）的元素"冒"到末尾。
+</code></pre></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">N</span><span class="mi">-2</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w">             </span><span class="cm">/* 共 N-1 趟 */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">N</span><span class="o">-</span><span class="n">j</span><span class="mi">-2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w">       </span><span class="cm">/* 每趟比较次数递减 */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>为什么要 <code>N-j-2</code>？</strong>
+第 <code>j</code> 趟结束后，末尾已有 <code>j</code> 个元素就位，不必再比较。
+<code>i</code> 的上限是 <code>N-j-2</code>，保证 <code>a[i+1]</code> 不越界（最大时 <code>i+1 = N-j-1 ≤ N-1</code>）。
+<strong>内层次数减少 → 总次数为 n(n-1)/2，比"固定比较"更优。</strong></p>
+</blockquote>
+<h4 id="743-查找算法" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>7.4.3 查找算法</h4>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>算法</th>
+<th>时间复杂度</th>
+<th>前提</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>顺序查找（基本查找）</strong></td>
+<td>O(n)</td>
+<td>无</td>
+<td>从头扫到尾，最简单</td>
+</tr>
+<tr>
+<td><strong>二分查找（折半查找）</strong></td>
+<td>O(log₂n)</td>
+<td><strong>必须有序</strong></td>
+<td>每次折半，效率高</td>
+</tr>
+<tr>
+<td><strong>插值查找</strong></td>
+<td>O(log log n)</td>
+<td>有序且<strong>均匀分布</strong></td>
+<td>按数值比例插值定位</td>
+</tr>
+<tr>
+<td><strong>分块查找（索引顺序查找）</strong></td>
+<td>O(√n)</td>
+<td>有序 + 块划分</td>
+<td>建索引表，先定块再在块内查</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>二分查找模板</strong>：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">high</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">high</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">          </span><span class="cm">/* ⚠️ 防溢出可写 low + (high-low)/2 */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>易错点 33</strong>：<code>while (low &lt;= high)</code> 中的 <code>=</code> 不能少！
+写成 <code>low &lt; high</code> 会<strong>漏掉最后一个元素</strong>。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>易错点 34</strong>：二分查找<strong>前提是数组有序</strong>！无序数组用二分会得到错误结果。</p>
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt07-30.c</code> 是二分查找的完整应用。</p>
+</blockquote>
+<h3 id="75-常见数组应用题">7.5 常见数组应用题</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>题型</th>
+<th>关键点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>成绩统计</td>
+<td>求平均用 <code>float</code>，<strong>不能</strong>用 <code>int</code> 除法；统计分段用 <code>switch(score/10)</code></td>
+</tr>
+<tr>
+<td>排序</td>
+<td>选择 / 冒泡</td>
+</tr>
+<tr>
+<td>查找</td>
+<td>顺序 / 二分</td>
+</tr>
+<tr>
+<td>矩阵转置</td>
+<td>行↔列互换，注意循环边界</td>
+</tr>
+<tr>
+<td>杨辉三角</td>
+<td>边界为 1，内部 <code>a[i][j] = a[i-1][j-1] + a[i-1][j]</code></td>
+</tr>
+<tr>
+<td>斐波那契数列</td>
+<td><code>f[i] = f[i-1] + f[i-2]</code>，用数组保存（教材 <code>lt07-31.c</code>）</td>
+</tr>
+<tr>
+<td>回文数</td>
+<td>反转后与原数比较</td>
+</tr>
+<tr>
+<td>素数判断</td>
+<td>试除法到 √n</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>杨辉三角</strong>（教材 <code>lt07-32-1.c</code> / <code>lt07-32-2.c</code> 提供了一维/二维两种写法）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 二维写法 */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="n">N</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">][</span><span class="n">j</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</code></pre></div></p>
+</blockquote>
+<hr />

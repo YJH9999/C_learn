@@ -1,0 +1,613 @@
+<h2 id="hm-06-数组与查找排序">HM 06　数组与查找排序</h2>
+<h3 id="30c-数组遍历">30.c　数组遍历</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//遍历数组</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="c1">//循环</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="31c-求数组最大值">31.c　求数组最大值</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//求最值</span>
+
+<span class="c1">//需求：已知数组元素为{33,5,22,66,55}</span>
+
+<span class="c1">//请找出数组中最大值并打印在控制台</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="o">=</span><span class="p">{</span><span class="mi">33</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">66</span><span class="p">,</span><span class="mi">55</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">max</span><span class="o">&lt;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]){</span>
+
+<span class="w">            </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">max</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>注意</strong> <strong>越界隐患</strong>：循环 <code>i&lt;len</code> 内访问 <code>arr[i+1]</code>，当 <code>i=len-1</code> 时读了 <code>arr[len]</code>（越界，未定义行为）。因为 max 初值取了 arr[0]，应把条件改成 <code>i&lt;len-1</code>。多数时候碰巧不出错，但这是真实的错题点。</p>
+</blockquote>
+<h3 id="32c-随机数入数组并求和">32.c　随机数入数组并求和</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+
+
+<span class="c1">//遍历数组求和（基础版）</span>
+
+<span class="c1">//需求：生成10个1~100之间的随机数存入数组</span>
+
+<span class="c1">//1）求出所有数据的和</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="mi">100</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">num</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">sum</span><span class="p">);</span>
+
+
+
+
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="33c-随机数组统计和-平均-计数">33.c　随机数组统计（和 / 平均 / 计数）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+
+
+<span class="c1">// 遍历数组求和（升级版）</span>
+
+<span class="c1">// 需求：生成10个1~100之间的随机数存入数组，要求数据不能重复</span>
+
+<span class="c1">// 1）求出所有数据的和</span>
+
+<span class="c1">// 2）求所有数据的平均数</span>
+
+<span class="c1">// 3）统计有多少个数据比平均值小</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="mi">100</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">sum</span><span class="o">+=</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ave</span><span class="o">=</span><span class="n">sum</span><span class="o">/</span><span class="n">len</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="n">ave</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">j</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"随机数的和为：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">sum</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"平均数为：%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">ave</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"有%d个数比平均值小</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">j</span><span class="p">);</span>
+
+
+
+
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>注意</strong> 注释需求写明「数据不能重复」，但代码<strong>没有去重</strong>逻辑——生成时应查重重试（或用标记数组）。这是一个需求与实现不符的典型错例。</p>
+</blockquote>
+<h3 id="34c-键盘录入-数组反转">34.c　键盘录入 + 数组反转</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">// 需求：键盘录入5个数据并存入数组，完成以下需求</span>
+
+<span class="c1">// 1）遍历数组</span>
+
+<span class="c1">// 2）反转数组</span>
+
+<span class="c1">// 3）再次遍历</span>
+
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">printarr</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">){</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"请录入第%d个元素："</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="n">printarr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">len</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="n">len</span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">j</span><span class="p">){</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">temp</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">j</span><span class="o">--</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="n">printarr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">len</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 双下标对撞交换：<code>i</code> 从头、<code>j</code> 从尾，<code>while(i&lt;j)</code> 交换后相向而行；还封装了 <code>printarr(int arr[], int len)</code> 复用打印。</p>
+</blockquote>
+<h3 id="35c-打乱数组fisher-yates-思路">35.c　打乱数组（Fisher-Yates 思路）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+
+
+<span class="c1">//打乱数组内的数据</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="o">=</span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="n">len</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">=</span><span class="n">temp</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 每个位置 i 与随机下标 index 交换。严格来说 <code>rand()%(len-i)+i</code> 才是均匀洗牌，当前写法有轻微偏差——作为练习足够。</p>
+</blockquote>
+<h3 id="36c-基本查找顺序查找">36.c　基本查找（顺序查找）</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">//基本查找</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">order</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[],</span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">){</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">num</span><span class="p">){</span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="o">=</span><span class="p">{</span><span class="mi">41</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7454</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">order</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">len</span><span class="p">,</span><span class="n">num</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">index</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 找到返回下标，找不到返回 <strong>-1</strong>——用 -1 做哨兵值是查找函数的标准约定。</p>
+</blockquote>
+<h3 id="37c-二分查找">37.c　二分查找</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">con</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[],</span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">len</span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">max</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">min</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(;</span><span class="n">min</span><span class="o">&lt;=</span><span class="n">max</span><span class="p">;){</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">&lt;</span><span class="n">num</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">min</span><span class="o">=</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">min</span><span class="o">+</span><span class="n">max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">&gt;</span><span class="n">num</span><span class="p">){</span>
+
+<span class="w">            </span><span class="n">max</span><span class="o">=</span><span class="n">mid</span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">min</span><span class="o">+</span><span class="n">max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">else</span><span class="p">{</span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">mid</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+
+
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="o">=</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">123</span><span class="p">,</span><span class="mi">456</span><span class="p">,</span><span class="mi">789</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="o">=</span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="mi">123</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">con</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">len</span><span class="p">,</span><span class="n">num</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">index</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 仅适用于<strong>有序</strong>数组；min/max/mid 三指针收缩区间。<code>return mid;</code> 后面的 <code>break;</code> 永远执行不到，可删。</p>
+</blockquote>
+<h3 id="38c-冒泡排序">38.c　冒泡排序</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">// 冒泡排序：</span>
+
+<span class="c1">//  1，相邻的元素两两比较，大的放右边，小的放左边。</span>
+
+<span class="c1">//  2，第一轮比较完毕之后，最大值就已经确定，第二轮可以少循环一次，后面以此类推。</span>
+
+<span class="c1">//  3，如果数组中有n个数据，总共我们只要执行n-1轮的代码就可以。</span>
+
+<span class="c1">// 需求：</span>
+
+<span class="c1">//  利用冒泡排序将下列数据按照从小到大的顺序进行排序</span>
+
+<span class="c1">//      3,5,2,1,4</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="o">-</span><span class="n">j</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]){</span>
+
+<span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">                </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="w">                </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">temp</span><span class="p">;</span>
+
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 相邻两两比较、大的沉底；外层 n-1 轮，内层每轮少比一次（<code>i&lt;len-j</code>）。</p>
+</blockquote>
+<h3 id="39c-选择排序">39.c　选择排序</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+
+
+<span class="c1">// 选择排序：</span>
+
+<span class="w">    </span><span class="c1">// 1，从0索引开始，跟后面的元素——比较。</span>
+
+<span class="w">    </span><span class="c1">// 2，小的放前面，大的放后面</span>
+
+<span class="w">    </span><span class="c1">// 3，第一轮循环从0索引开始比较，结束后最小的数据已经确定。</span>
+
+<span class="w">    </span><span class="c1">// 4，第二轮循环从1索引开始，后面以此类推。</span>
+
+<span class="w">    </span><span class="c1">// 5，第三轮循环从2索引开始，后面以此类推。</span>
+
+<span class="w">    </span><span class="c1">// 6，第四轮循环从3索引开始，后面以此类推。</span>
+
+<span class="c1">// 需求：</span>
+
+<span class="w">    </span><span class="c1">// 利用选择排序将下列数据按照从小到大的顺序进行排序</span>
+
+<span class="w">    </span><span class="c1">// 3,5,2,1,4</span>
+
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[]</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+
+
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">len</span><span class="mi">-1</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]){</span>
+
+<span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+
+<span class="w">                </span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">                </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">temp</span><span class="p">;</span>
+
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> <strong>要点</strong> 每轮用基准位 j 与后面所有位比较，小的换到前面——与冒泡的区别：它和「固定基准」比，不是和「相邻」比。</p>
+</blockquote>

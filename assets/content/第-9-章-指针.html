@@ -1,0 +1,308 @@
+<h2 id="第-9-章-指针" class="rk-hard"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span>第 9 章　指针</h2>
+<blockquote class="callout c-plain">
+<p>指针是 C 语言<strong>最强大也最容易出错</strong>的特性。考试重点：概念辨析、地址与值、指针运算、指针与数组、与函数配合。</p>
+</blockquote>
+<h3 id="91-指针的基本概念" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>9.1 指针的基本概念</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span><span class="w">      </span><span class="cm">/* p 保存 a 的地址 */</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w">    </span><span class="cm">/* 5   —— 变量值 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">);</span><span class="w">   </span><span class="cm">/* 5   —— 解引用，取出 p 指向的值 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span><span class="w">   </span><span class="cm">/* 地址 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w">    </span><span class="cm">/* 同上，&amp;a 与 p 数值相同 */</span>
+</code></pre></div>
+<p><strong>三个关键概念</strong>：</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>地址</strong></td>
+<td><code>&amp;a</code></td>
+<td>变量在内存中的位置</td>
+</tr>
+<tr>
+<td><strong>指针变量</strong></td>
+<td><code>int *p</code></td>
+<td>存储地址的变量，<strong>本身也有地址</strong> <code>&amp;p</code></td>
+</tr>
+<tr>
+<td><strong>解引用</strong></td>
+<td><code>*p</code></td>
+<td>取出该地址存放的值</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>关键</strong>：<code>p</code> 是"<strong>a 的地址</strong>"，<code>*p</code> 是"<strong>a 的值</strong>"，<code>&amp;p</code> 是"<strong>p 自己的地址</strong>"。
+教材 <code>lt09-02-2.c</code> 的经典对照：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"%d %x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pointer_1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;*</span><span class="n">pointer_1</span><span class="p">);</span>
+<span class="cm">/* &amp;*p 等价于 p —— 先解引用再取地址，得到原地址 */</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="92-指针的声明与初始化" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>9.2 指针的声明与初始化</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">p1</span><span class="p">;</span><span class="w">              </span><span class="cm">/* int 型指针 */</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span><span class="w">         </span><span class="cm">/* 初始化为 a 的地址 */</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">          </span><span class="cm">/* ❌ 错误！类型不匹配（a 是 int 不是地址） */</span>
+<span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"hello"</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 字符指针指向字符串常量 */</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">**</span><span class="n">pp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p1</span><span class="p">;</span><span class="w">       </span><span class="cm">/* 指针的指针（二级指针） */</span>
+</code></pre></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 35</strong>：<code>int *p = a;</code> —— <code>a</code> 的值是 5，不是地址。编译器只给警告但结果错误。</p>
+</blockquote>
+<h3 id="93-指针的运算" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>9.3 指针的运算</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>运算</th>
+<th>含义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p + n</code></td>
+<td>指向 p 之后第 n 个元素</td>
+<td>实际地址增加 <code>n × sizeof(*p)</code> 字节</td>
+</tr>
+<tr>
+<td><code>p - n</code></td>
+<td>p 之前第 n 个元素</td>
+<td></td>
+</tr>
+<tr>
+<td><code>p - q</code></td>
+<td>两个指针<strong>相差的元素个数</strong></td>
+<td>只有同一数组的指针才能相减</td>
+</tr>
+<tr>
+<td><code>p++</code> / <code>++p</code></td>
+<td>指向下一个元素</td>
+<td>⚠️ 顺序不同但单独语句中效果相同</td>
+</tr>
+<tr>
+<td><code>p--</code></td>
+<td>指向上一个元素</td>
+<td></td>
+</tr>
+<tr>
+<td><code>*p</code></td>
+<td>解引用</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&amp;*p</code></td>
+<td>等价于 <code>p</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>*&amp;p</code></td>
+<td>等价于 <code>p</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-hot">高频考点</span> <strong>核心理解</strong>：<code>p+1</code> 不是"地址加 1 字节"，而是"<strong>加一个元素的大小</strong>"。
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w">    </span><span class="cm">/* p+1 地址增加 4 字节 */</span>
+<span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">q</span><span class="p">;</span><span class="w">  </span><span class="cm">/* q+1 地址增加 8 字节 */</span>
+<span class="kt">char</span><span class="w">  </span><span class="o">*</span><span class="n">r</span><span class="p">;</span><span class="w">   </span><span class="cm">/* r+1 地址增加 1 字节 */</span>
+</code></pre></div></p>
+<p><span class="badge b-error">易错点</span> <strong>易错点 36（指针自增的"陷阱"）</strong>：教材 <code>lt09-02-2.c</code> 中
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">printf</span><span class="p">(</span><span class="s">"%x %x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">pointer_1</span><span class="p">)</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">pointer_1</span><span class="o">++</span><span class="p">);</span>
+</code></pre></div>
+① <code>(pointer_1)++</code> 是<strong>表达式</strong>，其<strong>值</strong>是自增前的地址，但<strong>副作用</strong>（p 加 1）何时发生<strong>未定义</strong>；
+② 第二个 <code>pointer_1++</code> 又是另一个未定义行为；
+③ 两次 <code>printf</code> 之间的求值顺序也未定义。
+<strong>结论：这种写法行为不可预测，绝不要在实际代码中这么写。</strong></p>
+</blockquote>
+<h3 id="94-指针与数组" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>9.4 指针与数组</h3>
+<p><strong>核心等价关系</strong>（教材 <code>lt09-10.c</code> vs <code>lt09-11.c</code> 是最佳例证）：</p>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="cm">/* 下面两种写法完全等价 */</span>
+<span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">       </span><span class="err">≡</span><span class="w">  </span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* lt09-10.c —— 下标法 */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="cm">/* lt09-11.c —— 指针法 */</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>其他等价</strong>：</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>等价表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a</code></td>
+<td><code>&amp;a[0]</code>（首元素地址）</td>
+</tr>
+<tr>
+<td><code>a[i]</code></td>
+<td><code>*(a+i)</code></td>
+</tr>
+<tr>
+<td><code>&amp;a[i]</code></td>
+<td><code>a+i</code></td>
+</tr>
+<tr>
+<td><code>*a</code></td>
+<td><code>a[0]</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>但有本质区别</strong>：
+- <code>a</code> 是<strong>数组名</strong>，是<strong>常量</strong>（不可修改），<code>a++</code> 是<strong>语法错误</strong>；
+- <code>p</code> 是<strong>指针变量</strong>，可以 <code>p++</code>。
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="n">a</span><span class="o">++</span><span class="p">;</span><span class="w">      </span><span class="c1">// ❌ 数组名不是可修改的左值</span>
+<span class="n">p</span><span class="o">++</span><span class="p">;</span><span class="w">      </span><span class="c1">// ✔</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="95-指针的分类" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>9.5 指针的分类</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>例子</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>普通指针</strong></td>
+<td><code>int *p</code></td>
+<td>指向一个 int 变量</td>
+</tr>
+<tr>
+<td><strong>数组指针</strong></td>
+<td><code>int (*p)[10]</code></td>
+<td>指向<strong>整个数组</strong>（含行数信息）</td>
+</tr>
+<tr>
+<td><strong>函数指针</strong></td>
+<td><code>int (*p)(int,int)</code></td>
+<td>指向函数</td>
+</tr>
+<tr>
+<td><strong>字符指针</strong></td>
+<td><code>char *p</code></td>
+<td>常用于字符串操作</td>
+</tr>
+<tr>
+<td><strong>空指针</strong></td>
+<td><code>NULL</code> / <code>0</code></td>
+<td>不能解引用</td>
+</tr>
+<tr>
+<td><strong>野指针</strong></td>
+<td>未初始化的 <code>int *p;</code></td>
+<td><span class="badge b-error">易错点</span> 指向随机地址，解引用会崩溃</td>
+</tr>
+<tr>
+<td><strong>悬空指针</strong></td>
+<td>已释放内存的指针</td>
+<td><span class="badge b-error">易错点</span> 解引用是未定义行为</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-error">
+<p><span class="badge b-error">易错点</span> <strong>易错点 37（野指针）</strong>：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="w">          </span><span class="cm">/* ⚠️ p 的值是随机垃圾 */</span>
+<span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">        </span><span class="c1">// ❌ 可能崩溃</span>
+</code></pre></div>
+<strong>必须初始化</strong>：<code>int *p = NULL;</code> 或 <code>int *p = &amp;a;</code></p>
+<p><span class="badge b-error">易错点</span> <strong>易错点 38（数组名 vs 指针）</strong>：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">          </span><span class="c1">// ❌ 语法错误：数组名不可赋值</span>
+<span class="n">strcpy</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w">   </span><span class="c1">// ✔</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="96-指针与函数" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>9.6 指针与函数</h3>
+<h4 id="961-用指针实现输出多个值">9.6.1 用指针实现"输出多个值"</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">void</span><span class="w"> </span><span class="nf">aver</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">student</span><span class="w"> </span><span class="n">stu</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">count</span><span class="p">);</span>
+<span class="cm">/* 调用 */</span>
+<span class="n">aver</span><span class="p">(</span><span class="n">stu</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="o">&amp;</span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">c</span><span class="p">);</span>
+</code></pre></div>
+<h4 id="962-函数返回指针">9.6.2 函数返回指针</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">getStr</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"hello"</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">buf</span><span class="p">;</span><span class="w">      </span><span class="cm">/* 返回首地址 */</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote class="callout c-plain">
+<p>⚠️ <strong>不能返回局部变量的地址</strong>（函数返回后栈帧销毁 → 悬空指针）。</p>
+</blockquote>
+<h4 id="963-函数指针">9.6.3 函数指针</h4>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fp</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span><span class="w">     </span><span class="cm">/* 指向"两个 int 参数、返回 int"的函数 */</span>
+<span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">fp</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">));</span>
+</code></pre></div>
+<h3 id="97-指针运算实战数组最大值">9.7 指针运算实战：数组最大值</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pmax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">pmax</span><span class="p">)</span><span class="w"> </span><span class="n">pmax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"max=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pmax</span><span class="p">);</span>
+</code></pre></div>
+<blockquote class="callout c-tip">
+<p><span class="badge b-tip">辨析延伸</span> 教材 <code>lt09-03.c</code> 用<strong>指针交换</strong>来实现求最大最小值：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="p">;</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="cm">/* 交换指针的指向 */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"max=%d,min=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">);</span>
+</code></pre></div>
+注意：这里 <strong>a、b 的值没有变</strong>，只是 p1、p2 指向变了。</p>
+</blockquote>
+<h3 id="98-指针常见错误速查" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>9.8 指针常见错误速查</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int *p; *p = 5;</code></td>
+<td>野指针，未初始化</td>
+</tr>
+<tr>
+<td><code>int a[3]; a = b;</code></td>
+<td>数组名不可赋值</td>
+</tr>
+<tr>
+<td><code>scanf("%s", &amp;str);</code></td>
+<td>数组名不需 <code>&amp;</code></td>
+</tr>
+<tr>
+<td><code>char *p = "abc"; p[0]='X';</code></td>
+<td>修改字符串常量，未定义行为</td>
+</tr>
+<tr>
+<td><code>int *p = &amp;a; p = p + 1;</code> 后再 <code>*p</code></td>
+<td>越界（若 p 已指向数组末尾）</td>
+</tr>
+<tr>
+<td><code>int **pp; **pp;</code></td>
+<td>二级指针未初始化</td>
+</tr>
+<tr>
+<td><code>return &amp;local_var;</code></td>
+<td>返回局部变量地址 → 悬空指针</td>
+</tr>
+<tr>
+<td><code>free(p)</code> 后再用 <code>p</code></td>
+<td>释放后未置 NULL → 悬空指针</td>
+</tr>
+</tbody>
+</table></div>
+<hr />

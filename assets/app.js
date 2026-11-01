@@ -1,10 +1,12 @@
-
 (function(){
   var $=function(s){return document.querySelector(s)};
   var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
   var toc=$('.toc'), side=$('.side'), mask=$('.mask');
   var topBtn=$('#topbtn');
   var input=$('#q'), sres=$('#sres'), srch=$('.srch');
+  var contentEl=$('#content');
+  var MF=window.CK_MANIFEST||[], HM=window.CK_HEADMAP||{};
+  var cache={}, lastIdx=-1, loadingNext=false;
 
   /* ---------- 目录折叠 ---------- */
   function closeAll(){
@@ -25,44 +27,102 @@
     if(el && el.querySelector(':scope > .kids')) el.classList.add('open');
     return el;
   }
-  function openTo(id){
-    var el=toc.querySelector('.node[data-id="'+id+'"]');
-    if(!el) return;
-    while(el && el!==toc){
-      if(el.classList.contains('node')) el.classList.add('open');
-      el=el.parentElement;
-    }
-  }
   /* ---------- 折叠块辅助：跳转目标在 <details> 内时自动展开 ---------- */
   function ensureVisible(el){
     var d=el && el.closest ? el.closest('details') : null;
     if(d && !d.open) d.open=true;
   }
 
+  /* ================================================================
+     分章内容加载（懒加载 + 向下续载）
+     index.html 只含外壳；正文按章节存于 assets/content/*.html，
+     由 CK_MANIFEST 给出顺序，CK_HEADMAP 把标题锚点映射到片段序号。
+     ================================================================ */
+  function furl(i){ return 'assets/content/' + MF[i].f; }
+  function fetchChunk(i, cb){
+    if(cache[i]!==undefined){ cb(cache[i]); return; }
+    fetch(furl(i)).then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function(t){ cache[i]=t; cb(t); })
+      .catch(function(){
+        contentEl.insertAdjacentHTML('beforeend',
+          '<div class="callout c-error" style="margin:30px 0"><b>内容加载失败</b>'
+          +'：本站正文按章节分文件加载，需通过 HTTP 访问（GitHub Pages、线上地址，'
+          +'或本地运行 <code>python -m http.server</code>）；直接双击 index.html 无法加载。</div>');
+      });
+  }
+  function rebindHeads(){
+    heads=$$('.main h1,.main h2,.main h3,.main h4');
+  }
+  function afterInject(anchor){
+    rebindHeads();
+    if(anchor){
+      var el=document.getElementById(anchor);
+      if(el){ ensureVisible(el); el.scrollIntoView({block:'start'}); }
+      else window.scrollTo(0,0);
+    }
+    maybeAppend();
+  }
+  function show(i, anchor){
+    fetchChunk(i, function(t){
+      contentEl.innerHTML = t;
+      lastIdx = i;
+      var next = i+1;
+      if(next < MF.length){
+        fetchChunk(next, function(t2){
+          if(lastIdx === i){                  // 期间未被其他跳转替换
+            contentEl.insertAdjacentHTML('beforeend', t2);
+            lastIdx = next;
+          }
+          afterInject(anchor);
+        });
+      } else afterInject(anchor);
+    });
+  }
+  function appendNext(){
+    if(loadingNext || lastIdx+1 >= MF.length) return;
+    loadingNext = true;
+    var i = lastIdx+1;
+    fetchChunk(i, function(t){
+      loadingNext = false;
+      if(i === lastIdx+1){
+        contentEl.insertAdjacentHTML('beforeend', t);
+        lastIdx = i;
+        onScroll();
+      }
+    });
+  }
+  function maybeAppend(){
+    var doc=document.documentElement;
+    if(doc.scrollHeight - window.innerHeight - window.scrollY < 900) appendNext();
+  }
+
+  /* ---------- 跳转（目录 / 搜索共用） ---------- */
+  function go(id){
+    if(HM[id]===undefined) return;
+    collapseTo(id);
+    setCur(id);
+    var el=document.getElementById(id);
+    if(el){ ensureVisible(el); el.scrollIntoView({block:'start'}); }
+    else show(HM[id], id);
+    savePos(id);
+    if(window.innerWidth<=1024){ side.classList.remove('open'); mask.classList.remove('on'); }
+  }
+
   toc.addEventListener('click',function(e){
     var tw=e.target.closest('.tw');
     if(tw){
-      var n=tw.closest('.node');
-      n.classList.toggle('open');
+      tw.closest('.node').classList.toggle('open');
       e.preventDefault();
       return;
     }
     var a=e.target.closest('a.tx');
-    if(a){
-      var id=a.getAttribute('href').slice(1);
-      // 跳转到该节：展开其祖先链，其余分支自动折叠
-      collapseTo(id);
-      var tgt=document.getElementById(id);
-      ensureVisible(tgt);            // 目标在折叠块内时先展开
-      setCur(id);
-      if(window.innerWidth<=1024){ side.classList.remove('open'); mask.classList.remove('on'); }
-      return;
-    }
+    if(a){ e.preventDefault(); go(a.getAttribute('href').slice(1)); }
   });
 
-  /* ---------- 当前项高亮 ---------- */
-  var heads=$$('.main>h1,.main>h2,.main>h3,.main>h4');
-  var curId=null;
+  /* ---------- 当前项高亮（滚动联动） ---------- */
+  var heads=[], curId=null;
   function setCur(id){
     if(id===curId) return;
     curId=id;
@@ -80,59 +140,51 @@
   function onScroll(){
     var st=window.scrollY;
     topBtn.classList.toggle('on',st>500);
-    // 当前小节
-    var y=st+130, best=heads[0];
+    var y=st+130, best=null;
     for(var i=0;i<heads.length;i++){
       if(heads[i].offsetTop<=y) best=heads[i]; else break;
     }
     if(best) setCur(best.id);
+    maybeAppend();
   }
-  window.addEventListener('scroll',onScroll,{passive:true});
-  onScroll();
 
   topBtn.addEventListener('click',function(){
     window.scrollTo(0,0);
-    try{localStorage.setItem(RKEY,'0')}catch(e){}
+    if(lastIdx!==0) show(0,null);
+    savePos('');
   });
 
-  /* ---------- 阅读进度：localStorage 自动保存 / 恢复 ---------- */
+  /* ---------- 阅读进度：localStorage 保存当前锚点 ---------- */
   var RKEY='c-kb-progress', saveT=null;
-  try{
-    var _sy=parseInt(localStorage.getItem(RKEY)||'0',10);
-    if(_sy>50){
-      window.addEventListener('load',function(){
-        setTimeout(function(){ window.scrollTo(0,_sy); onScroll(); },60);
-      });
-    }
-  }catch(e){}
+  function savePos(id){
+    try{ localStorage.setItem(RKEY,id||''); }catch(e){}
+  }
   window.addEventListener('scroll',function(){
     if(saveT) return;
     saveT=setTimeout(function(){
       saveT=null;
-      try{localStorage.setItem(RKEY,String(window.scrollY))}catch(e){}
+      if(curId) savePos(curId);
     },250);
   },{passive:true});
 
-  /* ---------- 搜索索引 ---------- */
-  var idx=[];
-  (function(){
-    var cs=$$('.main>*'), cur=null;
-    cs.forEach(function(el){
-      if(/^H[1-4]$/.test(el.tagName)){
-        cur={id:el.id,t:el.textContent.trim(),lv:+el.tagName[1],body:[]};
-        idx.push(cur);
-      }else if(cur){ cur.body.push(el.textContent.trim()); }
-    });
-    idx.forEach(function(x){ x.s=x.body.join(' ').replace(/\s+/g,' ').slice(0,200); });
-  })();
-
+  /* ---------- 搜索（索引懒加载） ---------- */
+  var sReady=false, pendQ=null, sel=-1, results=[];
+  function ensureSearch(cb){
+    if(sReady){ cb(); return; }
+    if(pendQ){ pendQ.push(cb); return; }
+    pendQ=[cb];
+    var s=document.createElement('script');
+    s.src='assets/search-index.js';
+    s.onload=function(){ sReady=true; var qs=pendQ; pendQ=null; qs.forEach(function(f){f()}); };
+    s.onerror=function(){ pendQ=null;
+      sres.innerHTML='<div class="none">搜索索引加载失败</div>'; sres.classList.add('on'); };
+    document.head.appendChild(s);
+  }
   function esc(s){return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function hl(s,terms){
     var e=esc(s), re=new RegExp('('+terms.map(function(t){return t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}).join('|')+')','gi');
     return e.replace(re,'<mark>$1</mark>');
   }
-
-  var sel=-1, results=[];
   function doSearch(){
     var q=input.value.trim().toLowerCase();
     srch.classList.toggle('has',!!q);
@@ -141,8 +193,12 @@
       $$('.node').forEach(function(n){n.classList.remove('match')});
       return;
     }
+    ensureSearch(function(){ runSearch(q); });
+  }
+  function runSearch(q){
     var terms=q.split(/\s+/).filter(Boolean);
-    results=idx.filter(function(x){
+    var IDX=window.CK_SEARCH||[];
+    results=IDX.filter(function(x){
       var t=x.t.toLowerCase();
       return terms.every(function(w){return t.indexOf(w)!==-1 || x.s.toLowerCase().indexOf(w)!==-1;});
     }).slice(0,40);
@@ -155,7 +211,6 @@
       if(n){
         n.classList.add('match');
         if(!firstMatch) firstMatch=n;
-        // 标记祖先链，保证命中项在折叠树里可见
         var p=n.parentElement;
         while(p && p!==toc){
           if(p.classList.contains('node')){
@@ -195,13 +250,8 @@
     var a=e.target.closest('.r'); if(!a) return;
     e.preventDefault();
     var r=results[+a.dataset.i];
-    var el=document.getElementById(r.id);
-    if(el){
-      ensureVisible(el);           // 目标在折叠块内时先展开
-      collapseTo(r.id);          // 其他分支自动折叠
-      el.scrollIntoView({block:'start'});
-    }
     sres.classList.remove('on');
+    go(r.id);
   });
   document.addEventListener('keydown',function(e){
     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();input.focus();input.select();}
@@ -215,9 +265,9 @@
       }
       if(e.key==='Enter'&&sel>=0){
         e.preventDefault();
-        var r=results[sel]; var t=document.getElementById(r.id);
-        if(t){ ensureVisible(t); collapseTo(r.id); t.scrollIntoView({block:'start'}); }
+        var r=results[sel];
         sres.classList.remove('on');
+        go(r.id);
       }
     }
   });
@@ -252,27 +302,31 @@
   });
   mask.addEventListener('click',function(){ side.classList.remove('open'); mask.classList.remove('on'); });
 
-  /* ---------- 代码复制 ---------- */
-  $$('.codeblk').forEach(function(b){
-    var btn=b.querySelector('.ccopy');
-    btn.addEventListener('click',function(){
-      var t=b.querySelector('pre').innerText;
-      navigator.clipboard.writeText(t).then(function(){
-        btn.textContent='已复制'; btn.classList.add('ok');
-        setTimeout(function(){btn.textContent='复制';btn.classList.remove('ok')},1600);
-      });
+  /* ---------- 代码复制（事件委托，内容动态加载也生效） ---------- */
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('.ccopy'); if(!btn) return;
+    var b=btn.closest('.codeblk'); if(!b) return;
+    var t=b.querySelector('pre').innerText;
+    navigator.clipboard.writeText(t).then(function(){
+      btn.textContent='已复制'; btn.classList.add('ok');
+      setTimeout(function(){btn.textContent='复制';btn.classList.remove('ok')},1600);
     });
   });
 
-  /* ---------- 标题 → 篇徽标 ---------- */
-  $$('.main>h1').forEach(function(h){
-    var m=h.textContent.match(/^第\s*(\d+)\s*篇/);
-    if(m){
-      h.innerHTML='<span class="hpart">第 '+m[1]+' 篇</span>'+
-        h.textContent.replace(/^第\s*\d+\s*篇\s*/,'');
-    } else if(/^学习路线篇/.test(h.textContent)){
-      h.innerHTML='<span class="hpart">路线</span>'+
-        h.textContent.replace(/^学习路线篇\s*/,'');
+  /* ---------- 启动：先读进度，再挂滚动监听（避免覆盖进度） ---------- */
+  (function boot(){
+    var target=null;
+    if(location.hash.length>1){
+      try{ target=decodeURIComponent(location.hash.slice(1)); }catch(e){ target=null; }
     }
-  });
+    if(!target){
+      try{ target=localStorage.getItem(RKEY)||''; }catch(e){ target=''; }
+    }
+    if(target && HM[target]!==undefined){
+      go(target);
+    }else{
+      show(0,null);
+    }
+  })();
+  window.addEventListener('scroll',onScroll,{passive:true});
 })();

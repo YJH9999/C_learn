@@ -1,0 +1,209 @@
+<h2 id="第-13-章-位运算" class="rk-hard"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span>第 13 章　位运算</h2>
+<blockquote class="callout c-plain">
+<p>位运算是 C 的特色功能，<strong>在进制转换、压缩存储、硬件交互</strong>中极为有用。考试主要考 <code>&amp;</code>、<code>|</code>、<code>^</code>、<code>~</code>、移位。</p>
+</blockquote>
+<h3 id="131-位运算基础">13.1 位运算基础</h3>
+<p>所有位运算都<strong>只作用于整数类型</strong>。</p>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>运算规则</th>
+<th>示例（a=9=1001, b=5=0101）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;</code></td>
+<td>按位与</td>
+<td>同 1 则 1</td>
+<td><code>9 &amp; 5</code> = <code>1001 &amp; 0101</code> = <strong>0001</strong> = 1</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>按位或</td>
+<td>有 1 则 1</td>
+<td><code>9 | 5</code> = <code>1001 | 0101</code> = <strong>1101</strong> = 13</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>按位异或</td>
+<td><strong>不同则 1</strong></td>
+<td><code>9 ^ 5</code> = <code>1001 ^ 0101</code> = <strong>1100</strong> = 12</td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>按位求反</td>
+<td>各位取反</td>
+<td><code>~9</code> = <code>~1001</code> = <code>...0110</code> = <strong>-10</strong></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td>左移</td>
+<td>各位左移 n 位，<strong>低位补 0</strong></td>
+<td><code>1 &lt;&lt; 3</code> = <strong>8</strong></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td>右移</td>
+<td>各位右移 n 位</td>
+<td><code>8 &gt;&gt; 3</code> = <strong>1</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>异或要点</strong>：<code>a ^ b == 0</code> 当且仅当 <code>a == b</code>；
+<code>a ^ 0 == a</code>（异或 0 不变）；<code>a ^ a == 0</code>（自身异或为 0）；
+<strong>异或一个数两次会抵消</strong>——这是"不借助临时变量交换"的原理。</p>
+</blockquote>
+<h3 id="132-移位运算详解" class="rk-hard-hot"><span class="rkchip rk-hard" title="重难点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/></svg>重难点</span><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>13.2 移位运算详解</h3>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">a</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n</span><span class="w">   </span><span class="cm">/* 等价于 a * 2^n （在不溢出的前提下） */</span>
+<span class="n">a</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">n</span><span class="w">   </span><span class="cm">/* 等价于 a / 2^n （对非负数） */</span>
+</code></pre></div>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>关键点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>左移低位补 0</strong></td>
+<td><code>1 &lt;&lt; 3</code> = <code>1000</code> = 8</td>
+</tr>
+<tr>
+<td><strong>右移高位补 0</strong>（<code>unsigned</code>）</td>
+<td><code>0x80000000u &gt;&gt; 4</code> = <code>0x08000000</code></td>
+</tr>
+<tr>
+<td><strong>右移高位补符号位</strong>（<code>signed</code>）</td>
+<td><code>-16 &gt;&gt; 2</code> = <code>-4</code>（算术右移）</td>
+</tr>
+<tr>
+<td><strong>移位位数 ≥ 类型宽度是未定义行为</strong></td>
+<td><code>1 &lt;&lt; 32</code> 在 int 上是 UB</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p><span class="badge b-hot">高频考点</span> <strong>超经典陷阱</strong>：<code>1 &lt;&lt; 31</code> 会<strong>溢出</strong>（int 最高位是符号位）。
+正确写法：<code>1u &lt;&lt; 31</code> 或 <code>1UL &lt;&lt; 31</code>。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>循环移位</strong>（教材 <code>lt13-07.c</code> 明确演示）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="mi">32</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w">   </span><span class="cm">/* 循环左移 n 位 */</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w">          </span><span class="cm">/* 循环右移 n 位 */</span>
+</code></pre></div></p>
+<p><span class="badge b-hot">高频考点</span> <strong>取某几位</strong>（教材 <code>lt13-08.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">      </span><span class="cm">/* 右移到最低位 */</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x000f</span><span class="p">;</span><span class="w">        </span><span class="cm">/* 或 c = b &amp; ~(~0 &lt;&lt; n);  取低 n 位 */</span>
+</code></pre></div></p>
+<p><span class="badge b-tip">辨析延伸</span> <strong>位域（bit field）</strong>（教材 <code>lt13-06.c</code>）：
+<div class="codeblk inner"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="k">struct</span><span class="w"> </span><span class="nc">bits</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 占 1 位 */</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 占 3 位 */</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 占 4 位 */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pbit</span><span class="p">;</span>
+</code></pre></div>
+位域让结构体成员按<strong>位</strong>分配，节省空间。常用于硬件/协议解析。</p>
+</blockquote>
+<h3 id="133-位运算的实战技巧" class="rk-hot"><span class="rkchip rk-hot" title="高频考点"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>高频考点</span>13.3 位运算的实战技巧</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>技巧</th>
+<th>代码</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>判奇偶</strong></td>
+<td><code>if (n &amp; 1)</code></td>
+<td>最快的奇偶判断</td>
+</tr>
+<tr>
+<td><strong>判 2 的幂</strong></td>
+<td><code>if ((n &amp; (n-1)) == 0)</code></td>
+<td>n &gt; 0 时成立</td>
+</tr>
+<tr>
+<td><strong>交换两个数（不用临时变量）</strong></td>
+<td><code>a^=b; b^=a; a^=b;</code></td>
+<td>原理：异或两次抵消</td>
+</tr>
+<tr>
+<td><strong>提取低 4 位</strong></td>
+<td><code>x &amp; 0x0f</code></td>
+<td>掩码</td>
+</tr>
+<tr>
+<td><strong>设置某位为 1</strong></td>
+<td><code>x |= (1 &lt;&lt; n)</code></td>
+<td>或运算置位</td>
+</tr>
+<tr>
+<td><strong>清零某位</strong></td>
+<td><code>x &amp;= ~(1 &lt;&lt; n)</code></td>
+<td>与非运算清位</td>
+</tr>
+<tr>
+<td><strong>翻转某位</strong></td>
+<td><code>x ^= (1 &lt;&lt; n)</code></td>
+<td>异或翻转</td>
+</tr>
+<tr>
+<td><strong>高低字节交换</strong></td>
+<td><code>(a &lt;&lt; 8) | (a &gt;&gt; 8)</code></td>
+<td>教材 <code>lt13-05.c</code></td>
+</tr>
+<tr>
+<td><strong>二进制输出</strong></td>
+<td>递归逐位 <code>(x &amp; (1 &lt;&lt; (n-1))) &gt;&gt; (n-1)</code></td>
+<td>教材 <code>lt13-09.c</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="codeblk"><div class="codebar"><div class="cbl"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="clabel">C</span></div><button class="ccopy" type="button">复制</button></div><pre class="code"><code><span class="cm">/* 教材 lt13-05.c：把两个字符打包进一个 int */</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="sc">'a'</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="sc">'b'</span><span class="p">;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">;</span>
+<span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">      </span><span class="cm">/* 高 8 位存 a，低 8 位存 b */</span>
+<span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w">           </span><span class="cm">/* 取低 8 位 → 'b' */</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff00</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 取高 8 位 → 'a' */</span>
+</code></pre></div>
+<h3 id="134-位运算易错点">13.4 位运算易错点</h3>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>错误</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>~</code> 作用于浮点数</td>
+<td>语法错误，位运算只支持整数</td>
+</tr>
+<tr>
+<td><code>1 &lt;&lt; 32</code></td>
+<td>移位位数 ≥ 宽度，<strong>未定义行为</strong></td>
+</tr>
+<tr>
+<td><code>1 &lt;&lt; 31</code> 溢出</td>
+<td>应写 <code>1u &lt;&lt; 31</code></td>
+</tr>
+<tr>
+<td>对负数右移</td>
+<td>有符号数右移是<strong>算术右移</strong>（补符号位），结果依实现而定</td>
+</tr>
+<tr>
+<td>混淆 <code>^</code> 与 <code>**</code></td>
+<td><code>^</code> 是<strong>异或</strong>，<code>**</code> 在 C 中不存在（那是 Python）</td>
+</tr>
+<tr>
+<td>忘记 <code>^</code> 是<strong>不同为 1</strong></td>
+<td>不是"相同为 1"</td>
+</tr>
+</tbody>
+</table></div>
+<hr />

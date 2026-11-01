@@ -1,0 +1,112 @@
+<h2 id="03-整数常量与类型速查表">0.3 整数常量与类型速查表</h2>
+<div class="tscroll"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>关键字</th>
+<th style="text-align: center;">字节</th>
+<th>取值范围（典型 32 位 int）</th>
+<th>输出格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字符型</td>
+<td><code>char</code> / <code>signed char</code></td>
+<td style="text-align: center;">1</td>
+<td>−128 ~ 127</td>
+<td><code>%c</code>（字符）/ <code>%d</code>（ASCII）</td>
+</tr>
+<tr>
+<td>无符号字符</td>
+<td><code>unsigned char</code></td>
+<td style="text-align: center;">1</td>
+<td>0 ~ 255</td>
+<td><code>%u</code></td>
+</tr>
+<tr>
+<td>短整型</td>
+<td><code>short</code></td>
+<td style="text-align: center;">2</td>
+<td>−32768 ~ 32767</td>
+<td><code>%hd</code></td>
+</tr>
+<tr>
+<td>无符号短整型</td>
+<td><code>unsigned short</code></td>
+<td style="text-align: center;">2</td>
+<td>0 ~ 65535</td>
+<td><code>%hu</code></td>
+</tr>
+<tr>
+<td>整型</td>
+<td><code>int</code></td>
+<td style="text-align: center;">4</td>
+<td>−2147483648 ~ 2147483647</td>
+<td><code>%d</code></td>
+</tr>
+<tr>
+<td>无符号整型</td>
+<td><code>unsigned int</code></td>
+<td style="text-align: center;">4</td>
+<td>0 ~ 4294967295</td>
+<td><code>%u</code></td>
+</tr>
+<tr>
+<td>长整型</td>
+<td><code>long</code></td>
+<td style="text-align: center;">4 (Win) / 8 (Linux 64)</td>
+<td>同 int 或更大</td>
+<td><code>%ld</code></td>
+</tr>
+<tr>
+<td>无符号长整型</td>
+<td><code>unsigned long</code></td>
+<td style="text-align: center;">4 / 8</td>
+<td>≥ 0</td>
+<td><code>%lu</code></td>
+</tr>
+<tr>
+<td>长长整型</td>
+<td><code>long long</code></td>
+<td style="text-align: center;">8</td>
+<td>±9.22×10¹⁸</td>
+<td><code>%lld</code></td>
+</tr>
+<tr>
+<td>无符号长长整型</td>
+<td><code>unsigned long long</code></td>
+<td style="text-align: center;">8</td>
+<td>0 ~ 1.84×10¹⁹</td>
+<td><code>%llu</code></td>
+</tr>
+<tr>
+<td>单精度浮点</td>
+<td><code>float</code></td>
+<td style="text-align: center;">4</td>
+<td>≈ ±3.4×10³⁸，<strong>有效数字 6~7 位</strong></td>
+<td><code>%f</code></td>
+</tr>
+<tr>
+<td>双精度浮点</td>
+<td><code>double</code></td>
+<td style="text-align: center;">8</td>
+<td>≈ ±1.8×10³⁰⁸，<strong>有效数字 15~17 位</strong></td>
+<td><code>%f</code></td>
+</tr>
+<tr>
+<td>扩展精度浮点</td>
+<td><code>long double</code></td>
+<td style="text-align: center;">8 / 16</td>
+<td>有效数字 18~19 位</td>
+<td><code>%Lf</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="callout c-hot">
+<p>⚠️ <strong>实测提醒</strong>：部分 Windows 编译器（MinGW）对 <code>long double</code> 的 <code>printf</code> 支持不完善，用 <code>%Lf</code> 可能输出异常值。
+<strong>考试与作业建议统一使用 <code>double</code></strong>。</p>
+<p><span class="badge b-hot">高频考点</span> <strong>后缀速记</strong>：<code>L</code>/<code>l</code> → long；<code>LL</code>/<code>ll</code> → long long；<code>U</code>/<code>u</code> → unsigned；<code>F</code>/<code>f</code> → float；无后缀的小数字面量一律是 <strong>double</strong>。
+<span class="badge b-tip">辨析延伸</span> 后缀不写编译器通常也能通过，但<strong>强烈建议写上</strong>：写 <code>1000L</code> 能避免整型溢出，写 <code>3.14F</code> 能避免隐式转换成 double 带来的多余精度。</p>
+</blockquote>
+<hr />
