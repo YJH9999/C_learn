@@ -219,10 +219,17 @@
     var a=e.target.closest('a.tx');
     if(a){
       e.preventDefault();
-      /* 分支标题（有子目录）：只展开/收起详细目录，不跳转；叶子小标题才进入 */
+      /* 分支标题（有子目录）：整棵子树展开/收起，不跳转；叶子小标题才进入 */
       var node=a.closest('.node');
       if(node && node.querySelector(':scope > .kids')){
-        node.classList.toggle('open');
+        if(node.classList.contains('open')){
+          node.classList.remove('open');
+        }else{
+          node.classList.add('open');
+          [].forEach.call(node.querySelectorAll('.node'),function(d){
+            d.classList.add('open');
+          });
+        }
         return;
       }
       go(a.getAttribute('href').slice(1));
