@@ -595,6 +595,45 @@ body.dark .dots i{box-shadow:inset 0 0 0 .5px rgba(255,255,255,.16)}
 }
 .ccopy:hover{color:var(--ac);border-color:var(--ac-dim-2)}
 .ccopy.ok{color:var(--sys-green);border-color:var(--sys-green)}
+.cbr{display:flex;align-items:center;gap:6px}
+.crun{
+  border:.5px solid rgba(52,199,89,.45);background:rgba(52,199,89,.10);color:#1f8a3d;cursor:pointer;
+  font-size:10.5px;font-weight:600;font-family:var(--sans);padding:2px 8px;border-radius:5px;transition:.14s;
+  box-shadow:var(--sh-1);
+}
+.crun:hover{background:rgba(52,199,89,.18);border-color:var(--sys-green)}
+.crun:active{transform:scale(.96)}
+body.dark .crun{color:#5be388;background:rgba(52,199,89,.14)}
+
+/* 一键运行结果面板 */
+.crunbox{margin:0 12px 12px;border:.5px solid var(--line-2);border-radius:10px;
+  background:var(--panel-2-solid);box-shadow:var(--sh-1);overflow:hidden}
+.crunhead{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 10px;border-bottom:.5px solid var(--line);background:var(--panel-2)}
+.crunhint{font:600 10.5px/1 var(--mono);color:var(--fg-3);letter-spacing:.06em}
+.crunclose{border:0;background:none;color:var(--fg-3);cursor:pointer;
+  font-size:10.5px;font-family:var(--sans);padding:2px 6px;border-radius:5px}
+.crunclose:hover{color:var(--fg);background:var(--panel-2)}
+.crunin{
+  display:block;width:100%;box-sizing:border-box;min-height:54px;max-height:160px;resize:vertical;
+  border:0;border-bottom:.5px solid var(--line);background:transparent;outline:none;
+  padding:9px 12px;font:12px/1.6 var(--mono);color:var(--fg);
+}
+.crunin::placeholder{color:var(--fg-3)}
+.crunbtns{display:flex;gap:8px;padding:8px 10px}
+.crunrun{
+  border:0;border-radius:7px;cursor:pointer;padding:4px 16px;
+  font-size:11.5px;font-weight:600;font-family:var(--sans);color:#fff;
+  background:linear-gradient(135deg,#0a84ff,#5e5ce6);box-shadow:var(--sh-2);transition:.14s;
+}
+.crunrun:hover{filter:brightness(1.08)}
+.crunrun:active{transform:scale(.96)}
+.crunout{
+  margin:0;padding:11px 13px;max-height:340px;overflow:auto;
+  border-top:.5px solid var(--line);background:var(--panel-solid);
+  font:12px/1.7 var(--mono);color:var(--fg);
+  white-space:pre-wrap;word-break:break-word;
+}
 pre.code{
   margin:0;padding:14px 16px;overflow-x:auto;font-size:12.6px;line-height:1.62;
   background:transparent;color:#3d3d42;font-variant-ligatures:none;
@@ -966,5 +1005,5 @@ body.dark mark.kw{background:rgba(255,214,10,.36);color:#ffe08a}
 }
 
 @media print{
-  .fbar,.outline,.mbar,.fav,.cexp,.term::after{display:none !important}
+  .fbar,.outline,.mbar,.fav,.cexp,.term::after,.crun,.crunbox{display:none !important}
 }

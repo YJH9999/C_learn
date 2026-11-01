@@ -547,7 +547,7 @@
     var btn=e.target.closest('.ccopy');
     if(btn){
       var b=btn.closest('.codeblk'); if(!b) return;
-      var t=b.querySelector('pre').innerText;
+      var t=b.querySelector('pre').innerText.replace(/\u200b/g,'');
       navigator.clipboard.writeText(t).then(function(){
         btn.textContent='已复制'; btn.classList.add('ok');
         setTimeout(function(){btn.textContent='复制';btn.classList.remove('ok')},1600);
@@ -560,6 +560,107 @@
       var open=blk.classList.toggle('open');
       ex.textContent=open?'收起':'展开全部 '+blk.dataset.lines+' 行';
     }
+  });
+
+  /* ---------- 一键运行：JSCPP 浏览器内解释执行（Worker + 超时保护） ---------- */
+  var LOAD_TIMEOUT=30000, RUN_TIMEOUT=15000, _runWURL=null;
+  /* 引擎寻址：优先同目录 assets/jscpp.js（本地化，秒加载），失败自动回落 CDN。
+     JSCPP bundle 在 Worker 环境自带 onmessage 协议：
+     请求 [id,"run",code,input]；stdout → {type:"stdio.write",data}；结束 {id,err,data|msg} */
+  var _engURL='';
+  try{ _engURL=new URL('assets/jscpp.js',location.href).href; }catch(e){ _engURL=''; }
+  function runWorkerSrc(){ return [
+    "var ENG="+JSON.stringify(_engURL)+";",
+    "var CDNS=['https://cdn.jsdelivr.net/gh/felixhao28/JSCPP@gh-pages/dist/JSCPP.es5.min.js',",
+    "          'https://fastly.jsdelivr.net/gh/felixhao28/JSCPP@gh-pages/dist/JSCPP.es5.min.js'];",
+    "if(ENG)CDNS.unshift(ENG);",
+    "(function load(i){",
+    "  if(i>=CDNS.length){ self.postMessage({err:-1,msg:'运行引擎加载失败，请检查网络后重试'}); return; }",
+    "  try{ importScripts(CDNS[i]); }catch(e){ load(i+1); return; }",
+    "  self.postMessage({type:'ready'});",
+    "})(0);"
+  ].join('\n'); }
+  function needInput(code){ return /scanf\s*\(|cin\s*>>|gets\s*\(|fgets\s*\(|getline/.test(code); }
+  function codeOf(blk){
+    /* 每行是独立 block span，textContent 会丢换行，必须逐行 join */
+    var cls=blk.querySelectorAll('pre code span.cl'), parts=[];
+    for(var i=0;i<cls.length;i++) parts.push(cls[i].textContent);
+    if(!parts.length){
+      var c=blk.querySelector('pre code');
+      return c?c.textContent:'';
+    }
+    return parts.join('\n').replace(/\u200b/g,'');
+  }
+  function runBoxHTML(){ return (
+    '<div class="crunbox" hidden>'
+    +'<div class="crunhead"><span class="crunhint">运行结果</span>'
+    +'<button class="crunclose" type="button">收起</button></div>'
+    +'<textarea class="crunin" rows="3" spellcheck="false" '
+    +'placeholder="输入数据（stdin）——多行就换行写，无输入可留空"></textarea>'
+    +'<div class="crunbtns"><button class="crunrun" type="button">▶ 运行</button></div>'
+    +'<pre class="crunout" hidden></pre></div>'); }
+  function doRun(blk){
+    var box=blk.querySelector('.crunbox'), out=box.querySelector('.crunout');
+    var code=codeOf(blk), input=box.querySelector('.crunin').value;
+    if(blk._rw){ blk._rw.terminate(); blk._rw=null; }
+    if(!_runWURL) _runWURL=URL.createObjectURL(new Blob([runWorkerSrc()],{type:'text/javascript'}));
+    var w=new Worker(_runWURL); blk._rw=w;
+    var done=false, buf='';
+    out.hidden=false;
+    out.textContent='⏳ 正在加载运行引擎…（约 600KB，仅首次需等待）';
+    var finish=function(t){ if(done)return; done=true; clearTimeout(timer); w.terminate();
+      out.textContent=t; };
+    /* 两段计时：引擎加载 30s，程序运行 15s */
+    var timer=setTimeout(function(){
+      finish('⏰ 引擎加载超时，请检查网络后重试。'); },LOAD_TIMEOUT);
+    var armed=false;
+    function armRun(){
+      if(armed)return; armed=true; clearTimeout(timer);
+      timer=setTimeout(function(){
+        finish('⏰ 运行超过 15 秒，可能存在死循环，已终止。'); },RUN_TIMEOUT);
+    }
+    w.onmessage=function(msg){
+      var d=msg.data||{};
+      if(d&&d.type==='ready'){ armRun(); if(!buf) out.textContent='⏳ 正在运行…'; return; }
+      if(d&&d.type==='stdio.write'){ buf+=d.data; return; }
+      if(!done && d.err===-1 && d.id===undefined){
+        finish('✕ '+(d.msg||'运行引擎加载失败')); return; }
+      if(d.id===undefined) return;
+      armRun();
+      if(d.err){ finish((buf?buf+'\n':'')+'✕ 运行出错：'+(d.msg||'未知错误')); return; }
+      var t=buf||'（无输出）';
+      if(d.data===0) t+='\n\n[程序正常结束，返回码 0]';
+      else if(d.data!==undefined) t+='\n\n[程序结束，返回码 '+d.data+']';
+      finish(t);
+    };
+    w.onerror=function(e){
+      finish((buf?buf+'\n':'')+'✕ 运行出错：'+(e.message||'未知错误')); };
+    w.postMessage([1,'run',code,input,{unsigned_overflow:'warn'}]);
+  }
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('.crun');
+    if(!btn) return;
+    var blk=btn.closest('.codeblk'); if(!blk) return;
+    var box=blk.querySelector('.crunbox');
+    if(!box){
+      blk.insertAdjacentHTML('beforeend',runBoxHTML());
+      box=blk.querySelector('.crunbox');
+      box.querySelector('.crunrun').addEventListener('click',function(){ doRun(blk); });
+      box.querySelector('.crunclose').addEventListener('click',function(){
+        box.hidden=true; if(blk._rw){ blk._rw.terminate(); blk._rw=null; } });
+      if(needInput(codeOf(blk)))
+        box.querySelector('.crunin').placeholder='检测到 scanf/cin：先在上方填入输入数据（每个数据一行或空格分隔）';
+    }
+    var show=box.hidden;
+    box.hidden=!show;
+    if(show){
+      if(needInput(codeOf(blk)) && !box.querySelector('.crunin').value.trim()){
+        box.querySelector('.crunout').hidden=true;
+        box.querySelector('.crunin').focus();
+      }else{
+        doRun(blk);
+      }
+    }else if(blk._rw){ blk._rw.terminate(); blk._rw=null; }
   });
 
   /* ---------- 收藏星标（事件委托） ---------- */
