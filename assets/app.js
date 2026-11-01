@@ -593,12 +593,14 @@
   }
   function runBoxHTML(){ return (
     '<div class="crunbox" hidden>'
-    +'<div class="crunhead"><span class="crunhint">运行结果</span>'
+    +'<div class="crunhead"><span class="crunhint">运行终端</span>'
     +'<button class="crunclose" type="button">收起</button></div>'
-    +'<textarea class="crunin" rows="3" spellcheck="false" '
-    +'placeholder="输入数据（stdin）——多行就换行写，无输入可留空"></textarea>'
+    +'<div class="crunsec"><span class="crunlab">输入<i>stdin</i></span>'
+    +'<textarea class="crunin" rows="2" spellcheck="false" '
+    +'placeholder="在此填入输入数据（空格或换行分隔），无输入可留空"></textarea></div>'
     +'<div class="crunbtns"><button class="crunrun" type="button">▶ 运行</button></div>'
-    +'<pre class="crunout" hidden></pre></div>'); }
+    +'<div class="crunsec cout" hidden><span class="crunlab">输出<i>stdout</i></span>'
+    +'<pre class="crunout"></pre></div></div>'); }
   function doRun(blk){
     var box=blk.querySelector('.crunbox'), out=box.querySelector('.crunout');
     var code=codeOf(blk), input=box.querySelector('.crunin').value;
@@ -606,7 +608,7 @@
     if(!_runWURL) _runWURL=URL.createObjectURL(new Blob([runWorkerSrc()],{type:'text/javascript'}));
     var w=new Worker(_runWURL); blk._rw=w;
     var done=false, buf='';
-    out.hidden=false;
+    box.querySelector('.crunsec.cout').hidden=false;
     out.textContent='⏳ 正在加载运行引擎…（约 600KB，仅首次需等待）';
     var finish=function(t){ if(done)return; done=true; clearTimeout(timer); w.terminate();
       out.textContent=t; };
@@ -649,13 +651,17 @@
       box.querySelector('.crunclose').addEventListener('click',function(){
         box.hidden=true; if(blk._rw){ blk._rw.terminate(); blk._rw=null; } });
       if(needInput(codeOf(blk)))
-        box.querySelector('.crunin').placeholder='检测到 scanf/cin：先在上方填入输入数据（每个数据一行或空格分隔）';
+        box.querySelector('.crunin').placeholder='检测到 scanf/cin：请在此填入输入数据（每个数据一行或空格分隔）后点 ▶ 运行';
     }
     var show=box.hidden;
     box.hidden=!show;
     if(show){
+      /* 展开折叠的长代码，避免渐隐遮罩盖住运行面板 */
+      blk.classList.add('open');
+      var ex=blk.querySelector('.cexp');
+      if(ex) ex.textContent='收起';
       if(needInput(codeOf(blk)) && !box.querySelector('.crunin').value.trim()){
-        box.querySelector('.crunout').hidden=true;
+        box.querySelector('.crunsec.cout').hidden=true;
         box.querySelector('.crunin').focus();
       }else{
         doRun(blk);
