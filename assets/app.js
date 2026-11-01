@@ -206,7 +206,7 @@
     }
     else show(HM[id], id, terms);
     savePos(id);
-    if(window.innerWidth<=1024){ side.classList.remove('open'); mask.classList.remove('on'); }
+    if(window.innerWidth<=1024) closeDrawer();
   }
 
   toc.addEventListener('click',function(e){
@@ -497,13 +497,21 @@
   });
 
   /* ---------- 移动端：抽屉 + 底部工具栏 + 右滑关闭 ---------- */
-  $('#mob').addEventListener('click',function(){
-    side.classList.toggle('open'); mask.classList.toggle('on');
-  });
-  mask.addEventListener('click',function(){ side.classList.remove('open'); mask.classList.remove('on'); });
-  $('#mb-toc').addEventListener('click',function(){
-    side.classList.toggle('open'); mask.classList.toggle('on');
-  });
+  /* 统一开关：body.drawer-open 同步控制底部工具栏隐藏，避免遮住抽屉内容 */
+  function openDrawer(){
+    side.classList.add('open'); mask.classList.add('on');
+    document.body.classList.add('drawer-open');
+  }
+  function closeDrawer(){
+    side.classList.remove('open'); mask.classList.remove('on');
+    document.body.classList.remove('drawer-open');
+  }
+  function toggleDrawer(){
+    if(side.classList.contains('open')) closeDrawer(); else openDrawer();
+  }
+  $('#mob').addEventListener('click',toggleDrawer);
+  mask.addEventListener('click',closeDrawer);
+  $('#mb-toc').addEventListener('click',toggleDrawer);
   $('#mb-q').addEventListener('click',function(){
     window.scrollTo({top:0,behavior:'smooth'});
     setTimeout(function(){ input.focus(); },80);
@@ -518,7 +526,7 @@
       if(x0===null) return;
       var dx=e.touches[0].clientX-x0, dy=e.touches[0].clientY-y0;
       if(dx>64 && Math.abs(dx)>Math.abs(dy)*1.4){
-        side.classList.remove('open'); mask.classList.remove('on');
+        closeDrawer();
         x0=null;
       }
     },{passive:true});
