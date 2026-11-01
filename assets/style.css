@@ -110,9 +110,9 @@ body{
   font-feature-settings:"kern","liga","calt";
   background:var(--bg);
 }
-/* 桌面壁纸式柔光背景 */
+/* 桌面壁纸式柔光背景（-1：垫在全部内容之下，wrap 不得再建 stacking context） */
 body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;
   background:
     radial-gradient(1100px 620px at 8% -12%,var(--bg-grad-1),transparent 62%),
     radial-gradient(900px 560px at 96% -6%,var(--bg-grad-2),transparent 64%),
@@ -241,7 +241,7 @@ body.dark .sres .rt mark,body.dark .sres .rs mark{background:rgba(255,214,10,.30
 /* ==========================================================================
    布局 + 侧栏
    ========================================================================== */
-.wrap{display:flex;align-items:flex-start;position:relative;z-index:1}
+.wrap{display:flex;align-items:flex-start;position:relative}
 
 .side{
   position:sticky;top:var(--tb-h);width:var(--sb);flex:none;height:calc(100vh - var(--tb-h));
