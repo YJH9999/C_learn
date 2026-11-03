@@ -63,6 +63,7 @@ function lget(k,d){ try{var s=localStorage.getItem(k); return s?JSON.parse(s):d}
 
 /* ---------- 数据惰性加载 ---------- */
 var DATA={review:null, theory:null, prog:null};
+var BK={kind:'theory', bound:false, loaded:{}};   /* 题库浏览状态（须先于 showView 初始化） */
 var loading={};
 var EXFILE={review:'review_data', theory:'theory_bank', prog:'prog_bank'};
 function loadJSON(name, cb){
@@ -100,12 +101,14 @@ function showView(v){
   if(v==='review')  loadJSON('review', renderReview);
   if(v==='theory')  loadJSON('theory', renderTheory);
   if(v==='prog')    loadJSON('prog',   renderProg);
+  if(v==='bank')    loadBank();
 }
+var VIEWS=['review','theory','prog','bank'];
 var h0=(location.hash||'').replace('#','');
-showView(['review','theory','prog'].indexOf(h0)>=0?h0:'review');
+showView(VIEWS.indexOf(h0)>=0?h0:'review');
 window.addEventListener('hashchange',function(){
   var h=(location.hash||'').replace('#','');
-  if(['review','theory','prog'].indexOf(h)>=0 &&
+  if(VIEWS.indexOf(h)>=0 &&
      !$('#view-'+h).classList.contains('on')) showView(h);
 });
 
@@ -334,6 +337,7 @@ function renderTheoryPaper(){
     '<div class="ex-paperbar"><span>共 <b>'+p.qs.length+'</b> 题 · 已答 <b id="th-done">0</b>'
     +' · 用时 <b id="th-time">0:00</b></span>'
     +'<button class="btn btn-sm" id="th-abort">放弃本卷</button>'
+    +'<button class="btn btn-sm" id="th-peek">看答案</button>'
     +'<button class="btn btn-primary" id="th-submit">交卷</button></div>'
     +'<div class="ex-qs">'+p.qs.map(qHTML).join('')+'</div>';
   document.getElementById('th-done').textContent='0';
@@ -356,9 +360,11 @@ function renderTheoryPaper(){
   $('#th-abort').addEventListener('click',function(){
     if(confirm('放弃本次作答？')) renderTheorySetup(DATA.theory);
   });
+  /* 不想作答：直接看全部答案与解析（不计分、不入错题本） */
+  $('#th-peek').addEventListener('click',function(){ renderTheoryPeek(p); });
   $('#th-submit').addEventListener('click',function(){
     var un=p.qs.length - (+$('#th-done').textContent);
-    if(un>0 && !confirm('还有 '+un+' 题未作答，确定交卷？')) return;
+    if(un>0 && !confirm('还有 '+un+' 题未作答（未答题目按 0 分计，交卷后显示正确答案与解析），确定交卷？')) return;
     gradeTheory();
   });
   window.scrollTo(0,0);
@@ -403,14 +409,44 @@ function gradeTheory(){
     score:score,total:total,pct:pct,
     date:new Date().toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})
   }))}catch(e){}
-  /* 错题并入 localStorage（去重，保留最近 120 道） */
+  /* 错题并入 localStorage（去重，保留最近 120 道；未作答的题不算错题） */
   var wrong=lget('ex-th-wrong',[]);
   results.forEach(function(r){
-    if(!r.ok && wrong.indexOf(r.q.id)<0) wrong.push(r.q.id);
+    if(!r.ok && r.ua!==null && wrong.indexOf(r.q.id)<0) wrong.push(r.q.id);
     if(r.ok){ var ix=wrong.indexOf(r.q.id); if(ix>=0) wrong.splice(ix,1); }
   });
   lstore('ex-th-wrong',wrong.slice(-120));
   renderTheoryResult(p,result,false);
+}
+/* ---- 不作答直接看答案：不计分、不入错题本 ---- */
+function renderTheoryPeek(p){
+  TH.stage='result';
+  $('#th-stage').innerHTML=
+    '<div class="ex-scorecard pass"><div class="big">答案</div>'
+    +'<div class="mid">未计分 · 答案速览</div>'
+    +'<div class="sub">本次未作答直接查看，不计成绩、不记入错题本</div>'
+    +'<div class="acts"><button class="btn btn-primary" id="th-back2">返回组卷</button></div></div>'
+    +'<div class="ex-qs">'+p.qs.map(function(q,i){
+      var h='<article class="ex-q graded ok" data-i="'+i+'">'
+        +'<div class="ex-qh"><b>'+(i+1)+'</b>'
+        +'<span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
+        +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
+        +'<span class="ex-mark">答案</span></div>'
+        +'<div class="ex-stem">'+inl(q.stem)+'</div>';
+      if(q.code) h+='<pre class="ex-code">'+esc(q.code)+'</pre>';
+      if(q.type==='single'){
+        h+='<div class="ex-opts">'+q.options.map(function(o,j){
+          return '<label class="ex-opt'+(j===q.answer?' right':'')
+            +'"><input type="radio" disabled><i>'+String.fromCharCode(65+j)+'．</i>'+inl(o)+'</label>';
+        }).join('')+'</div>';
+      }else{
+        h+='<div class="ex-ansline">正确答案：<b class="ok">'+esc(ansText(q))+'</b></div>';
+      }
+      h+='<div class="ex-exp"><b>解析</b>'+inl(q.explanation||'')+'</div></article>';
+      return h;
+    }).join('')+'</div>';
+  $('#th-back2').addEventListener('click',function(){ renderTheorySetup(DATA.theory); });
+  window.scrollTo(0,0);
 }
 function renderTheoryResult(p,res,isReplay){
   TH.stage='result';
@@ -620,5 +656,87 @@ window.addEventListener('scroll',function(){
   topBtn.classList.toggle('on',window.scrollY>500);
 },{passive:true});
 topBtn.addEventListener('click',function(){ window.scrollTo({top:0}); });
+
+/* ============================================================
+   版块四：题库浏览（理论 + 编程，筛选与搜索，答案折叠）
+   ============================================================ */
+
+function loadBank(){
+  loadJSON('theory', function(){ BK.loaded.theory=DATA.theory; renderBank(); });
+  loadJSON('prog',   function(){ BK.loaded.prog=DATA.prog;   renderBank(); });
+  if(!BK.bound){
+    BK.bound=true;
+    /* 章节下拉 */
+    $('#bk-ch').innerHTML='<option value="">全部章节</option>'
+      +CH.map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('');
+    $('#bk-seg').addEventListener('click',function(e){
+      var b=e.target.closest('[data-bk]'); if(!b) return;
+      BK.kind=b.dataset.bk;
+      $$('#bk-seg [data-bk]').forEach(function(x){x.classList.toggle('on',x===b)});
+      $('#bk-lv').hidden=(BK.kind!=='prog');
+      renderBank();
+    });
+    $('#bk-q').addEventListener('input',applyBankFilter);
+    $('#bk-ch').addEventListener('change',applyBankFilter);
+    $('#bk-lv').addEventListener('change',applyBankFilter);
+  }
+}
+
+function bankItem(q,i){
+  if(BK.kind==='theory'){
+    var h='<article class="ex-q bk-it" data-ch="'+q.ch+'" data-lv="0">'
+      +'<div class="ex-qh"><b>'+String(i+1).padStart(3,'0')+'</b>'
+      +'<span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
+      +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
+      +'<span class="ex-tag s">'+esc(q.src||'')+'</span></div>'
+      +'<div class="ex-stem">'+inl(q.stem)+'</div>'
+      +(q.code?'<pre class="ex-code">'+esc(q.code)+'</pre>':'');
+    if(q.type==='single'){
+      h+='<div class="ex-opts">'+q.options.map(function(o,j){
+        return '<label class="ex-opt"><input type="radio" disabled><i>'
+          +String.fromCharCode(65+j)+'．</i>'+inl(o)+'</label>';
+      }).join('')+'</div>';
+    }
+    return h+'<details class="ex-det ans"><summary>答案与解析</summary>'
+      +'<div class="ex-ansline">正确答案：<b class="ok">'+esc(ansText(q))+'</b></div>'
+      +'<div class="ex-exp"><b>解析</b>'+inl(q.explanation||'')+'</div></details></article>';
+  }
+  return '<article class="ex-q bk-it" data-ch="'+q.ch+'" data-lv="'+q.level+'">'
+    +'<div class="ex-qh"><b>'+String(i+1).padStart(3,'0')+'</b>'
+    +'<span class="ex-title">'+esc(q.title)+'</span>'
+    +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
+    +'<span class="ex-tag t">'+LEVEL_NAME[q.level]+'</span>'
+    +'<span class="ex-tag s">'+esc(q.src||'')+'</span></div>'
+    +'<div class="ex-stem">'+inl(q.stem)+'</div>'
+    +(q.hint?'<details class="ex-det"><summary>💡 查看思路提示</summary><p>'+inl(q.hint)+'</p></details>':'')
+    +'<details class="ex-det ans"><summary>参考答案与讲评</summary>'
+    +'<pre class="ex-code">'+esc(q.answer)+'</pre>'
+    +(q.jscpp===false?'<div class="ex-exp">ℹ 该题用到 JSCPP 在线运行暂不支持的功能，请复制到本地编译器运行验证。</div>':'')
+    +'<div class="ex-exp"><b>讲评</b>'+inl(q.explanation||'')+'</div></details></article>';
+}
+
+function renderBank(){
+  var list=$('#bk-list'), data=BK.loaded[BK.kind];
+  if(!data){ list.innerHTML='<div class="ex-empty">正在加载题库…</div>'; return; }
+  list.innerHTML=data.map(bankItem).join('');
+  /* 切换题库时重置筛选，避免旧条件过滤掉全部题目 */
+  $('#bk-q').value=''; $('#bk-ch').value=''; $('#bk-lv').value='0';
+  applyBankFilter();
+}
+
+function applyBankFilter(){
+  var list=$('#bk-list'); if(!list) return;
+  var k=norm($('#bk-q').value), ch=$('#bk-ch').value, lv=+$('#bk-lv').value;
+  var n=0;
+  $$('.bk-it',list).forEach(function(it){
+    var ok=(ch===''||it.dataset.ch===ch)
+      &&(!lv||+it.dataset.lv===lv)
+      &&(!k||norm(it.textContent).indexOf(k)>=0);
+    it.style.display=ok?'':'none';
+    if(ok) n++;
+  });
+  var total=(BK.loaded[BK.kind]||[]).length;
+  $('#bk-cnt').textContent=total?('显示 '+n+' / '+total+' 题'):'';
+}
 
 })();

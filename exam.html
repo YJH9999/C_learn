@@ -25,6 +25,7 @@
     <button data-view="review" class="on" role="tab">理论复习</button>
     <button data-view="theory" role="tab">理论模拟</button>
     <button data-view="prog" role="tab">编程模拟</button>
+    <button data-view="bank" role="tab">题库</button>
   </nav>
 
   <div class="tools">
@@ -79,6 +80,30 @@
       </div>
       <div id="pg-stage"></div>
     </div>
+  </section>
+  <!-- ============ 题库浏览 ============ -->
+  <section class="view" id="view-bank">
+    <div class="ex-hero">
+      <span class="kicker">期末 · 题库浏览</span>
+      <h1>题库全览</h1>
+      <p>浏览全部理论题与编程题，支持按章节、难度与关键词筛选；答案与解析默认折叠，先自查再展开对照。</p>
+    </div>
+    <div class="ex-panel bk-bar">
+      <div class="seg" id="bk-seg" role="group" aria-label="题库切换">
+        <button data-bk="theory" class="on">理论题库</button>
+        <button data-bk="prog">编程题库</button>
+      </div>
+      <input class="ex-filter" id="bk-q" type="search" placeholder="搜索题干 / 答案…" autocomplete="off">
+      <select class="ex-filter" id="bk-ch" aria-label="章节筛选"></select>
+      <select class="ex-filter" id="bk-lv" aria-label="难度筛选" hidden>
+        <option value="0">全部难度</option>
+        <option value="1">★ 基础</option>
+        <option value="2">★★ 中等</option>
+        <option value="3">★★★ 提高</option>
+      </select>
+      <span class="bk-cnt" id="bk-cnt"></span>
+    </div>
+    <div class="ex-qs" id="bk-list"><div class="ex-empty">正在加载题库…</div></div>
   </section>
 
 </main>

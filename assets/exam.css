@@ -89,6 +89,16 @@ select.ex-num{width:auto}
   border:.5px solid var(--line-2);border-radius:8px;background:var(--panel-2);
   color:var(--fg);font-size:12px;outline:none}
 .ex-filter:focus{border-color:var(--ac)}
+
+/* ---- 题库浏览 ---- */
+.bk-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bk-bar .ex-filter{width:auto;flex:1 1 170px;min-width:140px;margin-bottom:0}
+.bk-bar select.ex-filter{flex:0 0 auto;min-width:130px;cursor:pointer}
+.bk-bar .seg{display:flex;flex:none}
+.bk-cnt{margin-left:auto;font:600 11.5px var(--mono);color:var(--fg-3);white-space:nowrap}
+.bk-it .ex-stem{white-space:pre-wrap}
+.bk-it details.ans{margin-top:8px}
+#bk-list .ex-q{margin-bottom:10px}
 .ex-nav{
   display:flex;align-items:center;justify-content:space-between;gap:6px;
   padding:6.5px 10px;border-radius:8px;font-size:12.6px;color:var(--fg);
