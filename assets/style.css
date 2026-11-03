@@ -223,6 +223,25 @@ body.dark .sres .rt mark,body.dark .sres .rs mark{background:rgba(255,214,10,.30
 .tb.ico{padding:0;width:27px;justify-content:center;font-size:13px}
 .mob{display:none}
 
+/* 备考中心下拉（顶栏右侧） */
+.exam-dd{position:relative}
+.exam-dd summary{list-style:none;user-select:none}
+.exam-dd summary::-webkit-details-marker{display:none}
+.exam-dd .dd{
+  position:absolute;right:0;top:calc(100% + 8px);z-index:330;width:218px;
+  background:var(--panel-solid);border:.5px solid var(--line-2);border-radius:12px;
+  box-shadow:var(--sh-4);padding:6px;display:none;
+  animation:exdd .16s cubic-bezier(.32,.72,0,1)}
+.exam-dd[open] .dd{display:block}
+@keyframes exdd{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.exam-dd .dd a{
+  display:flex;flex-direction:column;gap:1px;padding:8px 11px;border-radius:8px;
+  text-decoration:none;color:var(--fg);font-size:12.8px;font-weight:600;transition:.12s}
+.exam-dd .dd a:hover{background:var(--ac-dim);color:var(--ac)}
+.exam-dd .dd a i{
+  font:700 9.5px var(--mono);color:var(--fg-3);font-style:normal;letter-spacing:.1em}
+.exam-dd .dd a b{font-size:11px;font-weight:400;color:var(--fg-3)}
+
 /* 分段控件（浅/深） */
 .seg{
   display:inline-flex;background:var(--panel-2);border:.5px solid var(--line);

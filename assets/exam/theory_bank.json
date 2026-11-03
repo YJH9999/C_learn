@@ -1,0 +1,3369 @@
+[
+ {
+  "id": "t-001",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "一个 C 程序的执行是从（ ）",
+  "options": [
+   "本程序文件的第一个函数开始，到本程序文件的最后一个函数结束",
+   "本程序的 main()函数开始，到本程序文件的最后一个函数结束",
+   "本程序文件的第一个函数开始，到本程序 main()函数结束",
+   "本程序的 main()函数开始，到 main()函数结束"
+  ],
+  "answer": 3,
+  "explanation": "C 程序总是从 main() 函数开始执行，执行完 main() 函数中最后的语句后整个程序结束，与函数在文件中的位置无关。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-002",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "C 语言程序的基本组成单位是（ ）",
+  "options": [
+   "程序",
+   "文件",
+   "语句",
+   "函数"
+  ],
+  "answer": 3,
+  "explanation": "C 程序由一个或多个函数组成，函数是 C 程序的基本组成单位，其中必须有且只能有一个 main() 函数。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-003",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "在一个 C 语言程序中，下列说明正确的是（ ）",
+  "options": [
+   "main()函数必须出现在固定位置",
+   "main()函数可以在任何地方出现",
+   "main()函数必须出现在所有函数之后",
+   "main()函数必须出现在所有函数之前"
+  ],
+  "answer": 1,
+  "explanation": "main() 函数的位置没有限制，可以放在其他函数之前或之后，程序总是从 main() 开始执行。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-004",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "不同于 C++，C 语言源程序的后缀名为（ ）",
+  "options": [
+   ".c",
+   ".obj",
+   ".txt",
+   ".cpp"
+  ],
+  "answer": 0,
+  "explanation": "C 语言源程序文件的后缀名为 .c；.obj 是编译生成的目标文件，.cpp 是 C++ 源文件。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-005",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "C 语言是属于（ ）",
+  "options": [
+   "面向问题语言",
+   "面向对象语言",
+   "面向过程语言",
+   "面向机器语言"
+  ],
+  "answer": 2,
+  "explanation": "C 语言是面向过程的结构化程序设计语言，既具有高级语言的特点又具有低级语言的许多功能。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-006",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "以下叙述不正确的是（ ）",
+  "options": [
+   "C语言是一种结构化程序设计语言",
+   "结构化程序有顺序、分支、循环三种基本结构组成",
+   "使用三种基本结构构成的程序只能解决简单问题",
+   "结构化程序设计提倡模块化的设计方法"
+  ],
+  "answer": 2,
+  "explanation": "由三种基本结构顺序组合、嵌套构成的程序可以解决任何复杂问题，这正是结构化程序设计的基本定理。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-007",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "以下叙述中，正确的是（ ）",
+  "options": [
+   "在对一个 C 语言程序进行编译的过程中，可发现注释中的拼写错误",
+   "C 语言源程序不必通过编译就可以直接运行",
+   "C 语言源程序经编译形成的二进制代码可以直接运行",
+   "在对 C 语言程序进行编译和连接的过程中都可以发现错误"
+  ],
+  "answer": 3,
+  "explanation": "编译阶段可发现语法错误，连接阶段可发现函数未定义等错误；注释在预处理时被删除，其中的拼写错误不会被检查。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-008",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "关于 C 语言程序的设计编写，以下叙述正确的是（ ）",
+  "options": [
+   "C语言编写的程序必须经过编辑、编译、连接，生成可执行文件，才能运行",
+   "C程序设计的三种基本控制结构分别是顺序、循环和数组结构",
+   "C语言程序设计采用面向对象的程序设计方法",
+   "熟练掌握C语言开发环境的调试工具，对于程序的正确编写和运行并不重要"
+  ],
+  "answer": 0,
+  "explanation": "C 源程序是文本文件，必须经过编译生成目标文件、再连接生成可执行文件后才能运行；三种基本结构是顺序、选择、循环。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-009",
+  "ch": "ch1",
+  "type": "judge",
+  "stem": "一个 C 源程序中必须有且只能有一个 main() 函数。",
+  "answer": true,
+  "explanation": "C 程序由函数组成，程序总是从 main() 开始执行，因此每个可运行的 C 程序必须有且只有一个 main() 函数。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-010",
+  "ch": "ch1",
+  "type": "fill",
+  "stem": "C 语言源程序文件（编译前的文本文件）的后缀名是______。",
+  "answer": ".c | c",
+  "explanation": "C 源程序文件的后缀名为 .c，编译后生成 .obj 目标文件，连接后生成 .exe 可执行文件。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-011",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "下列不属于算法基本特征的是（ ）",
+  "options": [
+   "有效性",
+   "确定性",
+   "无限性",
+   "有穷性"
+  ],
+  "answer": 2,
+  "explanation": "算法必须具有有穷性，即执行有限步后终止，\"无限性\"恰恰是算法不允许的。算法还要求确定性、可行性、有输出等特征。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-012",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "下列关于算法的叙述不正确的是（ ）",
+  "options": [
+   "算法是解决问题的有序步骤",
+   "一个问题的算法都只有一种",
+   "算法具有确定性、可行性、有限性等基本特征",
+   "常见的算法描述方法有自然语言、图示法、伪代码法等"
+  ],
+  "answer": 1,
+  "explanation": "同一个问题可以有多种不同的算法，如排序就有冒泡、选择、插入等多种方法。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-013",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "以下不属于对算法的描述方法的是（ ）",
+  "options": [
+   "流程图",
+   "N-S流程图",
+   "自然语言",
+   "函数"
+  ],
+  "answer": 3,
+  "explanation": "常用的算法描述方法有自然语言、流程图、N-S 图、伪代码等；函数是程序的组成部分，不是算法描述工具。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-014",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "结构化程序设计由三种基本结构组成，下面哪个不属于这三种基本结构（ ）",
+  "options": [
+   "顺序结构",
+   "输入、输出结构",
+   "选择结构",
+   "循环结构"
+  ],
+  "answer": 1,
+  "explanation": "三种基本结构是顺序、选择、循环，输入输出是具体操作，不属于程序的控制结构。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-015",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "下列选项中不属于结构化程序设计原则的是（ ）",
+  "options": [
+   "可循环",
+   "自顶向下",
+   "模块化",
+   "逐步求精"
+  ],
+  "answer": 0,
+  "explanation": "结构化程序设计的主要原则是自顶向下、逐步求精、模块化，\"可循环\"不属于其原则。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-016",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "下列选项中不属于结构化程序设计原则的是（ ）",
+  "options": [
+   "模块化",
+   "自顶向下",
+   "可继承",
+   "逐步求精"
+  ],
+  "answer": 2,
+  "explanation": "结构化程序设计原则包括自顶向下、逐步求精、模块化；\"可继承\"是面向对象程序设计的特点。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-017",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "使用计算机解题的步骤，以下描述正确的是（ ）",
+  "options": [
+   "正确理解题意→设计正确算法→寻找解题方法→编写程序→调试运行",
+   "正确理解题意→寻找解题方法→设计正确算法→调试运行→编写程序",
+   "正确理解题意→寻找解题方法→设计正确算法→编写程序→调试运行",
+   "正确理解题意→设计正确算法→寻找解题方法→调试运行→编写程序"
+  ],
+  "answer": 2,
+  "explanation": "正确的过程是：理解题意、寻找解题方法、设计算法、编写程序、最后调试运行。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-018",
+  "ch": "ch2",
+  "type": "judge",
+  "stem": "结构化程序设计的三种基本结构是顺序结构、选择结构和循环结构。",
+  "answer": true,
+  "explanation": "任何算法都可以由顺序、选择、循环三种基本结构组合或嵌套而成，这是结构化程序设计的理论基础。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-019",
+  "ch": "ch2",
+  "type": "judge",
+  "stem": "解决同一个问题的算法只能有一种。",
+  "answer": false,
+  "explanation": "同一问题可以设计出多种不同的算法，例如求最大公约数可用辗转相除法，也可用更相减损法。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-020",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "假设所有变量均为整型，则表达式(a=2,b=5,++a+b++)的值是（ ）",
+  "options": [
+   "7",
+   "9",
+   "8",
+   "2"
+  ],
+  "answer": 2,
+  "explanation": "逗号表达式依次求值：a=2，b=5，++a 使 a=3，b++ 取值 5 后自增，故整个表达式值为 3+5=8。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-021",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "已知字母 A 的 ASCII 码为十进制数 65，且 c2 为字符型变量，则执行语句 c2='A'+'6'-'3' 后，c2 的值为（ ）",
+  "options": [
+   "'D'",
+   "'68'",
+   "不确定的值",
+   "C"
+  ],
+  "answer": 0,
+  "explanation": "字符参加运算时按 ASCII 码：65+'6'-'3'=65+3=68，即字符 'D'。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-022",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "在 C 语言中，要求运算数必须是整型的运算符是（ ）",
+  "options": [
+   "/",
+   "++",
+   "!=",
+   "%"
+  ],
+  "answer": 3,
+  "explanation": "取余运算符 % 要求两个运算对象都是整型；/ 、++ 、!= 均可用于实型数据。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-023",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "已知各变量的类型说明如下：int i=8,k,a,b; double x=1.42,y=5.2; 则以下符合 C 语言语法的表达式是（ ）",
+  "options": [
+   "a+=a-=(b=4)*(a=3)",
+   "a=a*3=2",
+   "x%%(-3)",
+   "y=float(i)"
+  ],
+  "answer": 0,
+  "explanation": "复合赋值表达式可以连续赋值并含括号赋值，语法合法；B 中赋值号左边不能是表达式 a*3，C 中 % 要求整型且无 %% 运算符，D 强制类型转换应写 (float)i。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-024",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下选项中合法的 C 语言字符常量的是（ ）",
+  "options": [
+   "'\\128'",
+   "'ab'",
+   "\"a\"",
+   "'\\x4D'"
+  ],
+  "answer": 3,
+  "explanation": "'\\x4D' 是十六进制转义字符常量，合法；'\\128' 中 8 不是合法八进制数字，'ab' 是多字符，\"a\" 是字符串常量。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-025",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设以下变量均为 int 类型，表达式的值不为 7 的是（ ）",
+  "options": [
+   "(x=y=6,x+y,x+1)",
+   "(x=y=6,x+y,y+1)",
+   "(x=6,x+1,y=6,x+y)",
+   "(y=6,1+y,x=y,x+1)"
+  ],
+  "answer": 2,
+  "explanation": "C 项：x=6，x+1 无赋值效果，y=6，最后 x+y=12；其余三项最终取值均为 7。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-026",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下面四个选项中，均是合法整型常量的选项是（ ）",
+  "options": [
+   "160  -0xffff  011",
+   "-0xcdf  01a  0xe",
+   "-01  986,012  0668",
+   "-0x48a  2e5  0x"
+  ],
+  "answer": 0,
+  "explanation": "A 中 160 是十进制、-0xffff 是十六进制、011 是八进制，均合法；B 中 01a 非法，C 中 986,012 含逗号、0668 中 8 超出八进制数字，D 中 2e5 是实型、0x 不完整。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-027",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "sizeof(float)是（ ）",
+  "options": [
+   "一个单精度型表达式",
+   "一个整型表达式",
+   "一个函数调用",
+   "一个不合法的表达式"
+  ],
+  "answer": 1,
+  "explanation": "sizeof 是求字节数的运算符，其运算结果类型是整型（如 unsigned int），并不是函数调用。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-028",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下选项中不属于 C 语言合法常量的是（ ）",
+  "options": [
+   "\" \"",
+   "0.8e-3",
+   "0xfd",
+   "'\\018'"
+  ],
+  "answer": 3,
+  "explanation": "'\\018' 中八进制转义最多三位且数字只能是 0~7，含 8 非法；\" \" 是空格字符串常量，0.8e-3 是合法实型常量，0xfd 是合法十六进制整型常量。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-029",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下选项中能属于 C 语言合法常量的是（ ）",
+  "options": [
+   "'Aa'",
+   "0.8e-2.5",
+   "\\n",
+   "'\\017'"
+  ],
+  "answer": 3,
+  "explanation": "'\\017' 是合法的八进制转义字符常量；'Aa' 是多字符常量，0.8e-2.5 中指数不能是小数，\\n 不加引号不是常量。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-030",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下列符号中，不符合 C 语言标识符命名规则的是（ ）",
+  "options": [
+   "&a",
+   "FOR",
+   "printf",
+   "_ab"
+  ],
+  "answer": 0,
+  "explanation": "标识符只能由字母、数字、下划线组成且第一个字符不能是数字，& 不能出现在标识符中；FOR、printf、_ab 均合法（printf 是函数名，仍可作标识符）。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-031",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下列符号中，属于 C 语言合法标识符的是（ ）",
+  "options": [
+   "_123",
+   "if",
+   "a-2",
+   "123"
+  ],
+  "answer": 0,
+  "explanation": "标识符由字母、数字、下划线组成且首字符不能为数字；if 是关键字不能作标识符，a-2 含减号。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-032",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "C 语言的运算符按运算对象的数目可以分为（ ）",
+  "options": [
+   "单目运算符一种",
+   "单目和双目运算符",
+   "单目、双目和三目运算符",
+   "单目、双目、三目和四目运算符"
+  ],
+  "answer": 2,
+  "explanation": "按运算对象个数分为单目（如 ++、!）、双目（如 +、&&）和三目运算符（仅 ?: 一个）。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-033",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "运算符有优先级，在 C 语言中关于运算符优先级的正确叙述是（ ）",
+  "options": [
+   "逻辑运算符高于算术运算符，算术运算符高于关系运算符",
+   "算术运算符高于关系运算符，关系运算符高于逻辑运算符",
+   "算术运算符高于逻辑运算符，逻辑运算符高于关系运算符",
+   "关系运算符高于逻辑运算符，逻辑运算符高于算术运算符"
+  ],
+  "answer": 1,
+  "explanation": "一般顺序为：算术运算符 > 关系运算符 > 逻辑运算符（&&、||）> 赋值运算符。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-034",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下列运算符中优先级最高的是（ ）",
+  "options": [
+   "?:",
+   "&&",
+   "+",
+   "!="
+  ],
+  "answer": 2,
+  "explanation": "四者中 + 是算术运算符，优先级最高；优先级顺序为 + > != > && > ?:。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-035",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下运算符中优先级最低的运算符是（ ）",
+  "options": [
+   "&&",
+   "&",
+   "||",
+   "="
+  ],
+  "answer": 3,
+  "explanation": "赋值运算符 = 的优先级低于所列的位运算符和逻辑运算符，是四者中最低的。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-036",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设 a=2,b=3,c=4，则表达式 a+b>c&&b==c&&a||++a-b&&b+c 的值为（ ）",
+  "options": [
+   "5",
+   "7",
+   "0",
+   "1"
+  ],
+  "answer": 2,
+  "explanation": "前半部分 5>4 为 1，但 3==4 为 0，整个 && 链为 0；后半部分 ++a-b 即 3-3=0，后半 && 链也为 0；0||0 的值为 0。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-037",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设有说明 int a,b; 执行语句 b=(a=3*5,a*4),a+15; 后，变量 b 的值为（ ）",
+  "options": [
+   "15",
+   "30",
+   "60",
+   "90"
+  ],
+  "answer": 2,
+  "explanation": "赋值表达式 b=(a=15,a*4)：括号内逗号表达式取 a*4=60 赋给 b，后面的 a+15 不影响 b。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-038",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设有说明 int a=4,b=5,c=6,d=7,m=1,n=1,e; 则执行语句 c=(m=a>b)&&(n=c>d); 后，m 和 n 的值分别为（ ）",
+  "options": [
+   "1、1",
+   "1、0",
+   "0、1",
+   "0、0"
+  ],
+  "answer": 2,
+  "explanation": "m=a>b 即 m=0（假），&& 的左边已为 0，发生短路，右边 n=c>d 不执行，n 保持原值 1。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-039",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "在 C 语言中，int 整型数据在内存中的存储形式是（ ）",
+  "options": [
+   "补码",
+   "反码",
+   "ASCII 码",
+   "原码"
+  ],
+  "answer": 0,
+  "explanation": "有符号整型数据在内存中以补码形式存放，补码便于统一处理加减运算和符号位。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-040",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "C 语言中字符型（char）数据在内存中的存储形式是（ ）",
+  "options": [
+   "原码",
+   "补码",
+   "反码",
+   "ASCII码"
+  ],
+  "answer": 3,
+  "explanation": "char 型数据在内存中存放的是其 ASCII 码值（一个字节的无符号/按编译器解释的整数值）。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-041",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nvoid main()\n{  int i1,i2,i3=241;\n   i1=i3/100%8||0; i2=(-1)&&(3-2);\n   printf(\"%d,%d\\n\",i1,i2);\n}",
+  "options": [
+   "0,1",
+   "1,0",
+   "0,0",
+   "1,1"
+  ],
+  "answer": 3,
+  "explanation": "i3/100=2，2%8=2，非 0 或 0 结果为 1；-1 非 0 且 3-2 非 0，结果为 1，故输出 1,1。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-042",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "假设已有定义：int a=6,b=7; float c=8.0; 则执行语句 c=(a/4)+(b=5); 后，变量 c 的值是（ ）",
+  "options": [
+   "6.5",
+   "6.0",
+   "5.5",
+   "8.0"
+  ],
+  "answer": 1,
+  "explanation": "a/4 是整除得 1，b=5 的赋值表达式值为 5，1+5=6 赋给 float 型 c，即 6.0。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-043",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "执行语句 x=(a=3,b=a++); 后，x,a,b 的值依次为（ ）",
+  "options": [
+   "3,3,2",
+   "2,3,2",
+   "2,3,3",
+   "3,4,3"
+  ],
+  "answer": 3,
+  "explanation": "逗号表达式先 a=3，再 b=a++ 取值 3 后 a 变 4，逗号表达式值 3 赋给 x，故 x=3,a=4,b=3。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-044",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "若变量 a,i 已正确定义，且 i 已正确赋值，合法的语句是（ ）",
+  "options": [
+   "a==1",
+   "++i;",
+   "a=a++=5;",
+   "a+=i"
+  ],
+  "answer": 1,
+  "explanation": "++i; 是合法的表达式语句；a==1 缺分号不是语句，赋值号左边不能是表达式或自增结果，a+=i 也缺分号。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-045",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下面不正确的字符串常量是（ ）",
+  "options": [
+   "'a\\0'",
+   "\"12\\'12\"",
+   "\"0\"",
+   "\"\\0\""
+  ],
+  "answer": 0,
+  "explanation": "'a\\0' 用单引号且含多个字符，既不是合法字符常量更不是字符串常量；字符串常量必须用双引号括起来。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-046",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设有定义 int k=7; 则表达式 k/2*2==k 的值是（ ）",
+  "options": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": 0,
+  "explanation": "k/2=3（整除），3*2=6，6==7 为假，值为 0。该式可用于判断 k 是否为偶数。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-047",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设有定义 int a=2, b=3, c=4; 则表达式 (a>b)+(c>=b) 的值是（ ）",
+  "options": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": 1,
+  "explanation": "关系运算的结果是 0 或 1：a>b 为 0，c>=b 为 1，相加得 1。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-048",
+  "ch": "ch3",
+  "type": "judge",
+  "stem": "取余运算符 % 两侧的运算对象都必须是整型数据。",
+  "answer": true,
+  "explanation": "% 是整型专用运算符，要求两个运算对象都是整型（含 char），实数不能参与取余运算。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-049",
+  "ch": "ch3",
+  "type": "judge",
+  "stem": "字符串常量\"a\"与字符常量'a'在内存中占用相同大小的空间。",
+  "answer": false,
+  "explanation": "字符串常量\"a\"在内存中占 2 个字节（字符 'a' 和结束符 '\\0'），字符常量'a'只占 1 个字节。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-050",
+  "ch": "ch3",
+  "type": "judge",
+  "stem": "C 语言中，int 型数据在内存中以补码形式存放。",
+  "answer": true,
+  "explanation": "有符号整数在内存中以补码存储，正数的补码与原码相同，负数的补码为其反码加 1。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-051",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "若有定义：int a=7; float x=3.5, y=4.7; 则表达式 a%3*(int)(x+y)%3/4 的值为______。",
+  "answer": "0",
+  "explanation": "a%3=1，(int)(8.2)=8，1*8=8，8%3=2，2/4 为整除得 0，整个表达式值为 0。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-052",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "已有定义 int x=5; 则表达式 x+=(x%3) 执行后 x 的值为______。",
+  "answer": "7",
+  "explanation": "x%3=2，x+=2 即 x=x+2=7。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-053",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "已知 int 型数据占 4 个字节，则表达式 sizeof(3.14) 的值为______。",
+  "answer": "8",
+  "explanation": "3.14 是 double 型常量，double 型占 8 个字节，sizeof 结果为 8。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-054",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "设有说明 int j; float x; 则执行语句 x=j=4.8; 后，x 的值为______。",
+  "answer": "4.0 | 4",
+  "explanation": "赋值从右向左：j=4.8 时按 int 截断得 4，再把 4 赋给 float 型 x，x 为 4.0。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-055",
+  "ch": "ch3",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main()\n{\n    int a=5;\n    float x=2.5, y=4.7;\n    printf(\"%f\\n\", x + a%3*(int)(x+y)%2/4);\n    return 0;\n}",
+  "answer": "2.500000",
+  "explanation": "a%3=2，(int)(7.2)=7，2*7=14，14%2=0，0/4=0，x+0=2.5，按 %f 输出为 2.500000。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-056",
+  "ch": "ch3",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main()\n{\n    int a=10, b=3;\n    printf(\"%d %d %f\\n\", a/b, a%b, (float)a/b);\n    return 0;\n}",
+  "answer": "3 1 3.333333",
+  "explanation": "a/b 整除得 3，a%b 得 1，(float)a/b 先把 a 转为实型再除，得 3.333333。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-057",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "下列能实现正确输入字符数组 str 的语句是（ ）",
+  "options": [
+   "scanf(\"%c\",str);",
+   "scanf(\"%s\",&str);",
+   "scanf(\"%s\",str);",
+   "根据数组长度循环执行 scanf(\"%c\",str[i]);"
+  ],
+  "answer": 2,
+  "explanation": "%s 对应的输入项应是数组名（首地址），str 本身就是地址，故 scanf(\"%s\",str) 正确。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-058",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "设 x、y 为整型变量，z 为双精度变量，以下不合法的 scanf 函数调用语句是（ ）",
+  "options": [
+   "scanf(\"%d%lx,%le\",&x,&y,&z);",
+   "scanf(\"%3d%d,%lf\",&x,&y,&z);",
+   "scanf(\"%x%o%5.2f\",&x,&y,&z);",
+   "scanf(\"%d,%d%lf\",&x,&y,&z);"
+  ],
+  "answer": 2,
+  "explanation": "scanf 的格式控制串中不能指定精度，%5.2f 中的 .2 非法；%5d 指定宽度是允许的。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-059",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "已知：int x; float y; 所用的调用语句格式为 scanf(\"x=%d,y=%f\",&x,&y); 则为了将数据 10 和 66.6 分别赋给 x 和 y，正确的输入应当是（ ）",
+  "options": [
+   "x=10,y=66.6<回车>",
+   "10,66.6<回车>",
+   "10<回车>66.6<回车>",
+   "x=10<回车>y=66.6<回车>"
+  ],
+  "answer": 0,
+  "explanation": "scanf 格式串中的普通字符（x=、,、y=）必须原样输入，因此必须按 x=10,y=66.6 的格式输入。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-060",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "设有定义语句 int b; char c[10]; 则下列输入语句正确的是（ ）",
+  "options": [
+   "scanf(\"%d%s\", &b, &c);",
+   "scanf(\"%d%s\", &b, c);",
+   "scanf(\"%d%s\", b, c);",
+   "scanf(\"%d%s\", b, &c);"
+  ],
+  "answer": 1,
+  "explanation": "%d 对应 &b（变量地址），%s 对应数组名 c（本身即地址），不能对数组名再取地址。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-061",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "已知字符 A 的机内码为 65，则执行下列函数调用语句时，不能输出字符 B 的是（ ）",
+  "options": [
+   "putchar('B');",
+   "putchar(\"B\");",
+   "putchar(66);",
+   "putchar('A'+1);"
+  ],
+  "answer": 1,
+  "explanation": "putchar 的参数应是字符的 ASCII 码值，\"B\" 是字符串地址，传入地址无法输出字符 B；其余三项传入的值都是 66。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-062",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "要输出 double 型的数值，需用格式符（ ）",
+  "options": [
+   "%d",
+   "%ld",
+   "%lf",
+   "%f"
+  ],
+  "answer": 2,
+  "explanation": "printf 输出 double 型数据应使用 %lf（scanf 读入 double 也用 %lf）；%f 在 printf 中虽可兼容 double，但按本卷要求 %lf 是标准写法，%d/%ld 用于整型。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-063",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "有以下程序段，当输入为 happy! 时，程序运行后输出结果是（ ）\nchar str[14]={\"I am\"}; strcat(str,\" sad!\");\nscanf(\"%s\",str); printf(\"%s\",str);",
+  "options": [
+   "I am sad!",
+   "happy!",
+   "I am happy!",
+   "happy!sad!"
+  ],
+  "answer": 1,
+  "explanation": "scanf(\"%s\",str) 以空格为分隔，读入 happy! 并从 str 首地址开始存放（覆盖原内容），故输出 happy!。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-064",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "语句 printf(\"%5.2f\", 3.14159); 的输出结果是（ ）（用__表示空格）",
+  "options": [
+   "3.14",
+   "__3.14",
+   "3.1416",
+   "____3.14159"
+  ],
+  "answer": 1,
+  "explanation": "%.2f 保留两位小数得 3.14，宽度 5 恰好包含 4 个字符，左边补 1 个空格，即 __3.14。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-065",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "语句 printf(\"%d%%\", 50); 的输出结果是（ ）",
+  "options": [
+   "50",
+   "50%%",
+   "50%",
+   "%50"
+  ],
+  "answer": 2,
+  "explanation": "格式串中的 %% 表示输出一个百分号本身，故输出 50%。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-066",
+  "ch": "ch4",
+  "type": "judge",
+  "stem": "scanf 函数中，对应 int 型变量的输入项必须写成变量的地址形式，如 &n。",
+  "answer": true,
+  "explanation": "scanf 需要通过地址把读入的数据存入变量，所以一般变量前必须加取地址运算符 &；数组名本身就是地址，可不再加 &。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-067",
+  "ch": "ch4",
+  "type": "judge",
+  "stem": "printf 函数中的格式符 %d 也可以用来输出 double 型数据。",
+  "answer": false,
+  "explanation": "%d 用于输出 int 型数据，double 型应使用 %lf（或 %f）；类型与格式符不匹配会导致输出错误结果。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-068",
+  "ch": "ch4",
+  "type": "fill",
+  "stem": "已有定义 int x; float y; 若要通过语句 scanf(\"%d%f\",&x,&y); 使 x 得到 3、y 得到 2.5，则键盘上应输入（两数之间用空格分隔）：______。",
+  "answer": "3 2.5",
+  "explanation": "格式串中两个格式符之间没有普通字符，输入时数据用空格（或回车、Tab）分隔即可。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-069",
+  "ch": "ch4",
+  "type": "fill",
+  "stem": "已有定义 int a=10, b=20; 请写出按\"a=10,b=20\"的格式输出 a、b 值的 printf 语句：______;（写出完整语句，分号可不写）",
+  "answer": "printf(\"a=%d,b=%d\",a,b)",
+  "explanation": "普通字符 a=、b= 原样输出，两个 %d 分别对应 a 和 b 的值。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-070",
+  "ch": "ch4",
+  "type": "fill",
+  "stem": "语句 printf(\"%03d\", 7); 的输出结果是______。",
+  "answer": "007",
+  "explanation": "%03d 表示输出宽度为 3、不足时左边补 0，故整数 7 输出为 007。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-071",
+  "ch": "ch4",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main()\n{\n    char a[]={'a','b','0','c','d','\\0','g','h','\\0','x','y'},*p;\n    p=a;\n    printf(\"%s\\n\",p);\n    return 0;\n}",
+  "answer": "ab0cd",
+  "explanation": "%s 从首地址开始输出，遇到第 6 个元素 '\\0' 结束，故输出 ab0cd，后面的 ghyx y 不会被输出。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-072",
+  "ch": "ch4",
+  "type": "read",
+  "stem": "下面程序段的运行结果是（写出全部输出）",
+  "code": "char str[20]=\"This is my book\";\nstr[4]='\\0';\nstr[9]='\\0';\nprintf(\"%d %d\\n\",strlen(str),sizeof(str));",
+  "answer": "4 20",
+  "explanation": "str[4]='\\0' 使 strlen 从头数到下标 4 前共 4 个字符；sizeof 求数组总长度 20，与结束符无关。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-073",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有如下程序\nmain()\n{  int a=2,b=-1,c=2;\n   if(a<b)\n   if(b<0) c=0;\n   else c++;\n   printf(\"%d\\n\",c);\n}\n该程序的输出结果是（ ）",
+  "options": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": 2,
+  "explanation": "else 与最近的 if(b<0) 配对。a<b 为假，整个 if 结构都不执行，c 保持 2。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-074",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有如下程序\nvoid main()\n{  int a=2,b=-1,c=2;\n   if(a<b) b++; c++;\n   if(b<0) a++;\n   else c++;\n   printf(\"%d\\n\",c);\n}\n该程序的输出结果是（ ）",
+  "options": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": 3,
+  "explanation": "a<b 为假，b++ 不执行；c++ 独立于 if，c 变 3；b=-1<0 成立，执行 a++ 而不执行 else 的 c++，最终 c=3。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-075",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下程序的输出是（ ）\nvoid main()\n{  int x=2,y=-1,z=2;\n   if (x<y) if (y<0) z=0;\n   else z+=1;\n   printf(\"%d\\n\",z);\n}",
+  "options": [
+   "3",
+   "2",
+   "1",
+   "0"
+  ],
+  "answer": 1,
+  "explanation": "x<y 为假，内层 if 及与其配对的 else 都不执行，z 保持 2。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-076",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "要判断 char 型变量 m 是否是数字字符，可以使用表达式（ ）",
+  "options": [
+   "m>=0 && m<=9",
+   "m>='0' && m<='9'",
+   "m>=\"0\" && m<=\"9\"",
+   "m>=0 || m<=9"
+  ],
+  "answer": 1,
+  "explanation": "数字字符的 ASCII 码在 '0' 到 '9' 之间，应与字符常量比较；m>=\"0\" 是与字符串地址比较，错误。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-077",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "下面能正确表示变量 x 在[-4,4]或(10,20)范围内的表达式是（ ）",
+  "options": [
+   "-4<=x||x<=4||10<x||x<20",
+   "-4<=x&&x<=4||10<x<20",
+   "(-4<=x||x<=4)&&(10<x||x<20)",
+   "-4<=x&&x<=4||10<x&&x<20"
+  ],
+  "answer": 3,
+  "explanation": "两个区间内部用 &&，区间之间用 ||，故为 -4<=x&&x<=4 || 10<x&&x<20；A 只要求满足一个条件即可，B 中 10<x<20 写法错误。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-078",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "能正确表示逻辑关系\"a>=10 或 a<=0\"的 C 语言表达式是（ ）",
+  "options": [
+   "a>=10|a<=0",
+   "a>=10 or a<=0",
+   "a>=10 && a<=0",
+   "a>=10 || a<=0"
+  ],
+  "answer": 3,
+  "explanation": "\"或\"用逻辑或 || 表示；| 是位运算符，or 不是 C 语言关键字。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-079",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "在 C 语言的 if 语句中，可以作为条件判断表达式的是（ ）",
+  "options": [
+   "关系表达式",
+   "任意表达式",
+   "逻辑表达式",
+   "算术表达式"
+  ],
+  "answer": 1,
+  "explanation": "if 的条件可以是任意合法表达式，按其值非 0 为真、0 为假来判断。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-080",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "设 x,y 都为整型变量，下列 if 语句中不正确的是（ ）",
+  "options": [
+   "if(x>y);",
+   "if(x==y) x+=y;",
+   "if(x!=y) scanf(\"%d\",&x) else x=1;",
+   "if(x);"
+  ],
+  "answer": 2,
+  "explanation": "scanf(...) 之后缺少分号，语句不完整时不能接 else，故 C 不正确；if 后可以只写一个分号构成空语句。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-081",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "设有定义：int a=1,b=2,c=3; 以下语句中执行效果与其他三个不同的是（ ）",
+  "options": [
+   "if (a>b) c=a;a=b;b=c;",
+   "if (a>b) {c=a,a=b,b=c;}",
+   "if (a>b) c=a,a=b,b=c;",
+   "if (a>b) {c=a;a=b;b=c;}"
+  ],
+  "answer": 0,
+  "explanation": "A 中 if 只控制 c=a; 两条交换语句无论如何都执行；B、C、D 中三条语句整体受 if 控制。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-082",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "下面有关语句控制流程描述不正确的是（ ）",
+  "options": [
+   "为了避免嵌套的if…else语句的二义性，c语言规定else总是与在其之前未配对的if组成配对关系",
+   "do…while和while循环一样，循环体可以一次都不执行",
+   "只能在循环体内和switch语句体内使用break语句",
+   "while循环的循环体语句中，可以包含多条语句，但必须用花括号{}括起来"
+  ],
+  "answer": 1,
+  "explanation": "do…while 先执行循环体后判断，循环体至少执行一次，B 的说法错误。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-083",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下代码片段的输出是（ ）\nfor(i = 0; i < 3; i++)\n   switch(i)\n   {  case 0:\n      case 2: printf(\"%d\", i); break;\n      default: printf(\"%d\", i);\n   }",
+  "options": [
+   "12",
+   "021",
+   "012",
+   "0122"
+  ],
+  "answer": 2,
+  "explanation": "i=0 时与 case 2 共用输出 0；i=1 走 default 输出 1；i=2 输出 2，共输出 012。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-084",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有如下程序段，当从键盘输入字母 A 时，输出结果为（ ）\nchar ch;\nch=getchar();\nswitch(ch)\n{  case 65: printf(\"%c\",'A');\n   case 66: printf(\"%c\",'B');\n   default: printf(\"%s\\n\",\"other\");\n}",
+  "options": [
+   "A",
+   "ABother",
+   "Aother",
+   "编译错误，无法运行"
+  ],
+  "answer": 1,
+  "explanation": "case 65 命中后输出 A，其后没有 break，继续顺序执行输出 B 和 other，故为 ABother。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-085",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有以下程序段：\nint x=3;\nswitch(x)\n{  default: printf(\"d\");\n   case 1: printf(\"1\"); break;\n   case 2: printf(\"2\");\n}\n输出结果是（ ）",
+  "options": [
+   "d",
+   "d1",
+   "1",
+   "d12"
+  ],
+  "answer": 1,
+  "explanation": "没有与 3 匹配的 case，从 default 进入输出 d，default 之后没有 break，继续执行 case 1 输出 1 后遇 break 结束。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-086",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "关于下面程序段执行情况的叙述，正确的是（ ）\nint i,n;\nfor(i=0;i<8;i++)\n{   n = rand() % 5;\n    switch (n)\n    {  case 1: case 3: printf(\"%d\\n\",n); break;\n       case 2: case 4: printf(\"%d\\n\",n); continue;\n       case 0: exit(0);\n    }\n    printf(\"%d\\n\",n);\n}",
+  "options": [
+   "for循环语句固定执行8次",
+   "当产生的随机数n为1和2时不做任何操作",
+   "当产生的随机数n为4时结束循环",
+   "当产生的随机数n为0时结束程序运行"
+  ],
+  "answer": 3,
+  "explanation": "case 0 调用 exit(0) 直接结束整个程序；n 为 2、4 时因 continue 跳过第二次输出但循环继续，for 是否执行满 8 次取决于随机数是否出现 0。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-087",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下程序段的输出结果是（ ）\nint x=5;\nif(x=0) printf(\"yes\");\nelse printf(\"no\");",
+  "options": [
+   "yes",
+   "no",
+   "编译错误",
+   "输出不确定"
+  ],
+  "answer": 1,
+  "explanation": "条件处是赋值表达式 x=0，其值为 0，按假处理走 else 输出 no；这是把 == 误写为 = 的典型错误。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-088",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "执行以下程序后的输出结果是（ ）\nvoid main()\n{  int a=4,b=5,c=5,x=5;\n   a=a==(b-c); printf(\"%d \",a);\n   if (x++>5) printf(\"%d\\n\",x);\n   else printf(\"%d\\n\",x--);\n}",
+  "options": [
+   "0 5",
+   "0 6",
+   "1 5",
+   "1 6"
+  ],
+  "answer": 0,
+  "explanation": "b-c=0，a==(0) 为假，a 被赋 0；x++>5 中先取值 5 比较，为假走 else 输出 x-- 的值 5。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-089",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "要判断 char 型变量 c 是否为大写字母，正确的表达式是（ ）",
+  "options": [
+   "c>='A' || c<='Z'",
+   "c>='A' && c<='Z'",
+   "'A'<=c<='Z'",
+   "c>=65 || c<=90"
+  ],
+  "answer": 1,
+  "explanation": "既要大于等于 'A' 又要小于等于 'Z'，必须用 &&；'A'<=c<='Z' 的写法在 C 中不等价于数学含义。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-090",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "设有定义 int x=6, y=8; 则表达式 x<y ? x++ : y++ 执行后，x、y 的值依次为（ ）",
+  "options": [
+   "7,8",
+   "6,8",
+   "6,9",
+   "7,9"
+  ],
+  "answer": 0,
+  "explanation": "条件为真执行 x++，x 变 7，y++ 不执行，y 保持 8。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-091",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下程序段的输出结果是（ ）\nint a=5,b=0;\nif(a>4)\n   if(a>6) b=1;\n   else b=2;\nprintf(\"%d\",b);",
+  "options": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": 2,
+  "explanation": "a>4 成立，a>6 不成立，与其配对的 else 执行 b=2。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-092",
+  "ch": "ch5",
+  "type": "judge",
+  "stem": "if 语句中，else 总是与它前面最近的尚未配对的 if 配对。",
+  "answer": true,
+  "explanation": "这是 C 语言的规定，与书写缩进无关；如需改变配对关系应使用花括号。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-093",
+  "ch": "ch5",
+  "type": "judge",
+  "stem": "switch 语句中，各 case 后的常量表达式的值可以互不相同，也可以相同。",
+  "answer": false,
+  "explanation": "同一 switch 中各 case 常量表达式的值必须互不相同，否则无法确定执行入口，编译会报错。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-094",
+  "ch": "ch5",
+  "type": "fill",
+  "stem": "已知：char x='A', y='B'; 执行 if ((x='B') || (y='A')) 判断后，变量 x-y 的值为______。",
+  "answer": "0",
+  "explanation": "赋值表达式 x='B' 的值非 0，|| 发生短路，y='A' 不执行，y 仍为 'B'(66)，x-y=66-66=0。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-095",
+  "ch": "ch5",
+  "type": "fill",
+  "stem": "构造一个 C 语言表达式，判断整型变量 n 是奇数：______。（写一个最常用的表达式）",
+  "answer": "n%2!=0 | n%2 | n%2==1",
+  "explanation": "n 为奇数等价于 n%2 的余数不为 0，常用写法 n%2!=0 或直接用 n%2 作条件。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-096",
+  "ch": "ch5",
+  "type": "fill",
+  "stem": "构造表达式，判断 (x, y) 是第一象限中的坐标点（不包含原点）：______。",
+  "answer": "x>0&&y>0",
+  "explanation": "第一象限要求横、纵坐标都严格大于 0，两个条件必须同时成立，用 && 连接。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-097",
+  "ch": "ch5",
+  "type": "read",
+  "stem": "以下程序运行时输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{\n   int a=0, b=0, c=1, d=10;\n   if (a)  d=d-5;\n   else if (c)\n      if (!b) { if (d==15) d=25; }\n      else if (d==25) d=35;\n   printf(\"%d\\n\",d);\n}",
+  "answer": "10",
+  "explanation": "a=0 走 else if(c)，c=1 成立进入内层；!b 为真，执行 if(d==15)，d=10 不等，d 不变，输出 10。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-098",
+  "ch": "ch5",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{  int a=5, b=2, c=2.8;\n   if(a=b+c)\n      printf(\"***\");\n   else\n      printf(\"$$$\");\n}",
+  "answer": "***",
+  "explanation": "条件处是赋值表达式 a=b+c，a 被赋值 4，非 0 为真，输出 ***。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-099",
+  "ch": "ch5",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{  int x, y=1;\n   if(y!=0) x=5;\n   printf(\"%d\",x);\n   if(y==0) x=4;\n   else x=3;\n   printf(\"%d\",x);\n   if (y<0)\n      if (y>0) x=4;\n      else if(y<0) x=5;\n      else x=2;\n   printf(\"%d\\n\",x);\n}",
+  "answer": "533",
+  "explanation": "y=1 非 0，x=5；y==0 为假走 else，x=3；y<0 为假，整个嵌套 if 均不执行，x 保持 3，输出 533。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-100",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "设有以下语句：\nint x=3;\ndo\n     printf(\"%d\\n\",x-=2);\nwhile(!--x);\n该程序段的执行结果是（ ）",
+  "options": [
+   "显示 1",
+   "显示 1 和 -2",
+   "显示 0",
+   "是死循环"
+  ],
+  "answer": 1,
+  "explanation": "第一次输出 x-=2 得 1，!--x 即 !0 为真继续循环；第二次输出 -2，--x 得 -3，!(-3) 为假结束。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-101",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "执行语句 for(i=1;i++<5;i++); 后变量 i 的值是（ ）",
+  "options": [
+   "4",
+   "5",
+   "6",
+   "不确定"
+  ],
+  "answer": 2,
+  "explanation": "i=1、3 时条件成立，i 先自增再进 i++ 变 3、5；i=5 时条件 5<5 为假但 i++ 仍使 i 变 6，之后循环结束。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-102",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下述循环的循环次数是（ ）\nint k=2;\nwhile(k!=0) printf(\"%d\",k); k--;\nprintf(\"\\n\");",
+  "options": [
+   "无限次",
+   "0 次",
+   "1 次",
+   "2 次"
+  ],
+  "answer": 0,
+  "explanation": "k-- 在 while 语句之外，循环体内 k 的值永远不变，条件 k!=0 恒成立，是死循环。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-103",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "在下列选项中，没有构成死循环的程序段是（ ）",
+  "options": [
+   "int i=100;\nwhile(1){i=i%100+1;if(i>100) break;}",
+   "for(;;);",
+   "int k=1000;\ndo{++k;} while(k>=1000);",
+   "int s=36;\nwhile(s); --s;"
+  ],
+  "answer": 2,
+  "explanation": "C 中 do-while 执行 ++k 后 k>=1000 不成立即退出；A 中 i=i%100+1 最大为 100，if 永远不成立；B、D 条件恒真且循环体不改变条件。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-104",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面有关 for 循环的正确描述是（ ）",
+  "options": [
+   "for 循环只能用于循环次数已经确定的情况",
+   "for 是先执行循环体语句，后判断表达式",
+   "在 for 循环中，不能用 break 语句跳出循环体",
+   "for 循环的循环体语句中，可以包含多条语句，但必须用花括号{}括起来"
+  ],
+  "answer": 3,
+  "explanation": "for 三个表达式都可省略、循环次数可不固定、先判断后执行、可用 break 跳出；循环体为多条语句时必须用 {} 括成复合语句。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-105",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下叙述正确的是（ ）",
+  "options": [
+   "continue 语句的作用是结束整个循环的执行",
+   "只能在循环体内和 switch 语句体内使用 break 语句",
+   "在循环体内使用 break 和 continue 语句的作用相同",
+   "从多层循环嵌套中退出，只能使用 goto 语句"
+  ],
+  "answer": 1,
+  "explanation": "break 只能用于循环和 switch 中；continue 只是结束本次循环，break 结束整个循环，二者作用不同。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-106",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序段的运行结果是（ ）\nint a=1,b=2,c=2,t;\nwhile (a<b<c){t=a;a=b;b=t;c--;}\nprintf(\"%d,%d,%d\",a,b,c);",
+  "options": [
+   "1,2,0",
+   "2,1,0",
+   "1,2,1",
+   "2,1,1"
+  ],
+  "answer": 0,
+  "explanation": "第一轮 a<b 为 1，1<c 为真，交换后 a=2,b=1，c 减为 1；第二轮 2<1 为 0，0<1 为真，交换回 a=1,b=2，c 减为 0；第三轮 1<2 为 1，1<0 为假结束，输出 1,2,0。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-107",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序段运行时，外层、中层和内层循环累计次数分别为（ ）\nint a,b,c,i=0;\nfor( a=1; a<=3; a++)\n{  for(b=1; b<=a; b++) {\n      for(c=b; c<=3; c++){ i++; }\n   }\n}",
+  "options": [
+   "3  6  6",
+   "3  3  3",
+   "3  6  14",
+   "3  6  3"
+  ],
+  "answer": 2,
+  "explanation": "外层 3 次，中层 1+2+3=6 次，内层共 3+（3+2）+（3+2+1）=14 次。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-108",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "与语句 while(!x) 等价的语句是（ ）",
+  "options": [
+   "while(x==0)",
+   "while(x!=0)",
+   "while(x!=1)",
+   "while(x=0)"
+  ],
+  "answer": 0,
+  "explanation": "!x 在 x 为 0 时为真，故等价于 while(x==0)。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-109",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的运行结果是（ ）\nfor(y=1;y<10;) y=((x=3*y,x+1),x-1);\nprintf(\"x=%d,y=%d\",x,y);",
+  "options": [
+   "x=27,y=27",
+   "x=12,y=13",
+   "x=15,y=14",
+   "x=y=27"
+  ],
+  "answer": 2,
+  "explanation": "每次循环 x=3*y，再取 (x+1, x-1) 中最后的 x-1 为 y：y 依次为 2、5、14，14<10 不成立结束，x=15,y=14。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-110",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "执行语句 for(i=0;i++<3;); 后变量 i 的值是（ ）",
+  "options": [
+   "3",
+   "4",
+   "5",
+   "不确定"
+  ],
+  "answer": 1,
+  "explanation": "i=0,1,2 时条件成立且 i 各自增；i=3 时 3<3 为假但 i++ 仍使 i 变 4。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-111",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序段的输出结果是（ ）\nfor(i=1;i<=10;i++)\n{  if(i%3) continue;\n   printf(\"%d\",i);\n}",
+  "options": [
+   "369",
+   "3 6 9",
+   "14710",
+   "无输出"
+  ],
+  "answer": 0,
+  "explanation": "i 不是 3 的倍数时 i%3 非 0，continue 结束本次循环；3、6、9 时 i%3 为 0 被输出，输出 369。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-112",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的运行结果是（ ）\nint i,j,x=0;\nfor(i=0;i<2;i++)\n{  x++;\n   for(j=0;j<3;j++)\n   {  if (j%2) continue;\n      x++;\n   }\n   ++x;\n}\nprintf(\"x=%d\\n\",x);",
+  "options": [
+   "x=4",
+   "x=8",
+   "x=6",
+   "x=12"
+  ],
+  "answer": 1,
+  "explanation": "每轮外层 x 增加 1（开头）+2（j=0、2 时）+1（结尾）=4，两轮共 8。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-113",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序段中，循环体执行的次数是（ ）\nfor(x=0,y=0; x<5 && y<3; x++,y++)\n{  printf(\"*\");\n}",
+  "options": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": 0,
+  "explanation": "x、y 同步从 0 增到 2，共执行 3 次；第 4 次判断时 y=3 使 y<3 为假，循环结束。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-114",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "while、do-while、for 三种循环中，do-while 循环的特点是（ ）",
+  "options": [
+   "先判断条件，后执行循环体",
+   "先执行循环体，后判断条件",
+   "循环体可能一次都不执行",
+   "不能使用 continue 语句"
+  ],
+  "answer": 1,
+  "explanation": "do-while 先执行一次循环体再判断条件，因此循环体至少执行一次。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-115",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "有以下程序段：\nint i=0;\nfor(;i<5;)\n   printf(\"*\");\n关于其执行情况，正确的说法是（ ）",
+  "options": [
+   "输出 5 个 *",
+   "输出 0 个 *",
+   "是死循环",
+   "编译错误"
+  ],
+  "answer": 2,
+  "explanation": "for 的第三个表达式（更新）被省略且循环体内也没有改变 i，条件 i<5 永远成立，形成死循环。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-116",
+  "ch": "ch6",
+  "type": "judge",
+  "stem": "while 循环的循环体最少执行一次。",
+  "answer": false,
+  "explanation": "while 是先判断后执行，条件一开始就为假时循环体一次都不执行；do-while 才是至少执行一次。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-117",
+  "ch": "ch6",
+  "type": "judge",
+  "stem": "break 语句既可以用于循环语句中，也可以用于 switch 语句中。",
+  "answer": true,
+  "explanation": "break 用于循环中结束整个循环，用于 switch 中结束多分支结构，但两种场合都不能用于 if 等其他语句。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-118",
+  "ch": "ch6",
+  "type": "judge",
+  "stem": "for 语句的三个表达式都可以省略，但两个分号不能省略。",
+  "answer": true,
+  "explanation": "for(;;) 是合法写法，三个表达式均可省略，但分隔作用的分号必须保留。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-119",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "假设有 1020 个西瓜，第一天卖了一半多两个，以后每天卖剩的一半多两个，求几天后能卖完。请填空完善程序。\n#include <stdio.h>\nint main()\n{\n    int day=0, x1, x2;\n    x1=1020;\n    while (x1>0)\n    {  x2=______;\n       x1=x2;\n       day++;\n    }\n    printf(\"day=%d\\n\",day);\n}",
+  "answer": "x1/2-2",
+  "explanation": "每天卖剩的一半多两个，即剩 x1-(x1/2+2)=x1/2-2 个。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-120",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序段的功能是计算 1+2+…+100 的值，请填空。\nint i=1, s=0;\nwhile(i<=100)\n{  s+=______;\n   i++;\n}",
+  "answer": "i",
+  "explanation": "循环变量 i 依次取 1 到 100，每次把 i 累加到 s 中。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-121",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序段用于输出 10 以内（含 10）的全部偶数，请填空。\nfor(i=0; i<=10; i+=______)\n   printf(\"%d \",i);",
+  "answer": "2",
+  "explanation": "偶数间隔为 2，从 0 开始每次增加 2。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-122",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序段用于统计正整数 n（n>0）的位数并存入 k，请填空。\nk=0;\ndo\n{  n=n/10;\n   k++;\n} while(______);",
+  "answer": "n!=0 | n>0 | n",
+  "explanation": "每次去掉一位，只要 n 还不为 0 就继续循环；用 do-while 保证 n 为一位数时也能统计出 1 位。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-123",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "执行下列程序段后的输出是（写出全部输出）",
+  "code": "int x;\nx=1;\nwhile(x<3)\n   for(;x<4;x++)\n   {   printf(\"%d\",x++);\n       if(x<3) continue;\n       else break;\n       printf(\"%d\",x);\n   }",
+  "answer": "13",
+  "explanation": "第一次内层循环输出 1（x 变 2），x<3 成立 continue 后 x 自增为 3；第二次输出 3（x 变 4），x<3 不成立走 break；外层 while 条件 x<3 为假结束，输出 13。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-124",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "运行下列程序，输入：1 100 2 20 3 30 4 40 0 0，其输出结果为（写出全部输出）",
+  "code": "#include <stdio.h>\nint main()\n{\n   int sum=0, a, b;\n   do\n   {\n       scanf(\"%d%d\",&a,&b);\n       switch(a%3)\n       {  case 1: sum+=b; break;\n          case 2: sum-=b; break;\n       }\n   } while(a);\n   printf(\"sum=%d\\n\",sum);\n}",
+  "answer": "sum=120",
+  "explanation": "a%3 依次为 1、2、0、1、0：+100、-20、不动、+40、退出循环，sum=120。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-125",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main()\n{\n    int i=0, s=0;\n    while (i < 5)\n    {\n        i++;\n        if (i % 2 == 0) continue;\n        s += i;\n    }\n    printf(\"%d,%d\\n\", s, i);\n    return 0;\n}",
+  "answer": "9,5",
+  "explanation": "i 依次为 1~5，偶数时 continue 跳过累加，s=1+3+5=9，循环结束时 i=5。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-126",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "执行下面程序时，输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nmain()\n{\n   int x=0, y=0, z;\n   while(y<6) x+=++y;\n   for(y=1;y<6;y++) x=y;\n   for(y=1;y<6;)\n   {  z=++y;\n      x=y++;\n   }\n   printf(\"Output: %d %d %d\\n\",x,y,z);\n}",
+  "answer": "Output: 6 7 6",
+  "explanation": "第一段 x=1+3+6+10+15+21=21(y=6)；第二段 x=5(y=6)；第三段 y 依次变 2、3、4、5、6、7，最终 z=6、x=6、y=7。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-127",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有说明：int a[][3]={1,2,3,4,5,6,7};，则数组 a 的第一维大小是（ ）",
+  "options": [
+   "2",
+   "3",
+   "4",
+   "无确定值"
+  ],
+  "answer": 1,
+  "explanation": "共 7 个元素按每行 3 个划分，需要 3 行（第三行只填 1 个元素，其余自动为 0），第一维为 3。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-128",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下程序的输出结果为（ ）\nchar str[15]=\"hello!\";  printf(\"%d %d\\n\",strlen(str),sizeof(str));",
+  "options": [
+   "15 15",
+   "6 6",
+   "7 6",
+   "6 15"
+  ],
+  "answer": 3,
+  "explanation": "strlen 统计到 '\\0' 为止共 6 个字符；sizeof 求数组定义时的总长度 15，与实际存入内容无关。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-129",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下程序段的输出结果为（ ）\nchar str[]=\"Hello!\\0Hi!\"; printf(\"%d %d\\n\",strlen(str),sizeof(str));",
+  "options": [
+   "11 11",
+   "6 6",
+   "11 6",
+   "6 11"
+  ],
+  "answer": 3,
+  "explanation": "strlen 遇到串中 '\\0' 结束得 6；数组按字符串初始化共存 11 个字节（含末尾 '\\0'），sizeof 得 11。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-130",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有以下的数组定义：char a[]=\"abcde\"; char b[]={'a','b','c','d','e','\\0'}; 则以下正确的描述是（ ）",
+  "options": [
+   "a 数组和 b 数组长度相同但内容不同",
+   "a 数组长度大于 b 数组长度",
+   "a 数组长度小于 b 数组长度",
+   "两个数组长度与内容完全相同"
+  ],
+  "answer": 3,
+  "explanation": "a 按字符串初始化为 6 个字节，b 用字符表显式给出 6 个字节且含 '\\0'，两数组长度与内容完全相同。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-131",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有以下语句，则正确的描述是（ ）\nstatic char x[]=\"12345\";\nstatic char y[]={'1','2','3','4','5'};",
+  "options": [
+   "x 数组和 y 数组的长度相同",
+   "x 数组长度大于 y 数组长度",
+   "x 数组长度小于 y 数组长度",
+   "x 数组等价于 y 数组"
+  ],
+  "answer": 1,
+  "explanation": "x 按字符串初始化含结束符共 6 个字节，y 只有 5 个字符无 '\\0'，x 比 y 长 1。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-132",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "已定义\"int i; char x[7];\"，为了给 x 数组赋值，以下正确的语句是（ ）",
+  "options": [
+   "x[6]=\"Hello!\";",
+   "x=\"Hello!\";",
+   "x[0]=\"Hello!\";",
+   "for(i=0;i<7;i++) x[i]=getchar();"
+  ],
+  "answer": 3,
+  "explanation": "数组名是地址常量不能整体赋值，字符数组元素只能一个一个赋值，D 用循环逐个读入是正确的。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-133",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "已定义\"int i; char x[7];\"，为了给 x 数组赋值，以下正确的语句是（ ）",
+  "options": [
+   "x[7]=\"Hello!\";",
+   "strcpy(x,\"Hello\"); x[5]='!'; x[6]='\\0';",
+   "x[0]=\"Hello!\";",
+   "x=\"Hello!\";"
+  ],
+  "answer": 1,
+  "explanation": "用 strcpy 复制字符串到数组合法，再补上 '!' 和 '\\0' 恰好占满 7 个元素；A 下标越界，数组名不能整体赋值。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-134",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有定义：int a[2][3];，以下选项中对 a 数组元素正确引用的是（ ）",
+  "options": [
+   "a[2][!1]",
+   "a[2][3]",
+   "a[0][3]",
+   "a[1>2][!1.2]"
+  ],
+  "answer": 3,
+  "explanation": "a[1>2][!1.2] 即 a[0][0]，下标表达式先求值为整数且在范围内；其余下标均越界（行 0~1，列 0~2）。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-135",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若已定义\"int a[]={2,3,4,5,6},*p=a+1;\"，则 p[2] 的值是（ ）",
+  "options": [
+   "无意义",
+   "3",
+   "4",
+   "5"
+  ],
+  "answer": 3,
+  "explanation": "p 指向 a[1]，p[2] 即 *(p+2) 等价于 a[3]，值为 5。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-136",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若已定义\"int a[]={1,2,3,4},*p=a;\"，则下面表达式中值不等于 2 的是（ ）",
+  "options": [
+   "*(++a)",
+   "*(p+1)",
+   "*(a+1)",
+   "*(++p)"
+  ],
+  "answer": 0,
+  "explanation": "数组名 a 是地址常量，不能自增，*(++a) 非法；其余均为 a[1] 即 2。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-137",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有定义\"int i; int x[3][3]={2,3,4,5,6,7,8,9,10};\"，则执行语句\"for(i=0;i<3;i++)printf(\"%3d\",x[2-i][i]);\"的输出结果是（ ）",
+  "options": [
+   "8  5  2",
+   "10  6  2",
+   "8  6  4",
+   "10  7  4"
+  ],
+  "answer": 2,
+  "explanation": "依次输出 x[2][0]=8、x[1][1]=6、x[0][2]=4，即副对角线上的元素。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-138",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有以下程序，程序运行后的输出结果是（ ）\nvoid main()\n{  int aa[4][4]={{1,2,3,4},{5,6,7,8},{3,9,10,2},{4,2,9,6}},i,s=0;\n   for(i=0;i<4;i++) s+=aa[i][i];\n   printf(\"%d\\n\",s);\n}",
+  "options": [
+   "11",
+   "19",
+   "13",
+   "23"
+  ],
+  "answer": 3,
+  "explanation": "累加主对角线元素 1+6+10+6=23。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-139",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有以下程序，程序运行后的输出结果是（ ）\nvoid main()\n{  int aa[4][4]={{1,2,3,4},{5,6,7,8},{3,8,9,2},{4,2,9,6}},i,s=0;\n   for(i=0;i<4;i++) s+=aa[3-i][i];\n   printf(\"%d\\n\",s);\n}",
+  "options": [
+   "24",
+   "19",
+   "13",
+   "23"
+  ],
+  "answer": 3,
+  "explanation": "累加副对角线元素 aa[3][0]+aa[2][1]+aa[1][2]+aa[0][3]=4+8+7+4=23。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-140",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "设有数组定义:int a[5];则下列给数组元素赋值错误的是（ ）",
+  "options": [
+   "a[3]=93;",
+   "scanf(\"%c\",a[3]);",
+   "a[3]=getchar();",
+   "a[3]='a'+3;"
+  ],
+  "answer": 1,
+  "explanation": "scanf(\"%c\",...) 需要地址，应写 &a[3]；B 传入的是元素值而非地址，错误。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-141",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "下列对二维数组 a 进行正确初始化的是（ ）",
+  "options": [
+   "int a[2][3] = {{1,2},{3,4},{5,6}};",
+   "int a[][3] = {1,2,3,4,5,6};",
+   "int a[2][] = {1,2,3,4,5,6};",
+   "int a[2][] = {{1,2},{3,4}};"
+  ],
+  "answer": 1,
+  "explanation": "二维数组初始化时第一维可省略由初值个数确定，但第二维必须明确给出；A 行数与内层花括号数不符。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-142",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下不能将 s 所指字符串正确复制到 t 所指存储空间的是（ ）",
+  "options": [
+   "while(*t=*s){t++; s++;}",
+   "do{ *t++=*s++; } while(*s);",
+   "for(i=0;t[i]=s[i];i++);",
+   "for(i=0,j=0;t[i++]=s[j++];);"
+  ],
+  "answer": 1,
+  "explanation": "do-while 在 *s 为 '\\0' 时已把 '\\0' 赋给 t 前一位，但循环条件判断的是自增后的 *s，结束符 '\\0' 本身未被复制到 t（最后一次循环把 '\\0' 之前的字符复制后条件即退出，'\\0' 没有被写入），导致 t 缺少结束符。其余写法都在条件为假前已把 '\\0' 复制过去。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-143",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "下面程序段的输出结果是（ ）\nchar c[80] = \"123456\";\nstrcpy(c+4, \"123456\");\nprintf(\"%d \", strlen(c));",
+  "options": [
+   "6",
+   "80",
+   "10",
+   "11"
+  ],
+  "answer": 2,
+  "explanation": "c+4 指向下标 4（'5'），从该处写入 \"123456\\0\"，c 变为 \"1234123456\"，strlen 为 10。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-144",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "设已定义\"char s[]=\"ABCD\";\"，printf(\"%s\",s+2)的输出值为（ ）",
+  "options": [
+   "ABCD2",
+   "CD",
+   "C",
+   "ABCD"
+  ],
+  "answer": 1,
+  "explanation": "s+2 指向下标 2 的字符 'C'，%s 从该处输出到 '\\0'，故输出 CD。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-145",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "设有定义 char str[]=\"abc\\0def\"; 则语句 printf(\"%s\",str+4); 的输出结果是（ ）",
+  "options": [
+   "abc",
+   "def",
+   "abc\\0def",
+   "无输出"
+  ],
+  "answer": 1,
+  "explanation": "str+4 指向 'd'（下标 4），%s 从该处输出到末尾 '\\0'，输出 def。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-146",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下数组定义中合法的是（ ）",
+  "options": [
+   "char c[3]=\"abc\";",
+   "int a[3]={1,2,3,4};",
+   "int a[][2]={1,2,3,4};",
+   "int a[2][]={1,2};"
+  ],
+  "answer": 2,
+  "explanation": "第一维可省略，4 个初值按每行 2 个分为 2 行，合法；A 存放 \"abc\" 需要 4 个字节，B 初值个数超过数组长度，C 第二维不能省略。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-147",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "已有定义 int a[3]={1,2,3}; 则与表达式 a[1] 等价的是（ ）",
+  "options": [
+   "*(a+1)",
+   "*a+1",
+   "a+1",
+   "&a[1]"
+  ],
+  "answer": 0,
+  "explanation": "a[1] 即 *(a+1)；*a+1 是 a[0]+1，a+1 是地址，&a[1] 也是地址。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-148",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有定义 char s[]=\"abc\";，则 strcmp(\"abc\",\"abd\") 的返回值满足（ ）",
+  "options": [
+   "大于 0",
+   "等于 0",
+   "小于 0",
+   "返回值为 1"
+  ],
+  "answer": 2,
+  "explanation": "逐字符比较，'c' 的 ASCII 码小于 'd'，故第一个串小于第二个串，strcmp 返回负值。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-149",
+  "ch": "ch7",
+  "type": "judge",
+  "stem": "数组名代表数组的首地址，程序中可以对数组名重新赋值。",
+  "answer": false,
+  "explanation": "数组名是地址常量，其值在程序运行期间不能改变，如 a++ 是非法的。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-150",
+  "ch": "ch7",
+  "type": "judge",
+  "stem": "若有定义 int a[5]; 则该数组的最后一个元素是 a[5]。",
+  "answer": false,
+  "explanation": "数组下标从 0 开始，a[5] 的 5 个元素是 a[0]~a[4]，最后一个元素是 a[4]。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-151",
+  "ch": "ch7",
+  "type": "judge",
+  "stem": "字符串\"abc\"在内存中占 4 个字节。",
+  "answer": true,
+  "explanation": "字符串常量存储时末尾自动加结束符 '\\0'，3 个字符加 1 个结束符共 4 个字节。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-152",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "已有定义 char s[]=\"12345\"; 则执行语句 s[2]='\\0'; 后，strlen(s) 的值为______。",
+  "answer": "12",
+  "explanation": "s[2] 被改为 '\\0'，strlen 从头统计到该结束符共 2 个字符。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-153",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "已有定义 int a[2][3]={{1,2},{4,5}}; 则 a[1][2] 的值为______。",
+  "answer": "0",
+  "explanation": "部分初始化时未给出初值的元素自动为 0，a[1][2] 未指定初值，为 0。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-154",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "已有定义 char str[20]=\"Hello\"; 要把字符串\"World\"连接到 str 中的字符串后面，应调用的库函数名是______。",
+  "answer": "strcat",
+  "explanation": "strcat(str,\"World\") 把第二个串连接到第一个串的结束符处，结果为 HelloWorld。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-155",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "以下 fun 函数的功能是找出具有 N 个元素的一维数组的最小值并返回，请填空。（设 N 已定义）\nint fun(int x[N])\n{\n   int i, k=0;\n   for(i=1;i<N;i++)\n      if(x[i]<x[k]) ______;\n   return x[k];\n}",
+  "answer": "k=i",
+  "explanation": "当发现更小的元素时，用 k 记录其下标，最后返回 x[k] 即最小值。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-156",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main()\n{\n    char s[]=\"1234567\";\n    int c[5]={0}, k, i=0;\n    for(k=0;s[k];k++)\n    {    switch(s[k])\n         {   case '3':i=1; break;\n             case '4':i=2; break;\n             case '5':i=3; break;\n             case '6':i=4; break;\n         }\n         c[i]++;\n    }\n    for(k=0;k<5;k++) printf(\"%d\",c[k]);\n}",
+  "answer": "21112",
+  "explanation": "'1''2' 使 c[0] 两次加 1；'3'~'6' 分别使 c[1]~c[4] 各加 1；'7' 时 i 保持 4 使 c[4] 再加 1，得 2 1 1 1 2。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-157",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "如下程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{\n   int a[] = {9,1,3,8,2,4}, i, j, t;\n   for(i=1; i<6; i++)\n   {\n      t = a[i];\n      for(j= i-1; j>=0 && t>a[j]; j--)\n         a[j+1] = a[j];\n      a[j+1] = t;\n   }\n   for(i = 0;i<5; i++) printf(\"%d,\",a[i]);\n   printf(\"%d\",a[i]);\n}",
+  "answer": "9,8,4,3,2,1",
+  "explanation": "这是插入排序，按降序把每个元素插入前面已排好的序列，最终数组从大到小为 9,8,4,3,2,1。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-158",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{\n  int a[] = {8,1,3,7,2,5}, i, j, t;\n  i = 1;\n  while ( i<6 )\n  {  t = a[i];\n     j = i-1;\n     while( j>=0 && t<a[j] )\n     {\n        a[j+1] = a[j];\n        j--;\n     }\n     a[j+1] = t;\n     i++;\n  }\n  for(i = 0;i<5; i++) printf(\"%d,\",a[i]);\n  printf(\"%d\",a[i]);\n}",
+  "answer": "1,2,3,5,7,8",
+  "explanation": "插入排序（升序）：每个元素插入到前面已有序部分的正确位置，最终为 1,2,3,5,7,8。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-159",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\n#include <string.h>\nvoid main()\n{\n   char str[80]=\"abc1fg3%5.0f%6ydopen\\n\", *p=str, *q=str;\n   while(*p)\n     if (*p>='0' && *p<='9') *q++=*p++;\n     else p++;\n   *q='\\0';\n   puts(str);\n}",
+  "answer": "13506",
+  "explanation": "程序把字符串中的数字字符依次前移压缩，遇到数字 1、3、5、0、6 被保留，输出 13506。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-160",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{\n   int aa[5][5]={{5,6,1,8},\n                 {1,2,3,4},\n                 {1,2,5,6},\n                 {5,9,10,2}},i,s=0;\n   for(i=0;i<5;i++)\n      s+=aa[i][i]+aa[i][4-i];\n   printf(\"%d\",s);\n}",
+  "answer": "32",
+  "explanation": "主对角线 5+2+5+2+0=14，副对角线 0+4+5+9+0=18（第 5 行未初始化全为 0），合计 32。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-161",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main()\n{\n   int n[3], i, j;\n   for(i=0;i<3;i++) n[i]=0;\n   for(i=0;i<3;i++)\n     for(j=0;j<3;j++) n[j]=n[i]+1;\n   printf(\"%d %d\\n\",n[1],n[2]);\n}",
+  "answer": "5 5",
+  "explanation": "三轮外层循环后 n 的值依次演变为 [1,2,2]、[3,3,4]、[5,5,5]（每轮都执行 n[j]=n[i]+1，最后一轮 n[2] 自身不断加 1），最终 n[1]、n[2] 均为 5。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-162",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "函数调用语句 fun(fun1(a1,a2),(a3,a4),a5=x+y); 函数 fun 含有实参的个数为（ ）",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "5"
+  ],
+  "answer": 2,
+  "explanation": "三个实参分别是 fun1(a1,a2)、(a3,a4)（逗号表达式算一个）和 a5=x+y，逗号表达式要用括号括起来才算一个实参。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-163",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "C 语言中的函数（ ）",
+  "options": [
+   "可以嵌套定义",
+   "不可以嵌套调用",
+   "可以嵌套调用，但不能递归调用",
+   "嵌套调用和递归调用均可"
+  ],
+  "answer": 3,
+  "explanation": "C 函数定义是平行的、不能嵌套定义，但可以嵌套调用，也允许直接或间接递归调用。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-164",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "如果函数的首部省略了函数返回值的类型名，则函数被默认为（ ）",
+  "options": [
+   "void 类型",
+   "空类型",
+   "int 类型",
+   "char 类型"
+  ],
+  "answer": 2,
+  "explanation": "C 语言规定，未指明返回类型时函数默认为 int 型。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-165",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "一个函数返回值的类型是由（ ）",
+  "options": [
+   "return 语句中的表达式类型决定",
+   "定义函数时所指定的函数类型决定",
+   "调用该函数的主调函数的类型决定",
+   "调用函数所在表达式决定"
+  ],
+  "answer": 1,
+  "explanation": "函数类型决定返回值类型，return 表达式的值会被转换为函数定义时指定的类型。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-166",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "若已定义的函数有返回值，则以下关于该函数调用的叙述错误的是（ ）",
+  "options": [
+   "函数调用可以作为独立的语句存在",
+   "函数调用可以出现在表达式中",
+   "函数调用可以作为一个函数的实参",
+   "函数调用可以作为一个函数的形参"
+  ],
+  "answer": 3,
+  "explanation": "形参是函数定义时说明的变量，函数调用只能出现在表达式、语句或实参中，不能出现在形参表里。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-167",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "在一个文件中定义的全局变量的作用域为（ ）",
+  "options": [
+   "本程序的全部范围",
+   "离定义该变量的位置最近的函数",
+   "函数内全部范围",
+   "定义该变量的位置开始到本文件结束"
+  ],
+  "answer": 3,
+  "explanation": "全局变量从定义处开始到本文件结束有效；定义点之前的函数如需使用，须用 extern 声明。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-168",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "凡是函数中未指定存储类别的局部变量，其隐含的存储类别为（ ）",
+  "options": [
+   "自动（auto）",
+   "静态（static）",
+   "外部（extern）",
+   "寄存器（register）"
+  ],
+  "answer": 0,
+  "explanation": "未指定存储类别的局部变量默认为 auto 型，存放在动态存储区。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-169",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "C 语言中规定，简单（或普通）变量做实参时，它和对应形参变量之间的数据传递方式是（ ）",
+  "options": [
+   "单向值传递",
+   "地址传递",
+   "由实参传给形参，再由形参传给实参",
+   "用户可指定传递方式"
+  ],
+  "answer": 0,
+  "explanation": "普通变量作实参时按值传递，形参的改变不会影响实参。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-170",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "函数调用时的实参为变量，以下关于函数形参和实参的叙述正确的是（ ）",
+  "options": [
+   "函数的实参和其对应的形参共占同一存储单元",
+   "形参只是形式上的存在，不占用具体存储单元",
+   "同名的实参和形参占同一存储单元",
+   "函数的形参和实参分别占用不同的存储单元"
+  ],
+  "answer": 3,
+  "explanation": "调用时系统为形参单独分配存储单元，实参的值复制给形参，二者占用不同单元。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-171",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "以下说法中正确的是（ ）",
+  "options": [
+   "一个函数返回值的类型是由return语句中的表达式类型决定",
+   "形式参数是局部变量",
+   "主函数main中定义的变量在整个文件或程序中有效",
+   "函数调用可以作为一个函数的形参"
+  ],
+  "answer": 1,
+  "explanation": "形式参数只在本函数内有效，是局部变量；A 返回类型由函数定义决定，C 中 main 内的变量仍是局部变量。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-172",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "以下说法中不正确的是（ ）",
+  "options": [
+   "形式参数是局部变量",
+   "不同的函数中可以使用相同名字的变量",
+   "主函数 main 中定义的变量在整个文件或程序中有效",
+   "可以在函数中的复合语句中定义变量，这些变量只在本复合语句中有效"
+  ],
+  "answer": 2,
+  "explanation": "main 中定义的变量也只在 main 内有效，并非整个文件有效。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-173",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "当全局变量与函数内部的局部变量同名时，则在函数内部（ ）",
+  "options": [
+   "全局变量有效",
+   "局部变量有效",
+   "全局变量与局部变量都有效",
+   "全局变量与局部变量都无效"
+  ],
+  "answer": 1,
+  "explanation": "局部变量在其作用域内优先（屏蔽）同名的全局变量。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-174",
+  "ch": "ch8",
+  "type": "judge",
+  "stem": "C 语言允许函数嵌套定义，但不允许函数嵌套调用。",
+  "answer": false,
+  "explanation": "恰恰相反：C 函数不能嵌套定义（定义互相平行），但可以嵌套调用和递归调用。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-175",
+  "ch": "ch8",
+  "type": "judge",
+  "stem": "静态局部变量的值在函数多次调用之间能够保留。",
+  "answer": true,
+  "explanation": "static 局部变量在编译时初始化一次，存放在静态存储区，函数调用结束后其值仍然保留，下次调用继续使用。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-176",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "以下函数的功能是返回两个整数中较大者，请填空。\nint max(int a, int b)\n{\n    return a>b ? ______ : b;\n}",
+  "answer": "a",
+  "explanation": "条件表达式：a>b 时取 a，否则取 b。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-177",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "有如下程序，程序运行后输出的值是______。\n#include <stdio.h>\ntry()\n{\n    static int x=3;\n    x++;\n    return x;\n}\nmain()\n{\n    int i, x;\n    for(i=0;i<=2;i++) x=try();\n    printf(\"%d\\n\",x);\n}",
+  "answer": "6",
+  "explanation": "静态变量 x 初值 3，每次调用加 1，三次调用后 x 依次为 4、5、6，输出 6。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-178",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "有如下递归函数，调用 f(4) 的返回值是______。\nint f(int n)\n{\n    if(n==1) return 1;\n    return n + f(n-1);\n}",
+  "answer": "10",
+  "explanation": "f(4)=4+f(3)=4+3+f(2)=4+3+2+1=10，即求 1+2+3+4。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-179",
+  "ch": "ch8",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid fun()\n{\n    static int a=5;\n    a++;\n    printf(\"a=%d\\n\",a);\n}\nmain()\n{\n    int m;\n    for(m=0;m<=1;m++)\n        fun();\n}",
+  "answer": "a=6\na=7",
+  "explanation": "静态局部变量 a 只初始化一次，两次调用分别输出 a=6 和 a=7。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-180",
+  "ch": "ch8",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint sub(int *s)\n{\n    int t=0;\n    *s+=1;\n    t+=*s;\n    return t;\n}\nvoid main()\n{\n   int i;\n   for(i=1;i<4;i++)\n      printf(\"%2d\",sub(&i));\n}",
+  "answer": "2 4",
+  "explanation": "通过指针 i 被修改：i=1 时 sub 后 i=2 输出 2，随后 i++ 为 3；i=3 时 sub 后 i=4 输出 4，i++ 为 5 结束。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-181",
+  "ch": "ch8",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint f1(int x)\n{\n  return (++x);\n}\nint f2(int x)\n{\n  static int y = 3;\n  x += y++;\n  return (x++);\n}\nvoid main()\n{\n  int x, y;\n  x = y = 10;\n  printf(\"%d,\",f1(x));\n  printf(\"%d,\",f2(x));\n  printf(\"%d\", f2(x));\n}",
+  "answer": "11,13,14",
+  "explanation": "f1 返回 ++x 即 11；f2 第一次：x=10+3=13 返回 13，y 变 4；第二次：x=10+4=14 返回 14。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-182",
+  "ch": "ch8",
+  "type": "read",
+  "stem": "以下程序运行时输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint x1=30, x2=40;  /* 全局变量定义 */\nvoid swap(int x, int y);\nvoid main()\n{\n   int x3=10, x4=20;\n   swap(x3,x4);\n   swap(x2,x1);\n   printf(\"%d,%d,%d,%d\\n\",x3,x4,x1,x2);\n}\nvoid swap(int x, int y)\n{\n   x1=x;\n   x=y;\n   y=x1;\n}",
+  "answer": "10,20,40,40",
+  "explanation": "swap 内部只有全局变量 x1 被修改：第一次 x1=10，第二次 x1=40；形参 x、y 的交换不影响实参，x3、x4、x2 都不变。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-183",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若有说明\"int i,j=7,*p=&i;\"，则与\"i=j;\"等价的语句是（ ）",
+  "options": [
+   "i=*p;",
+   "*p=*&j;",
+   "i=&j;",
+   "i=**p;"
+  ],
+  "answer": 1,
+  "explanation": "*&j 即 j，*p=*&j 等价于 i=j（p 指向 i）；i=*p 是把 i 赋给 i（p 指向 i），不起作用。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-184",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "设有定义 double a[10],*s=a;，以下能够代表数组元素 a[3] 的是（ ）",
+  "options": [
+   "(*s)[3]",
+   "*(s+3)",
+   "*s[3]",
+   "*s+3"
+  ],
+  "answer": 1,
+  "explanation": "s 指向 a[0]，s+3 指向 a[3]，*(s+3) 即 a[3]；*s+3 是 a[0]+3。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-185",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若有说明 int m[3][3]={1,2,3,4,5}, *p1=m[0], (*p2)[3]=m;，则以下选项中不能正确输出 5 的语句是（ ）",
+  "options": [
+   "printf(\"%d\",m[1][1]);",
+   "printf(\"%d\",p2[0][1]);",
+   "printf(\"%d\",p1[4]);",
+   "printf(\"%d\",p2[1][1]);"
+  ],
+  "answer": 1,
+  "explanation": "p2[0][1] 即 m[0][1] 为 2；m[1][1]、p1[4]、p2[1][1] 都是元素 5。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-186",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "设已定义 int a[5], *p;，下列赋值表达式中正确的是（ ）",
+  "options": [
+   "*p = a",
+   "p = a",
+   "p = &a",
+   "*p = &a"
+  ],
+  "answer": 1,
+  "explanation": "数组名 a 是首地址，可直接赋给指针 p；&a 是整个数组的地址（类型不同），给 *p 赋地址是类型错误。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-187",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若已定义\"int a[]={1,2,3,4},*p=a;\"，则下面表达式中值不等于 2 的是（ ）",
+  "options": [
+   "*(++a)",
+   "*(p+1)",
+   "*(a+1)",
+   "*(++p)"
+  ],
+  "answer": 0,
+  "explanation": "数组名是地址常量，++a 非法；*(p+1)、*(a+1)、*(++p) 都能取得 a[1] 的值 2。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-188",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "执行以下程序后，y 的值是（ ）\nvoid main()\n{\nint a[]={2,4,6,8,10}, y=1, x, *p;\np=&a[1];\nfor(x=0;x<3;x++) y+=*(p+x);\nprintf(\"%d\\n\",y);\n}",
+  "options": [
+   "17",
+   "18",
+   "19",
+   "20"
+  ],
+  "answer": 2,
+  "explanation": "p 指向 a[1]，累加 *(p+0)+*(p+1)+*(p+2)=4+6+8=18，y=1+18=19。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-189",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "以下叙述中错误的是（ ）",
+  "options": [
+   "可以给指针变量赋一个整数作为地址值",
+   "函数可以返回地址值",
+   "改变函数形参的值，不会改变对应实参的值",
+   "当在程序的开头包含头文件stdio.h时，可以给指针变量赋NULL"
+  ],
+  "answer": 0,
+  "explanation": "不能直接把整数当作地址赋给指针变量，地址应是合法的内存地址；NULL 是在 stdio.h 中定义的空指针常量。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-190",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "已有定义 int a=3, *p=&a; 则表达式 *p+2 的值是（ ）",
+  "options": [
+   "3",
+   "5",
+   "2",
+   "一个地址值"
+  ],
+  "answer": 1,
+  "explanation": "*p 即 a 的值 3，3+2=5；取内容后再加法。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-191",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "已有定义 int a[5]={1,2,3,4,5}, *p=a; 则 *(p+3) 的值是（ ）",
+  "options": [
+   "3",
+   "4",
+   "5",
+   "不确定"
+  ],
+  "answer": 1,
+  "explanation": "p 指向 a[0]，p+3 指向 a[3]，*(p+3) 即 a[3]=4。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-192",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "对于 int *p, a=5; 下列赋值语句正确的是（ ）",
+  "options": [
+   "*p=&a;",
+   "p=a;",
+   "p=&a;",
+   "*p=a; 而此前 p 未指向任何变量"
+  ],
+  "answer": 2,
+  "explanation": "指针变量应被赋以地址：p=&a 正确；*p=&a 是给 int 赋地址，p=a 是给指针赋整数，均错误。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-193",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "已有定义 char s[]=\"abc\", *p=s; 则 *(p+1) 的值是（ ）",
+  "options": [
+   "'a'",
+   "'b'",
+   "'c'",
+   "'\\0'"
+  ],
+  "answer": 1,
+  "explanation": "p 指向 s[0]，p+1 指向 s[1]，*(p+1) 即 'b'。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-194",
+  "ch": "ch9",
+  "type": "judge",
+  "stem": "指针变量中存放的内容是内存地址。",
+  "answer": true,
+  "explanation": "指针变量的值是某个变量或内存单元的地址，通过 * 运算可以访问该地址中的数据。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-195",
+  "ch": "ch9",
+  "type": "judge",
+  "stem": "若有定义 int *p; 则 *p 与 p 的含义完全相同。",
+  "answer": false,
+  "explanation": "p 是指针变量本身（存地址），*p 是 p 所指向地址中的内容，二者含义完全不同。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-196",
+  "ch": "ch9",
+  "type": "fill",
+  "stem": "已知一个指针式时钟一开始指向 0 点，顺时针走了 n 个小时（n 为整型变量），用 C 语言表达式表示此时它最终所指向的数字是______。（提示：表盘共 12 个刻度 0~11）",
+  "answer": "n%12",
+  "explanation": "表盘刻度以 12 为周期，走 n 小时后指向 n%12，例如走 15 小时指向 3。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-197",
+  "ch": "ch9",
+  "type": "fill",
+  "stem": "已有定义 int a=5, *p=&a; 则通过指针 p 把 a 的值改为 10 的赋值语句是：______=10;",
+  "answer": "*p",
+  "explanation": "*p 表示 p 所指向的变量 a，*p=10 即 a=10。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-198",
+  "ch": "ch9",
+  "type": "fill",
+  "stem": "已有定义 int a[3][4]; 则表达式 *(a[1]+2) 等价于数组元素______。",
+  "answer": "a[1][2]",
+  "explanation": "a[1] 是第 1 行首地址，a[1]+2 指向该行第 2 列，*(a[1]+2) 即 a[1][2]。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-199",
+  "ch": "ch9",
+  "type": "read",
+  "stem": "下列程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{\n    int a[4]={1,2,3,4}, *p;\n    p = &a[2];\n    printf(\"%d \", ++*p);\n    printf(\"%d\\n\", *--p);\n}",
+  "answer": "4 2",
+  "explanation": "++*p 即 ++a[2]，a[2] 变 4 输出 4；--p 使 p 指向 a[1]，*--p 输出 2。",
+  "src": "2018 真题"
+ },
+ {
+  "id": "t-200",
+  "ch": "ch9",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid sub(int x, int y, int *z)\n{\n   *z = y - x;\n}\nvoid main()\n{\n   int a, b, c;\n   sub(10, 5, &a);\n   sub(7, a, &b);\n   sub(a, b, &c);\n   printf(\"%d,%d,%d\\n\",a,b,c);\n}",
+  "answer": "-5,-12,-7",
+  "explanation": "a=5-10=-5；b=a-7=-12；c=b-a=-12-(-5)=-7。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-201",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "当说明一个共用体变量时系统分配给它的内存是（ ）",
+  "options": [
+   "各成员所需内存量的总和",
+   "第一个成员所需内存量",
+   "成员中占内存量最大者所需内存量",
+   "最后一个成员所需内存量"
+  ],
+  "answer": 2,
+  "explanation": "共用体各成员共用同一段内存，其长度取成员中占内存最大者所需的容量。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-202",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "当定义一个结构体变量时，系统分配给它的内存是（ ）",
+  "options": [
+   "成员中占内存量最大者所需的容量",
+   "结构体中第一个成员所需内存量",
+   "各成员所需内存的总和",
+   "结构体中最后一个成员所需内存量"
+  ],
+  "answer": 2,
+  "explanation": "结构体的每个成员都有自己独立的存储空间，故总内存为各成员所需内存之和。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-203",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "若已经定义\"struct student {int a;int b;} stu;\"，则下列输入语句中正确的是（ ）",
+  "options": [
+   "scanf(\"%d\",&a);",
+   "scanf(\"%d\",&stu.a);",
+   "scanf(\"%d\",&student.a);",
+   "scanf(\"%d\",&stu);"
+  ],
+  "answer": 1,
+  "explanation": "应通过结构体变量名访问成员并取其地址 &stu.a；student 是类型名不能作变量使用。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-204",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "以下对结构体变量 stu1 中成员 age 非法引用的是（ ）\nstruct student { int age; int num; } stu1, *p; p=&stu1;",
+  "options": [
+   "stu1.age",
+   "student.age",
+   "p->age",
+   "(*p).age"
+  ],
+  "answer": 1,
+  "explanation": "student 是结构体类型名而不是变量，不能用它引用成员；其余三种引用方式均合法。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-205",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "设有如下语句：\nstruct st{ int num; struct st *next;};\nstruct st s1={5,NULL},s2={7,NULL},s3={9,NULL},*p;\ns1.next=&s2; s2.next=&s3;\np=&s1; p=p->next;\n则以下表达式的值为 8 的是（ ）",
+  "options": [
+   "p++->num",
+   "p->num++",
+   "++p->num",
+   "(*p).num++"
+  ],
+  "answer": 2,
+  "explanation": "p 指向 s2（num=7），++p->num 先取 num 再加 1 得 8；其他表达式返回的都是 7。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-206",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "若有以下说明和语句：\nstruct student { int num; int age; };\nstruct student stu[3]={{1001,20},{1002,19},{1003,21}};\nstruct student *p; p=stu;\n则下面表达式中的值为 1002 的是（ ）",
+  "options": [
+   "(++p)->num",
+   "(++p)->age",
+   "(*p++).num",
+   "(*p++).age"
+  ],
+  "answer": 0,
+  "explanation": "++p 使 p 指向 stu[1]，其 num 为 1002；(*p++).num 先取 stu[0].num=1001。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-207",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "已知学生记录描述为：\nstruct student\n{  int no;\n   char name[20];\n   char sex;\n   struct { int year; int month; int day; } birth;\n}s;\n设变量 s 中的\"生日\"应该是\"1994 年 11 月 18 日\"，下列对\"生日\"的正确赋值方式是（ ）",
+  "options": [
+   "s.birth.year=1994;s.birth.month=11;s.birth.day=18;",
+   "year=1994;month=11;day=18;",
+   "s.year=1994;s.month=11;s.day=18;",
+   "birth.year=1994; birth.month=11; birth.day=18;"
+  ],
+  "answer": 0,
+  "explanation": "嵌套结构体成员必须逐级用点运算符访问：s.birth.year 等。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-208",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "根据下面的定义，能打印出字母 M 的语句是（ ）\nstruct person{ char name[9]; int age; };\nstruct person class[10]={\"John\",17,\"Paul\",19,\"Mary\",18,\"adam\",16};",
+  "options": [
+   "printf(\"%c\",class[3].name[0]);",
+   "printf(\"%c\",class[3].name[1]);",
+   "printf(\"%c\",class[2].name[1]);",
+   "printf(\"%c\",class[2].name[0]);"
+  ],
+  "answer": 3,
+  "explanation": "class[2] 是 \"Mary\"，其 name[0] 为 'M'。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-209",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "设有如下程序段，则 vu.a 的值为（ ）\nunion u\n{ int a; int b; float c; } vu;\nvu.a=1;\nvu.b=2;\nvu.c=3;",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "A、B、C 都不对"
+  ],
+  "answer": 3,
+  "explanation": "三个成员共用内存，最后存入 float 型 3.0，按 int 型成员 a 读出的是 3.0 的二进制表示对应的无意义大整数，不等于 1、2 或 3。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-210",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "若有以下说明，则（ ）的描述是正确的。\nstruct st\n{ int n;\n  int a[2];\n} n;",
+  "options": [
+   "结构体变量n与结构体成员n不能同名",
+   "程序只在执行到该定义时才为结构体st分配存储单元",
+   "程序运行时为结构体st分配12个字节存储单元",
+   "st是结构体类型名，不是结构体变量"
+  ],
+  "answer": 3,
+  "explanation": "st 是结构体类型名，n 才是定义的结构体变量；变量与成员名可以同名，定义时即为变量 n 分配存储空间。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-211",
+  "ch": "ch10",
+  "type": "judge",
+  "stem": "同类型的结构体变量之间可以整体赋值。",
+  "answer": true,
+  "explanation": "同类型的结构体变量可以用赋值号整体赋值，系统按成员逐个复制，这一点与数组不同。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-212",
+  "ch": "ch10",
+  "type": "judge",
+  "stem": "共用体变量的各个成员从不同的地址开始分别存储。",
+  "answer": false,
+  "explanation": "共用体所有成员共用同一段存储空间，都从同一起始地址开始存放，任一时刻只有一个成员的值是有效的。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-213",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "设有 struct stu s, *p=&s; 访问成员 year 的两种格式为 (*p).year 和______。",
+  "answer": "p->year",
+  "explanation": "通过结构体指针访问成员可用 p->year，等价于 (*p).year。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-214",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "有如下定义，则 p1.y 的值是______。\nstruct point { int x; int y; } p1={2,3};",
+  "answer": "3",
+  "explanation": "初始化列表按成员顺序对应，x 得 2，y 得 3。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-215",
+  "ch": "ch10",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nstruct st{ int x; int *y; } *p;\nvoid main()\n{\n   int s[]={30,20};\n   struct st a[]={1,&s[0],2,&s[1]};\n   p=a;\n   printf(\"%d,\",p->x);\n   printf(\"%d\\n\",++(*(++p)->y));\n}",
+  "answer": "1,21",
+  "explanation": "p->x 输出 1；++p 后 p 指向 a[1]，其成员 y 指向 s[1]（值 20），++(*p->y) 使 s[1] 变 21 并输出 21。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-216",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "需要以写方式打开当前目录下一个名为 file1.txt 的文本文件，下列正确的选项是（ ）",
+  "options": [
+   "fopen(\"file1.txt\",\"w\");",
+   "fopen(\"file1.txt\",\"r\");",
+   "fopen(\"file1.txt\",\"wb\");",
+   "fopen(\"file1.txt\",\"rb\");"
+  ],
+  "answer": 0,
+  "explanation": "文本文件用 \"w\" 以写方式打开；\"r\" 是只读，\"wb\"/\"rb\" 是二进制读写的打开方式。",
+  "src": "2015 真题"
+ },
+ {
+  "id": "t-217",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "若要打开名为 abc.txt 的文本文件进行追加写操作，符合此要求的函数调用是（ ）",
+  "options": [
+   "fopen(\"abc.txt\", \"w+\")",
+   "fopen(\"abc.txt\", \"at\")",
+   "fopen(\"abc.txt\", \"wt+\")",
+   "fopen(\"abc.txt\", \"rt\")"
+  ],
+  "answer": 1,
+  "explanation": "追加写用 \"a\"（或 \"at\"）；\"w+\" 会清空或新建文件，\"rt\" 是只读。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-218",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "函数 fseek(pf, 0L, SEEK_END) 中的 SEEK_END 代表的是（ ）",
+  "options": [
+   "文件开始",
+   "文件末尾",
+   "文件当前位置",
+   "以上都不对"
+  ],
+  "answer": 1,
+  "explanation": "SEEK_END 表示以文件末尾为基准移动位置指针，SEEK_SET 是文件开始，SEEK_CUR 是当前位置。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-219",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "有以下程序：\n#include <stdio.h>\nvoid main()\n{\n   FILE *fp; int i, k=0, n=0;\n   fp=fopen(\"d1.dat\",\"w\");\n   for(i=1;i<4;i++) fprintf(fp,\"%d  \",i);\n   fclose(fp);\n   fp=fopen(\"d1.dat\",\"r\");\n   fscanf(fp,\"%d%d\",&k,&n);\n   printf(\"%d  %d\\n\",k,n);\n   fclose(fp);\n}\n执行后输出结果是（ ）",
+  "options": [
+   "1  2",
+   "123  0",
+   "1  23",
+   "2  3"
+  ],
+  "answer": 0,
+  "explanation": "文件中依次写入 \"1  2  3  \"，fscanf 用 %d%d 读取时以空格分隔，k=1、n=2。",
+  "src": "2016 真题"
+ },
+ {
+  "id": "t-220",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "如果要将存放在双精度型数组 x[10] 中的 10 个数写到文件指针所指向的文件中，正确的语句是（ ）",
+  "options": [
+   "for(i=0;i<50;i++) fputc(x[i],fp);",
+   "for(i=0;i<10;i++) fputc(&x[i],fp);",
+   "for(i=0;i<10;i++) fputc(&x[i],8,1,fp);",
+   "fwrite(x,8,10,fp);"
+  ],
+  "answer": 3,
+  "explanation": "double 占 8 个字节，fwrite(x,8,10,fp) 一次写入 10 个元素；fputc 用于写字符，参数和类型都不符。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-221",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "C 语言可以处理的文件类型是（ ）",
+  "options": [
+   "文本文件和二进制文件",
+   "文本文件和数据文件",
+   "数据文件和二进制文件",
+   "以上都不完全"
+  ],
+  "answer": 0,
+  "explanation": "C 语言把文件看作字节流，按编码方式分为文本文件（ASCII 文件）和二进制文件两类。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-222",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "要打开一个只读文件，正确的 fopen 调用方式字符串是（ ）",
+  "options": [
+   "\"w\"",
+   "\"r\"",
+   "\"a\"",
+   "\"wb\""
+  ],
+  "answer": 1,
+  "explanation": "\"r\" 表示以只读方式打开已存在的文件；\"w\" 写方式（覆盖），\"a\" 追加，\"wb\" 二进制写。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-223",
+  "ch": "ch11",
+  "type": "judge",
+  "stem": "fopen 函数打开文件失败时，返回值为 NULL。",
+  "answer": true,
+  "explanation": "fopen 失败（如文件不存在且以只读方式打开）时返回空指针 NULL，程序中通常据此判断是否打开成功。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-224",
+  "ch": "ch11",
+  "type": "judge",
+  "stem": "程序结束时系统会自动关闭所有打开的文件，因此程序中可以不调用 fclose 函数。",
+  "answer": false,
+  "explanation": "应显式调用 fclose 关闭文件，否则缓冲区中未写入的数据可能丢失，文件也可能被破坏。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-225",
+  "ch": "ch11",
+  "type": "fill",
+  "stem": "设已有非空文本数据文件 file1.dat，要求允许读、或在文件末追加数据，则用 FILE *fp=fopen(\"file1.dat\", ______); 打开该文件。",
+  "answer": "a+ | r+",
+  "explanation": "既允许读又允许在文件末追加，用 \"a+\"；\"r+\" 也允许读和写（从开头覆盖写），追加写时以 \"a+\" 为准。",
+  "src": "2022 真题"
+ },
+ {
+  "id": "t-226",
+  "ch": "ch11",
+  "type": "fill",
+  "stem": "关闭文件指针 fp 所指向文件的语句是：______;（写出完整语句，分号可不写）",
+  "answer": "fclose(fp)",
+  "explanation": "fclose(fp) 刷新缓冲区并关闭文件，防止数据丢失。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-227",
+  "ch": "ch11",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid main()\n{\n    FILE *fp;\n    int a[10]={0,1,2,3,4}, i;\n    fp=fopen(\"file1.dat\",\"wb+\");\n    fwrite(a,sizeof(int),10,fp);\n    rewind(fp);\n    fread(a,sizeof(int),10,fp);\n    fclose(fp);\n    for(i=0;i<10;i++) printf(\"%d \",a[i]);\n}",
+  "answer": "0 1 2 3 4 0 0 0 0 0",
+  "explanation": "数组部分初始化后其余元素为 0，整个数组写入文件再读回，内容不变。",
+  "src": "2017 真题"
+ },
+ {
+  "id": "t-228",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "设有以下宏定义，某程序需要使用一个代表常数 3.14 的符号常量名 P，以下定义中正确的是（ ）",
+  "options": [
+   "#define P 3.14;",
+   "#define P(3.14)",
+   "#define P = 3.14;",
+   "#define P 3.14"
+  ],
+  "answer": 3,
+  "explanation": "宏定义格式为 #define 宏名 替换文本，末尾不加分号，宏名与替换文本之间用空格分隔。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-229",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "已有宏定义 #define M 3 和 #define N (M+2)，则表达式 N*M 的值是（ ）",
+  "options": [
+   "11",
+   "15",
+   "9",
+   "21"
+  ],
+  "answer": 1,
+  "explanation": "宏替换后 N*M 为 (3+2)*3=15；若 N 定义为 #define N M+2，则替换后为 3+2*3=9，这正是加括号的意义。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-230",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "已有宏定义 #define SQR(x) x*x，则表达式 SQR(1+2) 的值是（ ）",
+  "options": [
+   "9",
+   "5",
+   "6",
+   "7"
+  ],
+  "answer": 1,
+  "explanation": "宏只做文本替换，SQR(1+2) 展开为 1+2*1+2=5；若要得 9，宏体应写成 ((x)*(x))。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-231",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "以下关于 #include 命令的叙述正确的是（ ）",
+  "options": [
+   "用 #include 包含的头文件在程序运行时被装入",
+   "#include 命令只能放在源文件的开头",
+   "#include 后面的文件名用尖括号<>或双引号\"\"都可以",
+   "#include 命令是 C 语句，末尾必须加分号"
+  ],
+  "answer": 2,
+  "explanation": "文件包含在编译预处理阶段完成，用 <> 或 \"\" 都可以（查找目录不同），预处理命令不是 C 语句，习惯放在开头但并非只能放在开头。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-232",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "已有宏定义 #define MAX(a,b) ((a)>(b)?(a):(b))，则表达式 MAX(3,5)+1 的值是（ ）",
+  "options": [
+   "5",
+   "6",
+   "7",
+   "8"
+  ],
+  "answer": 1,
+  "explanation": "宏展开为 ((3)>(5)?(3):(5))+1=5+1=6。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-233",
+  "ch": "ch12",
+  "type": "judge",
+  "stem": "宏名习惯上用大写字母表示，但这并不是语法上的强制要求。",
+  "answer": true,
+  "explanation": "宏名遵循标识符规则，大小写均可，用大写只是便于与普通变量区别的惯例。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-234",
+  "ch": "ch12",
+  "type": "judge",
+  "stem": "带参数的宏在展开时，先把实参表达式的值计算出来，再代入宏体。",
+  "answer": false,
+  "explanation": "宏替换是编译预处理阶段的纯文本替换，不计算实参的值，直接把实参文本代入宏体，因此宏体中参数通常要加括号。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-235",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "已有宏定义 #define N 5，则表达式 N*2 的值是______。",
+  "answer": "10",
+  "explanation": "编译前 N 被替换为 5，表达式即 5*2=10。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-236",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "每个编译预处理命令的开头都必须以字符______开始。",
+  "answer": "# | #号",
+  "explanation": "如 #define、#include、#undef 等，# 是预处理命令的统一前缀。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-237",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "已有宏定义 #define F(x) 2*x+1，则表达式 F(3) 的值是______。",
+  "answer": "7",
+  "explanation": "F(3) 文本替换为 2*3+1=7。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-238",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "已有宏定义 #define ADD(x,y) x+y，则表达式 ADD(2,3)*4 的值是______。",
+  "answer": "14",
+  "explanation": "替换后为 2+3*4=14（先乘除后加减），这正是宏定义不加括号带来的典型陷阱。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-239",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "执行下面程序段后，b 的值是（ ）\nint x=3.5, b; char z='A';\nb=((x&15) && (z<'a'));",
+  "options": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": 1,
+  "explanation": "x 被赋值 3，3&15=3 非 0，'A'<'a' 为真，两个真值相与结果为 1。",
+  "src": "2014 真题"
+ },
+ {
+  "id": "t-240",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "表达式 5&3 的值是（ ）",
+  "options": [
+   "1",
+   "7",
+   "2",
+   "8"
+  ],
+  "answer": 0,
+  "explanation": "按位与：101 & 011 = 001，即 1。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-241",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "表达式 5|3 的值是（ ）",
+  "options": [
+   "7",
+   "1",
+   "15",
+   "8"
+  ],
+  "answer": 0,
+  "explanation": "按位或：101 | 011 = 111，即 7。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-242",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "表达式 5^3 的值是（ ）",
+  "options": [
+   "6",
+   "1",
+   "7",
+   "8"
+  ],
+  "answer": 0,
+  "explanation": "按位异或：101 ^ 011 = 110，即 6（相同为 0，不同为 1）。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-243",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "表达式 2<<3 的值是（ ）",
+  "options": [
+   "6",
+   "8",
+   "16",
+   "32"
+  ],
+  "answer": 2,
+  "explanation": "左移 3 位相当于乘 2 的 3 次方，2<<3=16。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-244",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "若 int 型占 32 位，则表达式 ~5 的值是（ ）",
+  "options": [
+   "-6",
+   "-4",
+   "5",
+   "6"
+  ],
+  "answer": 0,
+  "explanation": "按位取反满足关系 ~x = -(x+1)，故 ~5=-6。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-245",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "若想将整型变量 x 的某一指定位清零而其余位不变，应使用的位运算是（ ）",
+  "options": [
+   "与一个相应位为 1、其余位为 0 的数做按位或运算",
+   "与一个相应位为 0、其余位为 1 的数做按位与运算",
+   "将 x 与自身做按位异或运算",
+   "对 x 做按位取反运算"
+  ],
+  "answer": 1,
+  "explanation": "用 0 清零、1 保留的掩码与 x 按位与即可将指定位清零；按位或只能置 1，异或可翻转。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-246",
+  "ch": "ch13",
+  "type": "judge",
+  "stem": "位运算符的运算对象只能是整型或字符型数据。",
+  "answer": true,
+  "explanation": "位运算按二进制位操作，实型数据没有对应的位模式供位运算使用，故只能用于整型和字符型。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-247",
+  "ch": "ch13",
+  "type": "judge",
+  "stem": "表达式 1<<4 的值是 8。",
+  "answer": false,
+  "explanation": "1<<4 表示 1 乘 2 的 4 次方，值为 16。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-248",
+  "ch": "ch13",
+  "type": "fill",
+  "stem": "16 进制转换成 10 进制过程中，需要将字符 ch（取值 'A'~'F'）转换为数值（取值 10~15），请构造表达式实现：______。",
+  "answer": "ch-'A'+10",
+  "explanation": "字符 'A'~'F' 的 ASCII 码连续，减去 'A' 得 0~5，再加 10 得 10~15。",
+  "src": "2020 真题"
+ },
+ {
+  "id": "t-249",
+  "ch": "ch13",
+  "type": "fill",
+  "stem": "表达式 12&10 的值是______。",
+  "answer": "8",
+  "explanation": "12 为 1100，10 为 1010，按位与得 1000，即 8。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-250",
+  "ch": "ch13",
+  "type": "fill",
+  "stem": "表达式 12^10 的值是______。",
+  "answer": "6",
+  "explanation": "1100 与 1010 按位异或得 0110，即 6。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-251",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "在 C 语言中，用于在堆上动态分配内存的库函数是（ ）",
+  "options": [
+   "malloc",
+   "printf",
+   "fopen",
+   "getchar"
+  ],
+  "answer": 0,
+  "explanation": "malloc 在堆（自由存储区）上按字节数分配内存，其余三个函数与内存分配无关。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-252",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "函数调用 malloc(10*sizeof(int)) 成功时返回（ ）",
+  "options": [
+   "一个 int 型变量",
+   "指向所分配内存起始地址的指针（类型为 void*）",
+   "整数 10",
+   "固定值 NULL"
+  ],
+  "answer": 1,
+  "explanation": "malloc 成功返回所分配连续内存首地址的 void* 指针，通常强制类型转换后使用。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-253",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "释放通过 malloc 动态分配的内存，应使用的函数是（ ）",
+  "options": [
+   "free",
+   "delete",
+   "remove",
+   "fclose"
+  ],
+  "answer": 0,
+  "explanation": "C 语言用 free(p) 释放 p 指向的动态内存；delete 是 C++ 的运算符。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-254",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "若 malloc 函数分配内存失败，其返回值是（ ）",
+  "options": [
+   "1",
+   "NULL",
+   "空字符串",
+   "程序立即崩溃"
+  ],
+  "answer": 1,
+  "explanation": "分配失败时 malloc 返回 NULL，程序应检查返回值再使用。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-255",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "以下关于动态内存分配的叙述，正确的是（ ）",
+  "options": [
+   "动态分配的内存使用后不必释放",
+   "free(p) 之后仍可继续访问 p 所指的内存",
+   "动态分配内存的生命周期由程序员控制，从 malloc 成功到 free 之间有效",
+   "malloc 的返回值是 int 型"
+  ],
+  "answer": 2,
+  "explanation": "堆内存不随函数返回自动回收，必须由程序员显式 free；free 后再访问是未定义行为。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-256",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "与 malloc(5*sizeof(int)) 相比，函数调用 calloc(5,sizeof(int)) 的特点是（ ）",
+  "options": [
+   "分配的内存会被自动初始化为 0",
+   "分配的内存内容是随机的",
+   "分配的内存比 malloc 大 5 倍",
+   "不需要用 free 释放"
+  ],
+  "answer": 0,
+  "explanation": "calloc 在分配的同时把内存清零，malloc 不初始化；两者分配的字节数相同，都要用 free 释放。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-257",
+  "ch": "ch14",
+  "type": "judge",
+  "stem": "malloc 函数分配的内存空间不会被初始化，其内容是不确定的。",
+  "answer": true,
+  "explanation": "malloc 只负责分配，不清零；若需要清零应使用 calloc 或手动初始化。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-258",
+  "ch": "ch14",
+  "type": "judge",
+  "stem": "通过 malloc 分配的堆内存，在所在函数返回后会自动释放。",
+  "answer": false,
+  "explanation": "堆内存的生命周期由程序员控制，函数返回不会自动释放，若不 free 会造成内存泄漏。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-259",
+  "ch": "ch14",
+  "type": "fill",
+  "stem": "函数______的功能是在堆上分配一个指定字节数的内存块（写函数名）。",
+  "answer": "malloc",
+  "explanation": "malloc(字节数) 在堆上分配连续内存并返回 void* 指针。",
+  "src": "模拟"
+ },
+ {
+  "id": "t-260",
+  "ch": "ch14",
+  "type": "fill",
+  "stem": "使用 malloc、free 等动态内存分配函数时，必须包含的头文件是______。",
+  "answer": "stdlib.h | malloc.h",
+  "explanation": "标准写法是 #include <stdlib.h>（部分编译器也允许 malloc.h）。",
+  "src": "模拟"
+ }
+]

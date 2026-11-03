@@ -1,0 +1,225 @@
+/* ============================================================
+   备考中心 exam.css —— 复用 style.css 设计令牌
+   ============================================================ */
+
+/* ---------- 顶栏与视图切换 ---------- */
+.ex-top .extabs{display:flex;gap:4px;margin-left:auto}
+.extabs button{
+  border:.5px solid transparent;background:none;color:var(--fg-3);cursor:pointer;
+  font-size:12.5px;font-weight:600;font-family:var(--sans);
+  padding:5px 13px;border-radius:8px;transition:.15s;white-space:nowrap;
+}
+.extabs button:hover{color:var(--fg);background:var(--panel-2)}
+.extabs button.on{color:var(--ac);background:var(--ac-dim);border-color:var(--ac-dim-2)}
+.ex-back{margin-right:2px;text-decoration:none}
+.ex-top .tools{margin-left:6px}
+
+.ex-main{max-width:1080px;margin:0 auto;padding:26px 22px 120px}
+.view{display:none}
+.view.on{display:block}
+
+/* ---------- 头图 ---------- */
+.ex-hero{margin:6px 0 22px}
+.ex-hero .kicker{
+  display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.14em;
+  color:var(--ac);background:var(--ac-dim);border:.5px solid var(--ac-dim-2);
+  padding:5px 10px;border-radius:6px;margin-bottom:12px}
+.ex-hero h1{font-size:26px;margin:0 0 8px;letter-spacing:-.01em}
+.ex-hero p{margin:0;color:var(--fg-3);font-size:13.5px;max-width:640px}
+
+/* ---------- 通用控件 ---------- */
+.ex-panel{background:var(--panel-solid);border:.5px solid var(--line-2);
+  border-radius:14px;padding:18px 20px;box-shadow:var(--sh-1);margin-bottom:18px}
+.ex-panel h2{display:flex;align-items:center;gap:10px;font-size:15.5px;margin:0 0 14px}
+.ex-panel .no{
+  width:24px;height:24px;border-radius:7px;display:inline-flex;align-items:center;
+  justify-content:center;background:var(--ac-dim);color:var(--ac);
+  font:700 12px/1 var(--mono);border:.5px solid var(--ac-dim-2)}
+.ex-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+.ex-line>b{font-size:12.5px;color:var(--fg-3);min-width:34px}
+.ex-chgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:6px 14px;margin:4px 0 6px}
+.ex-chk{display:flex;align-items:center;gap:6px;font-size:12.8px;cursor:pointer;
+  color:var(--fg);padding:4px 6px;border-radius:6px;transition:.12s}
+.ex-chk:hover{background:var(--panel-2)}
+.ex-chk input{accent-color:var(--ac);margin:0}
+.ex-chk i{color:var(--fg-3);font-style:normal;font-size:11.5px}
+.ex-num{
+  width:76px;padding:5px 9px;border:.5px solid var(--line-2);border-radius:7px;
+  background:var(--panel-2);color:var(--fg);font:12.5px var(--mono);outline:none}
+.ex-num:focus{border-color:var(--ac)}
+select.ex-num{width:auto}
+
+.btn{
+  border:.5px solid var(--line-2);background:var(--panel-2);color:var(--fg);
+  border-radius:8px;padding:6px 15px;font-size:12.5px;font-weight:600;
+  font-family:var(--sans);cursor:pointer;transition:.14s}
+.btn:hover{border-color:var(--ac);color:var(--ac)}
+.btn:active{transform:scale(.97)}
+.btn-primary{
+  background:linear-gradient(135deg,#0a84ff,#5e5ce6);color:#fff;border:0;
+  box-shadow:var(--sh-2)}
+.btn-primary:hover{color:#fff;filter:brightness(1.08)}
+.btn-sm{padding:3.5px 11px;font-size:11.5px;border-radius:7px}
+
+.ex-banner{
+  display:flex;align-items:center;gap:6px;background:var(--ac-dim);
+  border:.5px solid var(--ac-dim-2);border-radius:10px;padding:9px 14px;
+  font-size:12.8px;color:var(--fg);margin-bottom:12px}
+.ex-banner.warn{background:rgba(255,159,10,.1);border-color:rgba(255,159,10,.35)}
+.ex-banner b{font-family:var(--mono)}
+
+.ex-code{
+  margin:9px 0;padding:11px 14px;background:var(--panel-2);
+  border:.5px solid var(--line);border-radius:9px;overflow:auto;
+  font:12px/1.65 var(--mono);color:var(--fg);white-space:pre}
+.ex-code code, .ex-stem code, .rev-pt code, .ex-exp code, .ex-opt code{
+  font:inherit;background:var(--panel-2);border:.5px solid var(--line);
+  border-radius:4px;padding:0 4px}
+
+/* ---------- 理论复习 ---------- */
+#view-review{display:none;grid-template-columns:216px 1fr;gap:26px;align-items:start}
+#view-review.on{display:grid}
+.ex-side{
+  position:sticky;top:calc(var(--tb-h) + 18px);
+  max-height:calc(100vh - var(--tb-h) - 40px);overflow:auto;
+  background:var(--panel-solid);border:.5px solid var(--line-2);border-radius:13px;
+  padding:8px;box-shadow:var(--sh-1)}
+.ex-filter{
+  width:100%;box-sizing:border-box;margin-bottom:8px;padding:6px 10px;
+  border:.5px solid var(--line-2);border-radius:8px;background:var(--panel-2);
+  color:var(--fg);font-size:12px;outline:none}
+.ex-filter:focus{border-color:var(--ac)}
+.ex-nav{
+  display:flex;align-items:center;justify-content:space-between;gap:6px;
+  padding:6.5px 10px;border-radius:8px;font-size:12.6px;color:var(--fg);
+  text-decoration:none;transition:.12s}
+.ex-nav:hover{background:var(--panel-2)}
+.ex-nav.cur{background:var(--ac-dim);color:var(--ac)}
+.ex-nav b{font:600 10.5px var(--mono);color:var(--fg-3)}
+.rev-ch{margin-bottom:34px}
+.rev-ch h2{
+  display:flex;align-items:baseline;gap:10px;font-size:19px;margin:0 0 14px;
+  padding-bottom:9px;border-bottom:1px solid var(--line)}
+.rev-cnt{font:600 11px var(--mono);color:var(--fg-3);letter-spacing:.05em}
+.rev-pt{
+  background:var(--panel-solid);border:.5px solid var(--line-2);border-radius:12px;
+  padding:13px 16px;margin-bottom:10px;box-shadow:var(--sh-1)}
+.rev-pt h3{display:flex;gap:9px;align-items:baseline;font-size:13.8px;margin:0 0 4px}
+.rev-pt h3 i{
+  font:700 10.5px var(--mono);color:var(--ac);font-style:normal;flex:none;
+  background:var(--ac-dim);border-radius:5px;padding:2px 5px}
+.rev-pt p{margin:4px 0 0;font-size:12.8px;color:var(--fg);line-height:1.75}
+
+/* ---------- 理论模拟：试卷与判分 ---------- */
+.ex-paperbar{
+  position:sticky;top:calc(var(--tb-h) + 8px);z-index:50;
+  display:flex;align-items:center;gap:10px;
+  background:var(--panel-solid);border:.5px solid var(--line-2);border-radius:12px;
+  padding:9px 14px;box-shadow:var(--sh-2);margin-bottom:16px;font-size:12.8px}
+.ex-paperbar span{margin-right:auto;color:var(--fg-3)}
+.ex-paperbar b{color:var(--ac);font-family:var(--mono)}
+
+.ex-q{
+  background:var(--panel-solid);border:.5px solid var(--line-2);border-radius:13px;
+  padding:15px 18px;margin-bottom:13px;box-shadow:var(--sh-1)}
+.ex-q.graded.ok{border-color:rgba(52,199,89,.4)}
+.ex-q.graded.bad{border-color:rgba(255,69,58,.4)}
+.ex-qh{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+.ex-qh>b{
+  width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;
+  justify-content:center;background:var(--panel-2);border:.5px solid var(--line-2);
+  font:700 12px var(--mono);color:var(--fg-3)}
+.ex-tag{
+  font:600 10.5px/1 var(--mono);letter-spacing:.03em;padding:4px 8px;border-radius:6px;
+  background:var(--panel-2);border:.5px solid var(--line);color:var(--fg-3)}
+.ex-tag.t{color:var(--ac);background:var(--ac-dim);border-color:var(--ac-dim-2)}
+.ex-mark{margin-left:auto;font-size:12px;font-weight:700}
+.ex-q.graded .ex-mark{color:var(--sys-green)}
+.ex-q.graded.bad .ex-mark{color:#ff453a}
+.ex-stem{font-size:13.3px;line-height:1.8;margin:2px 0 4px}
+.ex-opts{display:grid;gap:7px;margin-top:10px}
+.ex-opt{
+  display:flex;align-items:baseline;gap:8px;font-size:12.9px;line-height:1.65;
+  padding:8px 12px;border:.5px solid var(--line);border-radius:9px;
+  cursor:pointer;transition:.12s;background:var(--panel-2)}
+.ex-opt:hover{border-color:var(--ac)}
+.ex-opt input{accent-color:var(--ac);margin:0;flex:none;align-self:center}
+.ex-opt i{font-style:normal;font-weight:700;color:var(--fg-3);flex:none}
+.ex-opt.right{border-color:var(--sys-green);background:rgba(52,199,89,.1)}
+.ex-opt.right i{color:var(--sys-green)}
+.ex-opt.wrongpick{border-color:#ff453a;background:rgba(255,69,58,.08)}
+.ex-input{
+  width:100%;box-sizing:border-box;margin-top:10px;padding:9px 12px;
+  border:.5px solid var(--line-2);border-radius:9px;background:var(--panel-2);
+  color:var(--fg);font:13px var(--mono);outline:none;resize:vertical}
+.ex-input:focus{border-color:var(--ac)}
+.ex-ansline{margin-top:10px;font-size:12.8px;color:var(--fg-3)}
+.ex-ansline b.ok{color:var(--sys-green)}
+.ex-ansline b.bad{color:#ff453a}
+.ex-exp{
+  margin-top:11px;padding:10px 13px;background:var(--panel-2);
+  border-radius:9px;font-size:12.5px;line-height:1.75;color:var(--fg-3)}
+.ex-exp b{color:var(--ac);margin-right:8px;font-size:12px}
+
+.ex-scorecard{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  background:var(--panel-solid);border-radius:16px;padding:26px 20px 22px;
+  border:.5px solid var(--line-2);box-shadow:var(--sh-1);margin-bottom:18px}
+.ex-scorecard.pass{border-color:rgba(52,199,89,.4)}
+.ex-scorecard.fail{border-color:rgba(255,69,58,.4)}
+.ex-scorecard .big{font:800 44px/1 var(--mono);letter-spacing:-.02em}
+.ex-scorecard .big i{font-size:19px;color:var(--fg-3);font-style:normal}
+.ex-scorecard .mid{font-size:14px;font-weight:700}
+.ex-scorecard .sub{font-size:12px;color:var(--fg-3)}
+.ex-scorecard .acts{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+
+/* ---------- 编程模拟 ---------- */
+.ex-pcard{
+  background:var(--panel-solid);border:.5px solid var(--line-2);border-radius:13px;
+  padding:16px 18px;margin-bottom:15px;box-shadow:var(--sh-1)}
+.ex-title{font-size:14.5px;font-weight:700}
+.pg-edlabel{font:600 10.5px var(--mono);letter-spacing:.08em;color:var(--fg-3);margin:12px 0 5px}
+.pg-code,.pg-in{
+  width:100%;box-sizing:border-box;padding:11px 13px;
+  border:.5px solid var(--line-2);border-radius:10px;background:var(--panel-2);
+  color:var(--fg);font:12.3px/1.65 var(--mono);outline:none;resize:vertical;
+  tab-size:4;white-space:pre}
+.pg-code:focus,.pg-in:focus{border-color:var(--ac)}
+.pg-out{
+  margin:10px 0 0;padding:10px 13px;background:var(--panel-2);
+  border:.5px solid var(--line);border-radius:9px;max-height:300px;overflow:auto;
+  font:12.3px/1.7 var(--mono);color:var(--fg);white-space:pre-wrap;word-break:break-word}
+.ex-det{margin-top:12px}
+.ex-det summary{
+  cursor:pointer;font-size:12.3px;font-weight:600;color:var(--ac);
+  padding:6px 10px;border:.5px dashed var(--ac-dim-2);border-radius:8px;
+  display:inline-block;list-style:none;user-select:none}
+.ex-det summary::-webkit-details-marker{display:none}
+.ex-det summary:hover{background:var(--ac-dim)}
+.ex-det[open] summary{margin-bottom:9px}
+.ex-det.ans[open] summary{display:none}
+.ex-det p{margin:6px 0;font-size:12.8px;line-height:1.75}
+
+/* ---------- 回到顶部 ---------- */
+.top-btn{
+  position:fixed;right:22px;bottom:30px;z-index:260;width:36px;height:36px;
+  border-radius:10px;border:.5px solid var(--line-2);background:var(--panel-solid);
+  color:var(--fg-3);font-size:15px;cursor:pointer;box-shadow:var(--sh-2);
+  opacity:0;pointer-events:none;transition:.18s}
+.top-btn.on{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--ac);border-color:var(--ac)}
+
+.ex-empty{color:var(--fg-3);font-size:13px;padding:30px 0;text-align:center}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:860px){
+  .ex-main{padding:18px 13px 100px}
+  #view-review.on{display:block}
+  .ex-side{position:static;max-height:none;margin-bottom:18px}
+  .ex-top{flex-wrap:wrap;height:auto;min-height:var(--tb-h);padding:7px 10px;gap:8px}
+  .extabs{order:3;width:100%;margin-left:0;justify-content:center}
+  .extabs button{flex:1;padding:6px 4px}
+  .ex-hero h1{font-size:21px}
+  .ex-chgrid{grid-template-columns:repeat(auto-fill,minmax(138px,1fr))}
+  .ex-paperbar{top:auto}
+}
