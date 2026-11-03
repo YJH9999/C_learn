@@ -110,6 +110,35 @@ select.ex-num{width:auto}
   background:var(--ac-dim);border-radius:5px;padding:2px 5px}
 .rev-pt p{margin:4px 0 0;font-size:12.8px;color:var(--fg);line-height:1.75}
 
+/* ---- 要点标签芯片 ---- */
+.pt-tags{display:inline-flex;gap:4px;margin-left:2px;flex:none}
+.pt-tag{
+  font:600 10px/1 var(--sans);letter-spacing:.06em;
+  padding:3px 7px;border-radius:5px;white-space:nowrap;
+  border:.5px solid transparent;transform:translateY(-1px)}
+.pt-tag.tg-imp{color:#b45309;background:#fef3c7;border-color:#fde68a}
+.pt-tag.tg-hard{color:#9333ea;background:#f3e8ff;border-color:#e9d5ff}
+.pt-tag.tg-err{color:#dc2626;background:#fee2e2;border-color:#fecaca}
+.pt-tag.tg-mix{color:#0d9488;background:#ccfbf1;border-color:#99f6e4}
+.dark .pt-tag.tg-imp{color:#fcd34d;background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.3)}
+.dark .pt-tag.tg-hard{color:#d8b4fe;background:rgba(168,85,247,.16);border-color:rgba(168,85,247,.32)}
+.dark .pt-tag.tg-err{color:#fca5a5;background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.3)}
+.dark .pt-tag.tg-mix{color:#5eead4;background:rgba(20,184,166,.14);border-color:rgba(20,184,166,.32)}
+
+/* ---- 易混辨析块 ---- */
+.conf-box{
+  margin:9px 0 2px;border:.5px dashed var(--ac-dim-2);border-radius:9px;
+  background:var(--ac-dim);overflow:hidden}
+.conf-tt{
+  font:600 11px var(--sans);letter-spacing:.1em;color:var(--ac);
+  padding:6px 12px 5px;border-bottom:.5px solid var(--ac-dim-2)}
+.conf-row{
+  display:flex;gap:10px;align-items:baseline;
+  padding:6px 12px;font-size:12.4px;line-height:1.65}
+.conf-row+.conf-row{border-top:.5px solid var(--ac-dim-2)}
+.conf-row b{color:var(--ac);white-space:nowrap;flex:none;font-size:12.2px}
+.conf-row span{color:var(--fg)}
+
 /* ---------- 理论模拟：试卷与判分 ---------- */
 .ex-paperbar{
   position:sticky;top:calc(var(--tb-h) + 8px);z-index:50;

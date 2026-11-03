@@ -241,9 +241,15 @@
   function setCur(id){
     if(id===curId) return;
     curId=id;
-    $$('.node.cur').forEach(function(n){n.classList.remove('cur')});
+    $$('.node.cur, .node.canc').forEach(function(n){n.classList.remove('cur','canc')});
     var n=toc.querySelector('.node[data-id="'+id+'"]');
     if(n){
+      /* 滚动联动：自动展开祖先链并标记当前路径，保证高亮项始终可见 */
+      var p=n.parentElement;
+      while(p && p!==toc){
+        if(p.classList && p.classList.contains('node')) p.classList.add('open','canc');
+        p=p.parentElement;
+      }
       n.classList.add('cur');
       var row=n.querySelector('.row');
       var tr=row.getBoundingClientRect(), sr=toc.getBoundingClientRect();

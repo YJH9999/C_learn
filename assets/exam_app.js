@@ -112,6 +112,22 @@ window.addEventListener('hashchange',function(){
 /* ============================================================
    版块一：理论复习
    ============================================================ */
+/* ---- 要点标签芯片（重点/难点/易错/易混） ---- */
+var TAG_CLS={'重点':'imp','难点':'hard','易错':'err','易混':'mix'};
+function tagHTML(tags){
+  if(!tags||!tags.length) return '';
+  return '<span class="pt-tags">'+tags.map(function(t){
+    return '<span class="pt-tag tg-'+(TAG_CLS[t]||'imp')+'">'+esc(t)+'</span>';
+  }).join('')+'</span>';
+}
+/* ---- 易混辨析块 ---- */
+function confHTML(conf){
+  if(!conf||!conf.length) return '';
+  return '<div class="conf-box"><div class="conf-tt">⚖ 易混辨析</div>'
+    +conf.map(function(c){
+      return '<div class="conf-row"><b>'+inl(c.k)+'</b><span>'+inl(c.v)+'</span></div>';
+    }).join('')+'</div>';
+}
 function renderReview(data){
   var nav=$('#rev-nav'), body=$('#rev-body');
   nav.innerHTML='<input class="ex-filter" id="rev-q" type="search" placeholder="筛选要点…" autocomplete="off">'
@@ -132,8 +148,9 @@ function renderReview(data){
     return '<section class="rev-ch" id="sec-'+sec.ch+'">'
       +'<h2>'+esc(sec.name)+'<span class="rev-cnt">'+sec.points.length+' 个要点</span></h2>'
       +sec.points.map(function(p,i){
-        return '<article class="rev-pt"><h3><i>'+String(i+1).padStart(2,'0')+'</i>'+inl(p.t)+'</h3>'
+        return '<article class="rev-pt"><h3><i>'+String(i+1).padStart(2,'0')+'</i>'+inl(p.t)+tagHTML(p.tags)+'</h3>'
           +(p.d?'<p>'+inl(p.d)+'</p>':'')
+          +confHTML(p.conf)
           +(p.code?'<pre class="ex-code">'+esc(p.code)+'</pre>':'')
           +'</article>';
       }).join('')

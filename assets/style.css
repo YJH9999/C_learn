@@ -373,6 +373,8 @@ body.dark .sres .rt mark,body.dark .sres .rs mark{background:rgba(255,214,10,.30
   content:'';position:absolute;right:6px;top:50%;transform:translateY(-50%);
   width:5px;height:5px;border-radius:50%;background:var(--ac);
 }
+/* 滚动联动时的祖先路径（轻微提示，不抢当前项风头） */
+.node.canc>.row .tx{color:var(--fg);font-weight:500}
 
 /* 风险圆点 */
 .dot{width:5px;height:5px;border-radius:50%;flex:none;display:inline-block}
