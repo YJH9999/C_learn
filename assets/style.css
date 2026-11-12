@@ -54,8 +54,8 @@
   --sh-4:0 14px 44px rgba(0,0,0,.16),0 0 0 .5px rgba(0,0,0,.06);
 
   /* 字体 */
-  --sans:"Inter",-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC",
-         "Noto Sans SC","Microsoft YaHei UI","Microsoft YaHei",sans-serif;
+  --sans:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei",-apple-system,
+         "Segoe UI",system-ui,sans-serif;
   --mono:"JetBrains Mono","SF Mono",Menlo,Consolas,"Noto Sans Mono CJK SC",
          "Microsoft YaHei UI",monospace;
 
