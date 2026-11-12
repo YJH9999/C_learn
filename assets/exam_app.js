@@ -715,28 +715,47 @@ function bankItem(q,i){
     +'<div class="ex-exp"><b>讲评</b>'+inl(q.explanation||'')+'</div></details></article>';
 }
 
+/* ---------- 分页渲染：每页 30 题，数据级筛选，避免一次性渲染几百条 DOM ---------- */
+var BKSZ=30, BKPG=1, BKDATA=null;
+function bkText(q){
+  return norm((q.title||'')+' '+(q.stem||'')+' '+(q.code||'')+' '
+    +(q.options||[]).join(' ')+' '+(q.answer||'')+' '+(q.explanation||'')+' '+(q.hint||''));
+}
 function renderBank(){
   var list=$('#bk-list'), data=BK.loaded[BK.kind];
   if(!data){ list.innerHTML='<div class="ex-empty">正在加载题库…</div>'; return; }
-  list.innerHTML=data.map(bankItem).join('');
   /* 切换题库时重置筛选，避免旧条件过滤掉全部题目 */
   $('#bk-q').value=''; $('#bk-ch').value=''; $('#bk-lv').value='0';
-  applyBankFilter();
+  BKDATA=data; BKPG=1;
+  renderBankPage();
 }
-
-function applyBankFilter(){
+function renderBankPage(){
   var list=$('#bk-list'); if(!list) return;
+  var data=BKDATA||[];
   var k=norm($('#bk-q').value), ch=$('#bk-ch').value, lv=+$('#bk-lv').value;
-  var n=0;
-  $$('.bk-it',list).forEach(function(it){
-    var ok=(ch===''||it.dataset.ch===ch)
-      &&(!lv||+it.dataset.lv===lv)
-      &&(!k||norm(it.textContent).indexOf(k)>=0);
-    it.style.display=ok?'':'none';
-    if(ok) n++;
+  var arr=data.filter(function(q){
+    return (ch===''||String(q.ch)===ch)
+      &&(!lv||+q.level===lv)
+      &&(!k||bkText(q).indexOf(k)>=0);
   });
-  var total=(BK.loaded[BK.kind]||[]).length;
-  $('#bk-cnt').textContent=total?('显示 '+n+' / '+total+' 题'):'';
+  var pages=Math.max(1,Math.ceil(arr.length/BKSZ));
+  if(BKPG>pages) BKPG=pages;
+  list.innerHTML=arr.length
+    ?arr.slice((BKPG-1)*BKSZ,BKPG*BKSZ).map(function(q,j){return bankItem(q,(BKPG-1)*BKSZ+j)}).join('')
+    :'<div class="ex-empty">没有符合条件的题目——放宽筛选或换个关键词试试</div>';
+  $('#bk-cnt').textContent=data.length?('显示 '+arr.length+' / '+data.length+' 题'):'';
+  var pager=$('#bk-pager');
+  if(pager){
+    pager.innerHTML=pages>1
+      ?('<button class="ex-pg" id="bk-prev"'+(BKPG<=1?' disabled':'')+'>‹ 上一页</button>'
+        +'<span class="ex-pg-info">'+BKPG+' / '+pages+'</span>'
+        +'<button class="ex-pg" id="bk-next"'+(BKPG>=pages?' disabled':'')+'>下一页 ›</button>')
+      :'';
+    var p1=$('#bk-prev'), p2=$('#bk-next');
+    if(p1) p1.onclick=function(){ BKPG--; renderBankPage(); window.scrollTo({top:0}); };
+    if(p2) p2.onclick=function(){ BKPG++; renderBankPage(); window.scrollTo({top:0}); };
+  }
 }
+function applyBankFilter(){ BKPG=1; renderBankPage(); }
 
 })();

@@ -135,7 +135,12 @@
     fetch(furl(i)).then(function(r){
       if(!r.ok) throw new Error(r.status);
       return r.text();
-    }).then(function(t){ cache[i]=t; cb(t); })
+    }).then(function(t){
+      cache[i]=t;
+      var ks=Object.keys(cache);
+      if(ks.length>12) delete cache[+ks[0]];   /* 缓存 LRU：最多留 12 片 */
+      cb(t);
+    })
       .catch(function(){
         contentEl.insertAdjacentHTML('beforeend',
           '<div class="callout c-error" style="margin:30px 0"><b>内容加载失败</b>'
@@ -159,40 +164,117 @@
     applyFocus();
     maybeAppend();
   }
-  function show(i, anchor, terms){
-    fetchChunk(i, function(t){
-      contentEl.innerHTML = t;
-      lastIdx = i;
-      var next = i+1;
-      if(next < MF.length){
-        fetchChunk(next, function(t2){
-          if(lastIdx === i){                  // 期间未被其他跳转替换
-            contentEl.insertAdjacentHTML('beforeend', t2);
-            lastIdx = next;
-          }
-          afterInject(anchor, terms);
-        });
-      } else afterInject(anchor, terms);
+  var WIN=3;                 /* DOM 中最多保留的分片数 */
+  var lo=0, hi=-1;           /* 当前已挂载的分片区间 */
+  var loadingPrev=false, lastY=0;
+  function niceName(i){
+    var id=MF[i].id, t=TT[id];
+    if(t) return t;
+    return id.replace(/-/g,' ');
+  }
+  function chunkHtml(i){
+    return '<section class="ckp" data-i="'+i+'">'+cache[i]+'</section>';
+  }
+  var LDC={top:'lup',bottom:'ldn'};
+  function sentinel(kind, i){
+    return '<button class="ldmore '+ LDC[kind] +'" type="button" data-i="'+i+'">'
+      + (kind==='top' ? '↑ 前面还有：' : '↓ 后面还有：') + niceName(i) + '</button>';
+  }
+  /* 只挂载 k 这一片 —— 它之前的分片完全不下发请求 */
+  function show(k, anchor, terms){
+    if(!MF[k]) return;
+    fetchChunk(k, function(){
+      contentEl.innerHTML = (k>0 ? sentinel('top',k-1) : '')
+        + chunkHtml(k)
+        + (k<MF.length-1 ? sentinel('bottom',k+1) : '');
+      lo=hi=lastIdx=k;
+      afterInject(anchor, terms);
     });
   }
+  function refreshTail(){
+    rebindHeads(); rebuildOutline(); syncFavUI(); applyFocus();
+  }
   function appendNext(){
-    if(loadingNext || lastIdx+1 >= MF.length) return;
+    if(loadingNext || hi+1 >= MF.length) return;
     loadingNext = true;
-    var i = lastIdx+1;
-    fetchChunk(i, function(t){
+    var i = hi+1;
+    fetchChunk(i, function(){
       loadingNext = false;
-      if(i === lastIdx+1){
-        contentEl.insertAdjacentHTML('beforeend', t);
-        lastIdx = i;
-        rebindHeads(); rebuildOutline(); syncFavUI(); applyFocus();
-        onScroll();
-      }
+      if(i !== hi+1) return;
+      var b=contentEl.querySelector('.ldmore.ldn'); if(b) b.remove();
+      contentEl.insertAdjacentHTML('beforeend', chunkHtml(i)
+        + (i<MF.length-1 ? sentinel('bottom',i+1) : ''));
+      hi=i; lastIdx=i;
+      refreshTail();
+      trimWindow();
+      if(typeof onScroll==='function') onScroll();
     });
+  }
+  /* 向上补载上一片：插入后按高度差回补滚动位置，视觉上"不跳动" */
+  function prependPrev(){
+    if(loadingPrev || lo<=0) return;
+    loadingPrev = true;
+    var i = lo-1;
+    fetchChunk(i, function(){
+      loadingPrev = false;
+      if(i !== lo-1) return;
+      var before=document.documentElement.scrollHeight, y=window.scrollY;
+      var t=contentEl.querySelector('.ldmore.lup'); if(t) t.remove();
+      contentEl.insertAdjacentHTML('afterbegin',
+        (i>0 ? sentinel('top',i-1) : '') + chunkHtml(i));
+      lo=i;
+      var delta=document.documentElement.scrollHeight-before;
+      window.scrollTo(0, y+delta);
+      lastY=window.scrollY;
+      refreshTail();
+      trimWindow();
+    });
+  }
+  /* 已渲染分片过多时卸载离视口最远的那些（原文在 cache 里，回滚即恢复，不联网） */
+  function trimWindow(){
+    var secs=[].slice.call(contentEl.querySelectorAll('.ckp'));
+    if(secs.length<=WIN) return;
+    var vh=window.innerHeight, cur=0;
+    for(var i=0;i<secs.length;i++){
+      if(secs[i].getBoundingClientRect().top<=120) cur=i; else break;
+    }
+    for(var j=secs.length-1;j>=0;j--){
+      if(j>=cur-1 && j<=cur+1) continue;
+      var r=secs[j].getBoundingClientRect();
+      if(r.bottom<0){                                  /* 完全在视口上方：移除并补偿 */
+        var h=r.height;
+        secs[j].parentNode.removeChild(secs[j]);
+        window.scrollTo(0, Math.max(0, window.scrollY-h));
+        lastY=window.scrollY;
+      }else if(r.top>vh){                              /* 完全在视口下方：移除免补偿 */
+        secs[j].parentNode.removeChild(secs[j]);
+      }
+    }
+    var left=[].slice.call(contentEl.querySelectorAll('.ckp'));
+    if(!left.length) return;
+    lo=+left[0].dataset.i;
+    hi=+left[left.length-1].dataset.i;
+    /* 顶端/底端哨兵跟着校正 */
+    var tp=contentEl.querySelector('.ldmore.lup');
+    if(lo>0){
+      if(!tp) contentEl.insertAdjacentHTML('afterbegin', sentinel('top',lo-1));
+      else tp.dataset.i=lo-1, tp.textContent='↑ 前面还有：'+niceName(lo-1);
+    }else if(tp) tp.remove();
+    var b=contentEl.querySelector('.ldmore.ldn');
+    if(hi<MF.length-1){
+      if(!b) contentEl.insertAdjacentHTML('beforeend', sentinel('bottom',hi+1));
+      else b.dataset.i=hi+1, b.textContent='↓ 后面还有：'+niceName(hi+1);
+    }else if(b) b.remove();
   }
   function maybeAppend(){
     var doc=document.documentElement;
-    if(doc.scrollHeight - window.innerHeight - window.scrollY < 900) appendNext();
+    if(doc.scrollHeight - window.innerHeight - window.scrollY < 900 && hi<MF.length-1) appendNext();
   }
+  /* 哨兵点击 = 手动补载 */
+  contentEl.addEventListener('click',function(e){
+    var b=e.target.closest('.ldmore'); if(!b) return;
+    if(b.classList.contains('lup')) prependPrev(); else appendNext();
+  });
 
   /* ---------- 跳转（目录 / 搜索 / 大纲 / 收藏共用） ---------- */
   function go(id, terms){
@@ -780,7 +862,12 @@
     fetch(furl(i)).then(function(r){
       if(!r.ok) throw new Error(r.status);
       return r.text();
-    }).then(function(t){ cache[i]=t; cb(t); })
+    }).then(function(t){
+      cache[i]=t;
+      var ks=Object.keys(cache);
+      if(ks.length>12) delete cache[+ks[0]];   /* 缓存 LRU：最多留 12 片 */
+      cb(t);
+    })
       .catch(function(){ cb(null); });
   }
   function pdfChunks(a,b){

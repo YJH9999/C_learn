@@ -262,3 +262,14 @@ select.ex-num{width:auto}
   .ex-chgrid{grid-template-columns:repeat(auto-fill,minmax(138px,1fr))}
   .ex-paperbar{top:auto}
 }
+
+/* ---------- 内存优化：长列表离屏推迟渲染 ---------- */
+#bk-list>.ex-q{content-visibility:auto;contain-intrinsic-size:auto 140px}
+
+/* ---------- 题库分页 ---------- */
+#bk-pager{display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0 6px}
+.ex-pg{border:1px solid var(--line-strong);border-radius:10px;background:var(--panel-solid);
+  color:var(--fg);font:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;cursor:pointer}
+.ex-pg:hover:not([disabled]){border-color:var(--ac);color:var(--ac)}
+.ex-pg[disabled]{opacity:.4;cursor:default}
+.ex-pg-info{font-size:12px;color:var(--fg-2);font-weight:600}

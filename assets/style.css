@@ -1068,3 +1068,12 @@ body.dark mark.kw{background:rgba(255,214,10,.36);color:#ffe08a}
   opacity:0;display:inline-flex;align-items:center;border-radius:5px;transition:.15s;flex:none}
 .node .row:hover .node-pdf,.node-pdf:focus-visible{opacity:1}
 .node-pdf:hover{color:var(--ac);background:rgba(0,122,255,.10)}
+
+/* ---------- 内存优化：离屏区块推迟渲染 ---------- */
+#content>.ckp{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+.ldmore{display:block;width:100%;margin:14px 0 20px;padding:11px 14px;
+  border:1px dashed var(--line);border-radius:12px;background:var(--panel-2);
+  color:var(--fg-2);font:inherit;font-size:13px;cursor:pointer;transition:.15s;text-align:center}
+.ldmore:hover{color:var(--ac);border-color:var(--ac)}
+.ldmore.lup{margin:0 0 18px}
+.ldmore.ldn{margin:22px 0 40px}
