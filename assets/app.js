@@ -719,6 +719,398 @@
   }).observe(contentEl,{childList:true,subtree:false});
   initFold();
 
+
+  /* ================================================================
+     导出 PDF：把「本节 / 本篇 / 全册」排成一份独立打印视图
+     —— 边界由 manifest 顺序推导：一篇（n-part）从它自己的分片开始，
+        到下一篇的分片之前结束；节（leaf 节点）用分片内锚点截取
+     ================================================================ */
+  var SITE=((document.querySelector('.brand b')||{}).textContent||document.title||'知识库').trim();
+
+  var PRINT_CSS=[
+    '@page{size:A4;margin:16mm 13mm 15mm}',
+    'html,body.pdf-body{background:#fff!important}',
+    'body.pdf-body{color:#1c1c1e;-webkit-print-color-adjust:exact;print-color-adjust:exact}',
+    '.pdf-body .wrap{display:block;max-width:none;margin:0}',
+    '.pdf-body .main{max-width:none;margin:0;padding:0}',
+    '.pdf-body #content{max-width:none}',
+    '.pdf-body h1,.pdf-body h2,.pdf-body h3,.pdf-body h4{display:block;break-after:avoid;page-break-after:avoid;break-inside:avoid}',
+    '.pdf-body h1{font-size:21px;margin:0 0 .7em;padding-bottom:.5em;border-bottom:2px solid #1c1c1e}',
+    '.pdf-body .pdf-chap>h2:first-child{font-size:20px;line-height:1.35;margin:0 0 .7em;'
+      +'padding:0 0 .5em;border-left:0;border-bottom:2px solid #1c1c1e}',
+    '.pdf-body h2{margin:1.1em 0 .6em}',
+    '.pdf-body .pdf-chap{break-before:page;page-break-before:always}',
+    '.pdf-body .pdf-chap:first-child{break-before:auto;page-break-before:auto}',
+    '.pdf-body .callout,.pdf-body .ex,.pdf-body .fml,.pdf-body .tscroll,.pdf-body .grid,'+
+      '.pdf-body details,.pdf-body .codeblk,.pdf-body tr,.pdf-body .qlist li{break-inside:avoid;page-break-inside:avoid}',
+    '.pdf-body .codeblk{page-break-inside:auto}',
+    '.pdf-body .fml,.pdf-body .tscroll,.pdf-body .katex-display{overflow:visible}',
+    '.pdf-body .fav,.pdf-body .ex summary,.pdf-body .ldmore{display:none!important}',
+    '.pdf-body details>summary{cursor:default}',
+    '.pdf-body details>summary::before{display:none}',
+    '.pdf-body a{color:inherit;text-decoration:none}',
+    '.pdf-body table{width:100%;max-width:100%;table-layout:auto}',
+    '.pdf-body th{white-space:normal}',
+    '.pdf-body th,.pdf-body td{overflow-wrap:anywhere;word-break:break-word}',
+    '.pdf-body p{orphans:3;widows:3}',
+    '.pdf-body #content>*:first-child{margin-top:0}'
+  ].join('\n');
+
+  var pdfStage=null;
+  function pdfStageEl(){
+    if(pdfStage && pdfStage.parentNode===document.body) return pdfStage;
+    pdfStage=document.createElement('div');
+    pdfStage.id='pdf-stage';
+    document.body.appendChild(pdfStage);
+    return pdfStage;
+  }
+  function pdfToast(msg,sticky){
+    var t=document.getElementById('pdf-toast');
+    if(!t){ t=document.createElement('div'); t.id='pdf-toast'; document.body.appendChild(t); }
+    t.textContent=msg; t.classList.add('on');
+    clearTimeout(pdfToast._t);
+    if(!sticky) pdfToast._t=setTimeout(function(){ t.classList.remove('on'); },1600);
+  }
+  function pdfToastOff(){
+    var t=document.getElementById('pdf-toast'); if(t) t.classList.remove('on');
+  }
+  /* 取分片正文：命中内存缓存就不再联网 */
+  function pdfLoad(i,cb){
+    if(cache[i]!==undefined){ cb(cache[i]); return; }
+    fetch(furl(i)).then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function(t){ cache[i]=t; cb(t); })
+      .catch(function(){ cb(null); });
+  }
+  function pdfChunks(a,b){
+    var o=[];
+    for(var i=a;i<=b;i++) if(MF[i]) o.push(i);
+    return o;
+  }
+  /* 一级目录节点 = 篇（n-part）；按 manifest 顺序求出每篇覆盖的分片区间 */
+  function pdfChapters(){
+    var list=[], ns=toc.querySelectorAll('li.node.n-part');
+    for(var i=0;i<ns.length;i++){
+      var n=ns[i], id=n.dataset.id;
+      if(HM[id]===undefined) continue;
+      var tx=n.querySelector(':scope > .row > .tx');
+      list.push({id:id, name:(tx?tx.textContent:(TT[id]||id)).trim(), start:HM[id]});
+    }
+    list.sort(function(a,b){ return a.start-b.start; });
+    for(var j=0;j<list.length;j++){
+      var e=(j<list.length-1?list[j+1].start:MF.length)-1;
+      list[j].end=(e<list[j].start?list[j].start:e);
+    }
+    return list;
+  }
+  /* 当前视口所在的分片：用已挂载标题的锚点归属推断 */
+  function pdfCurChunk(){
+    var hs=contentEl.querySelectorAll('h1[id],h2[id]'), best=(lastIdx>=0?lastIdx:0);
+    var minHM=Infinity;
+    for(var i=0;i<hs.length;i++){
+      var v=HM[hs[i].id];
+      if(v!==undefined && v<minHM) minHM=v;
+    }
+    if(minHM<Infinity) best=minHM;
+    for(var k=0;k<hs.length;k++){
+      if(hs[k].getBoundingClientRect().top<=150 && HM[hs[k].id]!==undefined) best=Math.max(best,HM[hs[k].id]);
+    }
+    return best;
+  }
+  function pdfCurChapter(){
+    var ci=pdfCurChunk(), list=pdfChapters();
+    if(!list.length) return null;
+    for(var i=0;i<list.length;i++)
+      if(ci>=list[i].start && ci<=list[i].end) return list[i];
+    var best=list[0];
+    for(var j=0;j<list.length;j++) if(list[j].start<=ci) best=list[j];
+    return best;
+  }
+  /* 二级目录节点 = 节（leaf 节点）；mid = 所在分片，slice = 分片内锚点 id */
+  function pdfSections(){
+    var list=[], ns=toc.querySelectorAll('li.node.leaf');
+    for(var i=0;i<ns.length;i++){
+      var n=ns[i], id=n.dataset.id;
+      if(HM[id]===undefined) continue;
+      var tx=n.querySelector('.tx');
+      list.push({id:id, name:(tx?tx.textContent:(TT[id]||id)).trim(), mid:HM[id]});
+    }
+    return list;
+  }
+  /* 当前所在的节：hash 命中优先（点击链接后立即导出也正确），其次视口位置 */
+  function pdfCurSection(){
+    var secs=pdfSections();
+    if(!secs.length) return null;
+    var names={};
+    secs.forEach(function(s){ names[s.id]=s; });
+    var h=null;
+    if(location.hash.length>1){ try{ h=decodeURIComponent(location.hash.slice(1)); }catch(e){ h=null; } }
+    if(h && names[h]) return names[h];
+    if(h){
+      var el=contentEl.querySelector('[id="'+h+'"]'), node=el;
+      while(node){
+        if(/^H[12]$/.test(node.tagName) && node.id && names[node.id]) return names[node.id];
+        node=node.previousElementSibling;
+      }
+    }
+    var hs=contentEl.querySelectorAll('h1[id],h2[id]'), cur=null;
+    for(var i=0;i<hs.length;i++){
+      if(hs[i].getBoundingClientRect().top<=150 && names[hs[i].id]) cur=names[hs[i].id];
+    }
+    if(cur) return cur;
+    var ci=pdfCurChunk();
+    for(var j=0;j<secs.length;j++) if(secs[j].mid===ci) return secs[j];
+    return secs[0];
+  }
+  /* 节级导出：从分片 HTML 里截取「锚点标题 → 下一个 h1/h2 之前」；无 slice 原样返回 */
+  function pdfTrim(g,html){
+    if(!g || !g.slice) return html;
+    var d=document.createElement('div');
+    d.innerHTML=html;
+    var el=d.querySelector('[id="'+g.slice+'"]');
+    if(!el) return html;
+    var parts=[], node=el;
+    while(node){
+      if(node!==el && /^(H1|H2)$/.test(node.tagName)) break;
+      parts.push(node.outerHTML);
+      node=node.nextElementSibling;
+    }
+    return parts.join('');
+  }
+  /* 点击的瞬间就开窗（保持在用户手势内，避免被拦截），先显示占位再替换正文 */
+  function pdfOpenWin(){
+    var w;
+    try{ w=window.open('','pdf_'+location.pathname.replace(/[^0-9a-zA-Z]/g,'_')); }catch(e){}
+    if(!w) return null;
+    try{
+      w.document.open();
+      w.document.write('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">'
+        +'<title>正在生成 PDF…</title><style>html,body{height:100%;margin:0}'
+        +'body{display:grid;place-items:center;color:#6e6e73;'
+        +'font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}'
+        +'b{display:block;font-size:15px;color:#1c1c1e;margin-bottom:6px;font-weight:600}'
+        +'</style></head><body><div><b>正在生成 PDF…</b>内容较多时需要几秒钟，请稍候</div></body></html>');
+      w.document.close();
+    }catch(e){ return null; }
+    return w;
+  }
+  function pdfPrint(w,title,inner){
+    var base=location.href.replace(/[?#][\s\S]*$/,'').replace(/[^\/]*$/,'');
+    var html='<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">'
+      +'<title>'+esc(title)+'</title>'
+      +'<base href="'+base+'">'
+      +'<link rel="stylesheet" href="assets/fonts.css">'
+      +'<link rel="stylesheet" href="assets/style.css">'
+      +'<style>'+PRINT_CSS+'</style>'
+      +'</head><body class="pdf-body"><div class="wrap"><main class="main">'
+      +'<article id="content">'+inner+'</article></main></div></body></html>';
+    try{
+      w.document.open();
+      w.document.write(html);
+      w.document.close();
+    }catch(e){ return; }
+    var n=0, timer=setInterval(function(){
+      n++;
+      var ready=false;
+      try{ ready=w.document.readyState==='complete'; }catch(e){ ready=true; }
+      if(ready || n>60){
+        clearInterval(timer);
+        setTimeout(function(){
+          try{ w.focus(); w.print(); }catch(e){}
+        },450);
+      }
+    },120);
+  }
+  /* ---------- 下载为独立 HTML 文件 ---------- */
+  function pdfCollectCss(){
+    try{
+      var out=[];
+      for(var i=0;i<document.styleSheets.length;i++){
+        var ss=document.styleSheets[i];
+        try{
+          var r=ss.cssRules;
+          if(r) for(var j=0;j<r.length;j++) out.push(r[j].cssText);
+        }catch(e){}
+      }
+      if(out.length) return out.join('\n');
+    }catch(e){}
+    return null;
+  }
+  function htmlDownload(title, body){
+    var fin=function(css){
+      var html='<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">'
+        +'<meta name="viewport" content="width=device-width,initial-scale=1">'
+        +'<title>'+esc(title)+'</title>'
+        +'<style>'+(css||'')+'\n'+PRINT_CSS+'</style>'
+        +'</head><body class="pdf-body"><div class="wrap"><main class="main">'
+        +'<article id="content">'+body+'</article></main></div></body></html>';
+      var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download=title.replace(/[\\\/:*?"<>|]/g,'_')+'.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); },4000);
+      pdfToast('HTML 文件已开始下载');
+    };
+    var css=pdfCollectCss();
+    if(css){ fin(css); return; }
+    fetch('assets/style.css').then(function(r){ return r.ok ? r.text() : ''; })
+      .then(function(t){ fin(t); })
+      .catch(function(){ fin(''); });
+  }
+  function pdfExport(groups,title,asHtml){
+    if(!groups || !groups.length){ pdfToast('没有可导出的内容'); return; }
+    var win=null;
+    if(!asHtml){
+      win=pdfOpenWin();
+      if(!win){ pdfToast('浏览器拦截了弹出窗口，请允许后重试'); alert('浏览器拦截了弹出窗口。请允许本站打开弹出窗口后重试。'); return; }
+    }
+    var total=0;
+    groups.forEach(function(g){ total+=g.idx.length; });
+    var gi=0, ki=0, out=[];
+    pdfToast('正在准备导出…',true);
+    (function step(){
+      if(gi>=groups.length){ build(); return; }
+      var g=groups[gi];
+      if(ki>=g.idx.length){ gi++; ki=0; step(); return; }
+      var i=g.idx[ki++];
+      pdfLoad(i,function(html){
+        if(html==null){ pdfToast('内容加载失败，请检查网络后重试'); return; }
+        out.push({g:gi, html:html});
+        pdfToast('正在准备 '+out.length+' / '+total+' 段…',true);
+        step();
+      });
+    })();
+    function build(){
+      pdfToast('正在排版…',true);
+      setTimeout(function(){
+        var st=pdfStageEl(), buf=[], acc='', cur=-1;
+        out.forEach(function(o){
+          if(o.g!==cur){ if(acc) buf.push(pdfTrim(groups[cur],acc)); acc=''; cur=o.g; }
+          acc+=o.html;
+        });
+        if(acc) buf.push(pdfTrim(groups[cur],acc));
+        st.innerHTML=buf.map(function(h){
+          return '<section class="pdf-chap">'+h+'</section>';
+        }).join('');
+        /* 折叠的解答 / 示例必须展开，否则打印出来是空的 */
+        var det=st.querySelectorAll('details');
+        for(var i=0;i<det.length;i++) det[i].open=true;
+        var favs=st.querySelectorAll('.fav');
+        for(var j=0;j<favs.length;j++) favs[j].parentNode.removeChild(favs[j]);
+        var body=st.innerHTML;
+        st.innerHTML='';
+        if(asHtml) htmlDownload(title, body); else pdfPrint(win, title, body);
+        pdfToastOff();
+      },60);
+    }
+  }
+  /* ---------- 顶栏「导出」按钮 ---------- */
+  var pdfBtn=$('#pdf-open'), pdfPop=$('#pdf-pop'), pdfCurName=$('#pdf-cur-name');
+  var pdfFmt='print';
+  try{ pdfFmt=localStorage.getItem(SITE+'-pdf-fmt')||'print'; }catch(e){}
+  function pdfFmtApply(){
+    var f=document.getElementById('pdf-fmt');
+    if(!f) return;
+    [].forEach.call(f.querySelectorAll('button'),function(b){
+      b.classList.toggle('on', b.dataset.fmt===pdfFmt);
+    });
+  }
+  if(pdfBtn && pdfPop){
+    pdfBtn.addEventListener('click',function(e){
+      e.stopPropagation();
+      pdfPop.hidden=!pdfPop.hidden;
+      if(!pdfPop.hidden){
+        var fbar=document.getElementById('fbar'); if(fbar) fbar.open=false;
+        var dd=document.querySelector('details.exam-dd'); if(dd) dd.open=false;
+        pdfFmtApply();
+        var ch=pdfCurChapter();
+        if(pdfCurName) pdfCurName.textContent='导出本章'+(ch?' · '+ch.name:'');
+        var sec=pdfCurSection(), secEl=document.getElementById('pdf-sec-name');
+        if(secEl) secEl.textContent='导出本节'+(sec?' · '+sec.name:'');
+      }
+    });
+    document.addEventListener('click',function(e){
+      if(!e.target.closest('#pdfbar') && !pdfPop.hidden) pdfPop.hidden=true;
+    });
+    pdfPop.addEventListener('click',function(e){
+      var fb=e.target.closest('.pdf-fmt button');
+      if(fb){
+        pdfFmt=fb.dataset.fmt||'print';
+        try{ localStorage.setItem(SITE+'-pdf-fmt', pdfFmt); }catch(err){}
+        pdfFmtApply();
+        return;
+      }
+      var b=e.target.closest('.pdf-item'); if(!b) return;
+      pdfPop.hidden=true;
+      var asHtml=pdfFmt==='html';
+      if(b.dataset.scope==='sec'){
+        var sec=pdfCurSection();
+        if(!sec){ pdfToast('没有可导出的内容'); return; }
+        pdfExport([{name:sec.name, idx:[sec.mid], slice:sec.id}], SITE+' · '+sec.name, asHtml);
+      }else if(b.dataset.scope==='cur'){
+        var ch=pdfCurChapter();
+        if(!ch){ pdfToast('没有可导出的内容'); return; }
+        pdfExport([{name:ch.name, idx:pdfChunks(ch.start,ch.end)}], SITE+' · '+ch.name, asHtml);
+      }else{
+        var list=pdfChapters();
+        pdfExport(list.map(function(c){
+          return {name:c.name, idx:pdfChunks(c.start,c.end)};
+        }), SITE+' · 全册', asHtml);
+      }
+    });
+  }
+  /* ---------- 侧栏每篇右侧的快捷导出 ---------- */
+  (function chapterPdfButtons(){
+    var list=pdfChapters();
+    list.forEach(function(c){
+      var n=toc.querySelector('.node[data-id="'+c.id+'"]');
+      if(!n) return;
+      var row=n.querySelector(':scope > .row');
+      if(!row || row.querySelector('.node-pdf')) return;
+      var b=document.createElement('button');
+      b.type='button';
+      b.className='node-pdf';
+      b.title='导出 PDF：'+c.name;
+      b.setAttribute('aria-label','导出 PDF：'+c.name);
+      b.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" '
+        +'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        +'stroke-linejoin="round"><path d="M12 4v9m0 0l-3.6-3.6M12 13l3.6-3.6"/>'
+        +'<path d="M4.5 17.5v1.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-1.5"/></svg>';
+      b.addEventListener('click',function(e){
+        e.preventDefault(); e.stopPropagation();
+        pdfExport([{name:c.name, idx:pdfChunks(c.start,c.end)}], SITE+' · '+c.name, pdfFmt==='html');
+      });
+      row.appendChild(b);
+    });
+  })();
+  /* ---------- 侧栏每一节右侧的快捷导出 ---------- */
+  (function sectionPdfButtons(){
+    pdfSections().forEach(function(s){
+      var n=toc.querySelector('.node[data-id="'+s.id+'"]');
+      if(!n) return;
+      var row=n.querySelector(':scope > .row');
+      if(!row || row.querySelector('.node-pdf')) return;
+      var b=document.createElement('button');
+      b.type='button';
+      b.className='node-pdf';
+      b.title='导出本节 PDF：'+s.name;
+      b.setAttribute('aria-label','导出本节 PDF：'+s.name);
+      b.innerHTML='<svg viewBox="0 0 24 24" width="11" height="11" fill="none" '
+        +'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+        +'stroke-linejoin="round"><path d="M12 4v9m0 0l-3.6-3.6M12 13l3.6-3.6"/>'
+        +'<path d="M4.5 17.5v1.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-1.5"/></svg>';
+      b.addEventListener('click',function(e){
+        e.preventDefault(); e.stopPropagation();
+        pdfExport([{name:s.name, idx:[s.mid], slice:s.id}], SITE+' · '+s.name, pdfFmt==='html');
+      });
+      row.appendChild(b);
+    });
+  })();
+
   /* ---------- 启动：先恢复目录/进度，再挂滚动监听 ---------- */
   (function boot(){
     restoreTocState();

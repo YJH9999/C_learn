@@ -47,6 +47,33 @@
         <a href="exam.html#bank"><i>04</i>题库<b>360 理论 + 72 编程 · 浏览与搜索</b></a>
       </div>
     </details>
+        <div class="pdfbar" id="pdfbar">
+      <button class="tb" id="pdf-open" title="导出为 PDF">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3.5v10m0 0l-4-4m4 4l4-4"/><path d="M4.5 17.5v1.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-1.5"/></svg>
+        <span class="pdf-t">导出</span>
+      </button>
+      <div class="pdf-pop" id="pdf-pop" hidden>
+        <div class="pdf-head"><b>导出 PDF</b><span>在打印对话框里选「另存为 PDF」</span></div>
+        <button class="pdf-item" type="button" data-scope="sec">
+          <i>01</i>
+          <div><b id="pdf-sec-name">导出本节</b><span>只包含当前所在的这一节</span></div>
+        </button>
+        <button class="pdf-item" type="button" data-scope="cur">
+          <i>02</i>
+          <div><b id="pdf-cur-name">导出本章</b><span>只包含当前所在的这一篇</span></div>
+        </button>
+        <button class="pdf-item" type="button" data-scope="all">
+          <i>03</i>
+          <div><b>导出全册</b><span>全部章节合并成一份，适合打印装订</span></div>
+        </button>
+        <div class="pdf-fmt" id="pdf-fmt">
+          <button type="button" data-fmt="print">🖨 打印 / 另存 PDF</button>
+          <button type="button" data-fmt="html">⬇ 下载 HTML 文件</button>
+        </div>
+        <div class="pdf-foot">折叠的解答与代码示例会展开后一并输出</div>
+      </div>
+    </div>
     <div class="seg" role="group" aria-label="外观">
       <button id="m-light" title="浅色外观">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
