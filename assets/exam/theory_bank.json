@@ -4535,5 +4535,1724 @@
   "answer": "14",
   "explanation": "堆内存可通过下标像数组一样访问：p[i]=i*i 依次为 0、1、4、9，求和得 14。使用完毕调用 free 归还内存，防止泄漏。",
   "src": "模拟"
+ },
+ {
+  "id": "t-361",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下列选项中，值为 1 的表达式是（ ）",
+  "options": [
+   "1-'0'",
+   "1-'\\0'",
+   "'1'-0",
+   "'\\0'-'0'"
+  ],
+  "answer": 1,
+  "explanation": "字符常量参与运算时取其 ASCII 码：'0'为 48，'\\0'为 0，'1'为 49。1-'\\0'即 1-0=1，正确。A 项 1-'0'=1-48=-47；C 项 '1'-0=49，是字符'1'的编码值；D 项 '\\0'-'0'=0-48=-48，三者都不等于 1。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-362",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设变量 x 为 float 型且已赋值，则以下语句中能把 x 中的数值保留到小数点后两位、并将第三位四舍五入的是（ ）",
+  "options": [
+   "x=x*100+0.5/100.0;",
+   "x=(x*100+0.5)/100.0;",
+   "x=(int)(x*100+0.5)/100.0;",
+   "x=(x/100+0.5)*100.0;"
+  ],
+  "answer": 2,
+  "explanation": "保留两位小数的做法是先乘 100 把小数点右移两位，加 0.5 实现第三位的四舍五入，再用强制类型转换截断取整，最后除 100.0 还原，C 项完全符合。A 项因先算 0.5/100.0 只加了 0.005，放大幅度不够且没有截断；B 项加了 0.5 但没有截断，数值几乎不变；D 项先除 100 再乘 100，小数点位置完全错乱。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-363",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "字符串 \"BB\\n\\\\\\123\\t\" 在内存中占的字节数是（ ）",
+  "options": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "answer": 1,
+  "explanation": "该字符串中的转义序列各算一个字符：\\n 是换行，\\\\ 是一个反斜杠，\\123 是八进制转义（123 即十进制 83，字符'S'），\\t 是制表符，加上两个字母 B，共 6 个字符；字符串末尾还要存放结束标志'\\0'，所以共占 7 个字节。选 6 是漏算了'\\0'，选 8、9 是把转义序列按多个字符计算了。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-364",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "执行语句 printf(\"number:\\101,\\x42\"); 后输出为（ ）",
+  "options": [
+   "number:\\101,\\x42",
+   "number:A,B",
+   "number:101,x42",
+   "number:a,b"
+  ],
+  "answer": 1,
+  "explanation": "\\101 是八进制转义字符，八进制 101 等于十进制 65，即字符'A'；\\x42 是十六进制转义字符，十六进制 42 等于十进制 66，即字符'B'，所以输出 number:A,B。A 项是把转义序列原样输出，C 项漏掉了转义含义，D 项大小写弄反（'a'的编码是 97）。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-365",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "若有定义 int a,b,c;，则以下选项中的赋值语句正确的是（ ）",
+  "options": [
+   "a=(b==c)=1;",
+   "(a=b)=c=1;",
+   "a=(b=c)+1;",
+   "a+b=c;"
+  ],
+  "answer": 2,
+  "explanation": "赋值运算符的左边必须是可修改的左值（变量）。C 项先把 1 赋给 b，再把 b 的值加 1 赋给 a，完全合法。A 项 (b==c) 的结果是关系表达式的值，不是变量，不能再被赋值；B 项 (a=b) 的值是赋值表达式的值，同样不能作为左值；D 项 a+b 是算术表达式，也不是左值。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-366",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "有以下程序，程序的运行结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int i,j,k,a=5,b=6;\n    i=(a==b)? ++a: --b;\n    j=a++; k=b;\n    printf(\"%d,%d,%d\\n\",i,j,k);\n    return 0;\n}",
+  "options": [
+   "7,6,5",
+   "5,5,5",
+   "7,5,5",
+   "5,6,5"
+  ],
+  "answer": 1,
+  "explanation": "a=5、b=6，条件 a==b 不成立，所以执行冒号后的 --b：b 先减 1 得 5，i 得 5；接着 j=a++ 是后置自增，j 取 a 的原值 5，a 变为 6；k=b 得 5。故输出 5,5,5。选 A、C 是误以为条件成立执行了 ++a；选 D 是把 j 当成了自增后的值。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-367",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设变量 x 为 long int 型并已正确赋值，以下表达式中能将 x 百位上的数字提取出来的是（ ）",
+  "options": [
+   "x/10%100",
+   "x%10/100",
+   "x%100/10",
+   "x/100%10"
+  ],
+  "answer": 3,
+  "explanation": "提取某一位数字的通用方法是「先除后取余」：x/100 把个位、十位去掉，使原来的百位落到个位上，再对 10 取余即得百位数字，D 项正确。A 项 x/10%100 得到的是去掉个位后的末两位（十位和百位组成的数）；B 项先取个位再除以 100 恒为 0；C 项 x%100/10 取出的是十位上的数字。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-368",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下列各项中不合法的 C 语言常量是（ ）",
+  "options": [
+   "2.E8",
+   "-.28",
+   "-028",
+   "2e-8"
+  ],
+  "answer": 2,
+  "explanation": "以 0 开头的整型常量按八进制解释，八进制数字只有 0~7，因此 -028 中含有非法数字 8，不是合法常量。A 项 2.E8 是合法的实型常量（小数点后可以没有数字）；B 项 -.28 省略了整数部分，合法；D 项 2e-8 是合法的指数形式实型常量。",
+  "src": "《实验与辅导》第3章选择题"
+ },
+ {
+  "id": "t-369",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "C 语言中最简单的（基本）数据类型包括（ ）",
+  "options": [
+   "整型、实型、逻辑型",
+   "整型、实型、字符型",
+   "整型、字符型、逻辑型",
+   "整型、实型、逻辑型、字符型"
+  ],
+  "answer": 1,
+  "explanation": "C 语言的基本类型只有整型、实型（浮点型）和字符型，此外还有枚举类型。C 语言没有专门的逻辑型数据，关系运算和逻辑运算的结果用 1 表示真、0 表示假，因此凡包含「逻辑型」的选项 A、C、D 都不对。数组、结构体、共用体属于构造类型，指针属于指针类型，都不算基本类型。",
+  "src": "学习指导 第3章"
+ },
+ {
+  "id": "t-370",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "下列两个字符串常量的长度分别是______和______（用「 | 」分隔两个答案）：\n(1) \"m\\x42\\\\\\tp\\101qy\"\n(2) \"m\\x42\\\\\\tp\\108qy\"",
+  "answer": "8 | 9",
+  "explanation": "字符串长度按字符个数计算，不含结束标志'\\0'。第(1)题中 \\x42、\\\\、\\t、\\101 各是一个转义字符，连同 m、p、q、y 共 8 个字符；第(2)题中八进制转义 \\108 只能把 \\10 看作一个字符（八进制不含数字 8），后面的 8 是普通字符，因此多出一个字符，长度为 9。常见错误是把每个反斜杠组合都拆成多个字符来数。",
+  "src": "学习指导 第3章"
+ },
+ {
+  "id": "t-371",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "若有定义 char c1='C', c2='E';，则执行语句 printf(\"%d,%c\\n\", c2-c1, 'a'-'A'+c2); 后输出（ ）",
+  "options": [
+   "2，c",
+   "3，C",
+   "2，e",
+   "结果不确定"
+  ],
+  "answer": 2,
+  "explanation": "字符数据可以按 ASCII 码参与整数运算：'E'-'C'=69-67=2；'a'-'A' 为 32，加上 c2 即'E' 的编码 69，得 101，正好是小写'e'，按 %c 输出 e。故为 2，e。选 A 是漏掉了大小写转换，选 B 把差算成了 3 且未转换，选 D 误以为字符不能参与算术运算。",
+  "src": "学习指导 第3章"
+ },
+ {
+  "id": "t-372",
+  "ch": "ch3",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    char c = 'A';\n    int i = 3;\n    double d = 2.5;\n    printf(\"%d %c %.1f\\n\", c + 1, c + i, i * d);\n    printf(\"%d\\n\", (int)(d / i));\n    return 0;\n}",
+  "answer": "66 D 7.5\n0",
+  "explanation": "c+1 中字符按 ASCII 码参与运算，'A' 为 65，结果为 66，按 %d 输出 66；c+i 即 65+3=68，按 %c 输出编码 68 对应的字符'D'；i*d 是 int 与 double 混合运算，先转成 double 得 7.5，%.1f 输出 7.5。第二行 (int)(d/i) 先算 2.5/3≈0.833，强制转换为 int 后截断小数部分得 0。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-373",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "程序段 int a=1234; printf(\"%2d\",a); 的输出结果是（ ）",
+  "options": [
+   "12",
+   "34",
+   "1234",
+   "提示出错、无结果"
+  ],
+  "answer": 2,
+  "explanation": "格式符 %2d 中的 2 是最小域宽，表示输出至少占 2 个字符位；当数据的实际位数超过域宽时，按实际位数完整输出，不会截断，所以输出 1234。选 12、34 是误把域宽当成了「只输出 2 位」，选 D 是把域宽不足当成了错误。",
+  "src": "《实验与辅导》第4章选择题"
+ },
+ {
+  "id": "t-374",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "执行语句 printf(\"a\\bre\\'hi\\'y\\\\\\bou\\n\"); 后，屏幕将显示（ ）",
+  "options": [
+   "a\\bre\\'hi\\'y\\\\\\bou",
+   "a\\bre\\'hi\\'y\\bou",
+   "re'hi'you",
+   "abre'hi'y\\bou"
+  ],
+  "answer": 2,
+  "explanation": "\\b 是退格符，只移动光标不删除字符显示效果上会覆盖前一字符。先输出 a，\\b 使光标退回，接着输出 re 覆盖掉 a；\\' 输出单引号，得到 re'hi'y；\\\\ 输出一个反斜杠后紧跟 \\b，该反斜杠又被退格覆盖，最后输出 ou，屏幕上是 re'hi'you。其余三项都把转义序列当普通字符输出。",
+  "src": "《实验与辅导》第4章选择题"
+ },
+ {
+  "id": "t-375",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int x=17;\n    printf(\"%d,%o,%x\",x,x,x);\n    return 0;\n}",
+  "options": [
+   "17,021,0x11",
+   "17,17,17",
+   "17,0x11,021",
+   "17,21,11"
+  ],
+  "answer": 3,
+  "explanation": "同一个整数 17 用不同格式符输出：%d 按十进制输出 17；%o 按八进制输出 21（八进制不输出前导 0）；%x 按十六进制小写输出 11，且不加 0x 前缀，故结果为 17,21,11。A、C 两项多写了 0 和 0x 前缀，B 项误以为三种进制结果相同。",
+  "src": "《实验与辅导》第4章选择题"
+ },
+ {
+  "id": "t-376",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "执行下面程序段，给 x、y 赋值时，不能作为数据分隔符的是（ ）",
+  "options": [
+   "空格",
+   "Tab 键",
+   "Enter 键",
+   "逗号"
+  ],
+  "answer": 3,
+  "explanation": "scanf 的 %d 格式符在读取数据时，遇到空格、Tab、回车等空白字符都认为一个数据结束并跳过它们继续读取，所以这三者都能起分隔作用；而逗号是普通字符，不属于空白字符，用 %d%d 输入时会被当作非法字符，导致后续读取失败，故逗号不能作分隔符。",
+  "src": "《实验与辅导》第4章选择题"
+ },
+ {
+  "id": "t-377",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "有以下程序（□代表一个空格），其输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int k=10;\n    printf(\"%4d,%o,%x\\n\", k,k,k);\n    return 0;\n}",
+  "options": [
+   "10,12,a",
+   "□□10,012,a",
+   "010,12,a",
+   "□□10,12,a"
+  ],
+  "answer": 3,
+  "explanation": "%4d 表示按域宽 4 右对齐输出十进制数，10 只占 2 位，左边补两个空格；%o 输出八进制 12，八进制不输出前导 0；%x 输出十六进制 a，也不加前缀，故为「□□10,12,a」。B 项给八进制多加了前导 0，C 项把 10 当成了八进制数，A 项漏掉了 %4d 的空格填充。",
+  "src": "《实验与辅导》第4章选择题"
+ },
+ {
+  "id": "t-378",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "设有 char s[5],c;，则调用 scanf 能正确给 s 和 c 读入数据的是（ ）",
+  "options": [
+   "scanf(\"%s%c\",s,c);",
+   "scanf(\"%d%c\",&s,&c);",
+   "scanf(\"%d%c\",s,&c);",
+   "scanf(\"%s%c\",s,&c);"
+  ],
+  "answer": 3,
+  "explanation": "scanf 的输入项必须是地址。s 是数组名，本身代表首地址，可以直接写 s；c 是普通字符变量，必须写 &c；格式符也要与类型匹配，读字符串用 %s。D 项完全正确。A 项 c 前漏了 &；B 项用 %d 读字符串且 s 前多了 &；C 项用 %d 读字符串，类型不匹配。",
+  "src": "《实验与辅导》第4章选择题"
+ },
+ {
+  "id": "t-379",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "设有定义 char s[81]; int i=0; 以下不能将一行（不超过 80 个字符）带有空格的字符串正确读入的语句是（ ）",
+  "options": [
+   "gets(s);",
+   "while((s[i++]=getchar())!='\\n'); s[i]='\\0';",
+   "scanf(\"%s\",s);",
+   "do { scanf(\"%s%c\", &s[i]); } while (s[i++]!='\\n'); s[i]='\\0';"
+  ],
+  "answer": 2,
+  "explanation": "%s 格式符以空白字符作为字符串结束的标志，遇到空格就停止读入，因此无法读入含空格的一整行，C 项不能胜任。gets 专用于读一行且允许空格；B 项用 getchar 逐字符读到回车为止，能保留空格；D 项用 %s%c 交替读入，%c 会把空格也读进来，同样可以读完整行。",
+  "src": "《实验与辅导》第4章选择题"
+ },
+ {
+  "id": "t-380",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "在 C 语言中，错误的语句是（ ）",
+  "options": [
+   "；",
+   "x++；",
+   "x=x+1=9；",
+   "abs(-5)；"
+  ],
+  "answer": 2,
+  "explanation": "赋值号左边必须是可修改的左值，C 项 x+1=9 中赋值号左边是表达式，属于非法赋值，因此错误。A 项是空语句，合法；B 项是表达式语句，合法；D 项是函数调用语句，把 abs(-5) 的返回值丢弃，语法上合法。",
+  "src": "学习指导 第4章"
+ },
+ {
+  "id": "t-381",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "若 x、y 均定义为 int 型，z 定义为 double 型，以下合法的 scanf 函数调用语句是（ ）",
+  "options": [
+   "scanf(\"%d%lx,%le\", x, y, z);",
+   "scanf(\"%2d * %d%lf\", &x, &y, &z);",
+   "scanf(\"%o%*2d%d\", &z, &x);",
+   "scanf(\"%x%o%\", &x, &y, &z);"
+  ],
+  "answer": 1,
+  "explanation": "B 项三个输入项都是地址，且 %2d、%d 对应 int，%lf 对应 double，格式与类型匹配，语法合法。A 项漏写了取地址符 &，把变量名当作地址传入，错误；C 项用 %o 读入的数据要存入 double 型变量 z，类型不匹配；D 项格式串末尾单独出现一个 %，不是合法的格式说明。",
+  "src": "学习指导 第4章"
+ },
+ {
+  "id": "t-382",
+  "ch": "ch4",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出，注意空格个数）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a = 123;\n    double x = 3.14159;\n    printf(\"[%5d][%-5d][%05d]\\n\", a, a, a);\n    printf(\"[%8.3f][%-8.2f]\\n\", x, x);\n    return 0;\n}",
+  "answer": "[  123][123  ][00123]\n[   3.142][3.14    ]",
+  "explanation": "%5d 按最小域宽 5 右对齐，123 占 3 位，左边补 2 个空格；%-5d 是左对齐，右边补 2 个空格；%05d 用 0 填充空位，输出 00123。%8.3f 保留 3 位小数（第四位 5 进位得 3.142），整个数占 8 位、右对齐补 3 个空格；%-8.2f 保留 2 位小数并左对齐，右侧补 4 个空格。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-383",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "下面程序的运行结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int a=20,b=30,c=10;\n   if (a<b) a=b;\n   if (a>=b) b=c; c=a;\n   printf(\"a=%d,b=%d,c=%d\\n\",a,b,c); return 0;\n}",
+  "options": [
+   "a=20，b=10，c=20",
+   "a=30，b=10，c=20",
+   "a=30，b=10，c=30",
+   "a=20，b=10，c=30"
+  ],
+  "answer": 2,
+  "explanation": "初始 a=20、b=30、c=10。第一个 if 中 a<b 成立，执行 a=b，a 变为 30；第二个 if 中 a>=b（30>=30）成立，执行 b=c，b 变为 10；注意 c=a 不在 if 的语句体内（它前面没有花括号，只受 if 控制的是 b=c 这一句），因此 c=a 无条件执行，c 得 30。故输出 a=30，b=10，c=30。误选 A、B 是把 c=a 当成了 if 的分支。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-384",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "下列程序段运行后 x 的值是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int a=0,b=0,c=0,x=35;\n   if (!a) x--;\n   else if (b);\n   if (c) x=3;\n   else x=4;\n   printf(\"%d\\n\",x); return 0;\n}",
+  "options": [
+   "34",
+   "4",
+   "35",
+   "3"
+  ],
+  "answer": 1,
+  "explanation": "a=0，!a 为真，执行 x--，x 由 35 变为 34，else if (b); 这条空语句被跳过。接下来的 if (c) 是一条新语句，c=0 为假，执行 else x=4，x 被改写为 4。所以最终 x=4。选 34 是漏看了后面独立的 if…else；选 35 是没有执行 x--；选 3 是把 c 当成了真。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-385",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有下列程序，说法正确的是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int a=1,b=0,c=0;\n   if (a=b+c) printf(\"***\\n\");\n   else printf(\"$$$\\n\");\n   return 0;\n}",
+  "options": [
+   "有语法错不能通过编译",
+   "可以通过编译但不能通过连接",
+   "输出***",
+   "输出$$$"
+  ],
+  "answer": 3,
+  "explanation": "if 的条件是 a=b+c，这里用的是赋值号而不是关系运算符==，先把 b+c 的值 0 赋给 a，整个表达式的值为 0，代表假，于是执行 else 分支输出$$$。赋值表达式作条件在语法上是合法的，能正常编译连接，只是逻辑上常是笔误，所以 A、B 错误；C 项把 0 当成了真值，理解反了。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-386",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "执行下面一段程序后，x 的值是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int a=1,b=3,c=5,d=4,x;\n   if (a<b)\n       if (c<d) x=1;\n       else\n           if (a<c)\n               if (b<d) x=2;\n               else x=3;\n           else x=6;\n   else x=7;\n   printf(\"%d\\n\",x); return 0;\n}",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "6"
+  ],
+  "answer": 1,
+  "explanation": "if 与 else 按「就近配对」原则结合：第一个 else 属于 if(c<d)。a<b 成立进入内层，c<d 即 5<4 不成立，于是执行该 else 后的语句：a<c（1<5）成立，进入 if(b<d) 即 3<4 成立，x=2。最后那个 else x=7 属于最外层 if(a<b)，因条件成立不会执行。故选 2，其余选项都源于配对错误。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-387",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "执行下面一段程序后，x 和 y 的值分别是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int x=1,y=1,m=1,n=1;\n   switch(m)\n   {  case 0: x*=2;\n      case 1: { switch(n)\n                {  case 1: x*=2;\n                   case 2: y*=2;break;\n                   case 3: x++;\n                }\n              }\n      case 2: x++;y++;\n      case 3: x*=2;y*=2;break;\n      default: x++; y++;\n   }\n   printf(\"x=%d,y=%d\\n\",x,y); return 0;\n}",
+  "options": [
+   "x=6,y=6",
+   "x=2,y=1",
+   "x=2,y=2",
+   "x=7,y=7"
+  ],
+  "answer": 0,
+  "explanation": "m=1，进入 case 1；n=1，内层 switch 执行 case 1：x*=2 得 2，因无 break 继续执行 case 2：y*=2 得 2，遇 break 跳出内层。外层 case 1 之后没有 break，继续执行 case 2：x++ 得 3、y++ 得 3；再落入 case 3：x*=2 得 6、y*=2 得 6，遇 break 结束。故 x=6、y=6。其他选项都忽略了 switch 的贯穿（fall through）特性。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-388",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "若有定义 int x,y; 并已正确赋值，则与表达式 (x-y)?(x++):(y++) 中的条件 (x-y) 等价的是（ ）",
+  "options": [
+   "(x-y<0 || x-y>0)",
+   "(x-y<0)",
+   "(x-y>0)",
+   "(x-y==0)"
+  ],
+  "answer": 0,
+  "explanation": "条件表达式以「非 0 为真」判断，只要 x-y 不等于 0 就为真，即 x-y<0 或 x-y>0 两种情况都取真分支，A 项正确。B、C 两项只覆盖了其中一半情况，当 x<y 或 x>y 时结果会与实际相反；D 项 (x-y==0) 恰好把真假颠倒了。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-389",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "下列表达式中，结果为「假」的是（ ）",
+  "options": [
+   "(3!=4)>2",
+   "(3+4)>6",
+   "(3<4)==1",
+   "3<=4 || 3"
+  ],
+  "answer": 0,
+  "explanation": "A 项先算 3!=4 得 1，再算 1>2，结果为 0（假），符合题意。B 项 7>6 为 1；C 项 3<4 得 1，1==1 为 1；D 项 3<=4 已为 1，逻辑或短路后结果仍为 1。本题考查关系运算符优先级高于逻辑运算、且关系运算结果为 0 或 1。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-390",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有以下程序，程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int x=0x13;\n    if(x=0x18) printf(\"T\");\n    printf(\"F\\n\");\n    return 0;\n}",
+  "options": [
+   "TF",
+   "T",
+   "F",
+   "TFT"
+  ],
+  "answer": 0,
+  "explanation": "if(x=0x18) 是赋值表达式作条件，0x18 即十进制 24，非 0 为真，执行 printf(\"T\")；随后 printf(\"F\\n\") 是 if 之后的独立语句，无论条件真假都会执行，于是输出 TF。选 T 是以为 printf(\"F\") 也在 if 的语句体内；选 F 是把赋值的值当成了 0；D 项多输出了一次。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-391",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "若有定义 int a=1,b=2,c=3;，则执行表达式 (a=b+c)||(++b) 后，a、b、c 的值依次为（ ）",
+  "options": [
+   "1,2,3",
+   "5,3,2",
+   "5,2,3",
+   "5,3,3"
+  ],
+  "answer": 2,
+  "explanation": "先算 a=b+c，b+c 为 5，赋给 a 后整个表达式的值为 5，非 0 即为真；逻辑或具有短路特性，左边为真时右边 (++b) 不再求值，因此 b 保持 2，c 也未参与运算保持 3。结果为 5,2,3。选 B、D 是忽略了短路求值，选 A 是没看清赋值号的作用。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-392",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有以下程序，程序运行后的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int x=1,y=0;\n   if (!x) y++;\n   else if (x==0)\n       if (x) y+=2;\n       else y+=3;\n   printf(\"%d\\n\",y);\n   return 0;\n}",
+  "options": [
+   "0",
+   "2",
+   "1",
+   "3"
+  ],
+  "answer": 0,
+  "explanation": "x=1、y=0。!x 为 0（假），跳过 y++；接着判断 else if (x==0)，x 为 1 不成立，其内嵌的 if…else 整体不执行；y 始终未被修改，输出 0。选 C 是误以为执行了 y++；选 B、D 是把内层 if (x) 与 else y+=3 当成了独立语句。",
+  "src": "《实验与辅导》第5章选择题"
+ },
+ {
+  "id": "t-393",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "下列程序段当 x 的输入值为 10 时，运行结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int x;\n   scanf(\"%d\",&x);\n   if(x<=20)\n       if(x>10)  printf(\"%c\\n\",'A');\n       else      printf(\"%c\\n\",'B');\n   else\n       printf(\"%c\\n\",'C');\n   return 0;\n}",
+  "options": [
+   "A",
+   "B",
+   "C",
+   "无输出"
+  ],
+  "answer": 1,
+  "explanation": "x=10 时，外层条件 x<=20 成立，进入内层判断 x>10；10>10 不成立，执行与之配对的 else，输出字符 B。若输入 20 则输出 A，输入 30 则外层条件不成立，输出 C。本题的关键是 else 与最近的 if 配对，且嵌套时要注意层级对应关系。",
+  "src": "学习指导 第5章"
+ },
+ {
+  "id": "t-394",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有定义语句 int x=3,y=0,z=0;，则值为 0 的表达式是（ ）",
+  "options": [
+   "x||z",
+   "x||z+2&&y-z",
+   "x&&y",
+   "!((x<y)&&!z||y)"
+  ],
+  "answer": 2,
+  "explanation": "C 项 x&&y 中 x 为 3（真）、y 为 0（假），逻辑与的结果为 0，符合题意。A 项 x 非 0，逻辑或的结果为 1；B 项 || 优先级低于 &&，但 x 为真已使整个或运算为真，结果仍是 1；D 项 (x<y) 为假使 && 左侧为假，再与 y 相或仍为假，取非得 1。",
+  "src": "学习指导 第5章"
+ },
+ {
+  "id": "t-395",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "要求通过 while 循环不断读入字符，当读入大写字母 X 时结束循环。若变量已正确定义，下列程序段正确的是（ ）",
+  "options": [
+   "while ((ch=getchar())!='X') printf(\"%c\",ch);",
+   "while (ch=getchar()!='X') printf(\"%c\",ch);",
+   "while ((ch=getchar())=='X') printf(\"%c\",ch);",
+   "while ((ch=getchar())!='X');"
+  ],
+  "answer": 0,
+  "explanation": "A 项先把 getchar() 的返回值赋给 ch，再判断 ch 是否不等于'X'，逻辑正确，遇到 X 时结束。B 项漏了括号，关系运算符优先于赋值，实际是把 getchar()!='X' 的比较结果（0 或 1）赋给 ch，循环条件恒为 0 或 1，读不到正确字符；C 项条件写成等于'X'，含义变成读到 X 才继续，与要求相反；D 项虽然条件写对了，但 while 后面直接跟分号，循环体是空语句，读入的字符不会被输出。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-396",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的功能是按顺序读入 10 名学生各 4 门课程的成绩，计算每位学生的平均分并输出，运行结果不正确。调试中发现有一条语句的位置不对，这条语句是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int n,k;\n   float score,sum,ave;\n   sum = 0.0;\n   for(n=1;n<=10;n++)\n   {\n       for(k=1;k<=4;k++)\n       {  scanf(\"%f\",&score);\n          sum+=score;\n       }\n       ave=sum/4.0;\n       printf(\"No %d: %f\\n\",n,ave);\n   }\n   return 0;\n}",
+  "options": [
+   "sum = 0.0;",
+   "sum+=score;",
+   "ave=sum/4.0;",
+   "printf(\"No %d: %f\\n\",n,ave);"
+  ],
+  "answer": 0,
+  "explanation": "sum 记录的是「一名学生」4 门课的总分，每换一个学生都必须重新清零，所以 sum=0.0 应放在外层 for(n) 循环体内、内层循环之前。现在它写在了双重循环外面，只有程序开始时清零一次，第 2 名学生起累加的是前面所有学生的总分，算出的平均分自然不对。B、C、D 三条语句的位置都是对的：累加在内层循环，求平均和输出在外层循环体内。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-397",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下列与 while(e) 中的 (e) 不等价的表达式是（ ）",
+  "options": [
+   "(!e==0)",
+   "(e>0 || e<0)",
+   "(e==0)",
+   "(e!=0)"
+  ],
+  "answer": 2,
+  "explanation": "while(e) 的含义是「e 不等于 0 时继续循环」，等价于 e!=0。A 项 !e==0 即「e 的非为假」，也就是 e 非 0；B 项 e>0 或 e<0 也排除了 e 等于 0；D 项直接就是 e!=0。只有 C 项 (e==0) 表示 e 等于 0 时为真，与 while(e) 的真假完全相反。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-398",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "执行下面一段程序后，结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int a=10,y=0;\n   do { a+=2; y+=a;\n        if (y>20) break;}\n   while (a=14);\n   printf(\"a=%d y=%d\\n\",a,y);\n   return 0;\n}",
+  "options": [
+   "a=18 y=24",
+   "a=14 y=44",
+   "a=12 y=12",
+   "a=16 y=28"
+  ],
+  "answer": 3,
+  "explanation": "do-while 先执行后判断。第一轮：a=10+2=12，y=12，y>20 不成立；判断 while(a=14)，赋值表达式的值为 14，非 0 为真，继续循环。第二轮：a=16，y=12+16=28，此时 y>20 成立，执行 break 跳出。故输出 a=16 y=28。注意 while(a=14) 中是赋值号，每轮都把 a 重新置为 14 再判断，这也是能进入第二轮的原因。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-399",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "执行下面一段程序后，结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int n=4;\n   while(n--) printf(\"%d \",--n);\n   return 0;\n}",
+  "options": [
+   "2 0",
+   "3 1",
+   "3 2 1",
+   "2 1 0"
+  ],
+  "answer": 0,
+  "explanation": "n=4。第一次判断 while(n--)：先用 4 判断为真，n 变为 3；循环体 printf(\"%d\",--n) 先把 n 减为 2 再输出 2。第二次判断用 2 为真，n 变为 1，--n 得 0 并输出 0。第三次判断用 0，为假，n 变为 -1，循环结束。所以只输出 2 0。选 D 是误把 --n 当成了后置自减，选 C 是多算了一轮。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-400",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "有以下程序，程序运行后的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int a[]={2,3,5,4},i;\n   for(i=0;i<4;i++)\n       switch(i %2)\n       {  case 0: switch (a[i]%2)\n                  {  case 0: a[i]++; break;\n                     case 1: a[i]--;\n                  } break;\n          case 1: a[i]=0;\n       }\n   for(i=0;i<4;i++)\n       printf(\"%d\",a[i]);\n   printf(\"\\n\");\n   return 0;\n}",
+  "options": [
+   "3344",
+   "2050",
+   "3040",
+   "0304"
+  ],
+  "answer": 2,
+  "explanation": "i 从 0 到 3 依次处理。i%2==0 时进入 case 0，再按 a[i]%2 分支：i=0 时 a[0]=2 为偶，a[0]++ 得 3；i=2 时 a[2]=5 为奇，a[2]-- 得 4。i%2==1 时执行 case 1：a[i]=0，故 a[1]、a[3] 都变成 0。最终数组为 3,0,4,0，输出 3040。其余选项都是对某个分支的走向判断错误。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-401",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int k,n=0; char c,str[]=\"teach\";\n   for(k=0;str[k];k++) {\n       c=str[k];\n       switch(k)\n       {  case 1: case 3: case 5: putchar(c); printf(\"%d\",++n); break;\n          default: putchar('N');\n       }\n   }\n   printf(\"\\n\");\n   return 0;\n}",
+  "options": [
+   "Ne1NN",
+   "e1a2e3",
+   "Ne1Nc2N",
+   "Na1NNNN"
+  ],
+  "answer": 2,
+  "explanation": "字符串为 teach，k 取 0~4。k=0 时字符 t 走 default，输出 N；k=1 时 e 走 case 1，输出 e 并把 n 增为 1，输出 1；k=2 时 a 走 default，输出 N；k=3 时 c 走 case 3，输出 c 和 2；k=4 时 h 走 default，输出 N。连起来是 Ne1Nc2N。选 A 是漏掉了 case 3 的输出，选 B 是把每个字母都当成了 case 分支，选 D 是没有正确统计 n。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-402",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  char *s=\"12134\";\n   int k=0,a=0;\n   while(s[k+1]){\n       k++;\n       if (k%2==0)\n       {  a+=s[k]-'0'+1; continue; }\n       a+=s[k]-'0';\n   }\n   printf(\"k=%d a=%d\\n\",k,a);\n   return 0;\n}",
+  "options": [
+   "k=5 a=12",
+   "k=4 a=12",
+   "k=6 a=11",
+   "k=3 a=14"
+  ],
+  "answer": 1,
+  "explanation": "s 为\"12134\"，循环条件是 s[k+1] 非'\\0'。k 从 0 开始：k=1 时 k%2 为 1，a 加上 s[1]-'0'=2，a=2；k=2 时 k 为偶，a 加上 s[2]-'0'+1=1+1=2，a=4；k=3 时加 s[3]-'0'=3，a=7；k=4 时加 s[4]-'0'+1=4+1=5，a=12；此时 s[5] 是'\\0'，循环结束。最终 k=4、a=12。其余选项是循环终止位置或奇偶分支判断错误。",
+  "src": "《实验与辅导》第6章选择题"
+ },
+ {
+  "id": "t-403",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "设 i、x 都是 int 类型，则下面的 for 循环体可执行（ ）次\nfor(i=0,x=0; i<=9 && x!=876; i++) printf(\"*\");",
+  "options": [
+   "9 次",
+   "876 次",
+   "10 次",
+   "无限循环"
+  ],
+  "answer": 2,
+  "explanation": "循环条件是两个子条件的逻辑与。循环体中从未修改 x，x 恒为 0，x!=876 永远为真，因此循环能否继续完全取决于 i<=9。i 从 0 开始每次加 1，可取 0~9 共 10 个值，循环体执行 10 次。选 9 是数错了首尾，选 876 是误以为 x 会变化，选 D 是没有看出 i 在不断自增。",
+  "src": "学习指导 第6章"
+ },
+ {
+  "id": "t-404",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{   int a=5,y=0;\n   do\n   {   a+=2; y+=a;\n       printf(\"a=%d y=%d\\n\",a,y);\n       if(y>10) break;\n   }\n   while(a==7);\n   return 0;\n}",
+  "answer": "a=7 y=7\na=9 y=16",
+  "explanation": "第一轮：a=5+2=7，y=0+7=7，输出 a=7 y=7；y>10 不成立，while 条件 a==7 成立，继续循环。第二轮：a=7+2=9，y=7+9=16，输出 a=9 y=16；此时 y>10 成立，执行 break 跳出循环，不再判断 while。故共输出两行。误答只有一行是漏看了 do-while 至少执行一次后还会按条件再执行一轮。",
+  "src": "学习指导 第6章"
+ },
+ {
+  "id": "t-405",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int n = 4, row, col;\n    char ch = '$';\n    for (row = 1; row <= n; row++)\n    {\n        for (col = 1; col <= row; col++)\n            printf(\"%c\", ch);\n        printf(\"\\n\");\n    }\n    return 0;\n}",
+  "answer": "$\n$$\n$$$\n$$$$",
+  "explanation": "外层循环控制行数，row 从 1 到 4；内层循环控制每行输出的符号个数，col 从 1 到 row，因此第 row 行恰好输出 row 个'$'。每输出完一行由 printf(\"\\n\") 换行，共 4 行，依次为 1、2、3、4 个美元符号。这是嵌套循环打印图形的典型写法，内层循环的终值与外层变量有关。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-406",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    char let = 'E', end, start;\n    for (end = let; end >= 'A'; end--)\n    {\n        for (start = let; start >= end; start--)\n            printf(\"%c\", start);\n        printf(\"\\n\");\n    }\n    return 0;\n}",
+  "answer": "E\nED\nEDC\nEDCB\nEDCBA",
+  "explanation": "外层循环让 end 从'E'递减到'A'，共 5 轮；内层循环让 start 从 let（即'E'）递减到 end，所以第 1 轮只输出 E，第 2 轮输出 ED，依此类推，最后一轮输出 EDCBA。关键在于内层循环的起点固定为 let，终点随外层变量变化，形成逐行加长的递减字母序列。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-407",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int i, j, n = 5;\n    long sum = 0, f;\n    for (i = 1; i <= n; i++)\n    {\n        f = 1;\n        for (j = 1; j <= i; j++) f *= j;\n        sum += f;\n    }\n    printf(\"sum=%ld\\n\", sum);\n    return 0;\n}",
+  "answer": "sum=153",
+  "explanation": "外层循环依次处理 1! 到 5!，内层循环负责求 i 的阶乘，f 每轮都重新置 1，避免与上一轮的阶乘值混用；累加得 1+2+6+24+120=153。若把 f=1 写到外层循环之外，各次阶乘会相乘，结果将完全错误。sum 与 f 用 long 型可以避免较大阶乘溢出。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-408",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int n, s = 0, i;\n    for (n = 100; n < 1000; n++)\n    {\n        int a = n / 100, b = n / 10 % 10, c = n % 10;\n        if (a*a*a + b*b*b + c*c*c == n) s++;\n    }\n    printf(\"s=%d\\n\", s);\n    return 0;\n}",
+  "answer": "s=4",
+  "explanation": "程序统计 100~999 之间各位数字立方和等于自身的数（水仙花数）：a 是百位、b 是十位、c 是个位，逐个判断后累加计数。满足条件的数是 153、370、371、407，共 4 个，故输出 s=4。常见错误是位数分离写成 n/100%10 之类，导致百位与十位取反。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-409",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int i, s = 0;\n    for (i = 1; i <= 10; i++)\n    {\n        if (i % 2 == 0) continue;\n        if (i > 7) break;\n        s += i;\n    }\n    printf(\"i=%d s=%d\\n\", i, s);\n    return 0;\n}",
+  "answer": "i=9 s=16",
+  "explanation": "continue 结束本次循环、break 结束整个循环。i 取奇数 1、3、5、7 时都累加，s=16；i=8 时被 continue 跳过；i=9 时 if(i>7) 成立，执行 break 立即退出循环，此时 i 的值为 9 而未再自增，所以输出 i=9 s=16。若把 break 与 continue 的作用弄反，会得到 s 包含 9 的错误结果。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-410",
+  "ch": "ch6",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int k = 5, n = 0;\n    while (k > 0)\n    {\n        switch (k)\n        {\n            default: break;\n            case 1: n += k;\n            case 2:\n            case 3: n += k;\n        }\n        k--;\n    }\n    printf(\"n=%d\\n\", n);\n    return 0;\n}",
+  "answer": "n=7",
+  "explanation": "k=5、4 时只有 default 分支可走，执行 break 跳出 switch，n 保持不变；k=3 时进入 case 3，执行 n+=3 得 3，由于其后没有语句也没有 break，接着落到 case 2 的标号处，但 case 2 本身没有语句，所以不再累加；k=2 时从 case 2 落到 case 3 执行 n+=2 得 5；k=1 时先执行 case 1 的 n+=1 得 6，再贯穿到 case 2/3 又加 1 得 7。最终 n=7。若忽略 switch 的贯穿特性，就会漏算 k=1 这一轮的第二次累加。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-411",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下能正确定义字符串的是（ ）",
+  "options": [
+   "char str[]={'\\064'};",
+   "char str=\"345\";",
+   "char str=\" \";",
+   "char str[]=\"\\0\";"
+  ],
+  "answer": 3,
+  "explanation": "以双引号形式初始化字符数组时，系统会自动在末尾加上'\\0'，得到的才是字符串，D 项定义了一个只含结束符的空字符串，定义合法。A 项用花括号给出单个字符'\\064'（即字符'4'），没有'\\0'，只是字符数组不是字符串；B 项把字符串常量直接赋给数组名，数组名是常量不能被赋值，语法错误；C 项写法与 B 相同，同样错误。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-412",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有下列程序，则叙述正确的是（ ）",
+  "code": "#include <stdio.h>\n#include <string.h>\nint main(void)\n{  char p[]={'1','2','3'},q[10]={ '1','2','3'};\n   printf(\"%d %d\\n\",strlen(p),strlen(q)); return 0;\n}",
+  "options": [
+   "在给 p 和 q 数组赋初值时，系统会自动添加字符串结束符，故输出长度都为 3",
+   "由于 p 数组中没有字符串结束符，长度不能确定，但 q 数组中字符串长度为 3",
+   "由于 q 数组中没有字符串结束符，长度不能确定，但 p 数组中字符串长度为 3",
+   "由于 p 和 q 数组中没有字符串结束符，故长度都不能确定"
+  ],
+  "answer": 1,
+  "explanation": "用花括号逐个列出字符赋初值时，系统不会自动追加'\\0'，而 q 定义长度为 10，未显式赋值的元素被自动置 0，因此 q[3] 就是'\\0'，strlen(q) 得 3；p 只有 3 个元素且都不为 0，其后没有结束标志，strlen 会一直向后查找，长度无法确定。故选 B。A 项误以为花括号形式也补'\\0'；C 项把 p、q 说反了；D 项忽略了 q 的补 0 规则。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-413",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有下列程序，则输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  char p[]={'1','2','3'},q[10]={ '1','2','3'};\n   printf(\"%d  %d\\n\",sizeof(p),sizeof(q)); return 0;\n}",
+  "options": [
+   "10 3",
+   "4 4",
+   "3 10",
+   "4 10"
+  ],
+  "answer": 2,
+  "explanation": "sizeof 求的是对象占用内存的字节数，与是否存放字符串无关。p 由 3 个字符初始化，数组长度自动定为 3，sizeof(p)=3；q 显式定义为 10 个元素，sizeof(q)=10，故输出 3 10。选 D 是误以为 p 也补了'\\0'（sizeof 不受 strlen 影响）；A 项把两个值写反；B 项混淆了 sizeof 与元素个数。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-414",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "下列程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int x[]={1,3,5,7,2,4,6,0},i,j,k;\n   for (i=0; i<3; i++)\n       for(j=2; j>=i; j--)\n           if (x[j+1]>x[j]) {k=x[j]; x[j]=x[j+1]; x[j+1]=k;}\n   for (i=0; i<3; i++)\n       for(j=4; j<7-i; j++)\n           if (x[j+1]>x[j]) {k=x[j]; x[j]=x[j+1]; x[j+1]=k;}\n   for(i=0; i<8; i++) printf(\"%d\",x[i]);\n   printf(\"\\n\");return 0;\n}",
+  "options": [
+   "75316420",
+   "01234567",
+   "76543210",
+   "13570246"
+  ],
+  "answer": 0,
+  "explanation": "程序分两段做「部分冒泡」：第一段在 x[0]~x[3] 范围内把较大的数往前推，第二段在 x[4]~x[7] 范围内同样处理，形成前后两段各自降序排列，最终为 7 5 3 1 6 4 2 0。选 B 是误以为按升序排序；C 项把整个数组都排成了降序；D 项完全没有排序。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-415",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有下列程序，则执行后输出结果是（ ）",
+  "code": "#include <stdio.h>\n#include <string.h>\nint main(void)\n{  char arr[2][4];\n   strcpy(arr[0], \"you\");  strcpy(arr[1], \"me\");\n   arr[0][3]='&';\n   printf(\"%s\\n\",arr); return 0;\n}",
+  "options": [
+   "you&me",
+   "you",
+   "me",
+   "4 10"
+  ],
+  "answer": 0,
+  "explanation": "arr 是 2 行 4 列的二维数组，两行在内存中连续存放。strcpy(arr[0],\"you\") 使第一行为 you\\0，strcpy(arr[1],\"me\") 使第二行为 me\\0；随后 arr[0][3]='&' 把第一行的结束符覆盖成'&'，于是从 arr 起始位置连续读到的字符是 y、o、u、&、m、e、\\0，输出 you&me。选 B 是以为第一行仍以'\\0'结束；C 项只看到了第二行；D 项与本题无关。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-416",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有下列程序，如果输入 abcd（回车）efgh（回车），程序的输出为（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  char s1[30],s2[30]; int i=0,j=0;\n   scanf(\"%s\",s1);  scanf(\"%s\",s2);\n   while (s1[i]) i++;\n   do { s1[i++]=s2[j++]; } while(s2[j-1]);\n   printf(\"%s\\n\",s1); return 0;\n}",
+  "options": [
+   "abcd",
+   "abcdefgh",
+   "a b c d e f g",
+   "abcdefg"
+  ],
+  "answer": 1,
+  "explanation": "两次 scanf 用 %s 分别读到 abcd 和 efgh。第一个 while 让 i 停在 s1 的结束符位置（i=4），do-while 把 s2 的字符连同结束符一起搬到 s1 后面，循环直到刚复制的字符是'\\0'为止，所以 s1 变成 abcdefgh 并以此为字符串输出。选 D 是漏掉了结束符的复制，选 A 是没执行连接循环。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-417",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "函数 strlen(\"abc\\0def\\0\\40s\\n\") 的值是（ ）",
+  "options": [
+   "8",
+   "3",
+   "9",
+   "7"
+  ],
+  "answer": 1,
+  "explanation": "strlen 从首字符开始统计，遇到第一个'\\0'就结束。字符串 abc 之后紧跟的就是转义字符'\\0'，因此长度为 3，后面即使还有 def 等字符也不计入。选 A、D 是把后面被截断的内容也算了进去，选 C 是把整个字符串常量的字节数当成了长度。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-418",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若二维数组 a 有 m 列，则元素 a[i][j] 与数组第一个元素 a[0][0] 相差（ ）个数组元素",
+  "options": [
+   "j*m+i",
+   "i*m+j",
+   "i*m+j-1",
+   "j*m+i-1"
+  ],
+  "answer": 1,
+  "explanation": "二维数组按行优先存储，前 i 行共有 i*m 个元素，再加上本行前面的 j 个元素，故 a[i][j] 距 a[0][0] 的偏移量为 i*m+j 个元素。A 项把行列次序颠倒了；C、D 两项都多减了 1，那是「第几个元素」的序号而不是偏移量。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-419",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有以下程序，程序运行后的输出结果是（ ）",
+  "code": "#include <stdio.h>\n#include <string.h>\nint main(void)\n{\n   char a[10]=\"abc\", b[10]= \"012\",c[10]= \"xyz\";\n   strcpy(a+1,b+2);\n   puts(strcat(a,c+1));\n   return 0;\n}",
+  "options": [
+   "a12xyz",
+   "12yz",
+   "a2yz",
+   "bc2yz"
+  ],
+  "answer": 2,
+  "explanation": "a 为\"abc\"，b 为\"012\"，c 为\"xyz\"。strcpy(a+1,b+2) 把从 b[2] 开始的\"2\"连同结束符复制到 a[1] 处，a 变成\"a2\"；strcat(a,c+1) 再把从 c[1] 开始的\"yz\"接到 a 的末尾，得到\"a2yz\"，puts 输出 a2yz。选 A 是误以为 b+2 复制的是\"12\"，选 B 是漏掉了 a 的首字符，选 D 是把起点算错了。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-420",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "有以下程序，程序运行后的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint main(void)\n{  int i,j=0;\n   char a[]=\"How are you\", b[10]={0};\n   for(i=0;a[i];i++)\n       if (a[i]==' ') b[j++]=a[i+1];\n   puts(b);\n   return 0;\n}",
+  "options": [
+   "ay",
+   "How are you",
+   "we",
+   "Hay"
+  ],
+  "answer": 0,
+  "explanation": "循环遍历字符串 a，遇到空格就把空格后的第一个字符依次存入 b。\"How are you\"中两个空格后的字符分别是'a' 和 'y'，所以 b 为\"ay\"并输出。选 B 是以为 puts 输出的是原串；C 项把空格前的字符当成了结果；D 项多加了首字符 H。",
+  "src": "《实验与辅导》第7章选择题"
+ },
+ {
+  "id": "t-421",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有定义 float y[5]={1,2,3};，则下列描述正确的是（ ）",
+  "options": [
+   "y 并不代表数组的元素",
+   "定义此数组时不指定数组的长度，定义效果相同",
+   "数组包含 3 个元素",
+   "y[3] 的值为 3"
+  ],
+  "answer": 0,
+  "explanation": "y 是数组名，代表数组首元素的地址，是地址常量，并不代表某个数组元素，A 项正确。B 项错误：float y[]={1,2,3} 只定义 3 个元素，与 y[5] 效果不同；C 项错误：长度由方括号中的 5 决定，只有前 3 个元素被赋初值，其余为 0；D 项错误：值为 3 的元素是 y[2]，y[3] 的值为 0。",
+  "src": "学习指导 第7章"
+ },
+ {
+  "id": "t-422",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有定义 int a[10];，则对 a 数组元素的正确引用是（ ）",
+  "options": [
+   "a[10]",
+   "a(10)",
+   "a[10-10]",
+   "a[10.0]"
+  ],
+  "answer": 2,
+  "explanation": "数组下标必须是整型表达式，取值范围 0~9。a[10-10] 即 a[0]，合法。A 项下标 10 越界（最大为 9）；B 项用圆括号不是数组元素的引用形式；D 项下标是实型常量，不符合下标必须为整型的要求。",
+  "src": "学习指导 第7章"
+ },
+ {
+  "id": "t-423",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有定义 char x[]=\"abcdefg\"; char y[]={'a','b','c','d','e','f','g'};，则下述正确的叙述是（ ）",
+  "options": [
+   "数组 x 和数组 y 等价",
+   "数组 x 和数组 y 的长度相同",
+   "数组 x 的长度大于数组 y 的长度",
+   "数组 x 的长度小于数组 y 的长度"
+  ],
+  "answer": 2,
+  "explanation": "用字符串常量初始化时，系统会在末尾自动加上'\\0'，所以 x 的长度是 8；用花括号逐个列出字符初始化时不会补'\\0'，y 的长度就是 7，故 x 比 y 长。A、B 两项忽略了结束符占用的空间，D 项把大小关系说反了。",
+  "src": "学习指导 第7章"
+ },
+ {
+  "id": "t-424",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "若有语句 int a; a=strlen(\"ar\\068\\'h\\'y\\\\ou\\n\"); 则 a 的值是______。",
+  "answer": "12",
+  "explanation": "strlen 统计的是字符个数，遇到第一个'\\0'结束。该串中的转义字符各有含义：\\068 只能把 \\06 视为一个字符（八进制数字不含 8），随后的 8 是普通字符；\\' 是一个单引号，\\\\ 是一个反斜杠，\\n 是换行。依次为 a、r、\\06、8、'、h、'、y、\\、o、u、\\n，共 12 个字符，故 a=12。常见错误是把 \\068 当成一个字符而得到 11，或把每个转义序列按两个字符计数。",
+  "src": "学习指导 第7章"
+ },
+ {
+  "id": "t-425",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[8] = {49, 38, 65, 97, 76, 13, 27, 49}, i, j, t, flag;\n    for (i = 0; i < 7; i++)\n    {\n        flag = 0;\n        for (j = 0; j < 7 - i; j++)\n            if (a[j] > a[j+1]) { t = a[j]; a[j] = a[j+1]; a[j+1] = t; flag = 1; }\n        if (!flag) break;\n    }\n    for (i = 0; i < 8; i++) printf(i < 7 ? \"%d \" : \"%d\\n\", a[i]);\n    return 0;\n}",
+  "answer": "13 27 38 49 49 65 76 97",
+  "explanation": "这是改进的冒泡排序：内层循环把当前范围内最大的数逐步交换到末尾，外层循环每轮缩小一个元素的范围；flag 用于记录本轮是否发生过交换，若一轮下来没有交换说明已经有序，可以提前结束。排序后数组由小到大为 13、27、38、49、49、65、76、97。注意程序中有两个 49，排序是稳定的，先后次序不变。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-426",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[3][3] = {{1,2,3},{4,5,6},{7,8,9}}, i, j, s1 = 0, s2 = 0;\n    for (i = 0; i < 3; i++)\n    {\n        s1 += a[i][i];\n        s2 += a[i][2-i];\n    }\n    printf(\"%d %d\\n\", s1, s2);\n    return 0;\n}",
+  "answer": "15 15",
+  "explanation": "s1 累加主对角线元素 a[0][0]、a[1][1]、a[2][2]，即 1+5+9=15；s2 累加副对角线元素 a[0][2]、a[1][1]、a[2][0]，即 3+5+7=15。两条对角线在中心元素 a[1][1] 处相交，被各自加了一次，所以两个结果相等。副对角线的列下标写成 2-i（即 n-1-i）是关键。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-427",
+  "ch": "ch7",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    char s[] = \"C Program 2024!\";\n    int i, letter = 0, digit = 0, other = 0;\n    for (i = 0; s[i] != '\\0'; i++)\n    {\n        if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z')) letter++;\n        else if (s[i] >= '0' && s[i] <= '9') digit++;\n        else other++;\n    }\n    printf(\"%d %d %d\\n\", letter, digit, other);\n    return 0;\n}",
+  "answer": "8 4 3",
+  "explanation": "循环以'\\0'为结束标志逐字符分类统计。字母有 C、P、r、o、g、r、a、m 共 8 个；数字有 2、0、2、4 共 4 个；其余字符是两个空格和感叹号，共 3 个。注意大写字母与小写字母的区间是分开判断的，不能写成 s[i]>='a' && s[i]<='Z' 之类的跨越区间写法。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-428",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "下列程序的运行结果是（ ）",
+  "code": "#include <stdio.h>\nint x1=30, x2=40;\nvoid sub(int x, int y)\n{  x1=x; x=y; y=x1; }\nint main(void)\n{  int x3=10, x4=20;\n   sub(x3, x4);\n   sub(x2, x1);\n   printf(\"%d, %d, %d, %d\\n\",x3,x4,x1,x2);\n   return 0;\n}",
+  "options": [
+   "10, 20, 40, 40",
+   "10, 20, 30, 40",
+   "10, 20, 40, 30",
+   "20, 10, 30, 40"
+  ],
+  "answer": 0,
+  "explanation": "x1、x2 是全局变量，x3、x4 是 main 的局部变量。函数 sub 中 x1=x 直接修改全局 x1，而 x、y 是形参，对它们的修改不影响实参。第一次调用 sub(x3,x4) 后 x1 变为 10；第二次调用 sub(x2,x1) 时实参已是 x2=40、x1=10，故 x1 被赋为 40，x2 不受影响仍为 40。x3、x4 始终是 10、20，输出 10, 20, 40, 40。其余选项错在对全局变量是否被修改判断有误。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-429",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "下列程序的运行结果是（ ）",
+  "code": "#include <stdio.h>\nint x1=30, x2=40;\nvoid sub(int x, int y)\n{ int x1; x1=x; x=y; y=x1; }\nint main(void)\n{  int x3=10, x4=20;\n   sub(x3, x4);\n   sub(x2, x1);\n   printf(\"%d, %d, %d, %d\\n\",x3,x4,x1,x2);\n   return 0;\n}",
+  "options": [
+   "10, 20, 40, 40",
+   "10, 20, 30, 40",
+   "10, 20, 40, 30",
+   "20, 10, 30, 40"
+  ],
+  "answer": 1,
+  "explanation": "本题在 sub 内部定义了局部变量 int x1，它与全局变量 x1 同名，函数体内 x1 指的是局部变量，全局 x1 被屏蔽，所以两次调用都不会改变全局 x1=30、x2=40。x3、x4 作为实参按值传递同样不变，输出 10, 20, 30, 40。选 A 是忽略了局部变量对全局变量的屏蔽作用，与形参完全对应、直接改写全局变量的写法相比，本题的唯一差别就是这句 int x1; 引起的名字屏蔽。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-430",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint fun(int a,int b,int c)\n{ c=a+b; return b-a; }\nint main(void)\n{  int c=1; c=fun(2,5,c); printf(\"%d \\n\",c);\n   return 0;\n}",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "5"
+  ],
+  "answer": 2,
+  "explanation": "调用 fun(2,5,c) 时，实参 2、5、1 依次传给形参 a、b、c。函数体内 c=a+b 只是修改了形参 c，不会影响 main 中的 c；return b-a 返回 5-2=3，main 中的 c 被赋为 3，输出 3。选 1 是以为形参 c 的修改能传回实参，选 5 是误取了形参 b 的值，选 2 是错算成 b-a 的减数被颠倒。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-431",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint b=2;\nint fun(int *k)\n{  b=*k+b;\n   return b;\n}\nint main(void)\n{\n   int a[10]={1,2,3,4,5,6,7,8},i;\n   for(i=2;i<4;i++){\n       b=fun(&a[i])+b;\n       printf(\"%d\",b);\n   }\n   printf(\"\\n\");\n   return 0;\n}",
+  "options": [
+   "1012",
+   "810",
+   "1028",
+   "1016"
+  ],
+  "answer": 2,
+  "explanation": "b 是全局变量。i=2 时调用 fun：b=*k+b=3+2=5 并返回 5，回到 main 后 b=fun(...)+b，此时参与加法的 b 已是函数改写后的 5，故 b=5+5=10，输出 10；i=3 时 fun 内 b=4+10=14 返回 14，b=14+14=28，输出 28，合计 1028。选 1012 是把第二个加数当成了调用前的旧值，选 810、1016 是累加对象搞错。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-432",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint f(int x,int y)\n{  return ((y-x)*x); }\nint main(void)\n{\n   int a=3,b=4,c=5,d;\n   d=f(f(a,b),f(a,c));\n   printf(\"%d\\n\",d);\n   return 0;\n}",
+  "options": [
+   "9",
+   "10",
+   "8",
+   "7"
+  ],
+  "answer": 0,
+  "explanation": "f(x,y) 返回 (y-x)*x。由内向外求值：f(3,4)=(4-3)*3=3，f(3,5)=(5-3)*3=6，再算 f(3,6)=(6-3)*3=9，所以 d=9。选 B、C、D 多是把内层结果代错或把减法方向写反。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-433",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint m1(int x,int y)\n{  return x<=y?x:y; }\nint m2(int x,int y)\n{  return x<=y?y:x; }\nint fun(int a,int b)\n{  return a+b; }\nint main(void)\n{\n   int x=2,y=3,z=1;\n   printf(\"%d\\n\",fun(m1(x,y),m2(y,z)));\n   return 0;\n}",
+  "options": [
+   "5",
+   "6",
+   "4",
+   "3"
+  ],
+  "answer": 0,
+  "explanation": "m1 返回两者中的较小值，m2 返回两者中的较大值。m1(2,3)=2，m2(3,1)=3，再调用 fun(2,3)=2+3=5。选 6 是把 m1 当成了求大值，选 4、3 是只取了其中一个函数的结果。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-434",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint fun(int n)\n{  if (n) return fun(n-1)+n;\n   else return 0;\n}\nint main(void)\n{\n   printf(\"%d\\n\",fun(3));\n   return 0;\n}",
+  "options": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "answer": 2,
+  "explanation": "fun 是递归函数，fun(n)=fun(n-1)+n，终止条件为 n 为 0 时返回 0。展开得 fun(3)=fun(2)+3=fun(1)+2+3=fun(0)+1+2+3=6。选 4 是漏加了一层，选 5、7 是递归层数计算错误。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-435",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint fun(char(*p)[6])\n{  int i;\n   for(i=0;i<4;i++) printf(\"%c\",p[i][i]); printf(\"\\n\"); return 0;\n}\nint main(void)\n{  char s[6][6]={ \"ABCD\",\"abcde\",\"12345\",\"FGHIJ\",\"fghij\",\"54321\"};\n   fun(s);\n   return 0;\n}",
+  "options": [
+   "Aa1F",
+   "Ab3I",
+   "ABCD",
+   "fghij"
+  ],
+  "answer": 1,
+  "explanation": "形参 p 是指向含 6 个字符的一维数组的指针，p[i] 是第 i 行的首地址。循环输出 p[i][i]，即二维数组的主对角线元素：s[0][0]='A'、s[1][1]='b'、s[2][2]='3'、s[3][3]='I'，结果为 Ab3I。选 C 是输出了第一行，选 A 是取了每行首字符，选 D 是取了最后一行。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-436",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nint f(int m)\n{  static int n=0;\n   int a=2;\n   n++; a++;\n   return m+n+a;\n}\nint main(void)\n{  int k;\n   for(k=0;k<4;k++) printf(\"%d,\",f(k));\n   return 0;\n}",
+  "options": [
+   "3,5,7,9,",
+   "4,7,10,13,",
+   "4,5,6,7,",
+   "4,6,8,10,"
+  ],
+  "answer": 3,
+  "explanation": "n 是静态局部变量，只在第一次调用时初始化为 0，之后在多次调用之间保留上次的值，每次调用 n++ 使其递增 1、2、3、4；a 是普通局部变量，每次调用都重新初始化为 2，a++ 后为 3。故返回值为 k+n+a，依次是 0+1+3=4、1+2+3=6、2+3+3=8、3+4+3=10。选 A 是漏掉了 a 的自增，选 B 是把 n 当成了普通局部变量。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-437",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nchar f(char x)\n{   return x*x%10+'0'; }\nint main(void)\n{  int b=0;  char a;\n   for(a=0;a<5;a++) { b=f(a); putchar(b); }\n   return 0;\n}",
+  "options": [
+   "014916",
+   "01234",
+   "01496",
+   "00000"
+  ],
+  "answer": 2,
+  "explanation": "a 是 char 型，循环中 a 取 0~4 的编码值。f 返回 x*x%10+'0'，即把平方值的个位转成数字字符：0*0%10=0、1、4、9、16%10=6，对应字符依次为'0''1''4''9''6'，输出 01496。选 A 是直接输出了 16 而没有按位取个位（字符 16 无法用一个字节表示），选 B 是先算错成 a%10。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-438",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，程序运行结果是（ ）",
+  "code": "#include <stdio.h>\nvoid fun(int n,int *s)\n{  int f;\n   if (n==1) *s=n+1;\n   else { fun(n-1,&f); *s=f; }\n}\nint main(void)\n{  int x=0;\n   fun(4,&x);\n   printf(\"%d\\n\",x);\n   return 0;\n}",
+  "options": [
+   "3",
+   "1",
+   "2",
+   "4"
+  ],
+  "answer": 2,
+  "explanation": "fun 递归调用自身直到 n==1 时执行 *s=n+1，即把 2 存入指针所指单元。回归过程中每一层只是把 f 的值传给上一层的 *s，值始终是 2，因此 main 中的 x 最终为 2。选 1 是把终止条件的 n+1 错算成 1，选 3、4 是误以为每层都做了累加。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-439",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "有以下程序，执行时输入 abc（回车），则输出结果是（ ）",
+  "code": "#include <stdio.h>\nvoid my()\n{  char ch;\n   ch=getchar();\n   if (ch!='c') my();\n   putchar(ch);\n}\nint main(void)\n{\n   my();\n   return 0;\n}",
+  "options": [
+   "abc",
+   "ababc",
+   "bca",
+   "cba"
+  ],
+  "answer": 3,
+  "explanation": "my 是递归函数：每读入一个字符，若不是'c'就先递归，递归返回后才执行 putchar。读入 a→递归，读入 b→递归，读入 c 时条件不成立，先输出 c；随后依次返回上一层输出 b、a，所以输出 cba。选 A 是没有注意到 putchar 位于递归调用之后，输出顺序被颠倒。",
+  "src": "《实验与辅导》第8章选择题"
+ },
+ {
+  "id": "t-440",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "在 C 语言中，函数的隐含存储类别是（ ）",
+  "options": [
+   "auto",
+   "static",
+   "extern",
+   "无存储类别"
+  ],
+  "answer": 2,
+  "explanation": "C 语言中函数的存储类别只有 static 和 extern 两种：用 static 声明的函数只能被本文件内的函数调用；省略存储类别时默认为 extern，即可以被其他源文件调用。auto 只能用于局部变量，不能修饰函数，也不存在「无存储类别」的说法。",
+  "src": "学习指导 第8章"
+ },
+ {
+  "id": "t-441",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "有以下函数 int fun(int x){ return (1+x*x); }，则语句 printf(\"%d\\n\", fun(fun(fun(fun(1))))); 的输出结果是______。",
+  "answer": "677",
+  "explanation": "嵌套调用由内向外逐层求值：fun(1)=1+1=2；fun(2)=1+4=5；fun(5)=1+25=26；fun(26)=1+676=677。常见错误是按层次数累加而不是把上一次的返回值作为下一次的实参，或者把 1+x*x 误写成 (1+x)*(1+x)。",
+  "src": "学习指导 第8章"
+ },
+ {
+  "id": "t-442",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "有以下程序，程序运行后输出的结果是______。",
+  "code": "#include <stdio.h>\nint fun( )\n{   static int a=0;\n   a+=5;\n   return a;\n}\nint main( )\n{   int k, s=0;\n   for( k=1; k<3 ; k++)  s+=fun( );\n   printf(\"s=%d\\n\", s );\n   return 0;\n}",
+  "answer": "s=15",
+  "explanation": "fun 中的 a 是静态局部变量，编译时只初始化一次，之后每次调用都保留上次的值。第一次调用 a=0+5=5 并返回 5，s=5；第二次调用 a=5+5=10 并返回 10，s=5+10=15。若把 static 误认为普通局部变量，就会得到两次返回值都是 5、s=10 的错误结论。",
+  "src": "学习指导 第8章"
+ },
+ {
+  "id": "t-443",
+  "ch": "ch8",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint f(int n)\n{\n    if (n == 1 || n == 2) return 1;\n    return f(n-1) + f(n-2);\n}\nint main(void)\n{\n    int i;\n    for (i = 1; i <= 8; i++) printf(\"%d \", f(i));\n    printf(\"\\n\");\n    return 0;\n}",
+  "answer": "1 1 2 3 5 8 13 21",
+  "explanation": "f 是求斐波那契数列的递归函数，前两项均为 1，从第三项起每一项等于前两项之和。依次计算 f(1)~f(8) 得 1、1、2、3、5、8、13、21。递归的终止条件是 n 等于 1 或 2，缺少该出口会导致无限递归。本程序的递归调用次数随 n 增大迅速增长，效率较低，可改用递推实现。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-444",
+  "ch": "ch8",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint gcd(int a, int b)\n{\n    if (b == 0) return a;\n    return gcd(b, a % b);\n}\nint main(void)\n{\n    printf(\"%d,%d\\n\", gcd(24, 36), gcd(17, 5));\n    return 0;\n}",
+  "answer": "12,1",
+  "explanation": "gcd 用辗转相除法求最大公约数：gcd(24,36) 依次变为 gcd(36,24)、gcd(24,12)、gcd(12,0)，返回 12；gcd(17,5) 依次为 gcd(5,2)、gcd(2,1)、gcd(1,0)，返回 1，说明 17 与 5 互质。递归出口是 b 为 0 时返回 a，若缺少该出口会无限递归。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-445",
+  "ch": "ch8",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid swap(int x, int y)\n{\n    int t = x; x = y; y = t;\n}\nvoid change(int a[], int n)\n{\n    int i;\n    for (i = 0; i < n; i++) a[i] = a[i] * 2;\n}\nint main(void)\n{\n    int m = 3, n = 7, b[3] = {1, 2, 3}, i;\n    swap(m, n);\n    change(b, 3);\n    printf(\"%d %d \", m, n);\n    for (i = 0; i < 3; i++) printf(\"%d\", b[i]);\n    printf(\"\\n\");\n    return 0;\n}",
+  "answer": "3 7 246",
+  "explanation": "swap 的形参是普通变量，实参按值单向传递，函数内交换的只是形参副本，m、n 仍是 3 和 7；change 的形参是数组名，实际传递的是数组首地址，函数通过下标访问的是实参数组本身，所以各元素被真正翻倍，输出 246。这题对比了值传递与地址传递的区别。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-446",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若已定义 int a[10]={1,2,3,4,5,6,7,8,9,10},*p=a;，则值为 6 的表达式是（ ）",
+  "options": [
+   "*p+6",
+   "*(p+6)",
+   "*p+=5",
+   "p+5"
+  ],
+  "answer": 2,
+  "explanation": "p 指向 a[0]。*p+6 是 a[0]+6=7；*(p+6) 是 a[6]=7；p+5 是指针（地址），不是元素值；只有 *p+=5 等价于 *p=*p+5，把 a[0] 由 1 改为 6，整个表达式的值为 6。本题考查指针解引用与复合赋值的结合方向，C 项要先解引用再赋值。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-447",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\nvoid fun(int *q)\n{  int i=0;\n   for(;i<5;i++) (*q)++; }\nint main(void)\n{  int a[5]={1,2,3,4,5},i;\n   fun(a);\n   for(i=0;i<5;i++) printf(\"%d,\",a[i]); return 0;\n}",
+  "options": [
+   "2,2,3,4,5,",
+   "6,2,3,4,5,",
+   "1,2,3,4,5,",
+   "2,3,4,5,6,"
+  ],
+  "answer": 1,
+  "explanation": "fun(a) 把数组首地址传给形参 q，q 指向 a[0]。循环体 (*q)++ 是把 q 所指单元的内容加 1，由于循环中 q 本身不变，5 次自增全部作用在 a[0] 上，a[0] 由 1 变为 6，其余元素不变，输出 6,2,3,4,5,。选 A 是以为只加了一次，选 D 是把 (*q)++ 误当成 q++。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-448",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\nint fun(char s[])\n{  int n=0;\n   while( *s<='9'&& *s>='0') { n=10*n+*s-'0'; s++; }\n   return n;}\nint main(void)\n{  char s[10]={ '6', '1', '*', '4', '*', '9', '*', '0', '*'};\n   printf(\"%d\\n\",fun(s)); return 0;\n}",
+  "options": [
+   "9",
+   "61490",
+   "61",
+   "5"
+  ],
+  "answer": 2,
+  "explanation": "循环条件是 *s 在'0'~'9' 之间。s 指向'6'、'1' 时都在数字范围内，依次算出 n=6、n=61；第三个字符是'*'，不满足条件循环结束，函数返回 61。选 B 是忽略了'*'会中断循环，选 A 是把'*'当成了数字，选 D 是数错了字符个数。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-449",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若有定义 int k[2][3], *pk[3];，则下列语句中正确的是（ ）",
+  "options": [
+   "pk=k;",
+   "pk[0]=&k[1][2];",
+   "pk=k[0];",
+   "pk[1]=k;"
+  ],
+  "answer": 1,
+  "explanation": "pk 是指针数组，每个元素都是 int * 类型；k 是二维数组名，类型为 int(*)[3]，与 int * 不兼容，所以 A 项类型不匹配。pk[0] 是 int *，&k[1][2] 是 int 型元素的地址，类型一致，B 项正确。C 项 pk=k[0] 是用数组名给数组名赋值，数组名不是可修改的左值；D 项把 int(*) 赋给 int *，类型错误。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-450",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若有程序片段 int a[12]={0}, *p[3], **pp,i; for(i=0;i<3;i++) p[i]=&a[i*4]; pp=p; 则以下对数组元素错误引用的是（ ）",
+  "options": [
+   "pp[0][1]",
+   "a[10]",
+   "p[3][1]",
+   "*(*(p+2)+2)"
+  ],
+  "answer": 2,
+  "explanation": "p 只有 3 个元素，下标合法范围是 0~2，p[3] 已经越界，其后再加 [1] 属于非法访问，C 项错误。A 项 pp[0] 即 p[0]，指向 a[0]，pp[0][1] 就是 a[1]；B 项 a[10] 在 0~11 范围内；D 项 *(p+2) 是 p[2]，再 +2 解引用得到 a[8+2]=a[10]，均合法。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-451",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "有以下定义和语句 int a[3][2]={1,2,3,4,5,6}, *p[3]; p[0]=a[1]; 则 *(p[0]+1) 代表的数组元素是（ ）",
+  "options": [
+   "a[0][1]",
+   "a[1][0]",
+   "a[1][1]",
+   "a[1][2]"
+  ],
+  "answer": 2,
+  "explanation": "p[0] 被赋为 a[1]，即第二行首元素的地址，类型为 int *。p[0]+1 指向该行第二个元素，解引用后就是 a[1][1]，其值为 4。选 B 是漏掉了 +1，选 A 是把行号算错，选 D 是列下标越界（第二维只有 2 列）。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-452",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "下列程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\n#include <string.h>\nvoid fun(char *s[],int n)\n{  char *t; int i,j;\n   for(i=0;i<n-1; i++)\n       for(j=i+1;j<n;j++)\n           if (strlen(s[i])>strlen(s[j])) {\n               t=s[i]; s[i]=s[j]; s[j]=t;}\n}\nint main(void)\n{  char *s[]={\"bcc\",\"bbcc\",\"xy\",\"aaaacc\",\"aabcc\"};\n   fun(s,5);\n   printf(\"%s,%s\\n\",s[0],s[4]); return 0;\n}",
+  "options": [
+   "xy,aaaacc",
+   "aaaacc,xy",
+   "bcc,aabcc",
+   "aabcc,bcc"
+  ],
+  "answer": 0,
+  "explanation": "fun 用选择排序按字符串长度由短到长排列指针数组，比较的是 strlen 的结果，只交换指针不移动内容。五个串长度依次为 3、4、2、6、5，排序后最短的 xy 在 s[0]，最长的 aaaacc 在 s[4]，输出 xy,aaaacc。选 B 是把顺序排反了，选 C、D 是按字典序排序得到的错误结果。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-453",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "有以下程序，程序运行后输出结果是（ ）",
+  "code": "#include <stdio.h>\n#include <stdlib.h>\nvoid fun(int **s, int x[2][3])\n{  **s=*(x[1]+1); }\nint main(void)\n{\n   int a[2][3]={1,2,3,4,5,6}, *p;\n   p=(int *)malloc(sizeof(int));\n   fun(&p,a);\n   printf(\"%d\\n\",*p);\n   return 0;\n}",
+  "options": [
+   "5",
+   "2",
+   "6",
+   "3"
+  ],
+  "answer": 0,
+  "explanation": "fun 的形参是二级指针 int **s，调用时传入 &p。**s=*(x[1]+1) 表示把 x[1][1] 的值赋给 p 所指的变量，即修改 main 中的指针 p 所指向的堆空间内容。x[1][1]=5，故 *p 输出 5。选 C 是取了 x[1][0]，选 B 是取了第一行元素。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-454",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "有以下程序，程序运行后输出结果是（ ）",
+  "code": "#include <stdio.h>\nvoid fun(char *p,char *q)\n{  while(*p=='*') p++;\n   while(*q=*p) {p++;q++;}\n}\nint main(void)\n{\n   char *s=\"*****a*b****\",t[80];\n   fun(s,t); puts(t);\n   return 0;\n}",
+  "options": [
+   "a*b****",
+   "a*b",
+   "*****a*b",
+   "ab"
+  ],
+  "answer": 0,
+  "explanation": "第一个 while 让 p 跳过开头的 5 个'*'，指向'a'；第二个 while 以 *q=*p 作为条件，边赋值边后移，把从'a'开始的整个剩余串复制到 t，包括中间的'*'和末尾的 4 个'*'，直到复制到'\\0'时结束，故 t 为 a*b****。选 B 是误以为中间的星号也被跳过，选 C 是没有跳过前导星号。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-455",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "有以下程序，程序运行后输出结果是（ ）",
+  "code": "#include <stdio.h>\nvoid fun(int *a, int *b)\n{  int *p;\n   p=a; a=b; b=p;\n}\nint main(void)\n{\n   int x=3,y=5,*p=&x,*q=&y;\n   fun(p,q);\n   printf(\"%d %d\",*p,*q);\n   fun(&x,&y);\n   printf(\" %d %d\\n\",*p,*q);\n   return 0;\n}",
+  "options": [
+   "3 5 5 3",
+   "3 5 3 5",
+   "5 3 3 5",
+   "5 3 5 3"
+  ],
+  "answer": 1,
+  "explanation": "fun 内部交换的是形参 a、b 本身（指针的副本），没有交换它们所指单元的内容，所以两次调用都不会改变 main 中 x、y 的值，也不会改变 p、q 的指向。两次输出都是 3 5。选 A、C、D 都是误以为指针形参的交换能影响实参指针。",
+  "src": "《实验与辅导》第9章选择题"
+ },
+ {
+  "id": "t-456",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "设有语句 char s[]=\"Program\", *p=s;，则以下叙述正确的是（ ）",
+  "options": [
+   "数组 s 的内容与指针变量 p 中内容相同",
+   "数组 s 的长度与 strlen(p) 的值相等",
+   "p[5] 的值等于 s[5] 的值",
+   "sizeof(s) 等于 sizeof(*p)"
+  ],
+  "answer": 2,
+  "explanation": "p 指向 s 的首元素，p[5] 等价于 *(p+5)，也就是 s[5]，两者是同一个元素，C 项正确。A 项错误：s 的内容是字符串本身，p 中存放的是 s 的首地址；B 项错误：s 的长度是 8（含'\\0'），strlen(p) 为 7；D 项错误：sizeof(s) 为 8，sizeof(*p) 是单个 char 的字节数 1。",
+  "src": "学习指导 第9章"
+ },
+ {
+  "id": "t-457",
+  "ch": "ch9",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nvoid rev(char *s)\n{\n    char *p = s, *q = s, t;\n    while (*q) q++;\n    q--;\n    while (p < q) { t = *p; *p++ = *q; *q-- = t; }\n}\nint main(void)\n{\n    char str[] = \"abcdefg\";\n    rev(str);\n    puts(str);\n    return 0;\n}",
+  "answer": "gfedcba",
+  "explanation": "rev 用两个指针从两端向中间靠拢：p 指向首字符，q 先移到结束符处再减 1，指向最后一个字符'g'。循环把 p、q 所指字符交换后 p 后移、q 前移，直到 p 不小于 q 时结束，字符串被原地逆置为 gfedcba。注意 q 必须先自减，否则会把'\\0'也参与交换。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-458",
+  "ch": "ch9",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[6] = {10, 20, 30, 40, 50, 60}, *p = a, s = 0;\n    while (p < a + 6)\n    {\n        s += *p;\n        p += 2;\n    }\n    printf(\"%d %d\\n\", s, (int)(p - a));\n    return 0;\n}",
+  "answer": "90 6",
+  "explanation": "p 从 a 出发，每次加 2 个元素，依次访问 a[0]、a[2]、a[4]，累加 10+30+50=90；访问完 a[4] 后 p 变为 a+6，不满足 p<a+6 循环结束。指针相减得到相隔的元素个数，故 p-a 为 6，输出 90 6。指针加 1 移动的是 sizeof(int) 个字节，而不是 1 个字节。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-459",
+  "ch": "ch9",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[3][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}}, *p, s = 0, i;\n    p = a[0];\n    for (i = 0; i < 12; i += 5) s += *(p + i);\n    printf(\"%d\\n\", s);\n    return 0;\n}",
+  "answer": "18",
+  "explanation": "a[0] 是二维数组第一行的首地址，赋给 int * 型指针 p 后，p 就把整个 12 个元素当作一维序列看待。i 取 0、5、10，分别访问第 1、6、11 个元素，即 1、6、11，和为 18。若把 p 声明成 int (*p)[4] 再这样加，偏移量会按行计算，结果就不同了。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-460",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "有以下程序，程序运行后输出结果是（ ）",
+  "code": "#include <stdio.h>\ntypedef struct {\n   char name[9];\n   char sex;\n   int score[2];} STU;\nvoid f(STU a[])\n{  STU b={\"Zhao\",'m',85,90};\n   a[1]=b;\n}\nint main(void)\n{\n   STU c[2]={{ \"Qian\",'f',95,92},{\"Sun\",'m',98,99}};\n   f(c);\n   printf(\"%s,%c,%d,%d,\",c[0].name, c[0].sex, c[0].score[0], c[0].score[1]);\n   printf(\"%s,%c,%d,%d\\n\",c[1].name, c[1].sex, c[1].score[0], c[1].score[1]);\n   return 0;\n}",
+  "options": [
+   "Zhao,m,85,90,Sun,m,98,99",
+   "Zhao,m,85,90,Qian,f,95,92",
+   "Qian,f,95,92,Sun,m,98,99",
+   "Qian,f,95,92,Zhao,m,85,90"
+  ],
+  "answer": 3,
+  "explanation": "数组名作实参传递的是首地址，形参 STU a[] 与实参 c 是同一片内存，函数内 a[1]=b 把局部结构体 b 整体赋给 c[1]，因此 c[1] 被改写为 Zhao、m、85、90，而 c[0] 从未被修改，仍是 Qian、f、95、92。同类型的结构体变量之间允许用赋值号整体赋值（成员逐一复制）。A、B 两项误以为 c[0] 也被修改，C 项误以为函数体内的赋值不会影响实参数组。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-461",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "下列程序的输出结果是（ ）",
+  "code": "#include <stdio.h>\nstruct HAR\n{ int x,y; struct HAR *p; } h[2];\nint main(void)\n{  h[0].x=1; h[0].y=2;\n   h[1].x=3; h[1].y=4;\n   h[0].p=h[1].p=h;\n   printf(\"%d%d\\n\",(h[0].p)->x,(h[1].p)->y); return 0;\n}",
+  "options": [
+   "12",
+   "23",
+   "14",
+   "32"
+  ],
+  "answer": 0,
+  "explanation": "h[0]、h[1] 的指针成员都被赋为 h，即指向数组首元素。故 (h[0].p)->x 访问的是 h[0].x=1，(h[1].p)->y 访问的是 h[0].y=2，输出 12。选 B 是误以为 h[1].p 指向 h[1]，选 C 是把 x、y 的取值搞混。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-462",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "若有以下结构体变量定义，且 a、b 已构成链表（a.next 指向 b），p 指向 a、q 指向 c，则能把 c 插入到 a 和 b 之间形成新链表的语句组是（ ）",
+  "options": [
+   "a.next=c.next",
+   "p.next=q; q.next=p.next;",
+   "p->next=&c; q->next=p->next",
+   "(*p).next=q; (*q).next=&b;"
+  ],
+  "answer": 3,
+  "explanation": "链表插入必须先把新结点的 next 指向原后继 b，再让前驱的 next 指向新结点，否则会丢失后继。D 项 (*p).next=q 让 a 的后继变成 c，(*q).next=&b 让 c 的后继变成 b，顺序与逻辑都正确。A 项语句不完整且丢链；B 项 p 是指针，不能用 p.next，并且两句顺序会破坏链；C 项 p.->next 语法错误，且先改 p 的 next 会丢失 b。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-463",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "下列程序的运行结果是（ ）",
+  "code": "#include <stdio.h>\nunion ex{ int i; char ch[2]; };\nint main(void)\n{  union ex r;\n   r.ch[0]=10; r.ch[1]=1;\n   printf(\"%d\",r.i); return 0;\n}",
+  "options": [
+   "266",
+   "11",
+   "265",
+   "不能引用"
+  ],
+  "answer": 0,
+  "explanation": "共用体的所有成员共用同一块存储空间。r.ch[0]=10 写入低字节，r.ch[1]=1 写入高字节，以小端方式存放时 r.i 的值是 1*256+10=266。选 11 是把两个字节的值直接相加，选 265 是进制换算错误，选 D 是误解了共用体成员的引用规则。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-464",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "有如下结构体类型的声明，则（ ）\n(1) struct mm{int x,y; struct mm b2;};\n(2) struct mm{int x,y; struct mm *p;};",
+  "options": [
+   "(1)正确，(2)不正确",
+   "(1)(2)都正确",
+   "(1)不正确，(2)正确",
+   "(1)(2)都不正确"
+  ],
+  "answer": 2,
+  "explanation": "结构体成员不能是自身类型的变量，因为这样无法确定结构体的大小，会造成无限递归，所以 (1) 不合法；但成员可以是指向自身类型的指针，指针的大小是固定的，常用于构造链表、树等结构，所以 (2) 正确。故选 C。A、B 两项都误以为成员可以是自身类型变量，D 项否定了合法的自引用指针。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-465",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "有枚举类型 enum math {one=3,two=6,three};，则枚举常量 three 的值是（ ）",
+  "options": [
+   "2",
+   "3",
+   "7",
+   "9"
+  ],
+  "answer": 2,
+  "explanation": "枚举元素若未显式赋值，其值是前一个元素的值加 1。two 被显式指定为 6，故 three=6+1=7。选 3 是把 one 的值当成了起点，选 2 是把序号当成了值，选 9 是误以为按等差继续加 3。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-466",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "下面结构体的定义语句中，错误的是（ ）",
+  "options": [
+   "struct ord{int x;int y;int z;} struct ord a;",
+   "struct ord{int x;int y;int z;}; struct ord a;",
+   "struct ord{int x;int y;int z;} a;",
+   "struct {int x;int y;int z;} a;"
+  ],
+  "answer": 0,
+  "explanation": "A 项在结构体定义之后又写了一遍 struct ord a，既重复了类型名又缺分号，语法错误。B 项先定义类型再单独定义变量，正确；C 项在定义类型的同时定义变量 a，正确；D 项定义无名结构体类型并同时定义变量 a，也正确。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-467",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "有以下程序，程序运行后输出结果是（ ）",
+  "code": "#include <stdio.h>\n#include <string.h>\ntypedef struct {\n   char name[9];\n   char sex;\n   float score[2];} STU;\nvoid f(STU *a)\n{  strcpy(a->name,\"Zhao\");\n   a->sex='m';\n   a->score[1]=90.0;\n}\nint main(void)\n{\n   STU c={\"Qian\",'f',95,92.0},*d=&c;\n   f(d);\n   printf(\"%s,%c,%2.0f,%2.0f\\n\",d->name,c.sex,c.score[0],c.score[1]);\n   return 0;\n}",
+  "options": [
+   "Qian,f,95,92",
+   "Zhao,f,95,92",
+   "Zhao,m,95,90",
+   "Zhao,f,95,90"
+  ],
+  "answer": 2,
+  "explanation": "main 把结构体变量 c 的地址传给 f，形参 STU *a 与 d 指向同一块内存，函数内的修改会直接作用在 c 上：name 变为 Zhao、sex 变为'm'、score[1] 变为 90.0，而 score[0] 未被修改仍为 95，输出 Zhao,m,95,90。A 项是完全没被修改的情形，B 项漏看了 sex 的改动，D 项漏看了 sex 的改动而多改了 score[1]。",
+  "src": "《实验与辅导》第10章选择题"
+ },
+ {
+  "id": "t-468",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "若有以下说明 struct student { char name[20]; int age; int sex; } st[5], *p; p=&st[0]; 则下列 scanf 函数调用不正确的是（ ）",
+  "options": [
+   "scanf(\"%s\", st[0].name);",
+   "scanf(\"%d\", &st[0].age);",
+   "scanf(\"%d\", &(p->age));",
+   "scanf(\"%d\", p->sex);"
+  ],
+  "answer": 3,
+  "explanation": "scanf 的输入项必须是地址。D 项 p->sex 是成员变量的值而不是地址，正确写法是 &p->sex 或 &(p->sex)。A 项 name 是数组名，本身就是首地址，可以直接作为输入项；B、C 两项都正确使用了取地址符。",
+  "src": "学习指导 第10章"
+ },
+ {
+  "id": "t-469",
+  "ch": "ch10",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nstruct stu { int no; char name[10]; int score; };\nint main(void)\n{\n    struct stu s[4] = {{1,\"Li\",78},{2,\"Wang\",92},{3,\"Zhao\",85},{4,\"Qian\",66}};\n    int i, max = 0, sum = 0;\n    for (i = 0; i < 4; i++)\n    {\n        sum += s[i].score;\n        if (s[i].score > s[max].score) max = i;\n    }\n    printf(\"%s %d %d\\n\", s[max].name, s[max].score, sum / 4);\n    return 0;\n}",
+  "answer": "Wang 92 80",
+  "explanation": "程序在遍历结构体数组的同时完成两件事：累加总分并记录最高分元素的下标。最高分是 92，对应下标 1，姓名为 Wang；总分 78+92+85+66=321，整除 4 得 80，输出 Wang 92 80。注意 max 保存的是下标而不是分数，输出时要用 s[max].name。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-470",
+  "ch": "ch10",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nstruct node { int data; struct node *next; };\nint main(void)\n{\n    struct node n3 = {30, 0}, n2 = {20, &n3}, n1 = {10, &n2};\n    struct node *p = &n1;\n    int s = 0;\n    while (p) { s += p->data; p = p->next; }\n    printf(\"%d\\n\", s);\n    return 0;\n}",
+  "answer": "60",
+  "explanation": "三个结点通过 next 指针串成链表：n1→n2→n3，n3 的 next 为 0（空指针）。p 从 n1 开始沿链访问，依次累加 10、20、30 得 60；p 变为空指针时循环结束。遍历链表的标准写法就是 while(p) 配合 p=p->next，注意最后要判断空指针以免越界。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-471",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "当顺利执行了文件关闭操作时，fclose() 函数的返回值是（ ）",
+  "options": [
+   "1",
+   "TRUE",
+   "0",
+   "-1"
+  ],
+  "answer": 2,
+  "explanation": "fclose 关闭成功时返回 0，失败时返回非 0 值（通常是 EOF，即 -1）。A、B 两项把成功当成了返回 1 或 TRUE，D 项恰好是失败时的返回值。注意这与很多库函数「成功返回非 0」的习惯相反。",
+  "src": "《实验与辅导》第11章选择题"
+ },
+ {
+  "id": "t-472",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "若 fp 是指向某文件的指针，且已指到该文件的末尾，则 C 语言函数 feof() 的返回值是（ ）",
+  "options": [
+   "EOF",
+   "非 0 值",
+   "NULL",
+   "-1"
+  ],
+  "answer": 1,
+  "explanation": "feof 用于检测文件是否结束，若已到达文件末尾则返回非 0 值（真），否则返回 0。A 项 EOF 是 fgetc 等函数读到末尾时返回的值，不是 feof 的返回值；C 项 NULL 是指针值；D 项 -1 与 feof 返回真值的具体数值无必然关系，标准只规定「非 0」。",
+  "src": "《实验与辅导》第11章选择题"
+ },
+ {
+  "id": "t-473",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "函数 fgets(s,n,f) 的功能是（ ）",
+  "options": [
+   "从 f 所指文件中读取长度为 n 的字符存入指针 s 所指的内存",
+   "从 f 所指文件中读取长度不超过 n-1 的字符存入指针 s 所指的内存",
+   "从 f 所指文件中读取 n 个字符串存入指针 s 所指的内存",
+   "从 f 所指文件中读取长度为 n-1 的字符串存入指针 s 所指的内存"
+  ],
+  "answer": 1,
+  "explanation": "fgets 最多读取 n-1 个字符，因为要为字符串结束标志'\\0'预留一个字节，遇到换行或文件末尾则提前结束。故 B 正确。A 项说「长度为 n」会把'\\0'的位置挤掉；C 项把字符个数说成了字符串个数；D 项把「不超过」说成了「等于」，遇到换行时不足 n-1 个字符。",
+  "src": "《实验与辅导》第11章选择题"
+ },
+ {
+  "id": "t-474",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "以下与函数 fseek(fp,0L,SEEK_SET) 有相同作用的是（ ）",
+  "options": [
+   "feof(fp)",
+   "ftell(fp)",
+   "fgetc(fp)",
+   "rewind(fp)"
+  ],
+  "answer": 3,
+  "explanation": "fseek(fp,0L,SEEK_SET) 把文件位置指针移到文件开头（偏移 0 字节处），rewind(fp) 的作用正是把位置指针重置到文件头并清除错误标志，两者效果相同。A 项 feof 只是检测是否到末尾，B 项 ftell 是返回当前位置，C 项 fgetc 读取一个字符，均不移动指针到文件首。",
+  "src": "《实验与辅导》第11章选择题"
+ },
+ {
+  "id": "t-475",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "fseek() 函数用来移动文件的位置指针，它的调用形式是（ ）",
+  "options": [
+   "fseek(文件号,位移量,起始点)",
+   "fseek(文件号,位移方向,位移量)",
+   "fseek(位移方向,位移量,文件号)",
+   "fseek(文件号,起始点,位移量)"
+  ],
+  "answer": 0,
+  "explanation": "fseek 的原型是 int fseek(FILE *stream, long offset, int origin)，三个实参依次为文件指针、相对起始点的位移量（长整型，可正可负）、起始点（SEEK_SET/SEEK_CUR/SEEK_END），A 项顺序正确。B、D 两项把位移量与起始点的位置弄反，C 项把文件指针放到了最后，都不符合函数原型。",
+  "src": "《实验与辅导》第11章选择题"
+ },
+ {
+  "id": "t-476",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "若调用 fputc() 函数输出字符成功，则其返回值是（ ）",
+  "options": [
+   "1",
+   "EOF",
+   "输出的字符",
+   "0"
+  ],
+  "answer": 2,
+  "explanation": "fputc(ch,fp) 成功时返回所写字符的编码值，失败时返回 EOF。A、D 两项把成功返回值当成了计数或 0，B 项 EOF 是失败时的返回值。正因为成功返回的是字符本身，所以判断写失败应写 if (fputc(ch,fp)==EOF)。",
+  "src": "《实验与辅导》第11章选择题"
+ },
+ {
+  "id": "t-477",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "已知函数的调用形式为 fread(buffer,size,count,fp);，其中 buffer 代表的是（ ）",
+  "options": [
+   "一个指针，指向要读入数据的存放地址",
+   "一个文件指针，指向要读的文件",
+   "一个整形变量，代表要读入的数据项总数",
+   "一个存储区，存放要读的数据项"
+  ],
+  "answer": 0,
+  "explanation": "fread 的原型为 size_t fread(void *ptr, size_t size, size_t count, FILE *fp)，第一个参数 ptr（题目中的 buffer）是接收数据的内存首地址，通常写成数组名或指针，A 项描述准确。B 项是第四个参数 fp 的含义，C 项是第三个参数 count 的含义，D 项把地址说成了存储区本身。",
+  "src": "《实验与辅导》第11章选择题"
+ },
+ {
+  "id": "t-478",
+  "ch": "ch11",
+  "type": "read",
+  "stem": "下面程序的输出结果是（写出全部输出）",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    FILE *fp;\n    int i, sum = 0, x;\n    fp = fopen(\"t11.dat\", \"w\");\n    for (i = 1; i <= 4; i++) fprintf(fp, \"%d \", i * 11);\n    fclose(fp);\n    fp = fopen(\"t11.dat\", \"r\");\n    while (fscanf(fp, \"%d\", &x) == 1) sum += x;\n    fclose(fp);\n    printf(\"%d\\n\", sum);\n    return 0;\n}",
+  "answer": "110",
+  "explanation": "程序先以写方式打开文件，用 fprintf 依次写入 11、22、33、44，随后关闭；再以读方式打开，fscanf 的返回值是成功读入的数据项个数，等于 1 时继续循环，读到文件末尾返回 EOF（-1）退出，累加得 11+22+33+44=110。用 fscanf 的返回值作循环条件可以避免把最后一个数据重复处理。",
+  "src": "教材样例改编"
+ },
+ {
+  "id": "t-479",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "下列预处理命令正确的是（ ）",
+  "options": [
+   "#include <stdio.h>；",
+   "#define M",
+   "define M 3",
+   "define M 3+5；"
+  ],
+  "answer": 1,
+  "explanation": "预处理命令必须以 # 开头，且末尾不能加分号。B 项 #define M 定义一个宏名为 M、替换内容为空的宏，语法上合法。A 项多了分号，会被当作宏体的一部分；C、D 两项都缺少 #，不是预处理命令；D 项还多写了分号。",
+  "src": "学习指导 第12章"
+ },
+ {
+  "id": "t-480",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "有以下程序，程序的输出结果是（ ）",
+  "code": "#include  <stdio.h>\n#define  M   3\n#define  N   M+1\n#define  NN   N*N/2\nint main( )\n{    printf(\"%d,\",NN);\n     printf(\"%d\\n\",5*NN);\n     return 0;\n}",
+  "options": [
+   "3,17",
+   "4,20",
+   "6,18",
+   "8,40"
+  ],
+  "answer": 2,
+  "explanation": "宏替换只是字符替换。NN 展开为 N*N/2，N 又展开为 M+1，M 再展开为 3，得到 3+1*3+1/2；按优先级计算：1*3=3、1/2=0，故第一个输出 3+3+0=6。第二句 5*NN 展开为 5*3+1*3+1/2=15+3+0=18。若误把宏当成函数先算值，就会得到 4 和 20 之类的结果。",
+  "src": "学习指导 第12章"
  }
 ]
