@@ -302,11 +302,13 @@
       '  background:var(--acc-soft,rgba(59,130,246,.08));outline:none}\n'+
       '.kbm-opt b{display:block;font:700 13.5px/1.5 inherit;margin-bottom:3px}\n'+
       '.kbm-opt span{font-size:11.5px;color:var(--ink2,var(--fg-2,#6e6e73));line-height:1.65}\n'+
-      '.kbm-print{display:flex;align-items:center;gap:10px;margin:0 0 11px}\n'+
+      '.kbm-print{display:flex;align-items:center;gap:8px;margin:0 0 6px}\n'+
       '.kbm-print button{flex:1;border:1px solid var(--acc,var(--ac,#3b82f6));border-radius:10px;\n'+
       '  background:var(--acc,var(--ac,#3b82f6));color:#fff;padding:9px 0;font:600 12.5px inherit;cursor:pointer}\n'+
       '.kbm-print button:hover{filter:brightness(1.06)}\n'+
-      '.kbm-print span{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));flex:none;max-width:96px;line-height:1.5}\n'+
+      '.kbm-print button.ghost{background:transparent;color:var(--acc,var(--ac,#3b82f6))}\n'+
+      '.kbm-print button.ghost:hover{background:var(--acc-soft,rgba(59,130,246,.1));filter:none}\n'+
+      '.kbm-hint{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));line-height:1.65;margin:4px 0 11px}\n'+
       '.kbm-steps{display:flex;gap:6px;margin:0 0 12px;font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f))}\n'+
       '.kbm-steps i{font-style:normal;flex:1;border:1px solid var(--line,var(--line-2,#e8e8ec));\n'+
       '  border-radius:8px;padding:6px 4px;text-align:center;background:var(--panel2,var(--panel-2,#f8f8fa))}\n'+
@@ -521,8 +523,12 @@
       '<p class="kbp2-sub">'+(offline
         ? '打印空白卷手写作答，做完拍照或导入 PDF 交回。'+(willMin?('首次上传后按考试用时的 60%（约 '+willMin+' 分钟）计入本站学习时长。'):'')
         : '把这份卷子的作答拍照或导出 PDF 传到这里，作为离线作答记录。')+'</p>'+
-      (offline && curOpts.printBlank
-        ? '<div class="kbm-print"><button id="kbp2-print" type="button">🖨 打印空白卷</button><span>A4 单面</span></div>'
+      (offline && (curOpts.printBlank || curOpts.printAns)
+        ? '<div class="kbm-print">'+
+            (curOpts.printBlank ? '<button id="kbp2-print" type="button">🖨 打印空白卷</button>' : '')+
+            (curOpts.printAns ? '<button class="ghost" id="kbp2-print-ans" type="button">🖨 打印含答案版</button>' : '')+
+          '</div>'+
+          '<p class="kbm-hint">A4 单面；打印对话框里也可以选「另存为 PDF」。含答案版把参考答案与解析附在卷末。</p>'
         : '')+
       '<div class="kbp2-list">'+
         (att.length ? att.map(attRow).join('')
@@ -542,6 +548,8 @@
 
     var pr = card.querySelector('#kbp2-print');
     if(pr) pr.onclick = function(){ if(curOpts.printBlank) curOpts.printBlank(); };
+    var pa = card.querySelector('#kbp2-print-ans');
+    if(pa) pa.onclick = function(){ if(curOpts.printAns) curOpts.printAns(); };
     card.querySelector('#kbp2-done').onclick = closeAtt;
     card.querySelector('#kbp2-pickimg').onclick = function(){ card.querySelector('#kbp2-fimg').click(); };
     card.querySelector('#kbp2-pickpdf').onclick = function(){ card.querySelector('#kbp2-fpdf').click(); };

@@ -160,7 +160,7 @@
       /* ---- 首次引导 ---- */
       '#kbp-ob{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:150;display:flex;align-items:center;\n'+
       '  justify-content:center;padding:20px;backdrop-filter:blur(2px)}\n'+
-      '#kbp-ob-card{width:396px;max-width:94vw;max-height:92vh;overflow-y:auto;background:var(--panel-solid,var(--panel,#fff));\n'+
+      '#kbp-ob-card{width:414px;max-width:94vw;max-height:92vh;overflow-y:auto;background:var(--panel-solid,var(--panel,#fff));\n'+
       '  color:var(--hi,var(--ink,#1c1c1e));border-radius:18px;padding:22px 22px 18px;\n'+
       '  box-shadow:0 26px 80px rgba(0,0,0,.34);font:13px/1.6 "PingFang SC","Microsoft YaHei",-apple-system,sans-serif}\n'+
       '#kbp-ob-card h3{margin:0 0 5px;font:700 17px/1.35 inherit}\n'+
@@ -178,6 +178,25 @@
       '  padding:11px 0;font:600 13.5px inherit;cursor:pointer;margin-top:6px}\n'+
       '.ob-go:hover{filter:brightness(1.06)}\n'+
       '.ob-note{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));margin:9px 0 0;line-height:1.65}\n'+
+      /* ---- 首次引导里的同步区 ---- */
+      '.ob-sec{margin-top:4px;border-top:1px dashed var(--line,var(--line-2,#e8e8ec));padding-top:12px}\n'+
+      '.ob-sec-h{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px}\n'+
+      '.ob-sec-h b{font:700 12.5px/1.4 inherit}\n'+
+      '.ob-sec-h span{margin-left:auto;font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));text-align:right;line-height:1.45}\n'+
+      '.ob-sec-h span.ok{color:#1a9e4b}\n'+
+      '.ob-sec-h span.err{color:#eb4d3d}\n'+
+      '.ob-tok{width:100%;box-sizing:border-box;border:1px solid var(--line,var(--line-2,#e2e2e6));border-radius:9px;\n'+
+      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;font:11.5px/1.6 ui-monospace,Consolas,monospace;padding:8px 10px}\n'+
+      '.ob-tok:focus{outline:none;border-color:var(--acc,var(--ac,#3b82f6));background:var(--panel-solid,var(--panel,#fff))}\n'+
+      '.ob-tok:disabled{opacity:.62}\n'+
+      '.ob-syncrow{display:flex;align-items:center;gap:9px;margin-top:8px}\n'+
+      '.ob-login{flex:1;border:1px solid var(--acc,var(--ac,#3b82f6));border-radius:9px;background:transparent;\n'+
+      '  color:var(--acc,var(--ac,#3b82f6));padding:8px 0;font:600 12.5px inherit;cursor:pointer}\n'+
+      '.ob-login:hover{background:var(--acc-soft,rgba(59,130,246,.1))}\n'+
+      '.ob-login:disabled{opacity:.55;cursor:default}\n'+
+      '.ob-link{font-size:10.5px;color:var(--acc,var(--ac,#3b82f6));text-decoration:none;white-space:nowrap}\n'+
+      '.ob-link:hover{text-decoration:underline}\n'+
+      '.ob-tip{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));line-height:1.65;margin:7px 0 0}\n'+
       '@media print{body{zoom:1!important}}\n';
     document.head.appendChild(st);
   }
@@ -241,8 +260,6 @@
           '<div class="kbp-sub" id="kbp-sub"></div>'+
         '</div>'+
       '</div>'+
-      '<div class="kbp-swatches" id="kbp-swatches"></div>'+
-      '<div class="kbp-emojis" id="kbp-emojis"></div>'+
       '<div id="kbp-stats"></div>'+
       '<div class="kbp-foot">'+
         '<button class="kbp-btn2" id="kbp-sync" type="button">同步设置</button>'+
@@ -250,32 +267,6 @@
       '</div>'+
       '<input type="file" id="kbp-file" accept="image/*" class="kbp-hide">';
     wrap.appendChild(panel);
-
-    // 颜色
-    var colors=['#3b82f6','#6366f1','#8b5cf6','#ec4899','#ef4444','#f59e0b','#10b981','#14b8a6','#64748b'];
-    var sw=panel.querySelector('#kbp-swatches');
-    sw.innerHTML = colors.map(function(c){
-      return '<span class="kbp-sw'+(prof.color===c?' on':'')+'" data-c="'+c+'" style="background:'+c+'"></span>';
-    }).join('');
-    sw.addEventListener('click', function(e){
-      var t=e.target.closest('.kbp-sw'); if(!t) return;
-      prof.color=t.dataset.c; prof.av=''; saveProf();
-      sw.querySelectorAll('.kbp-sw').forEach(function(x){ x.classList.toggle('on', x===t); });
-      renderHead();
-    });
-
-    // emoji
-    var emojis=['🐳','📘','🧮','🔭','🌱','⚡️','🎯','🧠','🌙'];
-    var em=panel.querySelector('#kbp-emojis');
-    em.innerHTML = emojis.map(function(c){
-      return '<button class="kbp-em'+(prof.emoji===c?' on':'')+'" data-e="'+c+'" type="button">'+c+'</button>';
-    }).join('');
-    em.addEventListener('click', function(e){
-      var t=e.target.closest('.kbp-em'); if(!t) return;
-      prof.emoji=t.dataset.e; prof.av=''; saveProf();
-      em.querySelectorAll('.kbp-em').forEach(function(x){ x.classList.toggle('on', x===t); });
-      renderHead();
-    });
 
     // 上传头像
     var file=panel.querySelector('#kbp-file');
@@ -377,8 +368,8 @@
     ob.id = 'kbp-ob';
     ob.innerHTML =
       '<div id="kbp-ob-card">'+
-        '<h3>先设置一下个人信息</h3>'+
-        '<p class="ob-sub">右上角的头像和昵称由这里决定。数据默认只存在这台设备，登录后可跨设备同步。</p>'+
+        '<h3>先认识一下</h3>'+
+        '<p class="ob-sub">设置头像和昵称。想在手机 / 平板 / 电脑之间同步的话，顺手把 GitHub 令牌贴上；不想现在就弄，直接保存也能正常用。</p>'+
         '<div class="ob-row">'+
           '<div class="ob-av" id="ob-av" title="点击上传自己的图片"></div>'+
           '<div class="ob-field"><label>昵称</label><input id="ob-name" maxlength="16" spellcheck="false"></div>'+
@@ -386,8 +377,17 @@
         '<p class="ob-lab">选一个头像，或点左侧圆圈上传图片</p>'+
         '<div class="kbp-emojis" id="ob-emojis"></div>'+
         '<div class="kbp-swatches" id="ob-colors"></div>'+
+        '<div class="ob-sec">'+
+          '<div class="ob-sec-h"><b>跨设备同步</b><span id="ob-sync">未登录</span></div>'+
+          '<input class="ob-tok" id="ob-tok" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴 GitHub 令牌（ghp_… / github_pat_…），可跳过">'+
+          '<div class="ob-syncrow">'+
+            '<button class="ob-login" id="ob-login" type="button">登录并同步</button>'+
+            '<a class="ob-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">创建令牌 ↗</a>'+
+          '</div>'+
+          '<p class="ob-tip">令牌只存在这台设备的浏览器里，数据写进你自己账号下的私有 Gist；三个站点共用一次登录，别人用自己账号登录看不到你的数据。</p>'+
+        '</div>'+
         '<button class="ob-go" id="ob-go" type="button">保存并继续</button>'+
-        '<p class="ob-note">昵称留空将使用默认的 Student；之后随时可以在右上角改。</p>'+
+        '<p class="ob-note">昵称留空将使用默认的 Student；头像、昵称之后可以在右上角改。</p>'+
         '<input type="file" id="ob-file" accept="image/*" class="kbp-hide">'+
       '</div>';
     document.body.appendChild(ob);
@@ -445,8 +445,39 @@
       saveProf();
       ob.remove();
       renderHead(); renderStats();
-      setTimeout(function(){ askSync(320); }, 260);
     };
+
+    /* ---- 同一个界面里登录同步 ---- */
+    var tokEl = ob.querySelector('#ob-tok');
+    var lgBtn = ob.querySelector('#ob-login');
+    var stEl  = ob.querySelector('#ob-sync');
+    function syncState(cls, txt){
+      stEl.className = cls || '';
+      stEl.textContent = txt;
+    }
+    function markLogged(u){
+      lgBtn.textContent = '已登录';
+      lgBtn.disabled = true;
+      tokEl.value = '';
+      tokEl.disabled = true;
+      tokEl.placeholder = '已登录 @'+u;
+      syncState('ok', '已登录 @'+u+' · 自动同步');
+    }
+    if(logged()) markLogged((KBSync.state && KBSync.state.user) || '');
+
+    lgBtn.onclick = function(){
+      if(!window.KBSync){ syncState('err','同步模块未加载'); return; }
+      var v = tokEl.value.trim();
+      if(!v){ syncState('err','请先粘贴令牌'); tokEl.focus(); return; }
+      lgBtn.disabled = true; lgBtn.textContent = '登录中…';
+      syncState('', '正在验证…');
+      KBSync.login(v, {
+        msg: function(t, isErr){ syncState(isErr?'err':'', t); },
+        done: function(u){ markLogged(u); },
+        fail: function(m){ lgBtn.disabled = false; lgBtn.textContent = '登录并同步'; syncState('err', m || '登录失败'); }
+      });
+    };
+    tokEl.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); lgBtn.click(); } });
   }
 
   function saveProf(){
@@ -454,28 +485,28 @@
     // 主动触发一次同步（sync.js 的 hook 已监听 localStorage.setItem）
   }
 
-  /* ---------- 「备考中心」入口：未登录时提示同步 ---------- */
-  function hookExamDD(){
-    var sum = document.querySelector('header .exam-dd > summary') || document.querySelector('.exam-dd > summary');
-    if(!sum) return;
-    sum.addEventListener('click', function(){
+  /* ---------- 进入备考中心后：未登录时提示同步（4s 内不重复） ---------- */
+  function hookExamCenter(){
+    if(!/\/exam\.html?$/i.test(location.pathname)) return;
+    if(!prof.onboarded) return;                  // 首次引导里已经包含登录
+    if(logged()) return;
+    setTimeout(function(){
       if(logged()) return;
-      var now = Date.now();
-      if(now - (hookExamDD._t || 0) < 4000) return;   // 4s 内不重复弹
-      hookExamDD._t = now;
-      setTimeout(function(){
-        var c = document.getElementById('kb-sync-card');
-        if(c && c.classList.contains('on')) return;
-        askSync(0);
-      }, 420);
-    });
+      var c = document.getElementById('kb-sync-card');
+      if(c && c.classList.contains('on')) return; // 已经打开就别叠
+      var now = Date.now(), last = 0;
+      try{ last = +(sessionStorage.getItem('kb-sync-ask') || 0); }catch(e){}
+      if(now - last < 4000) return;
+      try{ sessionStorage.setItem('kb-sync-ask', String(now)); }catch(e){}
+      askSync(0);
+    }, 900);
   }
 
   function boot(){
     buildUI();
     applyZoom();
     startTimer();
-    hookExamDD();
+    hookExamCenter();
     if(/[?&]me=1(&|$)/.test(location.search) && btn) setTimeout(function(){ btn.click(); }, 300);
     // 首次进入：必须先设置个人信息（昵称默认 Student）
     if(!prof.onboarded) setTimeout(showOnboard, 420);

@@ -14,9 +14,9 @@
   var SITE_NAME = {'gs':'高数','xd':'线代','c':'C 语言'}[SITE] || SITE;
   /* 每站同步哪些 key：前缀式 + 精确名单 */
   var CONF = {
-    gs: { keys:['gs_wrong','gs-kb-favs','kb-prof'], prefix:'gs_', skip:['gs_dark'] },
+    gs: { keys:['gs_wrong','gs-kb-favs','kb-prof','kb-zoom'], prefix:'gs_', skip:['gs_dark'] },
     xd: { keys:['xd_wrong','xd-kb-favs','kb-prof'], prefix:'xd_', skip:['xd_dark'] },
-    c : { keys:['ex-th-wrong','c-kb-favs','kb-prof','kb-zoom'], prefix:'c_',  skip:['c_dark','ex-th-last'] }
+    c : { keys:['ex-th-wrong','c-kb-favs','kb-prof'], prefix:'c_',  skip:['c_dark','ex-th-last'] }
   }[SITE] || { keys:[], prefix:SITE+'_', skip:[] };
 
   var TK='kb-sync-token', GK='kb-sync-gist', UK='kb-sync-user';
@@ -183,27 +183,38 @@
     schedulePush._t=setTimeout(function(){ push(); }, 1500);
   }
 
-  /* ---------- 登录 ---------- */
-  function login(tok){
+  /* ---------- 登录 ----------
+     cb 可选：{ msg(t,err), done(user), fail(msg) }
+     传 cb 时不自动关闭弹窗（供首次引导等外部界面内嵌使用） */
+  function login(tok, cb){
+    function notify(kind, a, b){
+      if(!cb) return;
+      var f = (typeof cb==='function') ? (kind==='msg'?cb:null) : cb[kind];
+      if(typeof f==='function') f(a,b);
+    }
     tok=(tok||'').trim();
-    if(!tok) return showMsg('请粘贴 GitHub 令牌',true);
-    st.token=tok; showMsg('正在验证令牌…');
+    function say(t,err){ showMsg(t,err); notify('msg', t, !!err); }
+    if(!tok) return say('请粘贴 GitHub 令牌',true);
+    st.token=tok; say('正在验证令牌…');
     return api('/user').then(function(u){
       st.user=u.login; lsSet(TK,tok); lsSet(UK,u.login);
       return ensureGist();
     }).then(function(){
-      showMsg('登录成功，正在拉取云端数据…');
+      say('登录成功，正在拉取云端数据…');
       return pull();
     }).then(function(){
-      showMsg(st.gist?('已连接 Gist '+st.gist):'登录成功');
-      setTimeout(function(){ closeModal(); }, 700);
+      say(st.gist?('已连接 Gist '+st.gist):'登录成功');
+      setState();
+      notify('done', st.user);
+      if(!cb) setTimeout(function(){ closeModal(); }, 700);
       toast('同步已开启');
       /* 登录后把本地已有数据先推一次，避免云端为空看不到本地记录 */
       return push();
     }).catch(function(e){
-      showMsg(e.message,true);
+      say(e.message,true);
       st.token=''; st.user=''; lsDel(TK);
       setState();
+      notify('fail', e.message);
     });
   }
   function logout(){
@@ -386,5 +397,6 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
   else boot();
 
-  window.KBSync = { pull:pull, push:push, logout:logout, state:st, close:closeModal };
+  window.KBSync = { pull:pull, push:push, logout:logout, login:login, state:st, close:closeModal,
+    logged:function(){ return !!st.token && !!st.user; } };
 })();

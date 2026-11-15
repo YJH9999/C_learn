@@ -355,6 +355,7 @@ function askMode(bank){
     n: TH.paper ? TH.paper.qs.length : 0,
     total: 0,
     printBlank: function(){ doPrint('blank'); },
+    printAns: function(){ doPrint('sol'); },
     onOnline: function(){ renderTheoryPaper(); },
     onOffline: function(){ renderTheorySetup(bank || DATA.theory); },
     onCancel: function(){ renderTheorySetup(bank || DATA.theory); }
@@ -431,6 +432,7 @@ function renderTheoryPaper(){
     +' · 用时 <b id="th-time">0:00</b></span>'
     +'<button class="btn btn-sm" id="th-abort">保存并退出</button>'
     +'<button class="btn btn-sm" id="th-exp">导出试卷</button>'
+    +'<button class="btn btn-sm" id="th-exp-ans">含答案版</button>'
     +'<button class="btn btn-sm" id="th-exp-my">导出我的作答</button>'
     +'<button class="btn btn-sm" id="th-peek">看答案</button>'
     +'<button class="btn btn-primary" id="th-submit">交卷</button></div>'
@@ -458,6 +460,7 @@ function renderTheoryPaper(){
     renderTheorySetup(DATA.theory);
   });
   $('#th-exp').addEventListener('click',function(){ doPrint('blank'); });
+  $('#th-exp-ans') && $('#th-exp-ans').addEventListener('click',function(){ doPrint('sol'); });
   $('#th-exp-my').addEventListener('click',function(){ doPrint('answers'); });
   /* 不想作答：直接看全部答案与解析（不计分、不入错题本） */
   $('#th-peek').addEventListener('click',function(){ renderTheoryPeek(p); });
@@ -592,13 +595,24 @@ function buildSheet(mode){
   } else {
     var pp=TH.paper;
     if(!pp) return alert('还没有试卷');
-    h=sheetHead('C 语言 · 理论模拟卷','共 '+pp.qs.length+' 题',true);
+    var isAns=(mode==='sol');
+    h=sheetHead('C 语言 · 理论模拟卷'+(isAns?'（含答案）':''),'共 '+pp.qs.length+' 题',true);
     pp.qs.forEach(function(q,i){
       h+='<div class="ps-q">'+psQHead(q,i)+psStem(q)+psOpts(q);
       if(q.type==='read') h+='<div class="ps-space" style="min-height:150px"></div>';
       if(q.type==='fill') h+='<div class="ps-space" style="min-height:34px"></div>';
       h+='</div>';
     });
+    if(isAns){
+      h+='<h2 class="ps-sol-head">参考答案与解析</h2>';
+      pp.qs.forEach(function(q,i){
+        h+='<div class="ps-q"><p class="ps-no"><b>'+(i+1)+'.</b>［'+TYPE_NAME[q.type]+'］'
+          +'　答案：<b>'+esc(ansText(q))+'</b></p>'
+          +'<div class="ps-stem">'+inl(q.stem)+'</div>'
+          +(q.explanation?'<div class="sol-box"><b>解析</b>'+inl(q.explanation)+'</div>':'')
+          +'</div>';
+      });
+    }
   }
   host.innerHTML=h;
 }
