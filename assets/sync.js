@@ -16,7 +16,7 @@
   var CONF = {
     gs: { keys:['gs_wrong','gs-kb-favs','kb-prof'], prefix:'gs_', skip:['gs_dark'] },
     xd: { keys:['xd_wrong','xd-kb-favs','kb-prof'], prefix:'xd_', skip:['xd_dark'] },
-    c : { keys:['ex-th-wrong','c-kb-favs','kb-prof'], prefix:'c_',  skip:['c_dark','ex-th-last'] }
+    c : { keys:['ex-th-wrong','c-kb-favs','kb-prof','kb-zoom'], prefix:'c_',  skip:['c_dark','ex-th-last'] }
   }[SITE] || { keys:[], prefix:SITE+'_', skip:[] };
 
   var TK='kb-sync-token', GK='kb-sync-gist', UK='kb-sync-user';

@@ -164,7 +164,7 @@ body.dark *::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.42);back
 .brand span{font-size:11px;color:var(--fg-3);display:block;line-height:1.15;margin-top:-2px;white-space:nowrap}
 
 /* 搜索框（macOS 搜索字段样式） */
-.srch{flex:1;max-width:440px;position:relative;min-width:0}
+.srch{flex:1;max-width:440px;position:relative;min-width:0;margin-left:auto}
 .srch .box{
   display:flex;align-items:center;gap:6px;height:28px;padding:0 8px;
   background:var(--panel-2);border:.5px solid var(--line);
@@ -1077,3 +1077,49 @@ body.dark mark.kw{background:rgba(255,214,10,.36);color:#ffe08a}
 .ldmore:hover{color:var(--ac);border-color:var(--ac)}
 .ldmore.lup{margin:0 0 18px}
 .ldmore.ldn{margin:22px 0 40px}
+
+/* ==========================================================================
+   顶栏冲刺入口（与 XD / GS 对齐：按钮 + 下拉面板）
+   ========================================================================== */
+header .fbar{position:relative;flex:none;top:auto;background:none;border:0;
+  -webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+header #fb-open{font-size:12.5px;font-weight:500;gap:5px}
+header #fb-open .fb-t{font-size:12.5px;font-weight:500;letter-spacing:0;color:inherit}
+header #fb-open.on{background:var(--err-dim,rgba(255,59,48,.1));border-color:transparent;color:var(--err)}
+header .fb-badge{display:none;min-width:15px;height:15px;padding:0 4px;border-radius:8px;
+  background:var(--err);color:#fff;font:700 9.5px/15px var(--mono);text-align:center}
+header .fbar.has .fb-badge{display:inline-block}
+header .fb-pop{position:absolute;top:calc(100% + 8px);right:0;z-index:340;width:246px;
+  background:var(--panel-solid);border:.5px solid var(--line-2);border-radius:12px;
+  box-shadow:var(--sh-4);padding:12px}
+header .fb-pop[hidden]{display:none}
+header .fb-head{display:flex;flex-direction:column;gap:1px;margin-bottom:9px}
+header .fb-head b{font-size:13px;color:var(--hi);font-weight:600}
+header .fb-head span{font-size:10.5px;color:var(--fg-3)}
+header .fb-grid{display:grid;grid-template-columns:1fr;gap:5px}
+header .fb-grid .fk{display:flex;align-items:center;gap:8px;width:100%;text-align:left;
+  border:.5px solid var(--line);border-radius:8px;background:var(--panel-2);padding:7px 9px;
+  font:600 12px var(--sans);color:var(--fg);cursor:pointer;transition:.14s}
+header .fb-grid .fk:hover{border-color:var(--line-2);color:var(--hi)}
+header .fb-grid .fk i{width:7px;height:7px;border-radius:50%;background:var(--line-2);flex:none}
+header .fb-grid .fk span{display:inline;height:auto;padding:0;background:none;border:0;
+  font:inherit;color:inherit;white-space:normal}
+header .fb-grid .fk.on{border-color:currentColor}
+header .fk-err.on{color:var(--err)}   header .fk-err i{background:var(--err)}
+header .fk-hot.on{color:var(--hot)}   header .fk-hot i{background:var(--hot)}
+header .fk-code.on{color:var(--ac)}   header .fk-code i{background:var(--ac)}
+header .fb-foot{display:flex;align-items:center;justify-content:space-between;
+  margin-top:9px;padding-top:8px;border-top:1px dashed var(--line-2)}
+header .fk-clear{display:inline-flex;align-items:center;gap:4px;border:.5px solid var(--line);
+  border-radius:7px;background:var(--panel-solid);color:var(--fg-2);
+  font:600 11px var(--sans);padding:5px 8px;cursor:pointer;transition:.14s}
+header .fk-clear:hover{color:var(--err);border-color:var(--err)}
+header .fb-tip{font-size:10px;color:var(--fg-3)}
+
+/* 备考中心下拉：两行卡片（与 XD/GS 对齐） */
+.exam-dd .dd{width:262px}
+.exam-dd .dd a{flex-direction:row;align-items:flex-start;gap:9px;padding:8px 10px}
+.exam-dd .dd a>i{flex:none;line-height:1.75}
+.exam-dd .dd a>div{min-width:0}
+.exam-dd .dd a b{display:block;font-size:13px;font-weight:600;color:var(--fg);line-height:1.4}
+.exam-dd .dd a span{display:block;font-size:10.8px;color:var(--fg-3);line-height:1.5;white-space:normal}

@@ -9,8 +9,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" href="assets/favicon-180.png">
-<link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/fonts.css?v=20261115f">
+<link rel="stylesheet" href="assets/style.css?v=20261115f">
 </head>
 <body>
 
@@ -37,6 +37,27 @@
   </div>
 
   <div class="tools">
+    <div class="fbar" id="fbar">
+      <button class="tb" id="fb-open" title="冲刺模式" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L9.5 22 19 10h-6.5z"/></svg>
+        <span class="fb-t">冲刺</span>
+        <span class="fb-badge" id="fb-badge"></span>
+      </button>
+      <div class="fb-pop" id="fb-pop" hidden>
+        <div class="fb-head"><b>冲刺模式</b><span>点选类型，只看对应内容块</span></div>
+        <div class="fb-grid">
+          <button class="fk fk-err" data-k="err" type="button"><i></i><span>只看易错点</span></button>
+          <button class="fk fk-hot" data-k="hot" type="button"><i></i><span>只看高频考点</span></button>
+          <button class="fk fk-code" data-k="code" type="button"><i></i><span>只看代码示例</span></button>
+        </div>
+        <div class="fb-foot">
+          <button class="fk-clear" id="fb-exit" type="button">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            退出冲刺模式</button>
+          <span class="fb-tip">Esc 也可退出</span>
+        </div>
+      </div>
+    </div>
     <details class="exam-dd">
       <summary class="tb" title="备考中心">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -45,10 +66,10 @@
         <span>备考中心</span>
       </summary>
       <div class="dd">
-        <a href="exam.html#review"><i>01</i>理论复习<b>14 章考点速览</b></a>
-        <a href="exam.html#theory"><i>02</i>理论模拟<b>随机组卷 · 在线判分</b></a>
-        <a href="exam.html#prog"><i>03</i>编程模拟<b>在线写码运行</b></a>
-        <a href="exam.html#bank"><i>04</i>题库<b>360 理论 + 72 编程 · 浏览与搜索</b></a>
+        <a href="exam.html#review"><i>01</i><div><b>理论复习</b><span>14 章要点 · 课堂注意点与高频考点</span></div></a>
+        <a href="exam.html#theory"><i>02</i><div><b>理论模拟</b><span>随机组卷 · 在线判分 · 逐题讲解</span></div></a>
+        <a href="exam.html#prog"><i>03</i><div><b>编程模拟</b><span>在线写码运行 · GCC 实测答案</span></div></a>
+        <a href="exam.html#bank"><i>04</i><div><b>题库</b><span>理论 + 编程全库 · 筛选与搜索</span></div></a>
       </div>
     </details>
         <div class="pdfbar" id="pdfbar">
@@ -92,21 +113,6 @@
   </div>
 </header>
 
-<details class="fbar" id="fbar">
-  <summary class="fb-sum">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L9.5 22 19 10h-6.5z"/></svg>
-    <span class="fb-t">冲刺模式</span>
-    <span class="fb-badge" id="fb-badge"></span>
-    <span class="fb-hint">考前筛选：易错点 / 高频考点 / 代码示例</span>
-    <svg class="fb-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
-  </summary>
-  <div class="fb-body">
-    <label class="fk fk-err"><input type="checkbox" id="f-err"><span>只看易错点</span></label>
-    <label class="fk fk-hot"><input type="checkbox" id="f-hot"><span>只看高频考点</span></label>
-    <label class="fk fk-code"><input type="checkbox" id="f-code"><span>只看代码示例</span></label>
-    <span class="fb-tip">勾选后隐藏普通正文，仅保留对应标记内容</span>
-  </div>
-</details>
 
 <div class="mask"></div>
 
@@ -171,9 +177,9 @@
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
     <span>顶部</span></button>
 </nav>
-<script src="assets/manifest.js"></script>
-<script src="assets/sync.js?v=20261115d" data-site="c"></script>
-<script src="assets/profile.js?v=20261115d" data-site="c"></script>
-<script src="assets/app.js"></script>
+<script src="assets/manifest.js?v=20261115f"></script>
+<script src="assets/sync.js?v=20261115f" data-site="c"></script>
+<script src="assets/profile.js?v=20261115f" data-site="c"></script>
+<script src="assets/app.js?v=20261115f"></script>
 </body>
 </html>

@@ -15,8 +15,8 @@
   var STAT_KEY = SITE + '_stat';          // gs_stat / xd_stat / c_stat（同步会自动带上）
   var PROF_KEY = 'kb-prof';               // 三站共用：头像/昵称
   var WRONG_KEY = {'gs':'gs_wrong','xd':'xd_wrong','c':'ex-th-wrong'}[SITE];
-  var ALL_STAT = ['gs_stat','xd_stat','c_stat'];
   var ALL_WRONG = {'gs':'gs_wrong','xd':'xd_wrong','c':'ex-th-wrong'};
+  var ZOOM_KEY = 'kb-zoom';               // 全站字号缩放（三站共用）
   var FLUSH = 60000;                      // 每 60s 落盘一次，避免频繁触发同步
 
   function ls(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
@@ -88,15 +88,6 @@
     var a = jget(ALL_WRONG[site], []);
     return Array.isArray(a) ? a.length : 0;
   }
-  function sumAll(){
-    var o={t:0,n:0,ok:0,w:0};
-    ALL_STAT.forEach(function(k){
-      var s=jget(k,null); if(!s) return;
-      o.t += s.t||0; o.n += s.n||0; o.ok += s.ok||0;
-    });
-    Object.keys(ALL_WRONG).forEach(function(site){ o.w += wrongCount(site); });
-    return o;
-  }
 
   /* ---------- UI ---------- */
   function avatarHTML(size){
@@ -149,7 +140,36 @@
       '  cursor:pointer;font-size:14px;line-height:1;padding:0}\n'+
       '.kbp-em:hover{border-color:var(--line,var(--line-2,#e2e2e6))}\n'+
       '.kbp-em.on{border-color:var(--acc,var(--ac,#3b82f6));background:var(--panel2,var(--panel-2,#f6f6f8))}\n'+
-      '.kbp-hide{display:none}\n';
+      '.kbp-hide{display:none}\n'+
+      /* ---- 字号调节 ---- */
+      '.kbp-z{display:flex;align-items:center;gap:1px;background:var(--panel2,var(--panel-2,#f2f2f7));border-radius:10px;padding:2px;flex:none}\n'+
+      '.kbp-z button{border:0;background:transparent;color:var(--ink2,var(--fg-2,#6e6e73));cursor:pointer;\n'+
+      '  font:600 11px/1 inherit;padding:5px 6px;border-radius:8px;font-family:inherit;transition:.15s}\n'+
+      '.kbp-z button:hover{color:var(--acc,var(--ac,#3478f6));background:var(--panel-solid,var(--panel,#fff))}\n'+
+      '.kbp-z button:disabled{opacity:.35;cursor:default}\n'+
+      '.kbp-z span{font:600 10.5px/1 inherit;color:var(--ink3,var(--fg-3,#8e8e93));min-width:29px;text-align:center}\n'+
+      /* ---- 首次引导 ---- */
+      '#kbp-ob{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:150;display:flex;align-items:center;\n'+
+      '  justify-content:center;padding:20px;backdrop-filter:blur(2px)}\n'+
+      '#kbp-ob-card{width:396px;max-width:94vw;max-height:92vh;overflow-y:auto;background:var(--panel-solid,var(--panel,#fff));\n'+
+      '  color:var(--hi,var(--ink,#1c1c1e));border-radius:18px;padding:22px 22px 18px;\n'+
+      '  box-shadow:0 26px 80px rgba(0,0,0,.34);font:13px/1.6 "PingFang SC","Microsoft YaHei",-apple-system,sans-serif}\n'+
+      '#kbp-ob-card h3{margin:0 0 5px;font:700 17px/1.35 inherit}\n'+
+      '#kbp-ob-card .ob-sub{font-size:11.5px;color:var(--ink2,var(--fg-2,#8e8e93));margin:0 0 15px;line-height:1.65}\n'+
+      '.ob-row{display:flex;align-items:center;gap:13px;margin-bottom:14px}\n'+
+      '.ob-av{width:56px;height:56px;flex:none;border-radius:50%;overflow:hidden;cursor:pointer;\n'+
+      '  box-shadow:0 4px 14px rgba(0,0,0,.14)}\n'+
+      '.ob-field{flex:1;min-width:0}\n'+
+      '.ob-field label{display:block;font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));margin-bottom:3px}\n'+
+      '.ob-field input{width:100%;box-sizing:border-box;border:1px solid var(--line,var(--line-2,#e2e2e6));border-radius:9px;\n'+
+      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;font:600 14px inherit;padding:7px 10px}\n'+
+      '.ob-field input:focus{outline:none;border-color:var(--acc,var(--ac,#3b82f6));background:var(--panel-solid,var(--panel,#fff))}\n'+
+      '.ob-lab{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));margin:0 0 6px}\n'+
+      '.ob-go{width:100%;border:0;border-radius:11px;background:var(--acc,var(--ac,#3b82f6));color:#fff;\n'+
+      '  padding:11px 0;font:600 13.5px inherit;cursor:pointer;margin-top:6px}\n'+
+      '.ob-go:hover{filter:brightness(1.06)}\n'+
+      '.ob-note{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));margin:9px 0 0;line-height:1.65}\n'+
+      '@media print{body{zoom:1!important}}\n';
     document.head.appendChild(st);
   }
 
@@ -158,16 +178,14 @@
     var el = panel.querySelector('#kbp-stats');
     if(!el) return;
     var td = stat.d[today()] || {t:0,n:0,ok:0};
-    var all = sumAll();
     el.innerHTML =
       '<div class="kbp-grid">'+
-        '<div class="kbp-cell"><div class="kbp-k">使用时长 · 本站</div><div class="kbp-v">'+fmtTime(stat.t)+'</div></div>'+
-        '<div class="kbp-cell"><div class="kbp-k">做题 · 本站</div><div class="kbp-v">'+stat.n+'<small>题</small></div></div>'+
-        '<div class="kbp-cell"><div class="kbp-k">错题 · 本站</div><div class="kbp-v">'+wrongCount(SITE)+'<small>道</small></div></div>'+
-        '<div class="kbp-cell"><div class="kbp-k">正确率 · 本站</div><div class="kbp-v">'+pct(stat.ok,stat.n)+'</div></div>'+
+        '<div class="kbp-cell"><div class="kbp-k">使用时长</div><div class="kbp-v">'+fmtTime(stat.t)+'</div></div>'+
+        '<div class="kbp-cell"><div class="kbp-k">做题</div><div class="kbp-v">'+stat.n+'<small>题</small></div></div>'+
+        '<div class="kbp-cell"><div class="kbp-k">错题</div><div class="kbp-v">'+wrongCount(SITE)+'<small>道</small></div></div>'+
+        '<div class="kbp-cell"><div class="kbp-k">正确率</div><div class="kbp-v">'+pct(stat.ok,stat.n)+'</div></div>'+
       '</div>'+
-      '<div class="kbp-today">今日：'+fmtTime(td.t)+' · '+(td.n||0)+' 题 · '+pct(td.ok||0,td.n||0)+
-        '<br>三站合计：'+fmtTime(all.t)+' · '+all.n+' 题'+(all.w?' · 错题 '+all.w+' 道':'')+' · '+pct(all.ok,all.n)+'</div>';
+      '<div class="kbp-today">今日：'+fmtTime(td.t)+' · '+(td.n||0)+' 题 · '+pct(td.ok||0,td.n||0)+'</div>';
   }
 
   function renderHead(){
@@ -178,7 +196,7 @@
     if(nick && nick.value !== (prof.name||'')) nick.value = prof.name||'';
     nick && (nick.placeholder = '点这里改昵称');
     var sub = panel.querySelector('#kbp-sub');
-    if(sub) sub.textContent = u ? ('@'+u+' · 已登录同步') : ('未登录 · 数据只在这台设备（'+SITE_NAME+'站）');
+    if(sub) sub.textContent = u ? ('@'+u+' · 已登录同步') : '未登录 · 数据只在这台设备';
     if(btn) btn.innerHTML = avatarHTML(26).replace('width:26px;height:26px','width:26px;height:26px');
   }
 
@@ -186,6 +204,17 @@
     buildStyle();
     var tools = document.querySelector('header .tools') || document.querySelector('.tools');
     if(!tools) return;
+
+    // 字号调节（放在主题切换之后、头像之前）
+    var seg = tools.querySelector('.seg');
+    var zbox = document.createElement('div');
+    zbox.className = 'kbp-z'; zbox.id = 'kbp-zoom';
+    zbox.innerHTML = '<button type="button" id="kbp-z-" title="缩小字号">A−</button>'+
+      '<span id="kbp-zv">100%</span>'+
+      '<button type="button" id="kbp-z+" title="放大字号">A+</button>';
+    if(seg && seg.parentNode===tools && seg.nextSibling) tools.insertBefore(zbox, seg.nextSibling);
+    else tools.appendChild(zbox);
+    bindZoom();
 
     var wrap=document.createElement('div');
     wrap.className='kbp';
@@ -244,20 +273,7 @@
     panel.querySelector('#kbp-avwrap').addEventListener('click', function(){ file.click(); });
     file.addEventListener('change', function(){
       var f=file.files && file.files[0]; if(!f) return;
-      var fr=new FileReader();
-      fr.onload=function(){
-        var img=new Image();
-        img.onload=function(){
-          var S2=160, cv=document.createElement('canvas'); cv.width=S2; cv.height=S2;
-          var ctx=cv.getContext('2d');
-          var side=Math.min(img.width, img.height);
-          ctx.drawImage(img, (img.width-side)/2, (img.height-side)/2, side, side, 0, 0, S2, S2);
-          try{ prof.av = cv.toDataURL('image/jpeg', 0.82); }catch(e){ return; }
-          saveProf(); renderHead();
-        };
-        img.src=fr.result;
-      };
-      fr.readAsDataURL(f);
+      readAvatar(f, function(url){ prof.av = url; saveProf(); renderHead(); });
       file.value='';
     });
 
@@ -294,15 +310,166 @@
 
   function closePanel(){ panel && panel.classList.remove('on'); }
 
+  /* ---------- 字号调节（全站统一缩放，三站共用 kb-zoom） ---------- */
+  var zoom = parseFloat(ls(ZOOM_KEY) || '') || 1;
+  function applyZoom(){
+    zoom = Math.min(1.3, Math.max(0.85, Math.round(zoom * 20) / 20));
+    try{ document.body.style.zoom = zoom; }catch(e){}
+    lsSet(ZOOM_KEY, String(zoom));
+    var v = document.getElementById('kbp-zv');
+    if(v) v.textContent = Math.round(zoom*100)+'%';
+    var dn = document.getElementById('kbp-z-'), up = document.getElementById('kbp-z+');
+    if(dn) dn.disabled = zoom <= 0.85;
+    if(up) up.disabled = zoom >= 1.3;
+  }
+  function bindZoom(){
+    var dn = document.getElementById('kbp-z-'), up = document.getElementById('kbp-z+');
+    if(dn) dn.onclick = function(){ zoom -= 0.05; applyZoom(); };
+    if(up) up.onclick = function(){ zoom += 0.05; applyZoom(); };
+  }
+
+  /* ---------- 登录状态 / 同步提醒 ---------- */
+  function logged(){
+    return !!(window.KBSync && KBSync.state && KBSync.state.user);
+  }
+  function askSync(delay){
+    if(logged()) return;
+    var b = document.getElementById('kb-sync-btn');
+    if(!b) return;
+    setTimeout(function(){ b.click(); }, delay||280);
+  }
+
+  /* ---------- 头像图片压缩（160px 居中裁剪 JPEG） ---------- */
+  function readAvatar(file, cb){
+    var fr = new FileReader();
+    fr.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        var S2 = 160, cv = document.createElement('canvas');
+        cv.width = S2; cv.height = S2;
+        var ctx = cv.getContext('2d');
+        var side = Math.min(img.width, img.height);
+        ctx.drawImage(img, (img.width-side)/2, (img.height-side)/2, side, side, 0, 0, S2, S2);
+        try{ cb(cv.toDataURL('image/jpeg', 0.82)); }catch(e){}
+      };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  }
+
+  /* ---------- 首次进入：必须设置个人信息 ---------- */
+  var EMOJIS = ['🐳','📘','🧮','🔭','🌱','⚡️','🎯','🧠','🌙'];
+  var COLORS = ['#3b82f6','#6366f1','#8b5cf6','#ec4899','#ef4444','#f59e0b','#10b981','#14b8a6','#64748b'];
+
+  function showOnboard(){
+    if(document.getElementById('kbp-ob')) return;
+    var tmp = {name: prof.name || 'Student', av: prof.av || '', color: prof.color || '#3b82f6', emoji: prof.emoji || '🐳'};
+    var ob = document.createElement('div');
+    ob.id = 'kbp-ob';
+    ob.innerHTML =
+      '<div id="kbp-ob-card">'+
+        '<h3>先设置一下个人信息</h3>'+
+        '<p class="ob-sub">右上角的头像和昵称由这里决定。数据默认只存在这台设备，登录后可跨设备同步。</p>'+
+        '<div class="ob-row">'+
+          '<div class="ob-av" id="ob-av" title="点击上传自己的图片"></div>'+
+          '<div class="ob-field"><label>昵称</label><input id="ob-name" maxlength="16" spellcheck="false"></div>'+
+        '</div>'+
+        '<p class="ob-lab">选一个头像，或点左侧圆圈上传图片</p>'+
+        '<div class="kbp-emojis" id="ob-emojis"></div>'+
+        '<div class="kbp-swatches" id="ob-colors"></div>'+
+        '<button class="ob-go" id="ob-go" type="button">保存并继续</button>'+
+        '<p class="ob-note">昵称留空将使用默认的 Student；之后随时可以在右上角改。</p>'+
+        '<input type="file" id="ob-file" accept="image/*" class="kbp-hide">'+
+      '</div>';
+    document.body.appendChild(ob);
+
+    var avEl = ob.querySelector('#ob-av');
+    var nameEl = ob.querySelector('#ob-name');
+    nameEl.value = tmp.name;
+    nameEl.select();
+
+    function paintAv(){
+      if(tmp.av){
+        avEl.innerHTML = '<img src="'+tmp.av+'" alt="" style="width:56px;height:56px;object-fit:cover;display:block">';
+      }else{
+        avEl.innerHTML = '<span style="width:56px;height:56px;border-radius:50%;background:'+tmp.color+
+          ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1">'+
+          (tmp.emoji || '?')+'</span>';
+      }
+    }
+    paintAv();
+
+    var em = ob.querySelector('#ob-emojis');
+    em.innerHTML = EMOJIS.map(function(c){
+      return '<button class="kbp-em'+(tmp.emoji===c&&!tmp.av?' on':'')+'" data-e="'+c+'" type="button">'+c+'</button>';
+    }).join('');
+    em.addEventListener('click', function(e){
+      var t = e.target.closest('.kbp-em'); if(!t) return;
+      tmp.emoji = t.dataset.e; tmp.av = '';
+      em.querySelectorAll('.kbp-em').forEach(function(x){ x.classList.toggle('on', x===t); });
+      paintAv();
+    });
+
+    var cs = ob.querySelector('#ob-colors');
+    cs.innerHTML = COLORS.map(function(c){
+      return '<span class="kbp-sw'+(tmp.color===c?' on':'')+'" data-c="'+c+'" style="background:'+c+'"></span>';
+    }).join('');
+    cs.addEventListener('click', function(e){
+      var t = e.target.closest('.kbp-sw'); if(!t) return;
+      tmp.color = t.dataset.c; tmp.av = '';
+      cs.querySelectorAll('.kbp-sw').forEach(function(x){ x.classList.toggle('on', x===t); });
+      paintAv();
+    });
+
+    var file = ob.querySelector('#ob-file');
+    avEl.addEventListener('click', function(){ file.click(); });
+    file.addEventListener('change', function(){
+      var f = file.files && file.files[0]; if(!f) return;
+      readAvatar(f, function(url){ tmp.av = url; paintAv(); });
+      file.value = '';
+    });
+
+    ob.querySelector('#ob-go').onclick = function(){
+      prof.name = (nameEl.value || '').trim().slice(0,16) || 'Student';
+      prof.av = tmp.av; prof.color = tmp.color; prof.emoji = tmp.emoji;
+      prof.onboarded = 1;
+      saveProf();
+      ob.remove();
+      renderHead(); renderStats();
+      setTimeout(function(){ askSync(320); }, 260);
+    };
+  }
+
   function saveProf(){
     lsSet(PROF_KEY, JSON.stringify(prof));
     // 主动触发一次同步（sync.js 的 hook 已监听 localStorage.setItem）
   }
 
+  /* ---------- 「备考中心」入口：未登录时提示同步 ---------- */
+  function hookExamDD(){
+    var sum = document.querySelector('header .exam-dd > summary') || document.querySelector('.exam-dd > summary');
+    if(!sum) return;
+    sum.addEventListener('click', function(){
+      if(logged()) return;
+      var now = Date.now();
+      if(now - (hookExamDD._t || 0) < 4000) return;   // 4s 内不重复弹
+      hookExamDD._t = now;
+      setTimeout(function(){
+        var c = document.getElementById('kb-sync-card');
+        if(c && c.classList.contains('on')) return;
+        askSync(0);
+      }, 420);
+    });
+  }
+
   function boot(){
     buildUI();
+    applyZoom();
     startTimer();
+    hookExamDD();
     if(/[?&]me=1(&|$)/.test(location.search) && btn) setTimeout(function(){ btn.click(); }, 300);
+    // 首次进入：必须先设置个人信息（昵称默认 Student）
+    if(!prof.onboarded) setTimeout(showOnboard, 420);
     // 同步面板登录状态变化时刷新副标题
     setInterval(function(){ if(panel && panel.classList.contains('on')) renderHead(); }, 3000);
   }

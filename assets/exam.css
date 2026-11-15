@@ -273,3 +273,38 @@ select.ex-num{width:auto}
 .ex-pg:hover:not([disabled]){border-color:var(--ac);color:var(--ac)}
 .ex-pg[disabled]{opacity:.4;cursor:default}
 .ex-pg-info{font-size:12px;color:var(--fg-2);font-weight:600}
+
+/* ==========================================================================
+   打印 / 导出（答卷、作答记录、错题本共用）
+   ========================================================================== */
+#print-wrap{display:none}
+@media print{
+  @page{margin:20mm 18mm}
+  html,body{background:#fff!important;color:#000!important}
+  .top,.ex-main,.ex-topbtn,#topbtn{display:none!important}
+  #print-wrap{display:block!important;color:#000;font-family:"PingFang SC","Microsoft YaHei",serif}
+  .ps-head{text-align:center;margin-bottom:6px}
+  .ps-head h1{font-size:19pt;margin:0 0 6px;font-weight:700}
+  .ps-sub{font-size:10.5pt;color:#444;margin:0 0 8px}
+  .ps-rule{font-size:10.5pt;margin:6px 0 18px}
+  .ps-q{margin:0 0 16px;page-break-inside:auto}
+  .ps-no{font-size:10.5pt;margin:0 0 5px}
+  .ps-src{font-size:9pt;color:#555;margin-left:8px}
+  .ps-stem{font-size:11pt;line-height:1.8}
+  .ps-stem code{font-family:ui-monospace,Consolas,monospace;background:#f2f2f2;
+    padding:0 3px;border-radius:3px;font-size:.92em}
+  .ps-code{font:9.5pt/1.55 ui-monospace,Consolas,monospace;background:#f6f6f6;
+    border:1px solid #ddd;border-radius:5px;padding:7px 9px;margin:6px 0;
+    white-space:pre-wrap;page-break-inside:avoid}
+  .ps-opts{margin:4px 0 0 1.6em}
+  .ps-opts p{font-size:11pt;line-height:1.75;margin:3px 0}
+  .ps-space{border:none}
+  .sol-box{border:1px solid #ccc;border-left:3px solid #2e7d32;border-radius:6px;
+    background:#f8f8f8;padding:8px 12px;font-size:10.5pt;margin-top:7px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sol-box code{font-family:ui-monospace,Consolas,monospace;font-size:.92em}
+  .cmp{font-size:10.5pt;margin:6px 0 0}
+  .cmp .ok{color:#1a7f37;font-weight:700}
+  .cmp .no{color:#c62828;font-weight:700}
+  .ps-sol-head{text-align:center;font-size:15pt;margin:0 0 14px;page-break-before:always}
+}

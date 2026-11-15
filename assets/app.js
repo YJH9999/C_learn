@@ -381,11 +381,11 @@
     if(ol){ e.preventDefault(); go(ol.dataset.id); }
   });
 
-  /* ---------- 考点筛选（冲刺模式） ---------- */
-  var fErr=$('#f-err'), fHot=$('#f-hot'), fCode=$('#f-code');
+  /* ---------- 考点筛选（冲刺模式，顶栏下拉） ---------- */
   var FKEY='c-kb-focus';
+  var FSEL={err:false,hot:false,code:false};
   function applyFocus(){
-    var wantErr=fErr.checked, wantHot=fHot.checked, wantCode=fCode.checked;
+    var wantErr=FSEL.err, wantHot=FSEL.hot, wantCode=FSEL.code;
     var any=wantErr||wantHot||wantCode;
     document.body.classList.toggle('focus-on',any);
     var fbar=document.getElementById('fbar');
@@ -394,8 +394,9 @@
       fbar.classList.toggle('has',n>0);
       var badge=document.getElementById('fb-badge');
       if(badge) badge.textContent=n||'';
-      var sum=fbar.querySelector('.fb-sum');
+      var sum=document.getElementById('fb-open');
       if(sum) sum.classList.toggle('on',n>0);
+      $$('#fb-pop .fk').forEach(function(b){ b.classList.toggle('on',!!FSEL[b.dataset.k]); });
     }
     $$('#content>.nf').forEach(function(el){el.classList.remove('nf')});
     if(!any) return;
@@ -409,17 +410,42 @@
       if(!ok) el.classList.add('nf');
     }
   }
-  [fErr,fHot,fCode].forEach(function(c){
-    c.addEventListener('change',function(){
-      try{localStorage.setItem(FKEY,JSON.stringify(
-        [fErr.checked,fHot.checked,fCode.checked]))}catch(e){}
+  var fpop=document.getElementById('fb-pop');
+  $$('#fb-pop .fk').forEach(function(b){
+    b.addEventListener('click',function(){
+      FSEL[b.dataset.k]=!FSEL[b.dataset.k];
+      try{localStorage.setItem(FKEY,JSON.stringify(FSEL))}catch(e){}
       applyFocus();
     });
   });
   (function(){
+    var openBtn=document.getElementById('fb-open');
+    if(openBtn) openBtn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(fpop) fpop.hidden=!fpop.hidden;
+    });
+    var exitBtn=document.getElementById('fb-exit');
+    if(exitBtn) exitBtn.addEventListener('click',function(){
+      FSEL={err:false,hot:false,code:false};
+      try{localStorage.setItem(FKEY,JSON.stringify(FSEL))}catch(e){}
+      applyFocus();
+    });
+    document.addEventListener('click',function(e){
+      if(!fpop || fpop.hidden) return;
+      var fb=document.getElementById('fbar');
+      if(fb && fb.contains(e.target)) return;
+      fpop.hidden=true;
+    });
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape' && fpop) fpop.hidden=true;
+    });
     var s=null;
-    try{s=JSON.parse(localStorage.getItem(FKEY)||'null')}catch(e){}
-    if(s){ fErr.checked=!!s[0]; fHot.checked=!!s[1]; fCode.checked=!!s[2]; }
+    try{ s=JSON.parse(localStorage.getItem(FKEY)||'null'); }catch(e){}
+    if(s){
+      if(Array.isArray(s)) FSEL={err:!!s[0],hot:!!s[1],code:!!s[2]};
+      else FSEL={err:!!s.err,hot:!!s.hot,code:!!s.code};
+    }
+    applyFocus();
   })();
 
   /* ---------- 阅读进度：localStorage 保存当前锚点 ---------- */
