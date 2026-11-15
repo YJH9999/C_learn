@@ -14,9 +14,9 @@
   var SITE_NAME = {'gs':'高数','xd':'线代','c':'C 语言'}[SITE] || SITE;
   /* 每站同步哪些 key：前缀式 + 精确名单 */
   var CONF = {
-    gs: { keys:['gs_wrong','gs-kb-favs'], prefix:'gs_', skip:['gs_dark'] },
-    xd: { keys:['xd_wrong','xd-kb-favs'], prefix:'xd_', skip:['xd_dark'] },
-    c : { keys:['ex-th-wrong','c-kb-favs'], prefix:'c_',  skip:['c_dark','ex-th-last'] }
+    gs: { keys:['gs_wrong','gs-kb-favs','kb-prof'], prefix:'gs_', skip:['gs_dark'] },
+    xd: { keys:['xd_wrong','xd-kb-favs','kb-prof'], prefix:'xd_', skip:['xd_dark'] },
+    c : { keys:['ex-th-wrong','c-kb-favs','kb-prof'], prefix:'c_',  skip:['c_dark','ex-th-last'] }
   }[SITE] || { keys:[], prefix:SITE+'_', skip:[] };
 
   var TK='kb-sync-token', GK='kb-sync-gist', UK='kb-sync-user';
@@ -273,6 +273,13 @@
       '.kb-guide li{margin-bottom:3px}\n'+
       '.kb-guide code{font:11px ui-monospace,Consolas,monospace;background:var(--panel2,var(--panel-2,#f6f6f8));padding:1px 4px;border-radius:4px}\n'+
       '.kb-guide p{font-size:11px;color:var(--ink3,var(--fg-3,#aeaeb2));margin:6px 0 0;line-height:1.65}\n'+
+      '.kb-guide .kb-h{margin:10px 0 3px;font-size:11.5px;font-weight:600;color:var(--hi,var(--ink,#1c1c1e));line-height:1.5}\n'+
+      '.kb-guide .kb-note{font-size:10.5px;color:var(--ink3,var(--fg-3,#aeaeb2));margin:5px 0 0;line-height:1.7}\n'+
+      '.kb-guide ul{margin:4px 0 2px;padding-left:16px;font-size:11.5px;color:var(--ink2,var(--fg-2,#6e6e73));line-height:1.75}\n'+
+      '.kb-guide ul ul{margin:3px 0 4px;padding-left:15px;font-size:11px;color:var(--ink3,var(--fg-3,#8e8e93));line-height:1.7}\n'+
+      '.kb-guide li{margin-bottom:3px}\n'+
+      '#kb-sync-card{max-height:86vh;overflow-y:auto}\n'+
+      '#kb-sync-card{width:452px}\n'+
       '.kb-guide a{color:var(--acc,var(--ac,#3478f6))}\n';
     document.head.appendChild(style);
 
@@ -300,15 +307,26 @@
       +'<button class="kb-btn" id="kb-sync-out" type="button">退出登录</button>'
       +'</div>'
       +'<div class="kb-msg" id="kb-sync-msg"></div>'
-      +'<details class="kb-guide" id="kb-sync-guide"><summary>第一次用？3 步拿到令牌（约 40 秒）</summary>'
-      +'<ol>'
-      +'<li>点 <a href="https://github.com/settings/tokens/new?scopes=gist&description=kb-sync" target="_blank" rel="noopener">创建令牌</a>'
-      +'（会帮你自动勾好 <code>gist</code>；没登录 GitHub 就先登录或注册）</li>'
-      +'<li>拉到页面最下面点绿色 <b>Generate token</b>，复制 <code>ghp_…</code> 开头那一串</li>'
-      +'<li>回到这里粘贴，点 <b>保存并登录</b>；看到绿点就是同步已开启</li>'
-      +'</ol>'
-      +'<p>每个账号各建自己的令牌，互不影响。令牌只存这台设备的浏览器，数据写进你账号下的私有 Gist；换设备粘贴同一个令牌即可恢复。'
-      +'想用细粒度令牌：Account permissions → Gists → Read and write。</p>'
+      +'<details class="kb-guide" id="kb-sync-guide">'
+      +'<summary>第一次用？令牌创建完整步骤（约 1 分钟）</summary>'
+      +'<p class="kb-h">第 1 步：创建令牌（二选一，推荐前者）</p>'
+      +'<ul>'
+      +'<li><b>细粒度令牌</b>：打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>'
+      +'<ul>'
+      +'<li>Token name 随便填（如 <code>kb-sync</code>），Expiration 选 <b>1 年</b>（Custom → 一年后的日期）</li>'
+      +'<li>往下拉到 Account permissions → 找到 <b>Gists</b> → 设为 <b>Read and write</b>（只开这一项，其余保持 No access）</li>'
+      +'<li>点 <b>Add permissions</b>，再点页面底部 <b>Generate token</b> → 复制 <code>github_pat_…</code></li>'
+      +'</ul>'
+      +'</li>'
+      +'<li><b>或者经典令牌</b>：打开 <a href="https://github.com/settings/tokens/new?scopes=gist" target="_blank" rel="noopener">github.com/settings/tokens/new?scopes=gist</a>'
+      +' → 只勾 <code>gist</code> → Generate token → 复制 <code>ghp_…</code></li>'
+      +'</ul>'
+      +'<p class="kb-h">第 2 步：粘贴到上面的输入框 → 点「保存并登录」</p>'
+      +'<p class="kb-h">第 3 步：验证一下</p>'
+      +'<p class="kb-note">收藏一个知识点或做一道题，再打开 <a href="https://github.com/settings/gists" target="_blank" rel="noopener">github.com/settings/gists</a>，'
+      +'能看到 <code>kb-sync-store</code> 这个私密 Gist 就说明同步已生效。</p>'
+      +'<p class="kb-note">还没有 GitHub 账号？先到 <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> 免费注册一个（邮箱即可）。<br>'
+      +'每个账号各建自己的令牌，互不影响；令牌只存在这台设备的浏览器里，数据写进你自己账号下的私有 Gist。换设备粘贴同一个令牌即可恢复。</p>'
       +'</details>'
       +'<div class="kb-tip">把页面链接后加 <code>?sync=1</code> 发给别人，打开就直达这个登录面板并展开引导。</div>';
     document.body.appendChild(m);

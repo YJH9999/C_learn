@@ -404,6 +404,11 @@ function gradeTheory(){
   var pct=Math.round(score/total*100);
   var secs=Math.floor((Date.now()-p.t0)/1000);
   var result={score:score,total:total,pct:pct,secs:secs,results:results};
+  if(window.KBStats){
+    var _ans=results.filter(function(r){return r.ua!==null}).length;
+    var _ok=results.filter(function(r){return r.ok}).length;
+    KBStats.batch(_ans,_ok);
+  }
   TH.lastPaper=p; TH.lastResult=result;
   try{localStorage.setItem('ex-th-last',JSON.stringify({
     score:score,total:total,pct:pct,
