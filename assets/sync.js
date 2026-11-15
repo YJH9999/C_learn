@@ -45,7 +45,7 @@
   }
 
   /* ---------- 状态提示 ---------- */
-  var btn, dot, lab, modal, msgEl, userEl, tokEl, timeEl;
+  var btn, dot, lab, modal, msgEl, userEl, tokEl, timeEl, outEl;
   function setState(){
     if(!btn) return;
     var on = !!st.token && !!st.user;
@@ -54,6 +54,11 @@
     if(lab) lab.textContent = on ? '已同步' : '同步';
     if(userEl) userEl.textContent = on ? ('@'+st.user) : '未登录';
     if(timeEl) timeEl.textContent = st.lastSync ? ('上次同步：'+new Date(st.lastSync).toLocaleString()) : '尚未同步';
+    /* 第三颗按钮随登录状态换身份：已登录=退出登录，未登录=关闭面板 */
+    if(outEl){
+      outEl.textContent = on ? '退出登录' : '关闭';
+      outEl.title = on ? '清除这台设备的登录令牌（云端数据保留）' : '关闭这个面板';
+    }
   }
   function toast(t){
     var el=document.getElementById('kb-sync-toast');
@@ -218,9 +223,13 @@
     });
   }
   function logout(){
+    /* 未登录时这颗按钮的语义是「关闭这个界面」 */
+    if(!st.token && !st.user){ showMsg(''); closeModal(); return; }
     lsDel(TK); lsDel(GK); lsDel(UK); lsDel(MK); lsDel(SK);
     st.token=''; st.user=''; st.gist=''; st.lastSync=0; st.dirty=false;
     setState(); showMsg('已退出登录（本地数据保留，云端不移除）');
+    toast('已退出登录');
+    setTimeout(closeModal, 700);
   }
 
   /* ---------- UI ---------- */
@@ -349,6 +358,7 @@
     modal=card; msgEl=document.getElementById('kb-sync-msg');
     userEl=document.getElementById('kb-sync-user'); timeEl=document.getElementById('kb-sync-time');
     tokEl=document.getElementById('kb-sync-tok');
+    outEl=document.getElementById('kb-sync-out');
 
     btn.addEventListener('click',function(e){
       e.stopPropagation(); openModal();
