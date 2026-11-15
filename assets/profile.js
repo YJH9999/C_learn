@@ -71,6 +71,15 @@
       dirty = true;
       if(btn) renderStats();
     },
+    /* 离线做题折算的时长：一次性加进「本站使用时长」并立刻落盘（好让同步带走） */
+    addTime: function(sec){
+      sec = Math.round(sec||0);
+      if(sec<=0) return;
+      stat.t += sec; dget().t += sec;
+      dirty = true;
+      flush();
+      if(btn) renderStats();
+    },
     refresh: function(){ if(btn) renderStats(); },
     flush: flush
   };

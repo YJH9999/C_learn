@@ -3,9 +3,10 @@
    -----------------------------------------------------------------------------
    · 每份组好的卷子都会存一条记录（题目 id 顺序 / 作答 / 对错 / 分数 / 时间）
    · 交卷后仍可回来「继续作答 / 查看成绩 / 重做」
-   · 离线作答：把打印出来的卷子做完，拍照或导出 PDF 传回来挂在这次记录上
+   · 组卷后可选「线上做题 / 离线做题」：离线会把卷子打印出来手写，做完传回
+       - 首次上传离线答案时，按考试用时的 60% 计入本站学习时长（每份卷只计一次）
        - 图片：压到长边 1400 / JPEG 0.72，随记录一起同步
-       - PDF ：原件存 IndexedDB（本机）；≤1.2MB 时另存一份 dataURL 以便同步
+       - PDF ：原件存 IndexedDB（本机）；≤700KB 时另存一份 dataURL 以便同步
    · 存储键：<前缀>papers（gs_papers / xd_papers / c_papers），由 sync.js 自动带
    ============================================================================= */
 (function(){
@@ -21,6 +22,7 @@
   var MAXN = 20;                              // 最多保留 20 份
   var MAX_BYTES = 1.2 * 1024 * 1024;          // localStorage 安全线（三站同源共用配额）
   var PDF_SYNC_MAX = 700 * 1024;              // PDF 超过这个大小只留在本机
+  var CREDIT_RATIO = 0.6;                     // 离线做题：按考试用时的 60% 计入学习时长
 
   function ls(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
@@ -152,16 +154,29 @@
     fr.readAsDataURL(file);
   }
 
+  /* ---------- 离线做题：把考试时长折算进学习统计 ---------- */
+  function credit(rec){
+    if(!rec || !rec.estSec || rec.credited) return 0;
+    var sec = Math.round(rec.estSec * CREDIT_RATIO);
+    if(sec <= 0) return 0;
+    rec.credited = sec;
+    rec.creditAt = Date.now();
+    if(window.KBStats && window.KBStats.addTime) window.KBStats.addTime(sec);
+    return sec;
+  }
+
   /* ---------- 附件：上传 / 查看 / 删除 ---------- */
   function addFiles(id, files, cb){
     var rec = get(id);
     if(!rec) return cb && cb('记录不存在');
     rec.att = rec.att || [];
+    var before = rec.att.length;
     var arr = [].slice.call(files||[]), i = 0, errs = [];
     (function next(){
       if(i >= arr.length){
+        var got = rec.att.length > before ? credit(rec) : 0;
         put(rec);
-        return cb && cb(errs.length?errs.join('\n'):'');
+        return cb && cb(errs.length?errs.join('\n'):'', got);
       }
       var f = arr[i++];
       if(/^image\//.test(f.type)){
@@ -279,7 +294,33 @@
       '.kbp2-note{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));line-height:1.7;margin:9px 0 0;\n'+
       '  border-top:1px dashed var(--line,var(--line-2,#e8e8ec));padding-top:8px}\n'+
       '.kbp2-close{width:100%;margin-top:11px;border:1px solid var(--line,var(--line-2,#e2e2e6));border-radius:10px;\n'+
-      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;padding:9px 0;font:600 12.5px inherit;cursor:pointer}\n';
+      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;padding:9px 0;font:600 12.5px inherit;cursor:pointer}\n'+
+      /* 作答方式选择 */
+      '.kbm-opt{border:1px solid var(--line,var(--line-2,#e8e8ec));border-radius:12px;padding:11px 13px;\n'+
+      '  margin:0 0 9px;cursor:pointer;background:var(--panel2,var(--panel-2,#f8f8fa));transition:.15s}\n'+
+      '.kbm-opt:hover,.kbm-opt:focus-visible{border-color:var(--acc,var(--ac,#3b82f6));\n'+
+      '  background:var(--acc-soft,rgba(59,130,246,.08));outline:none}\n'+
+      '.kbm-opt b{display:block;font:700 13.5px/1.5 inherit;margin-bottom:3px}\n'+
+      '.kbm-opt span{font-size:11.5px;color:var(--ink2,var(--fg-2,#6e6e73));line-height:1.65}\n'+
+      '.kbm-print{display:flex;align-items:center;gap:10px;margin:0 0 11px}\n'+
+      '.kbm-print button{flex:1;border:1px solid var(--acc,var(--ac,#3b82f6));border-radius:10px;\n'+
+      '  background:var(--acc,var(--ac,#3b82f6));color:#fff;padding:9px 0;font:600 12.5px inherit;cursor:pointer}\n'+
+      '.kbm-print button:hover{filter:brightness(1.06)}\n'+
+      '.kbm-print span{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));flex:none;max-width:96px;line-height:1.5}\n'+
+      '.kbm-steps{display:flex;gap:6px;margin:0 0 12px;font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f))}\n'+
+      '.kbm-steps i{font-style:normal;flex:1;border:1px solid var(--line,var(--line-2,#e8e8ec));\n'+
+      '  border-radius:8px;padding:6px 4px;text-align:center;background:var(--panel2,var(--panel-2,#f8f8fa))}\n'+
+      '.kbp2-credit{margin:10px 0 0;padding:7px 10px;border-radius:9px;line-height:1.6;\n'+
+      '  background:var(--acc-soft,rgba(59,130,246,.12));color:var(--acc,var(--ac,#3b82f6));\n'+
+      '  font-size:11.5px;font-weight:600}\n'+
+      '.kbp2-tag.off{background:rgba(240,168,32,.16);color:#b8770a}\n'+
+      '#kbp2-toast{position:fixed;left:50%;bottom:38px;transform:translate(-50%,14px);z-index:150;\n'+
+      '  background:rgba(22,22,26,.93);color:#fff;padding:9px 16px;border-radius:10px;max-width:86vw;\n'+
+      '  text-align:center;opacity:0;pointer-events:none;transition:.25s;\n'+
+      '  font:600 12.5px/1.55 "PingFang SC","Microsoft YaHei",-apple-system,sans-serif;\n'+
+      '  box-shadow:0 10px 30px rgba(0,0,0,.25)}\n'+
+      '#kbp2-toast.on{opacity:1;transform:translate(-50%,0)}\n'+
+      '@media print{#kbp2-mask,#kbp2-card,#kbp2-toast{display:none!important}}\n';
     document.head.appendChild(st);
   }
 
@@ -312,14 +353,17 @@
       var doneN = Object.keys(r.ans||{}).length;
       var tail = r.done
         ? ('得分 <em>'+r.score+'</em> / '+(r.total||'—'))
-        : ('已答 <em>'+doneN+'</em> / '+n);
+        : (r.mode==='offline' ? '线下作答' : ('已答 <em>'+doneN+'</em> / '+n));
       return '<div class="kbp2-item" data-id="'+r.id+'">'+
         '<div class="kbp2-h"><b>'+esc(r.title||'模拟试卷')+'</b>'+
-          (r.done?'<span class="kbp2-tag">已交卷</span>':'<span class="kbp2-tag">进行中</span>')+
-          (attN?'<span class="kbp2-tag">离线答案 '+attN+'</span>':'')+
+          (r.mode==='offline'
+            ? '<span class="kbp2-tag off">离线</span>'
+            : (r.done?'<span class="kbp2-tag">已交卷</span>':'<span class="kbp2-tag">进行中</span>'))+
+          (attN?'<span class="kbp2-tag">作答 '+attN+'</span>':'')+
           '<time>'+when(r.upd||r.ts)+'</time></div>'+
         '<div class="kbp2-m">'+n+' 题 · 满分 '+(r.total||'—')+' 分 · '+tail+
-          (r.secs?' · 用时 '+Math.floor(r.secs/60)+' 分':'')+'</div>'+
+          (r.secs?' · 用时 '+Math.floor(r.secs/60)+' 分':'')+
+          (r.credited?' · 已计入 '+(Math.round(r.credited/60))+' 分钟学习时长':'')+'</div>'+
         '<div class="kbp2-a">'+
           '<button data-act="open" class="pri">'+(r.done?'查看卷面':'继续作答')+'</button>'+
           (r.done?'<button data-act="redo">重做</button>':'')+
@@ -339,66 +383,165 @@
         if(!confirm('删除这条试卷记录？（含离线答案附件）')) return;
         del(rec.id); render(host, opts);
       }else if(act==='att'){
-        openAtt(rec, function(){ render(host, opts); });
+        openAtt(rec, function(){ render(host, opts); }, opts.attOpts ? opts.attOpts(rec) : {});
       }else if(opts.onOpen){
         opts.onOpen(rec, act);
       }
     };
   }
 
-  /* ---------- 离线答案弹窗 ---------- */
-  var cur = null, curReload = null;
-  function openAtt(rec, reload){
+  /* ---------- 弹窗骨架 / 轻提示 ---------- */
+  var cur = null, curReload = null, curOpts = {}, maskClick = null;
+  function ensureCard(){
     style();
-    cur = rec; curReload = reload;
     var mask = document.getElementById('kbp2-mask');
     if(!mask){
       mask = document.createElement('div'); mask.id='kbp2-mask';
-      mask.onclick = closeAtt;
+      mask.onclick = function(){ if(maskClick) maskClick(); };
       document.body.appendChild(mask);
       var card = document.createElement('div'); card.id='kbp2-card';
       card.onclick = function(e){ e.stopPropagation(); };
       document.body.appendChild(card);
-      document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAtt(); });
+      var tt = document.createElement('div'); tt.id='kbp2-toast';
+      document.body.appendChild(tt);
+      document.addEventListener('keydown', function(e){
+        if(e.key==='Escape' && maskClick) maskClick();
+      });
     }
-    paintAtt();
-    mask.classList.add('on');
-    document.getElementById('kbp2-card').classList.add('on');
+    return document.getElementById('kbp2-card');
+  }
+  function showCard(){
+    if(window.KBSync && window.KBSync.close) window.KBSync.close();   // 别让同步弹窗压在后面
+    var c = ensureCard();
+    document.getElementById('kbp2-mask').classList.add('on');
+    c.classList.add('on');
+    return c;
   }
   function closeAtt(){
     var m=document.getElementById('kbp2-mask'), c=document.getElementById('kbp2-card');
     if(m) m.classList.remove('on');
     if(c) c.classList.remove('on');
+    maskClick = null;
+  }
+  function toast(msg){
+    style();
+    var t = document.getElementById('kbp2-toast');
+    if(!t){ t=document.createElement('div'); t.id='kbp2-toast'; document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.add('on');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ t.classList.remove('on'); }, 4200);
+  }
+
+  /* ---------- 组卷后：线上 / 离线 作答方式 ---------- */
+  function chooseMode(opts){
+    opts = opts || {};
+    curOpts = opts;
+    var est = Math.round((opts.estSec||0)/60);
+    var will = Math.round((opts.estSec||0)*CREDIT_RATIO/60);
+    var card = showCard();
+    maskClick = cancel;
+    card.innerHTML =
+      '<h4>这份卷子怎么答？</h4>'+
+      '<p class="kbp2-sub">'+(opts.n?('共 '+opts.n+' 题'):'')+
+        (opts.total?(' · 满分 '+opts.total+' 分'):'')+
+        (est?(' · 预计考试用时约 '+est+' 分钟'):'')+'</p>'+
+      '<div class="kbm-opt" data-m="online" tabindex="0" role="button">'+
+        '<b>线上做题</b><span>在页面上直接作答，逐题即时判分、用时自动记录；中途关掉也能从历史试卷接着做。</span></div>'+
+      '<div class="kbm-opt" data-m="offline" tabindex="0" role="button">'+
+        '<b>离线做题</b><span>打印空白卷手写作答，做完拍照或导入 PDF 交回'+
+        (will?('；上传后按考试用时的 60%（约 '+will+' 分钟）计入本站学习时长'):'')+'。</span></div>'+
+      '<button class="kbp2-close" id="kbm-cancel" type="button">取消</button>';
+
+    card.querySelectorAll('.kbm-opt').forEach(function(el){
+      el.onclick = function(){
+        if(el.dataset.m==='online'){
+          closeAtt();
+          if(opts.rec){ opts.rec.mode='online'; if(opts.estSec) opts.rec.estSec=opts.estSec; put(opts.rec); }
+          if(opts.onOnline) opts.onOnline();
+        }else{
+          startOffline();
+        }
+      };
+      el.onkeydown = function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); el.click(); } };
+    });
+    card.querySelector('#kbm-cancel').onclick = cancel;
+
+    function cancel(){
+      closeAtt();
+      if(opts.rec && !Object.keys(opts.rec.ans||{}).length && !(opts.rec.att||[]).length){
+        del(opts.rec.id);
+      }
+      if(opts.onCancel) opts.onCancel();
+    }
+  }
+  function startOffline(){
+    var o = curOpts || {};
+    var rec = o.rec;
+    if(rec){
+      rec.mode = 'offline';
+      if(o.estSec) rec.estSec = o.estSec;
+      put(rec);
+      cur = rec;
+    }
+    curReload = function(){ if(o.onReload) o.onReload(); else if(o.onOffline) o.onOffline(); };
+    showCard();
+    maskClick = closeAtt;
+    paintAtt();
+    if(o.onOffline) o.onOffline();     // 让站点回到组卷页并把这条记录画出来
+  }
+
+  /* ---------- 离线答案弹窗 ---------- */
+  function openAtt(rec, reload, opts){
+    cur = rec; curReload = reload; curOpts = opts || {};
+    if(curOpts.estSec && !rec.estSec) rec.estSec = curOpts.estSec;
+    showCard();
+    maskClick = closeAtt;
+    paintAtt();
+  }
+  function attRow(a, i){
+    return '<div class="kbp2-row">'+
+      (a.kind==='img' && a.data
+        ? '<img src="'+a.data+'" data-open="'+i+'" alt="">'
+        : '<div class="kbp2-ic">PDF</div>')+
+      '<div class="kbp2-fi"><b>'+esc(a.name||(a.kind==='img'?'作答照片':'作答文件'))+'</b>'+
+        '<span>'+fmtSize(a.size)+(a.kind==='pdf'&&!a.data?' · 仅本机':' · 已同步')+'</span></div>'+
+      '<button class="kbp2-x" data-view="'+i+'" title="打开">↗</button>'+
+      '<button class="kbp2-x" data-del="'+i+'" title="删除">×</button>'+
+    '</div>';
   }
   function paintAtt(){
     var card = document.getElementById('kbp2-card');
     if(!card || !cur) return;
     var att = cur.att || [];
+    var offline = cur.mode === 'offline';
+    var willMin = Math.round((cur.estSec||0)*CREDIT_RATIO/60);
     card.innerHTML =
-      '<h4>离线作答 · '+esc(cur.title||'模拟试卷')+'</h4>'+
-      '<p class="kbp2-sub">把打印出来的卷子做完，拍照或导出 PDF 传到这里，就算作这次试卷的作答记录；图片会随账号同步，PDF 原件默认只留在本机。</p>'+
+      '<h4>'+(offline?'离线做题':'离线作答')+' · '+esc(cur.title||'模拟试卷')+'</h4>'+
+      '<p class="kbp2-sub">'+(offline
+        ? '打印空白卷手写作答，做完拍照或导入 PDF 交回。'+(willMin?('首次上传后按考试用时的 60%（约 '+willMin+' 分钟）计入本站学习时长。'):'')
+        : '把这份卷子的作答拍照或导出 PDF 传到这里，作为离线作答记录。')+'</p>'+
+      (offline && curOpts.printBlank
+        ? '<div class="kbm-print"><button id="kbp2-print" type="button">🖨 打印空白卷</button><span>A4 单面</span></div>'
+        : '')+
       '<div class="kbp2-list">'+
-        (att.length ? att.map(function(a,i){
-          return '<div class="kbp2-row">'+
-            (a.kind==='img' && a.data
-              ? '<img src="'+a.data+'" data-open="'+i+'" alt="">'
-              : '<div class="kbp2-ic">PDF</div>')+
-            '<div class="kbp2-fi"><b>'+esc(a.name||(a.kind==='img'?'作答照片':'作答文件'))+'</b>'+
-              '<span>'+fmtSize(a.size)+(a.kind==='pdf'&&!a.data?' · 仅本机':' · 已同步')+'</span></div>'+
-            '<button class="kbp2-x" data-view="'+i+'" title="打开">↗</button>'+
-            '<button class="kbp2-x" data-del="'+i+'" title="删除">×</button>'+
-          '</div>';
-        }).join('') : '<p class="kbp2-empty" style="margin:0">还没有离线答案，下面传一张就行。</p>')+
+        (att.length ? att.map(attRow).join('')
+          : '<p class="kbp2-empty" style="margin:0">还没有上传作答，下面传一张就行。</p>')+
       '</div>'+
+      (cur.credited
+        ? '<p class="kbp2-credit">✓ 已按考试用时的 60% 计入学习时长 · '+Math.round(cur.credited/60)+' 分钟</p>'
+        : '')+
       '<div class="kbp2-up">'+
         '<button id="kbp2-pickimg" type="button">＋ 上传作答照片</button>'+
         '<button id="kbp2-pickpdf" type="button">＋ 导入 PDF</button>'+
       '</div>'+
-      '<p class="kbp2-note">支持多选。照片会自动压缩到长边 1400px 便于同步；单个 PDF 超过 700KB 时原件只存本机（iPad 扫描件常见，建议先压缩）。</p>'+
+      '<p class="kbp2-note">支持多选。照片自动压到长边 1400px 便于同步；单个 PDF 超过 700KB 时原件只存本机（建议先压缩）。</p>'+
       '<button class="kbp2-close" id="kbp2-done" type="button">完成</button>'+
       '<input type="file" id="kbp2-fimg" accept="image/*" multiple hidden>'+
       '<input type="file" id="kbp2-fpdf" accept="application/pdf,.pdf" multiple hidden>';
 
+    var pr = card.querySelector('#kbp2-print');
+    if(pr) pr.onclick = function(){ if(curOpts.printBlank) curOpts.printBlank(); };
     card.querySelector('#kbp2-done').onclick = closeAtt;
     card.querySelector('#kbp2-pickimg').onclick = function(){ card.querySelector('#kbp2-fimg').click(); };
     card.querySelector('#kbp2-pickpdf').onclick = function(){ card.querySelector('#kbp2-fpdf').click(); };
@@ -408,11 +551,13 @@
         if(!inp.files || !inp.files.length) return;
         var files = inp.files;
         card.querySelector('.kbp2-sub').textContent = '正在处理，请稍候…';
-        addFiles(cur.id, files, function(err){
-          cur = get(cur.id);
+        addFiles(cur.id, files, function(err, credited){
+          cur = get(cur.id) || cur;
           paintAtt();
           if(curReload) curReload();
+          if(credited) toast('已计入学习时长 '+Math.round(credited/60)+' 分钟（考试用时的 60%）');
           if(err) alert(err);
+          if(window.KBStats) window.KBStats.refresh();
         });
         inp.value = '';
       };
@@ -424,7 +569,7 @@
       b.onclick = function(){
         if(!confirm('删除这个附件？')) return;
         delAtt(cur, +b.dataset.del);
-        cur = get(cur.id);
+        cur = get(cur.id) || cur;
         paintAtt();
         if(curReload) curReload();
       };
@@ -445,6 +590,9 @@
     render: render,
     addFiles: addFiles,
     openAtt: openAtt,
+    chooseMode: chooseMode,
+    toast: toast,
+    credit: credit,
     size: function(){ return (ls(KEY)||'').length; }
   };
 })();

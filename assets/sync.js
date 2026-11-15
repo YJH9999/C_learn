@@ -386,5 +386,5 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
   else boot();
 
-  window.KBSync = { pull:pull, push:push, logout:logout, state:st };
+  window.KBSync = { pull:pull, push:push, logout:logout, state:st, close:closeModal };
 })();

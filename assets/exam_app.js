@@ -306,7 +306,7 @@ function renderTheorySetup(bank){
     genTheory(bank, null, lget('ex-th-wrong',[]));
   });
   $('#th-gen').addEventListener('click',function(){ genTheory(bank,null,null); });
-  if(window.KBPaper) KBPaper.render($('#th-hist'), {onOpen:openRec});
+  if(window.KBPaper) KBPaper.render($('#th-hist'), {onOpen:openRec, attOpts:function(rec){ return {estSec:estFromRec(rec)}; }});
   var ew=$('#th-exp-wrong');
   if(ew) ew.addEventListener('click',function(){ doPrint('wrong'); });
 }
@@ -332,7 +332,35 @@ function pickQuestions(bank,chs,types,num){
   picked.sort(function(a,b){ return a.id<b.id?-1:1; });
   return picked;
 }
-function genTheory(bank, mode, fixedIds){
+/* ---------- 作答方式：线上做题 / 离线做题 ---------- */
+var EXAM_MIN={single:1.5, judge:1.2, fill:3, read:6};   /* 每题预计分钟 */
+function estSecondsC(){
+  var s=0;
+  (TH.paper && TH.paper.qs ? TH.paper.qs : []).forEach(function(q){ s+=(EXAM_MIN[q.type]||2); });
+  return Math.round(Math.min(s,150)*60);
+}
+function estFromRec(rec){
+  if(rec && rec.estSec) return rec.estSec;
+  var map={};
+  (DATA.theory||[]).forEach(function(q){ map[q.id]=q; });
+  var s=0;
+  ((rec&&rec.qs)||[]).forEach(function(id){ var q=map[id]; if(q) s+=(EXAM_MIN[q.type]||2); });
+  return Math.round(Math.min(s,150)*60);
+}
+function askMode(bank){
+  if(!window.KBPaper){ renderTheoryPaper(); return; }
+  KBPaper.chooseMode({
+    rec: TH.rec,
+    estSec: estSecondsC(),
+    n: TH.paper ? TH.paper.qs.length : 0,
+    total: 0,
+    printBlank: function(){ doPrint('blank'); },
+    onOnline: function(){ renderTheoryPaper(); },
+    onOffline: function(){ renderTheorySetup(bank || DATA.theory); },
+    onCancel: function(){ renderTheorySetup(bank || DATA.theory); }
+  });
+}
+function genTheory(bank, mode, fixedIds, ask){
   /* result/other 视图下再次组卷时，先重建组卷面板（供读章节/题量） */
   if(!$('#th-stage [data-for="th"]') && !fixedIds) renderTheorySetup(bank);
   var qs;
@@ -363,7 +391,8 @@ function genTheory(bank, mode, fixedIds){
   TH.rec=null;
   makeRec(qs);
   TH.stage='paper';
-  renderTheoryPaper();
+  if(ask===false){ renderTheoryPaper(); return; }
+  askMode(bank);          /* 先选线上 / 离线，再决定要不要渲染作答页 */
 }
 function selChs(){
   return $$('#th-stage [data-for="th"]').filter(function(c){return c.checked}).map(function(c){return c.value});
@@ -662,7 +691,7 @@ function renderTheoryResult(p,res,isReplay){
   if(of) of.addEventListener('click',function(){
     if(!TH.rec) return alert('还没有试卷记录');
     if(!window.KBPaper) return alert('离线作答模块未加载');
-    KBPaper.openAtt(TH.rec, function(){});
+    KBPaper.openAtt(TH.rec, function(){}, {estSec: estSecondsC()});
   });
   var rb=$('#th-redo2');
   rb && rb.addEventListener('click',function(){ genTheory(DATA.theory,null,wrongIds); });
