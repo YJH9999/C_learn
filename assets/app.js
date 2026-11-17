@@ -1029,11 +1029,27 @@
       try{ ready=w.document.readyState==='complete'; }catch(e){ ready=true; }
       if(ready || n>60){
         clearInterval(timer);
-        setTimeout(function(){
-          try{ w.focus(); w.print(); }catch(e){}
-        },450);
+        pdfWaitFonts(w, function(){
+          setTimeout(function(){ try{ w.focus(); w.print(); }catch(e){} }, 200);
+        });
       }
     },120);
+  }
+  /* 子窗口里的 KaTeX 字体是懒加载的：必须等它们真正就绪，否则打印出来公式缺字 */
+  var PDF_FONTS=['KaTeX_Main','KaTeX_Math','KaTeX_AMS','KaTeX_Caligraphic','KaTeX_Fraktur',
+    'KaTeX_SansSerif','KaTeX_Script','KaTeX_Size1','KaTeX_Size2','KaTeX_Size3','KaTeX_Size4','KaTeX_Typewriter'];
+  function pdfWaitFonts(w, cb){
+    var called=false;
+    function go(){ if(called) return; called=true; cb(); }
+    try{
+      var d=w.document;
+      if(!d || !d.fonts || !d.fonts.ready){ return setTimeout(go, 350); }
+      var jobs=PDF_FONTS.map(function(f){
+        try{ return d.fonts.load('16px "'+f+'"'); }catch(e){ return Promise.resolve(); }
+      });
+      Promise.all(jobs.concat([d.fonts.ready])).then(go).catch(go);
+      setTimeout(go, 4000);
+    }catch(e){ setTimeout(go, 350); }
   }
   /* ---------- 下载为独立 HTML 文件 ---------- */
   function pdfCollectCss(){

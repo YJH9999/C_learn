@@ -178,25 +178,40 @@
       '  padding:11px 0;font:600 13.5px inherit;cursor:pointer;margin-top:6px}\n'+
       '.ob-go:hover{filter:brightness(1.06)}\n'+
       '.ob-note{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));margin:9px 0 0;line-height:1.65}\n'+
-      /* ---- 首次引导里的同步区 ---- */
-      '.ob-sec{margin-top:4px;border-top:1px dashed var(--line,var(--line-2,#e8e8ec));padding-top:12px}\n'+
-      '.ob-sec-h{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px}\n'+
-      '.ob-sec-h b{font:700 12.5px/1.4 inherit}\n'+
-      '.ob-sec-h span{margin-left:auto;font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));text-align:right;line-height:1.45}\n'+
-      '.ob-sec-h span.ok{color:#1a9e4b}\n'+
-      '.ob-sec-h span.err{color:#eb4d3d}\n'+
+      /* ---- 首次引导：登录卡 ---- */
+      '.ob-state{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));min-height:15px;margin:8px 0 0;line-height:1.6;word-break:break-word}\n'+
+      '.ob-state.ok{color:#1a9e4b}\n'+
+      '.ob-state.err{color:#eb4d3d}\n'+
       '.ob-tok{width:100%;box-sizing:border-box;border:1px solid var(--line,var(--line-2,#e2e2e6));border-radius:9px;\n'+
-      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;font:11.5px/1.6 ui-monospace,Consolas,monospace;padding:8px 10px}\n'+
+      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;font:11.5px/1.6 ui-monospace,Consolas,monospace;padding:9px 10px}\n'+
       '.ob-tok:focus{outline:none;border-color:var(--acc,var(--ac,#3b82f6));background:var(--panel-solid,var(--panel,#fff))}\n'+
       '.ob-tok:disabled{opacity:.62}\n'+
-      '.ob-syncrow{display:flex;align-items:center;gap:9px;margin-top:8px}\n'+
+      '.ob-syncrow{display:flex;align-items:center;gap:9px;margin-top:9px}\n'+
       '.ob-login{flex:1;border:1px solid var(--acc,var(--ac,#3b82f6));border-radius:9px;background:transparent;\n'+
-      '  color:var(--acc,var(--ac,#3b82f6));padding:8px 0;font:600 12.5px inherit;cursor:pointer}\n'+
+      '  color:var(--acc,var(--ac,#3b82f6));padding:9px 0;font:600 12.5px inherit;cursor:pointer}\n'+
       '.ob-login:hover{background:var(--acc-soft,rgba(59,130,246,.1))}\n'+
       '.ob-login:disabled{opacity:.55;cursor:default}\n'+
       '.ob-link{font-size:10.5px;color:var(--acc,var(--ac,#3b82f6));text-decoration:none;white-space:nowrap}\n'+
       '.ob-link:hover{text-decoration:underline}\n'+
       '.ob-tip{font-size:10.5px;color:var(--ink3,var(--fg-3,#98989f));line-height:1.65;margin:7px 0 0}\n'+
+      '.ob-skip{width:100%;border:0;background:transparent;color:var(--ink2,var(--fg-2,#6e6e73));\n'+
+      '  font:600 12px inherit;padding:10px 0 2px;cursor:pointer}\n'+
+      '.ob-skip:hover{color:var(--acc,var(--ac,#3b82f6))}\n'+
+      /* ---- 首次引导：折叠说明 ---- */
+      '.ob-guide{margin-top:12px;border-top:1px dashed var(--line,var(--line-2,#e8e8ec));padding-top:10px;\n'+
+      '  font-size:11px;color:var(--ink2,var(--fg-2,#6e6e73));line-height:1.7}\n'+
+      '.ob-guide summary{cursor:pointer;font:600 11.5px inherit;color:var(--ink2,var(--fg-2,#6e6e73));list-style:none;outline:none;\n'+
+      '  display:flex;align-items:center;gap:4px}\n'+
+      '.ob-guide summary::-webkit-details-marker{display:none}\n'+
+      '.ob-guide summary:before{content:"\\25B8";display:inline-block;transition:transform .15s;color:var(--ink3,var(--fg-3,#98989f))}\n'+
+      '.ob-guide[open] summary:before{transform:rotate(90deg)}\n'+
+      '.ob-guide .ob-g-h{font:600 11px inherit;color:var(--hi,var(--ink,#1c1c1e));margin:10px 0 2px}\n'+
+      '.ob-guide ul{margin:2px 0 2px;padding-left:16px}\n'+
+      '.ob-guide li{margin-bottom:2px}\n'+
+      '.ob-guide code{font:10.5px ui-monospace,Consolas,monospace;background:var(--panel2,var(--panel-2,#f6f6f8));\n'+
+      '  padding:1px 3px;border-radius:4px}\n'+
+      '.ob-guide a{color:var(--acc,var(--ac,#3b82f6));text-decoration:none}\n'+
+      '.ob-guide a:hover{text-decoration:underline}\n'+
       '@media print{body{zoom:1!important}}\n';
     document.head.appendChild(st);
   }
@@ -221,7 +236,7 @@
     var u = (window.KBSync && KBSync.state && KBSync.state.user) || '';
     panel.querySelector('#kbp-avwrap').innerHTML = avatarHTML(46);
     var nick = panel.querySelector('#kbp-nick');
-    if(nick && nick.value !== (prof.name||'')) nick.value = prof.name||'';
+    if(nick && document.activeElement!==nick && nick.value !== (prof.name||'')) nick.value = prof.name||'';
     nick && (nick.placeholder = '点这里改昵称');
     var sub = panel.querySelector('#kbp-sub');
     if(sub) sub.textContent = u ? ('@'+u+' · 已登录同步') : '未登录 · 数据只在这台设备';
@@ -357,40 +372,135 @@
     fr.readAsDataURL(file);
   }
 
-  /* ---------- 首次进入：必须设置个人信息 ---------- */
+  /* ---------- 首次进入：① 登录（可跳过）→ ② 头像昵称 ---------- */
   var EMOJIS = ['🐳','📘','🧮','🔭','🌱','⚡️','🎯','🧠','🌙'];
   var COLORS = ['#3b82f6','#6366f1','#8b5cf6','#ec4899','#ef4444','#f59e0b','#10b981','#14b8a6','#64748b'];
 
-  function showOnboard(){
-    if(document.getElementById('kbp-ob')) return;
-    var tmp = {name: prof.name || 'Student', av: prof.av || '', color: prof.color || '#3b82f6', emoji: prof.emoji || '🐳'};
+  function guideHTML(){
+    return '<details class="ob-guide"><summary>第一次用？令牌怎么建 · 换设备怎么办</summary>'
+      +'<p class="ob-g-h">第 1 步 · 创建令牌（二选一，推荐前者）</p>'
+      +'<ul>'
+      +'<li><b>细粒度令牌</b>：打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">personal-access-tokens/new</a>'
+      +'<ul>'
+      +'<li>Token name 随意（如 <code>kb-sync</code>），Expiration 选 <b>1 年</b>（Custom → 一年后的日期）</li>'
+      +'<li>Account permissions → 找到 <b>Gists</b> → 设为 <b>Read and write</b>（只开这一项）</li>'
+      +'<li>点 <b>Add permissions</b>，再点页面底部 <b>Generate token</b> → 复制 <code>github_pat_…</code></li>'
+      +'</ul></li>'
+      +'<li><b>或者经典令牌</b>：打开 <a href="https://github.com/settings/tokens/new?scopes=gist" target="_blank" rel="noopener">tokens/new?scopes=gist</a>'
+      +' → 只勾 <code>gist</code> → Generate token → 复制 <code>ghp_…</code></li>'
+      +'</ul>'
+      +'<p class="ob-g-h">第 2 步 · 粘贴到上面的输入框 → 点「登录并同步」</p>'
+      +'<p class="ob-g-h">第 3 步 · 验证一下</p>'
+      +'<p>做一道题或收藏一个知识点，再打开 <a href="https://github.com/settings/gists" target="_blank" rel="noopener">github.com/settings/gists</a>，'
+      +'能看到 <code>kb-sync-store</code> 这个私密 Gist 就说明同步已生效。</p>'
+      +'<p class="ob-g-h">换设备 / 第二台设备：不用新建令牌</p>'
+      +'<ul>'
+      +'<li>同一个令牌可以在任意多台设备上重复使用：在新设备打开本站，粘贴<b>同一个</b>令牌登录即可。</li>'
+      +'<li><b>不需要点 Regenerate，也不用每台设备各建一个。</b>令牌只是一把钥匙，数据在你账号的私有 Gist 里。</li>'
+      +'</ul>'
+      +'<p class="ob-g-h">什么时候才需要重新生成</p>'
+      +'<ul>'
+      +'<li><b>令牌到期</b>（创建时设的有效期到了）→ 在同一个页面点 <b>Generate new token</b> 建一把新的，旧令牌自动失效。</li>'
+      +'<li><b>令牌泄露 / 想作废</b> → 点 <b>Regenerate</b>：立刻换钥匙，<b>旧令牌马上失效</b>，所有设备都要回来重新粘贴新的。</li>'
+      +'<li>重新生成或删除令牌都<b>不影响</b> Gist 里的数据，只是换钥匙，数据不会丢。</li>'
+      +'</ul>'
+      +'<p class="ob-g-h">多设备 · 换账号 · 退出登录</p>'
+      +'<ul>'
+      +'<li>多台设备可以同时登录，各自改动都会上传；同一条记录冲突时以最后修改的为准，不会互相清空。</li>'
+      +'<li>换账号：先「退出登录」，再粘贴另一个账号的令牌；两个账号的数据互不相通。</li>'
+      +'<li>退出登录只清这台设备的令牌，云端数据保留，下次粘贴同一个令牌就能拿回来。</li>'
+      +'<li>想彻底删除：GitHub → Your gists → 删掉 <code>kb-sync-store</code>。</li>'
+      +'<li>令牌只存在这台设备的浏览器里，别人用自己账号登录看不到你的数据。</li>'
+      +'</ul>'
+      +'</details>';
+  }
+
+  function obRoot(inner){
     var ob = document.createElement('div');
     ob.id = 'kbp-ob';
-    ob.innerHTML =
-      '<div id="kbp-ob-card">'+
-        '<h3>先认识一下</h3>'+
-        '<p class="ob-sub">设置头像和昵称。想在手机 / 平板 / 电脑之间同步的话，顺手把 GitHub 令牌贴上；不想现在就弄，直接保存也能正常用。</p>'+
-        '<div class="ob-row">'+
-          '<div class="ob-av" id="ob-av" title="点击上传自己的图片"></div>'+
-          '<div class="ob-field"><label>昵称</label><input id="ob-name" maxlength="16" spellcheck="false"></div>'+
-        '</div>'+
-        '<p class="ob-lab">选一个头像，或点左侧圆圈上传图片</p>'+
-        '<div class="kbp-emojis" id="ob-emojis"></div>'+
-        '<div class="kbp-swatches" id="ob-colors"></div>'+
-        '<div class="ob-sec">'+
-          '<div class="ob-sec-h"><b>跨设备同步</b><span id="ob-sync">未登录</span></div>'+
-          '<input class="ob-tok" id="ob-tok" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴 GitHub 令牌（ghp_… / github_pat_…），可跳过">'+
-          '<div class="ob-syncrow">'+
-            '<button class="ob-login" id="ob-login" type="button">登录并同步</button>'+
-            '<a class="ob-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">创建令牌 ↗</a>'+
-          '</div>'+
-          '<p class="ob-tip">令牌只存在这台设备的浏览器里，数据写进你自己账号下的私有 Gist；三个站点共用一次登录，别人用自己账号登录看不到你的数据。</p>'+
-        '</div>'+
-        '<button class="ob-go" id="ob-go" type="button">保存并继续</button>'+
-        '<p class="ob-note">昵称留空将使用默认的 Student；头像、昵称之后可以在右上角改。</p>'+
-        '<input type="file" id="ob-file" accept="image/*" class="kbp-hide">'+
-      '</div>';
+    ob.innerHTML = '<div id="kbp-ob-card">' + inner + '</div>';
     document.body.appendChild(ob);
+    return ob;
+  }
+
+  function showOnboard(){
+    if (document.getElementById('kbp-ob')) return;
+    if (prof.onboarded) return;          // 云端资料已拉下来就不打扰
+    if (logged()){ showProfileCard(); return; }   // 已经登录过、只是还没设资料
+    showLoginGate();
+  }
+
+  /* ① 登录卡：只有 GitHub 登录这一步，不登录就跳过 */
+  function showLoginGate(){
+    if (document.getElementById('kbp-ob')) return;
+    var ob = obRoot(
+      '<h3>登录 GitHub，跨设备同步</h3>'
+      +'<p class="ob-sub">做题记录、错题本、收藏、头像昵称都跟着账号走，手机 / 平板 / 电脑共用一次登录。'
+      +'不登录也能正常用，数据只留在这台设备。</p>'
+      +'<input class="ob-tok" id="ob-tok" type="password" autocomplete="off" spellcheck="false"'
+      +' placeholder="粘贴 GitHub 令牌（ghp_… / github_pat_…）">'
+      +'<div class="ob-syncrow">'
+      +'<button class="ob-login" id="ob-login" type="button">登录并同步</button>'
+      +'<a class="ob-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">创建令牌 ↗</a>'
+      +'</div>'
+      +'<p class="ob-state" id="ob-state">未登录</p>'
+      +guideHTML()
+      +'<button class="ob-skip" id="ob-skip" type="button">暂不登录，先自己用 →</button>'
+      +'<p class="ob-note">之后随时可以点右上角「同步」登录；已经登录过的话，资料会直接带过来。</p>'
+    );
+
+    var tokEl = ob.querySelector('#ob-tok');
+    var lgBtn = ob.querySelector('#ob-login');
+    var stEl  = ob.querySelector('#ob-state');
+    function state(cls, txt){ stEl.className = 'ob-state' + (cls ? ' ' + cls : ''); stEl.textContent = txt; }
+
+    function next(){
+      ob.remove();
+      var p = jget(PROF_KEY, null);
+      if (p && p.onboarded){                 // 云端已有头像昵称：直接用，不再问
+        prof = Object.assign(prof, p);
+        renderHead(); renderStats();
+        return;
+      }
+      showProfileCard();
+    }
+
+    lgBtn.onclick = function(){
+      if (!window.KBSync){ state('err', '同步模块未加载'); return; }
+      var v = tokEl.value.trim();
+      if (!v){ state('err', '请先粘贴令牌'); tokEl.focus(); return; }
+      lgBtn.disabled = true; lgBtn.textContent = '登录中…';
+      state('', '正在验证令牌…');
+      KBSync.login(v, {
+        msg: function(t, isErr){ state(isErr ? 'err' : '', t); },
+        done: function(u){ state('ok', '已登录 @' + u + '，正在同步资料…'); setTimeout(next, 400); },
+        fail: function(m){ lgBtn.disabled = false; lgBtn.textContent = '登录并同步'; state('err', m || '登录失败，请检查令牌'); }
+      });
+    };
+    tokEl.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); lgBtn.click(); } });
+    ob.querySelector('#ob-skip').onclick = next;
+  }
+
+  /* ② 头像昵称卡（登录或跳过后才出现） */
+  function showProfileCard(){
+    if (document.getElementById('kbp-ob')) return;
+    var tmp = {name: prof.name || 'Student', av: prof.av || '', color: prof.color || '#3b82f6', emoji: prof.emoji || '🐳'};
+    var ob = obRoot(
+      '<h3>设置头像和昵称</h3>'
+      +'<p class="ob-sub">'+(logged()
+        ? '这些会跟着账号同步到其他设备，下次换设备登录自动带过来。'
+        : '这些先存在这台设备；以后登录时会一起同步到账号里。')+'</p>'
+      +'<div class="ob-row">'
+      +  '<div class="ob-av" id="ob-av" title="点击上传自己的图片"></div>'
+      +  '<div class="ob-field"><label>昵称</label><input id="ob-name" maxlength="16" spellcheck="false"></div>'
+      +'</div>'
+      +'<p class="ob-lab">选一个头像，或点左侧圆圈上传图片</p>'
+      +'<div class="kbp-emojis" id="ob-emojis"></div>'
+      +'<div class="kbp-swatches" id="ob-colors"></div>'
+      +'<button class="ob-go" id="ob-go" type="button">保存并继续</button>'
+      +'<p class="ob-note">昵称留空将使用默认的 Student；头像、昵称之后可以点右上角头像随时改。</p>'
+      +'<input type="file" id="ob-file" accept="image/*" class="kbp-hide">'
+    );
 
     var avEl = ob.querySelector('#ob-av');
     var nameEl = ob.querySelector('#ob-name');
@@ -398,9 +508,9 @@
     nameEl.select();
 
     function paintAv(){
-      if(tmp.av){
+      if (tmp.av){
         avEl.innerHTML = '<img src="'+tmp.av+'" alt="" style="width:56px;height:56px;object-fit:cover;display:block">';
-      }else{
+      } else {
         avEl.innerHTML = '<span style="width:56px;height:56px;border-radius:50%;background:'+tmp.color+
           ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1">'+
           (tmp.emoji || '?')+'</span>';
@@ -446,38 +556,6 @@
       ob.remove();
       renderHead(); renderStats();
     };
-
-    /* ---- 同一个界面里登录同步 ---- */
-    var tokEl = ob.querySelector('#ob-tok');
-    var lgBtn = ob.querySelector('#ob-login');
-    var stEl  = ob.querySelector('#ob-sync');
-    function syncState(cls, txt){
-      stEl.className = cls || '';
-      stEl.textContent = txt;
-    }
-    function markLogged(u){
-      lgBtn.textContent = '已登录';
-      lgBtn.disabled = true;
-      tokEl.value = '';
-      tokEl.disabled = true;
-      tokEl.placeholder = '已登录 @'+u;
-      syncState('ok', '已登录 @'+u+' · 自动同步');
-    }
-    if(logged()) markLogged((KBSync.state && KBSync.state.user) || '');
-
-    lgBtn.onclick = function(){
-      if(!window.KBSync){ syncState('err','同步模块未加载'); return; }
-      var v = tokEl.value.trim();
-      if(!v){ syncState('err','请先粘贴令牌'); tokEl.focus(); return; }
-      lgBtn.disabled = true; lgBtn.textContent = '登录中…';
-      syncState('', '正在验证…');
-      KBSync.login(v, {
-        msg: function(t, isErr){ syncState(isErr?'err':'', t); },
-        done: function(u){ markLogged(u); },
-        fail: function(m){ lgBtn.disabled = false; lgBtn.textContent = '登录并同步'; syncState('err', m || '登录失败'); }
-      });
-    };
-    tokEl.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); lgBtn.click(); } });
   }
 
   function saveProf(){
@@ -508,10 +586,20 @@
     startTimer();
     hookExamCenter();
     if(/[?&]me=1(&|$)/.test(location.search) && btn) setTimeout(function(){ btn.click(); }, 300);
-    // 首次进入：必须先设置个人信息（昵称默认 Student）
+    // 首次进入：先登录（可跳过），再设头像昵称
     if(!prof.onboarded) setTimeout(showOnboard, 420);
     // 同步面板登录状态变化时刷新副标题
     setInterval(function(){ if(panel && panel.classList.contains('on')) renderHead(); }, 3000);
+    // 登录后 / 换设备时云端资料会写进 localStorage，这里把它同步到界面（别打断正在输入的昵称）
+    setInterval(function(){
+      var p = jget(PROF_KEY, null);
+      if(!p || !p.onboarded) return;
+      if(JSON.stringify(p) === JSON.stringify(prof)) return;
+      var nick = panel && panel.querySelector('#kbp-nick');
+      if(nick && document.activeElement === nick) return;
+      prof = Object.assign(prof, p);
+      renderHead(); renderStats();
+    }, 4000);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();

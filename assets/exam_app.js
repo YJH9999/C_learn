@@ -616,11 +616,31 @@ function buildSheet(mode){
   }
   host.innerHTML=h;
 }
+/* 打印前等 KaTeX 字体真正就绪：卷面平时 display:none，字体不会加载，
+   直接 print() 会打出缺字的公式。先离屏显示（.ps-prep）触发加载，再打印。 */
+var KATEX_FONTS=['KaTeX_Main','KaTeX_Math','KaTeX_AMS','KaTeX_Caligraphic','KaTeX_Fraktur',
+  'KaTeX_SansSerif','KaTeX_Script','KaTeX_Size1','KaTeX_Size2','KaTeX_Size3','KaTeX_Size4','KaTeX_Typewriter'];
+function printAfterFonts(){
+  var wrap=document.getElementById('print-wrap');
+  if(wrap) wrap.classList.add('ps-prep');
+  var jobs=[];
+  if(document.fonts && document.fonts.load && document.fonts.ready){
+    KATEX_FONTS.forEach(function(f){ try{ jobs.push(document.fonts.load('16px "'+f+'"').catch(function(){})); }catch(e){} });
+    jobs.push(document.fonts.ready);
+  }
+  function done(){
+    if(wrap) wrap.classList.remove('ps-prep');
+    try{ window.print(); }catch(e){}
+  }
+  Promise.all(jobs).then(function(){ return new Promise(function(r){ setTimeout(r,150); }); }).then(done).catch(done);
+  if(wrap) setTimeout(function(){ wrap.classList.remove('ps-prep'); }, 30000);
+  window.addEventListener('afterprint', function once(){ if(wrap) wrap.classList.remove('ps-prep'); window.removeEventListener('afterprint', once); });
+}
 function doPrint(mode){
   if(mode==='answers' && !TH.paper) return alert('还没有试卷');
   if(mode==='wrong' && !lget('ex-th-wrong',[]).length) return alert('错题本是空的');
   buildSheet(mode);
-  setTimeout(function(){ window.print(); }, 350);
+  printAfterFonts();
 }
 
 /* ---- 不作答直接看答案：不计分、不入错题本 ---- */

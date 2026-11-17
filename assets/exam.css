@@ -278,6 +278,11 @@ select.ex-num{width:auto}
    打印 / 导出（答卷、作答记录、错题本共用）
    ========================================================================== */
 #print-wrap{display:none}
+/* 打印前的准备态：离屏可见，用来触发 KaTeX 字体加载（display:none 不会加载字体） */
+@media screen{
+  #print-wrap.ps-prep{display:block!important;position:fixed;left:-200vw;top:0;width:190mm;
+    opacity:0;pointer-events:none;z-index:-1}
+}
 @media print{
   @page{margin:20mm 18mm}
   html,body{background:#fff!important;color:#000!important}

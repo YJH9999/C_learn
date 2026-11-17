@@ -328,7 +328,7 @@
       +'</div>'
       +'<div class="kb-msg" id="kb-sync-msg"></div>'
       +'<details class="kb-guide" id="kb-sync-guide">'
-      +'<summary>第一次用？令牌创建完整步骤（约 1 分钟）</summary>'
+      +'<summary>第一次用？令牌怎么建 · 换设备怎么登（约 1 分钟）</summary>'
       +'<p class="kb-h">第 1 步：创建令牌（二选一，推荐前者）</p>'
       +'<ul>'
       +'<li><b>细粒度令牌</b>：打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>'
@@ -345,8 +345,26 @@
       +'<p class="kb-h">第 3 步：验证一下</p>'
       +'<p class="kb-note">收藏一个知识点或做一道题，再打开 <a href="https://github.com/settings/gists" target="_blank" rel="noopener">github.com/settings/gists</a>，'
       +'能看到 <code>kb-sync-store</code> 这个私密 Gist 就说明同步已生效。</p>'
+      +'<p class="kb-h">换设备 / 第二台设备：不用新建令牌</p>'
+      +'<ul>'
+      +'<li>同一个令牌可以在任意多台设备上重复使用：在新设备打开本站，粘贴<b>同一个</b>令牌登录即可。</li>'
+      +'<li><b>不需要点 Regenerate，也不用每台设备各建一个。</b>令牌只是一把钥匙，数据在你账号的私有 Gist 里，三站共用同一把。</li>'
+      +'</ul>'
+      +'<p class="kb-h">什么时候才需要重新生成</p>'
+      +'<ul>'
+      +'<li><b>令牌到期</b>（创建时设的有效期到了）→ 在同一页面点 <b>Generate new token</b> 建一把新的，旧的自然失效。</li>'
+      +'<li><b>令牌泄露 / 想作废</b> → 点 <b>Regenerate</b>：立刻换钥匙，<b>旧令牌马上失效</b>，所有设备都要回来重新粘贴新的。</li>'
+      +'<li>重新生成或删除令牌都<b>不影响</b> Gist 里的数据，只是换钥匙，记录不会丢。</li>'
+      +'</ul>'
+      +'<p class="kb-h">多设备 · 换账号 · 退出登录</p>'
+      +'<ul>'
+      +'<li>多台设备可以同时登录，各自改动都会上传；同一条记录冲突时以最后修改的为准，不会互相清空。</li>'
+      +'<li>换账号：先「退出登录」，再粘贴另一个账号的令牌；两个账号的数据互不相通。</li>'
+      +'<li>退出登录（面板右下角那颗按钮）只清这台设备的令牌，云端数据保留，下次粘贴同一个令牌就能拿回来。</li>'
+      +'<li>想彻底删除：GitHub → Your gists → 删掉 <code>kb-sync-store</code>。</li>'
+      +'</ul>'
       +'<p class="kb-note">还没有 GitHub 账号？先到 <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> 免费注册一个（邮箱即可）。<br>'
-      +'每个账号各建自己的令牌，互不影响；令牌只存在这台设备的浏览器里，数据写进你自己账号下的私有 Gist。换设备粘贴同一个令牌即可恢复。</p>'
+      +'每个账号各建自己的令牌，互不影响；令牌只存在这台设备的浏览器里，数据写进你自己账号下的私有 Gist。</p>'
       +'</details>'
       +'<div class="kb-tip">把页面链接后加 <code>?sync=1</code> 发给别人，打开就直达这个登录面板并展开引导。</div>';
     document.body.appendChild(m);
@@ -392,7 +410,6 @@
     st.user = ls(UK) || '';
     setState();
     var gd=document.getElementById('kb-sync-guide');
-    if(gd && !st.token) gd.open=true;
     if(/[?&]sync=1(&|$)/.test(location.search)) setTimeout(openModal, 300);
     if(st.token){
       setState();
