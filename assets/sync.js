@@ -277,6 +277,8 @@
       '.kb-btn.pri:hover{opacity:.9;color:#fff}\n'+
       '.kb-msg{font-size:11.5px;color:var(--ink2,var(--fg-2,#6e6e73));min-height:18px;margin-top:6px;word-break:break-word}\n'+
       '.kb-msg.err{color:#eb4d3d}\n'+
+      '.kb-tokhint{font-size:10.5px;color:var(--ink3,var(--fg-3,#aeaeb2));line-height:1.6;margin:-3px 0 2px}\n'+
+      '.kb-tokhint b{color:var(--warn,#d98324)}\n'+
       '.kb-tip{font-size:11px;color:var(--ink3,var(--fg-3,#aeaeb2));border-top:1px dashed var(--line,#e8e8ec);\n'+
       '  padding-top:9px;margin-top:8px;line-height:1.65}\n'+
       '.kb-tip a{color:var(--acc,var(--ac,#3478f6))}\n'+
@@ -321,6 +323,7 @@
       +'<div class="kb-sub">用 GitHub 账号登录，错题本与收藏存进你名下的私有 Gist；三个站点共用同一个登录。换设备粘贴同一个令牌即可，不用新建。</div>'
       +'<div class="kb-row">账号：<b id="kb-sync-user">未登录</b><span style="flex:1"></span><span id="kb-sync-time">尚未同步</span></div>'
       +'<input id="kb-sync-tok" type="password" placeholder="粘贴 GitHub 令牌（ghp_… 或 github_pat_…）" autocomplete="off" spellcheck="false">'
+      +'<div class="kb-tokhint">提示：<b>令牌只在生成那一屏显示一次</b>，之后页面上只剩 Regenerate，原值再也看不到 —— 生成后请立刻复制保存。</div>'
       +'<div class="kb-btns">'
       +'<button class="kb-btn pri" id="kb-sync-login" type="button">保存并登录</button>'
       +'<button class="kb-btn" id="kb-sync-now" type="button">立即同步</button>'
@@ -335,11 +338,18 @@
       +'<ul>'
       +'<li>Token name 随便填（如 <code>kb-sync</code>），Expiration 选 <b>1 年</b>（Custom → 一年后的日期）</li>'
       +'<li>往下拉到 Account permissions → 找到 <b>Gists</b> → 设为 <b>Read and write</b>（只开这一项，其余保持 No access）</li>'
-      +'<li>点 <b>Add permissions</b>，再点页面底部 <b>Generate token</b> → 复制 <code>github_pat_…</code></li>'
+      +'<li>点 <b>Add permissions</b>，再点页面底部 <b>Generate token</b> → 复制 <code>github_pat_…</code>（<b>只显示这一次</b>，马上存好）</li>'
       +'</ul>'
       +'</li>'
       +'<li><b>或者经典令牌</b>：打开 <a href="https://github.com/settings/tokens/new?scopes=gist" target="_blank" rel="noopener">github.com/settings/tokens/new?scopes=gist</a>'
-      +' → 只勾 <code>gist</code> → Generate token → 复制 <code>ghp_…</code></li>'
+      +' → 只勾 <code>gist</code> → Generate token → 复制 <code>ghp_…</code>（<b>只显示这一次</b>）</li>'
+      +'</ul>'
+      +'<p class="kb-h">⚠ 令牌只显示一次，之后再也看不到原值</p>'
+      +'<ul>'
+      +'<li>GitHub 只在点 <b>Generate token</b> 后的那一屏显示令牌明文，<b>关掉就永久看不到</b>；之后打开这个令牌的详情页，只有 <b>Regenerate token</b> 和 <b>Delete</b>，没有任何「查看」按钮。</li>'
+      +'<li>所以拿到令牌就<b>立刻复制、存进密码管理器 / 加密笔记 / 系统备忘录</b>。换设备时用的就是这串原文，本站只在这台设备的浏览器里留一份。</li>'
+      +'<li>已经找不到了：<b>无法找回</b>。在该页面点 <b>Regenerate token</b> 换一把新的（<b>旧令牌立即失效</b>），把新的存好，再到每台设备重新粘贴一次。</li>'
+      +'<li>Regenerate 只是换钥匙，<b>不影响</b> Gist 里的错题本、收藏、头像昵称，数据不会丢。</li>'
       +'</ul>'
       +'<p class="kb-h">第 2 步：粘贴到上面的输入框 → 点「保存并登录」</p>'
       +'<p class="kb-h">第 3 步：验证一下</p>'
@@ -349,6 +359,7 @@
       +'<ul>'
       +'<li>同一个令牌可以在任意多台设备上重复使用：在新设备打开本站，粘贴<b>同一个</b>令牌登录即可。</li>'
       +'<li><b>不需要点 Regenerate，也不用每台设备各建一个。</b>令牌只是一把钥匙，数据在你账号的私有 Gist 里，三站共用同一把。</li>'
+      +'<li>前提是<b>你还留着那串原文</b>——GitHub 页面上看不到它，只有当初存下来的那份能用。</li>'
       +'</ul>'
       +'<p class="kb-h">什么时候才需要重新生成</p>'
       +'<ul>'
