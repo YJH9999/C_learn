@@ -436,7 +436,7 @@
     var ob = obRoot(
       '<h3>登录 GitHub，跨设备同步</h3>'
       +'<p class="ob-sub">做题记录、错题本、收藏、头像昵称都跟着账号走，手机 / 平板 / 电脑共用一次登录。'
-      +'不登录也能正常用，数据只留在这台设备。</p>'
+      +'<b>换设备只要粘贴同一个令牌，不用新建。</b>不登录也能正常用，数据只留在这台设备。</p>'
       +'<input class="ob-tok" id="ob-tok" type="password" autocomplete="off" spellcheck="false"'
       +' placeholder="粘贴 GitHub 令牌（ghp_… / github_pat_…）">'
       +'<div class="ob-syncrow">'

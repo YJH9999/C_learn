@@ -318,7 +318,7 @@
     card.id='kb-sync-card';
     card.innerHTML=
       '<h3>跨设备同步</h3>'
-      +'<div class="kb-sub">用 GitHub 账号登录，错题本与收藏存进你名下的私有 Gist；三个站点共用同一个登录。</div>'
+      +'<div class="kb-sub">用 GitHub 账号登录，错题本与收藏存进你名下的私有 Gist；三个站点共用同一个登录。换设备粘贴同一个令牌即可，不用新建。</div>'
       +'<div class="kb-row">账号：<b id="kb-sync-user">未登录</b><span style="flex:1"></span><span id="kb-sync-time">尚未同步</span></div>'
       +'<input id="kb-sync-tok" type="password" placeholder="粘贴 GitHub 令牌（ghp_… 或 github_pat_…）" autocomplete="off" spellcheck="false">'
       +'<div class="kb-btns">'
