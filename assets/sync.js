@@ -1,8 +1,9 @@
 /* =============================================================================
-   kb-sync.js · 跨设备同步（GitHub 账号 + 私有 Gist）
-   —— 只在浏览器跑：登录一次（粘贴 GitHub 令牌），数据存进你账号下一个私有 Gist
-   —— 三站共用同一个令牌与 Gist（同域 localStorage 共享），各站数据分文件存放
-   —— 同步范围：做题记录 / 错题本 / 收藏（主题、目录展开、阅读进度属于设备偏好，不同步）
+   sync.js · 跨设备同步（Supabase 账号 + 数据库）
+   —— 邮箱 + 密码注册/登录，数据存 Supabase 表 public.user_progress
+   —— 三站共用同一个账号（同域 localStorage 共享），各站数据按 key 前缀区分
+   —— 同步范围：做题记录 / 错题本 / 收藏 / 试卷记录 / 头像昵称 / 字号
+   —— 安全：publishable key 是公开的，真正的隔离靠表上的 Row Level Security
    ============================================================================= */
 (function(){
   var S = document.currentScript || (function(){
@@ -19,11 +20,18 @@
     c : { keys:['ex-th-wrong','c-kb-favs','kb-prof'], prefix:'c_',  skip:['c_dark','ex-th-last'] }
   }[SITE] || { keys:[], prefix:SITE+'_', skip:[] };
 
-  var TK='kb-sync-token', GK='kb-sync-gist', UK='kb-sync-user';
-  var MK='kb-sync-meta-'+SITE, SK='kb-sync-snap-'+SITE;
-  var API='https://api.github.com';
+  /* ---------- Supabase 配置 ----------
+     publishable key 放在前端是正常做法（它只代表"这个项目"，不代表某个用户）；
+     数据能不能被读到，由数据库表上的 RLS 策略决定。 */
+  var SB_URL = 'https://vgdtbnypvamsgpwmmnye.supabase.co';
+  var SB_KEY = 'sb_publishable_Y448FC-dVLIHajn8iIfWlw_XuazubUI';
+  var TB     = 'user_progress';
 
-  var st = { token:'', gist:'', user:'', busy:false, dirty:false, lastSync:0, applying:false };
+  var SES='kb-sb-session';
+  var MK='kb-sync-meta-'+SITE, SK='kb-sync-snap-'+SITE;
+
+  var st = { token:'', refresh:'', exp:0, uid:'', user:'', busy:false, dirty:false,
+             lastSync:0, applying:false, recovery:false };
 
   function ls(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
@@ -37,7 +45,7 @@
     try{
       for(i=0;i<localStorage.length;i++){
         var k=localStorage.key(i);
-        if(k && k.indexOf(CONF.prefix)===0 && k.indexOf('kb-sync-')!==0
+        if(k && k.indexOf(CONF.prefix)===0 && k.indexOf('kb-sync-')!==0 && k.indexOf('kb-sb-')!==0
            && CONF.skip.indexOf(k)<0) out[k]=1;
       }
     }catch(e){}
@@ -45,20 +53,21 @@
   }
 
   /* ---------- 状态提示 ---------- */
-  var btn, dot, lab, modal, msgEl, userEl, tokEl, timeEl, outEl;
+  var btn, dot, lab, modal, msgEl, userEl, timeEl, outEl, mailEl, pwdEl, loginEl, signupEl, forgetEl;
   function setState(){
     if(!btn) return;
-    var on = !!st.token && !!st.user;
-    btn.title = on ? ('已登录 '+st.user+' · 点击管理同步') : '跨设备同步（登录 GitHub）';
+    var on = !!st.user && !!st.token;
+    btn.title = on ? ('已登录 '+st.user+' · 点击管理同步') : '跨设备同步（登录账号）';
     if(dot) dot.className = 'kb-dot' + (st.busy?' busy':(on?' on':''));
     if(lab) lab.textContent = on ? '已同步' : '同步';
-    if(userEl) userEl.textContent = on ? ('@'+st.user) : '未登录';
+    if(userEl) userEl.textContent = on ? st.user : '未登录';
     if(timeEl) timeEl.textContent = st.lastSync ? ('上次同步：'+new Date(st.lastSync).toLocaleString()) : '尚未同步';
     /* 第三颗按钮随登录状态换身份：已登录=退出登录，未登录=关闭面板 */
     if(outEl){
       outEl.textContent = on ? '退出登录' : '关闭';
-      outEl.title = on ? '清除这台设备的登录令牌（云端数据保留）' : '关闭这个面板';
+      outEl.title = on ? '清除这台设备的登录状态（云端数据保留）' : '关闭这个面板';
     }
+    if(loginEl) loginEl.textContent = st.recovery ? '保存新密码' : (on ? '切换账号登录' : '登录');
   }
   function toast(t){
     var el=document.getElementById('kb-sync-toast');
@@ -71,62 +80,86 @@
     msgEl.textContent=t||''; msgEl.className='kb-msg'+(err?' err':'');
   }
 
-  /* ---------- GitHub API ---------- */
-  function api(path, opt){
-    opt = opt || {};
-    opt.headers = Object.assign({
-      'Authorization':'token '+st.token,
-      'Accept':'application/vnd.github+json'
-    }, opt.headers||{});
-    return fetch(API+path, opt).then(function(r){
-      if(r.status===401) throw new Error('令牌无效或已过期，请重新登录');
-      if(r.status===403) throw new Error('GitHub 接口频率超限，请稍后再试');
-      if(!r.ok) throw new Error('GitHub 接口错误 '+r.status);
-      return r.headers.get('content-type') && r.headers.get('content-type').indexOf('json')>=0 ? r.json() : r.text();
-    });
+  /* ---------- HTTP：Auth + PostgREST ---------- */
+  function errMsg(status, d){
+    var code = (d && (d.error_code || d.error)) || '';
+    var raw  = (d && (d.msg || d.message || d.error_description)) || '';
+    if(code==='invalid_credentials' || /invalid login credentials/i.test(raw)) return '邮箱或密码不正确';
+    if(code==='email_not_confirmed' || /email not confirmed/i.test(raw)) return '邮箱还没确认：去收件箱点确认链接，或在后台关掉「Confirm email」';
+    if(code==='user_already_exists' || /already registered/i.test(raw)) return '这个邮箱已经注册过了，直接点「登录」';
+    if(code==='weak_password' || /password should be at least/i.test(raw)) return '密码太短，至少 6 位';
+    if(code==='over_email_send_rate_limit' || status===429) return '操作太频繁，等几分钟再试（免费版邮箱发送有配额）';
+    if(status===401) return '登录已过期，请重新登录';
+    if(status===403) return '没有权限（检查数据表的 RLS 策略是否建好）';
+    if(status===409 || code==='42P10' || /no unique or exclusion constraint/i.test(raw)) return '数据表缺少唯一约束 (user_id, key)：按说明重建表或补一条唯一索引';
+    if(status===404 || code==='42P01' || /does not exist/i.test(raw)) return '数据表还不存在：先在 Supabase 建 user_progress 表';
+    return raw || ('请求失败（'+status+'）');
   }
-
-  /* ---------- 找 / 建 Gist ---------- */
-  function ensureGist(){
-    var saved=ls(GK);
-    if(saved) return Promise.resolve(saved);
-    var desc='kb-sync-store · 知识库账号同步（自动生成，请勿删除）';
-    return api('/gists?per_page=100').then(function(list){
-      var hit=(list||[]).filter(function(g){ return g.description && g.description.indexOf('kb-sync-store')===0; })[0];
-      if(hit){ lsSet(GK,hit.id); return hit.id; }
-      var body={ description:desc, public:false, files:{} };
-      body.files[SITE+'.json']={ content: JSON.stringify({site:SITE,updatedAt:0,keys:{}} ,null,1) };
-      return api('/gists',{ method:'POST', body:JSON.stringify(body) }).then(function(g){
-        lsSet(GK,g.id); return g.id;
+  function req(path, opt){
+    opt = opt || {};
+    var h = {'apikey':SB_KEY, 'Content-Type':'application/json'};
+    if(opt.headers) for(var k in opt.headers) h[k]=opt.headers[k];
+    if(opt.auth!==false) h['Authorization'] = 'Bearer ' + (opt.token || st.token || SB_KEY);
+    return fetch(SB_URL+path, { method:opt.method||'GET', headers:h, body:opt.body }).then(function(r){
+      return r.text().then(function(t){
+        var d=null; try{ d = t? JSON.parse(t) : null; }catch(e){ d=t; }
+        if(!r.ok){ var e=new Error(errMsg(r.status,d)); e.status=r.status; throw e; }
+        return d;
       });
     });
   }
 
-  /* ---------- 拉取：远端较新的键写入本地 ---------- */
+  /* ---------- 会话 ---------- */
+  function loadSes(){
+    try{ var s=JSON.parse(ls(SES)||'null'); if(!s||!s.a||!s.r) return null; return s; }catch(e){ return null; }
+  }
+  function saveSes(){
+    lsSet(SES, JSON.stringify({a:st.token,r:st.refresh,e:st.exp,u:st.user,id:st.uid}));
+  }
+  function applySes(d){
+    st.token = d.access_token;
+    if(d.refresh_token) st.refresh = d.refresh_token;
+    st.exp = Date.now() + ((+d.expires_in||3600) * 1000);
+    if(d.user){ st.uid = d.user.id || st.uid; st.user = d.user.email || st.user; }
+    saveSes(); setState();
+  }
+  function clearSes(){
+    lsDel(SES);
+    st.token=''; st.refresh=''; st.exp=0; st.uid=''; st.user='';
+    setState();
+  }
+  /* 令牌 1 小时过期：快到期就先刷新（refresh_token 会轮换，必须存新的） */
+  function ready(){
+    if(!st.refresh) return Promise.reject(new Error('请先登录'));
+    if(Date.now() < st.exp - 90000) return Promise.resolve();
+    return req('/auth/v1/token?grant_type=refresh_token', {
+      method:'POST', auth:false, body:JSON.stringify({refresh_token:st.refresh})
+    }).then(applySes).catch(function(){
+      clearSes(); throw new Error('登录已过期，请重新登录');
+    });
+  }
+
+  /* ---------- 拉取：远端较新的行写入本地 ---------- */
   function pull(silent){
     if(!st.token || st.busy) return Promise.resolve(false);
     st.busy=true; setState();
-    return ensureGist().then(function(gid){
-      st.gist=gid;
-      return api('/gists/'+gid);
-    }).then(function(g){
-      var f=g.files && g.files[SITE+'.json'];
-      if(!f || !f.content) return false;
-      var remote=null;
-      try{ remote=JSON.parse(f.content); }catch(e){ return false; }
+    return ready().then(function(){
+      return req('/rest/v1/'+TB+'?select=key,value,ts&limit=2000');
+    }).then(function(rows){
       var meta=jget(MK,{}), snap=jget(SK,{}), changed=[];
       st.applying=true;
-      Object.keys(remote.keys||{}).forEach(function(k){
-        var r=remote.keys[k];
-        if(!r || r.v==null) return;
-        if((r.t||0) > (meta[k]||0)){
-          if(ls(k)!==r.v){
+      (rows||[]).forEach(function(r){
+        var k=r.key; if(!k) return;
+        var rt=+r.ts||0, v=r.value;
+        if(v==null) return;
+        if(rt > (meta[k]||0)){
+          if(ls(k)!==v){
             /* 覆盖前先留本地备份（键名 kb-sync-bak-<原键>），可用控制台恢复 */
             var old=ls(k);
             if(old!=null && ls('kb-sync-bak-'+k)==null) lsSet('kb-sync-bak-'+k, old);
-            lsSet(k,r.v); changed.push(k);
+            lsSet(k,v); changed.push(k);
           }
-          meta[k]=r.t||0; snap[k]=r.v;
+          meta[k]=rt; snap[k]=v;
         }
       });
       st.applying=false;
@@ -140,7 +173,7 @@
           return el;
         })();
         tEl.textContent='云端有更新（'+changed.length+' 项），点此刷新页面';
-        tEl.classList.add('on','click'); 
+        tEl.classList.add('on','click');
         tEl.onclick=function(){ location.reload(); };
         clearTimeout(pull._tt); pull._tt=setTimeout(function(){ tEl.classList.remove('on','click'); },8000);
         if(btn) btn.classList.add('kb-hasnew');
@@ -148,36 +181,38 @@
       return changed.length>0;
     }).catch(function(e){
       showMsg(e.message,true);
-      if(/401|令牌/.test(e.message)){ lsDel(TK); st.token=''; st.user=''; }
+      if(e.status===401 || /登录已过期/.test(e.message)) clearSes();
       return false;
     }).then(function(r){ st.busy=false; setState(); return r; });
   }
 
-  /* ---------- 推送：本地改动（对比上次同步快照）写回 Gist ---------- */
+  /* ---------- 推送：本地改动（对比上次同步快照）写回数据库 ---------- */
   function push(){
     if(!st.token || st.busy) return Promise.resolve(false);
-    var keys=syncKeys(), snap=jget(SK,{}), meta=jget(MK,{}), now=Date.now(), payload={}, dirty=false;
-    keys.forEach(function(k){
+    var snap=jget(SK,{}), now=Date.now(), rows=[], upd={};
+    syncKeys().forEach(function(k){
       var v=ls(k); if(v==null) return;
-      var t=meta[k]||0;
-      if(v!==snap[k]){ t=now; dirty=true; }
-      payload[k]={ v:v, t:t };
+      if(v===snap[k]) return;                    /* 只有真的变了才上传 */
+      rows.push({ user_id:st.uid, key:k, value:v, ts:now });
+      upd[k]={ t:now, v:v };
     });
-    if(!dirty){ st.dirty=false; return Promise.resolve(false); }
+    if(!rows.length){ st.dirty=false; return Promise.resolve(false); }
     st.busy=true; setState();
-    return ensureGist().then(function(gid){
-      st.gist=gid;
-      var body={ files:{} };
-      body.files[SITE+'.json']={ content: JSON.stringify({ site:SITE, updatedAt:now, keys:payload },null,1) };
-      return api('/gists/'+gid,{ method:'PATCH', body:JSON.stringify(body) });
+    return ready().then(function(){
+      return req('/rest/v1/'+TB+'?on_conflict=user_id,key', {
+        method:'POST',
+        headers:{ 'Prefer':'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify(rows)
+      });
     }).then(function(){
-      Object.keys(payload).forEach(function(k){ meta[k]=payload[k].t; snap[k]=payload[k].v; });
-      lsSet(MK,JSON.stringify(meta)); lsSet(SK,JSON.stringify(snap));
+      var meta=jget(MK,{}), snap2=jget(SK,{});
+      Object.keys(upd).forEach(function(k){ meta[k]=upd[k].t; snap2[k]=upd[k].v; });
+      lsSet(MK,JSON.stringify(meta)); lsSet(SK,JSON.stringify(snap2));
       st.dirty=false; st.lastSync=Date.now(); setState();
       return true;
     }).catch(function(e){
       showMsg(e.message,true);
-      if(/401|令牌/.test(e.message)){ lsDel(TK); st.token=''; st.user=''; }
+      if(e.status===401 || /登录已过期/.test(e.message)) clearSes();
       return false;
     }).then(function(r){ st.busy=false; setState(); return r; });
   }
@@ -188,48 +223,100 @@
     schedulePush._t=setTimeout(function(){ push(); }, 1500);
   }
 
-  /* ---------- 登录 ----------
+  /* ---------- 登录 / 注册 ----------
+     o = { email, password, mode:'in'|'up' }
      cb 可选：{ msg(t,err), done(user), fail(msg) }
      传 cb 时不自动关闭弹窗（供首次引导等外部界面内嵌使用） */
-  function login(tok, cb){
+  function login(o, cb){
+    o = o || {};
     function notify(kind, a, b){
       if(!cb) return;
       var f = (typeof cb==='function') ? (kind==='msg'?cb:null) : cb[kind];
       if(typeof f==='function') f(a,b);
     }
-    tok=(tok||'').trim();
     function say(t,err){ showMsg(t,err); notify('msg', t, !!err); }
-    if(!tok) return say('请粘贴 GitHub 令牌',true);
-    st.token=tok; say('正在验证令牌…');
-    return api('/user').then(function(u){
-      st.user=u.login; lsSet(TK,tok); lsSet(UK,u.login);
-      return ensureGist();
-    }).then(function(){
-      say('登录成功，正在拉取云端数据…');
-      return pull();
-    }).then(function(){
-      say(st.gist?('已连接 Gist '+st.gist):'登录成功');
-      setState();
-      notify('done', st.user);
-      if(!cb) setTimeout(function(){ closeModal(); }, 700);
-      toast('同步已开启');
-      /* 登录后把本地已有数据先推一次，避免云端为空看不到本地记录 */
-      return push();
+
+    /* 恢复密码模式：这颗按钮变成"保存新密码" */
+    if(st.recovery) return changePassword(o.password, cb);
+
+    var email=(o.email||'').trim().toLowerCase(), pwd=o.password||'', up=(o.mode==='up');
+    if(!email) return say('请填写邮箱',true);
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return say('邮箱格式不对',true);
+    if(!pwd) return say('请填写密码',true);
+    if(pwd.length<6) return say('密码至少 6 位',true);
+
+    say(up ? '正在创建账号…' : '正在登录…');
+    st.busy=true; setState();
+
+    var p = up
+      ? req('/auth/v1/signup', { method:'POST', auth:false, body:JSON.stringify({email:email,password:pwd}) })
+      : req('/auth/v1/token?grant_type=password', { method:'POST', auth:false, body:JSON.stringify({email:email,password:pwd}) });
+
+    return p.then(function(d){
+      if(!d || !d.access_token){
+        /* 项目开了「Confirm email」：注册后要先点邮件里的链接 */
+        var m='注册成功，但还要确认邮箱：去收件箱点确认链接即可自动登录（没收到看垃圾箱）';
+        say(m,false); notify('fail', m); return;
+      }
+      applySes(d);
+      st.busy = false;                 /* pull/push 自己会置忙，这里先放行 */
+      say('登录成功，正在同步数据…');
+      return pull().then(function(){ return push(); }).then(function(){
+        say('已登录 '+(st.user||'')+'，数据已同步', false);
+        setState(); notify('done', st.user);
+        if(!cb) setTimeout(closeModal, 700);
+        toast('已开启跨设备同步');
+      });
     }).catch(function(e){
-      say(e.message,true);
-      st.token=''; st.user=''; lsDel(TK);
-      setState();
-      notify('fail', e.message);
-    });
+      say(e.message||'登录失败',true);
+      clearSes(); notify('fail', e.message||'登录失败');
+    }).then(function(){ st.busy=false; setState(); });
   }
+
+  /* 忘记密码：发一封重置邮件，点链接回到本站设新密码 */
+  function recover(email){
+    email=(email||'').trim().toLowerCase();
+    if(!email){ showMsg('先在上面填好邮箱，再点「忘记密码」',true); return Promise.resolve(); }
+    showMsg('正在发送重置邮件…');
+    return req('/auth/v1/recover', {
+      method:'POST', auth:false,
+      body:JSON.stringify({ email:email, redirect_to: location.origin+location.pathname })
+    }).then(function(){
+      showMsg('重置邮件已发送：到邮箱点链接，回到本站设置新密码（没收到看垃圾箱）');
+    }).catch(function(e){ showMsg(e.message,true); });
+  }
+  function changePassword(pwd, cb){
+    function notify(kind,a){ if(cb && typeof cb[kind]==='function') cb[kind](a); }
+    if(!pwd || pwd.length<6){ showMsg('密码至少 6 位',true); notify('fail','密码至少 6 位'); return; }
+    showMsg('正在保存新密码…');
+    return req('/auth/v1/user', { method:'PUT', body:JSON.stringify({password:pwd}) })
+      .then(function(){
+        st.recovery=false; setRecoveryUI(false); saveSes();
+        showMsg('密码已更新，正在同步数据…');
+        return pull().then(function(){ return push(); }).then(function(){
+          showMsg('密码已更新，已登录 '+(st.user||''), false);
+          notify('done', st.user);
+          if(!cb) setTimeout(closeModal, 800);
+        });
+      }).catch(function(e){
+        showMsg(e.message||'保存失败',true); notify('fail', e.message);
+      });
+  }
+
   function logout(){
     /* 未登录时这颗按钮的语义是「关闭这个界面」 */
     if(!st.token && !st.user){ showMsg(''); closeModal(); return; }
-    lsDel(TK); lsDel(GK); lsDel(UK); lsDel(MK); lsDel(SK);
-    st.token=''; st.user=''; st.gist=''; st.lastSync=0; st.dirty=false;
-    setState(); showMsg('已退出登录（本地数据保留，云端不移除）');
+    var hadTok = st.token;
+    clearSes();
+    lsDel(MK); lsDel(SK);
+    st.lastSync=0; st.dirty=false; st.recovery=false;
+    setRecoveryUI(false);
+    setState(); showMsg('已退出登录（本地数据保留，云端数据还在）');
     toast('已退出登录');
     setTimeout(closeModal, 700);
+    if(hadTok){
+      req('/auth/v1/logout', { method:'POST', token:hadTok }).catch(function(){});
+    }
   }
 
   /* ---------- UI ---------- */
@@ -242,6 +329,17 @@
     if(modal) modal.classList.remove('on');
     var mk=document.getElementById('kb-sync-mask'); if(mk) mk.classList.remove('on');
     if(btn) btn.classList.remove('kb-hasnew');
+  }
+  function setRecoveryUI(on){
+    st.recovery = !!on;
+    if(mailEl){
+      mailEl.style.display = on ? 'none' : '';
+      mailEl.value = on ? '' : mailEl.value;
+    }
+    if(pwdEl) pwdEl.placeholder = on ? '输入新密码（至少 6 位）' : '密码（至少 6 位）';
+    if(signupEl) signupEl.style.display = on ? 'none' : '';
+    if(forgetEl) forgetEl.style.display = on ? 'none' : '';
+    setState();
   }
 
   function buildUI(){
@@ -266,9 +364,11 @@
       '#kb-sync-card h3{margin:0 0 4px;font-size:15px}\n'+
       '.kb-sub{font-size:11.5px;color:var(--ink2,var(--fg-2,#6e6e73));margin-bottom:12px}\n'+
       '.kb-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;color:var(--ink2,var(--fg-2,#6e6e73))}\n'+
-      '.kb-row b{color:var(--hi,var(--ink,#1c1c1e))}\n'+
-      '#kb-sync-tok{width:100%;box-sizing:border-box;border:1px solid var(--line2,var(--line-2,#dddde2));border-radius:10px;\n'+
-      '  padding:9px 11px;font:12px/1.5 ui-monospace,Consolas,monospace;background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;margin-bottom:8px}\n'+
+      '.kb-row b{color:var(--hi,var(--ink,#1c1c1e));max-width:62%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n'+
+      '.kb-in{width:100%;box-sizing:border-box;border:1px solid var(--line2,var(--line-2,#dddde2));border-radius:10px;\n'+
+      '  padding:9px 11px;font:12px/1.5 inherit;background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;margin-bottom:8px}\n'+
+      '.kb-in:focus{outline:none;border-color:var(--acc,var(--ac,#3478f6));background:var(--panel-solid,var(--panel,#fff))}\n'+
+      '#kb-sync-mail{font:12px/1.5 ui-monospace,Consolas,monospace}\n'+
       '.kb-btns{display:flex;gap:8px;margin:10px 0 4px}\n'+
       '.kb-btn{flex:1;border:1px solid var(--line2,var(--line-2,#dddde2));border-radius:10px;background:var(--panel2,var(--panel-2,#f6f6f8));\n'+
       '  padding:9px 0;font:600 12.5px inherit;font-family:inherit;cursor:pointer;color:var(--hi,var(--ink,#1c1c1e))}\n'+
@@ -279,6 +379,8 @@
       '.kb-msg.err{color:#eb4d3d}\n'+
       '.kb-tokhint{font-size:10.5px;color:var(--ink3,var(--fg-3,#aeaeb2));line-height:1.6;margin:-3px 0 2px}\n'+
       '.kb-tokhint b{color:var(--warn,#d98324)}\n'+
+      '.kb-forget{font-size:11px;color:var(--acc,var(--ac,#3478f6));cursor:pointer;text-decoration:none;user-select:none}\n'+
+      '.kb-forget:hover{text-decoration:underline}\n'+
       '.kb-tip{font-size:11px;color:var(--ink3,var(--fg-3,#aeaeb2));border-top:1px dashed var(--line,#e8e8ec);\n'+
       '  padding-top:9px;margin-top:8px;line-height:1.65}\n'+
       '.kb-tip a{color:var(--acc,var(--ac,#3478f6))}\n'+
@@ -320,64 +422,54 @@
     card.id='kb-sync-card';
     card.innerHTML=
       '<h3>跨设备同步</h3>'
-      +'<div class="kb-sub">用 GitHub 账号登录，错题本与收藏存进你名下的私有 Gist；三个站点共用同一个登录。换设备粘贴同一个令牌即可，不用新建。</div>'
+      +'<div class="kb-sub">用邮箱注册一个账号，做题记录、错题本、收藏、试卷记录、头像昵称都存进你自己的账号里；三个站点共用同一个账号，换设备只要登录一次，不用再管令牌。</div>'
       +'<div class="kb-row">账号：<b id="kb-sync-user">未登录</b><span style="flex:1"></span><span id="kb-sync-time">尚未同步</span></div>'
-      +'<input id="kb-sync-tok" type="password" placeholder="粘贴 GitHub 令牌（ghp_… 或 github_pat_…）" autocomplete="off" spellcheck="false">'
-      +'<div class="kb-tokhint">提示：<b>令牌只在生成那一屏显示一次</b>，之后页面上只剩 Regenerate，原值再也看不到 —— 生成后请立刻复制保存。</div>'
+      +'<input class="kb-in" id="kb-sync-mail" type="email" placeholder="邮箱" autocomplete="username" spellcheck="false">'
+      +'<input class="kb-in" id="kb-sync-pwd" type="password" placeholder="密码（至少 6 位）" autocomplete="current-password">'
       +'<div class="kb-btns">'
-      +'<button class="kb-btn pri" id="kb-sync-login" type="button">保存并登录</button>'
+      +'<button class="kb-btn pri" id="kb-sync-login" type="button">登录</button>'
+      +'<button class="kb-btn" id="kb-sync-signup" type="button">注册新账号</button>'
+      +'</div>'
+      +'<div class="kb-btns" style="margin-top:2px">'
       +'<button class="kb-btn" id="kb-sync-now" type="button">立即同步</button>'
       +'<button class="kb-btn" id="kb-sync-out" type="button">退出登录</button>'
       +'</div>'
+      +'<div style="text-align:right"><a class="kb-forget" id="kb-sync-forget">忘记密码？</a></div>'
       +'<div class="kb-msg" id="kb-sync-msg"></div>'
       +'<details class="kb-guide" id="kb-sync-guide">'
-      +'<summary>第一次用？令牌怎么建 · 换设备怎么登（约 1 分钟）</summary>'
-      +'<p class="kb-h">第 1 步：创建令牌（二选一，推荐前者）</p>'
+      +'<summary>第一次用？怎么注册 · 换设备 · 数据存在哪</summary>'
+      +'<p class="kb-h">第 1 步 · 注册（约 20 秒）</p>'
       +'<ul>'
-      +'<li><b>细粒度令牌</b>：打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>'
+      +'<li>上面填一个常用邮箱 + 自己想的密码（<b>至少 6 位</b>），点 <b>「注册新账号」</b>。</li>'
+      +'<li>如果弹出"要确认邮箱"，去收件箱点那封确认链接，回到本站就自动登录了（没收到先看垃圾箱）。</li>'
+      +'<li>已经有账号了：填同样的邮箱密码，点 <b>「登录」</b> 就行。</li>'
+      +'</ul>'
+      +'<p class="kb-h">第 2 步 · 换设备 / 第二台设备</p>'
       +'<ul>'
-      +'<li>Token name 随便填（如 <code>kb-sync</code>），Expiration 选 <b>1 年</b>（Custom → 一年后的日期）</li>'
-      +'<li>往下拉到 Account permissions → 找到 <b>Gists</b> → 设为 <b>Read and write</b>（只开这一项，其余保持 No access）</li>'
-      +'<li>点 <b>Add permissions</b>，再点页面底部 <b>Generate token</b> → 复制 <code>github_pat_…</code>（<b>只显示这一次</b>，马上存好）</li>'
+      +'<li>在新设备打开本站 → 右上角「同步」→ 填<b>同一个邮箱和密码</b> → 登录。</li>'
+      +'<li>错题本、收藏、试卷记录、头像昵称会自动拉下来；<b>三个站点共用这一个账号</b>，各站分别登录一次即可（同一浏览器只要一次）。</li>'
+      +'<li>不需要记住令牌、不需要复制粘贴任何密钥 —— 这就是换掉 GitHub 令牌的原因。</li>'
       +'</ul>'
-      +'</li>'
-      +'<li><b>或者经典令牌</b>：打开 <a href="https://github.com/settings/tokens/new?scopes=gist" target="_blank" rel="noopener">github.com/settings/tokens/new?scopes=gist</a>'
-      +' → 只勾 <code>gist</code> → Generate token → 复制 <code>ghp_…</code>（<b>只显示这一次</b>）</li>'
-      +'</ul>'
-      +'<p class="kb-h">⚠ 令牌只显示一次，之后再也看不到原值</p>'
+      +'<p class="kb-h">忘记密码怎么办</p>'
       +'<ul>'
-      +'<li>GitHub 只在点 <b>Generate token</b> 后的那一屏显示令牌明文，<b>关掉就永久看不到</b>；之后打开这个令牌的详情页，只有 <b>Regenerate token</b> 和 <b>Delete</b>，没有任何「查看」按钮。</li>'
-      +'<li>所以拿到令牌就<b>立刻复制、存进密码管理器 / 加密笔记 / 系统备忘录</b>。换设备时用的就是这串原文，本站只在这台设备的浏览器里留一份。</li>'
-      +'<li>已经找不到了：<b>无法找回</b>。在该页面点 <b>Regenerate token</b> 换一把新的（<b>旧令牌立即失效</b>），把新的存好，再到每台设备重新粘贴一次。</li>'
-      +'<li>Regenerate 只是换钥匙，<b>不影响</b> Gist 里的错题本、收藏、头像昵称，数据不会丢。</li>'
+      +'<li>填好邮箱 → 点下面的 <b>「忘记密码？」</b> → 去邮箱点链接 → 回到本站直接输新密码。</li>'
+      +'<li>邮件用的是免费的默认发信服务，<b>1 小时最多几封</b>；点太多次会被限流，等几分钟再试。</li>'
       +'</ul>'
-      +'<p class="kb-h">第 2 步：粘贴到上面的输入框 → 点「保存并登录」</p>'
-      +'<p class="kb-h">第 3 步：验证一下</p>'
-      +'<p class="kb-note">收藏一个知识点或做一道题，再打开 <a href="https://github.com/settings/gists" target="_blank" rel="noopener">github.com/settings/gists</a>，'
-      +'能看到 <code>kb-sync-store</code> 这个私密 Gist 就说明同步已生效。</p>'
-      +'<p class="kb-h">换设备 / 第二台设备：不用新建令牌</p>'
+      +'<p class="kb-h">数据到底存在哪</p>'
       +'<ul>'
-      +'<li>同一个令牌可以在任意多台设备上重复使用：在新设备打开本站，粘贴<b>同一个</b>令牌登录即可。</li>'
-      +'<li><b>不需要点 Regenerate，也不用每台设备各建一个。</b>令牌只是一把钥匙，数据在你账号的私有 Gist 里，三站共用同一把。</li>'
-      +'<li>前提是<b>你还留着那串原文</b>——GitHub 页面上看不到它，只有当初存下来的那份能用。</li>'
+      +'<li>存在 Supabase 的 <code>public.user_progress</code> 表，每行是 <code>user_id + key + value + ts</code>。</li>'
+      +'<li>表上开了 <b>RLS（行级安全）</b>：数据库层面强制"只能读写 user_id = 自己"的行，别人即使拿到链接也看不到你的记录。</li>'
+      +'<li>本站前端只带 publishable key，它只能证明"来自哪个项目"，不能绕过 RLS 读别人的数据。</li>'
       +'</ul>'
-      +'<p class="kb-h">什么时候才需要重新生成</p>'
+      +'<p class="kb-h">多设备冲突 · 退出登录</p>'
       +'<ul>'
-      +'<li><b>令牌到期</b>（创建时设的有效期到了）→ 在同一页面点 <b>Generate new token</b> 建一把新的，旧的自然失效。</li>'
-      +'<li><b>令牌泄露 / 想作废</b> → 点 <b>Regenerate</b>：立刻换钥匙，<b>旧令牌马上失效</b>，所有设备都要回来重新粘贴新的。</li>'
-      +'<li>重新生成或删除令牌都<b>不影响</b> Gist 里的数据，只是换钥匙，记录不会丢。</li>'
+      +'<li>多台设备可同时登录，各自改动都会上传；同一条记录冲突时以<b>最后修改的</b>为准（按时间戳 ts 判定），不会互相清空。</li>'
+      +'<li>「退出登录」只清这台设备的登录状态，云端数据保留，下次登录还在。</li>'
+      +'<li>要彻底删除：到 Supabase 控制台把那张表里自己的行删掉，或在 Authentication → Users 删掉该用户（连带删除）。</li>'
       +'</ul>'
-      +'<p class="kb-h">多设备 · 换账号 · 退出登录</p>'
-      +'<ul>'
-      +'<li>多台设备可以同时登录，各自改动都会上传；同一条记录冲突时以最后修改的为准，不会互相清空。</li>'
-      +'<li>换账号：先「退出登录」，再粘贴另一个账号的令牌；两个账号的数据互不相通。</li>'
-      +'<li>退出登录（面板右下角那颗按钮）只清这台设备的令牌，云端数据保留，下次粘贴同一个令牌就能拿回来。</li>'
-      +'<li>想彻底删除：GitHub → Your gists → 删掉 <code>kb-sync-store</code>。</li>'
-      +'</ul>'
-      +'<p class="kb-note">还没有 GitHub 账号？先到 <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> 免费注册一个（邮箱即可）。<br>'
-      +'每个账号各建自己的令牌，互不影响；令牌只存在这台设备的浏览器里，数据写进你自己账号下的私有 Gist。</p>'
+      +'<p class="kb-note">邮箱只用来登录，本站不会给你发任何推广邮件；密码经 Supabase Auth 加密存储，本站拿不到明文。</p>'
       +'</details>'
-      +'<div class="kb-tip">把页面链接后加 <code>?sync=1</code> 发给别人，打开就直达这个登录面板并展开引导。</div>';
+      +'<div class="kb-tip">把页面链接后加 <code>?sync=1</code> 发给别人，打开就直达这个登录面板。</div>';
     document.body.appendChild(m);
     document.body.appendChild(card);
 
@@ -386,17 +478,26 @@
     lab=document.getElementById('kb-sync-t');
     modal=card; msgEl=document.getElementById('kb-sync-msg');
     userEl=document.getElementById('kb-sync-user'); timeEl=document.getElementById('kb-sync-time');
-    tokEl=document.getElementById('kb-sync-tok');
+    mailEl=document.getElementById('kb-sync-mail'); pwdEl=document.getElementById('kb-sync-pwd');
+    loginEl=document.getElementById('kb-sync-login'); signupEl=document.getElementById('kb-sync-signup');
+    forgetEl=document.getElementById('kb-sync-forget');
     outEl=document.getElementById('kb-sync-out');
+
+    function cred(mode){ return { email:mailEl.value, password:pwdEl.value, mode:mode }; }
 
     btn.addEventListener('click',function(e){
       e.stopPropagation(); openModal();
     });
     m.addEventListener('click',closeModal);
-    document.getElementById('kb-sync-login').addEventListener('click',function(){ login(tokEl.value); });
-    document.getElementById('kb-sync-now').addEventListener('click',function(){ push().then(function(){ pull(); toast('已同步'); }); });
-    document.getElementById('kb-sync-out').addEventListener('click',logout);
-    tokEl.addEventListener('keydown',function(e){ if(e.key==='Enter') login(tokEl.value); });
+    loginEl.addEventListener('click',function(){ login(cred('in')); });
+    signupEl.addEventListener('click',function(){ login(cred('up')); });
+    document.getElementById('kb-sync-now').addEventListener('click',function(){
+      push().then(function(){ return pull(); }).then(function(){ toast(st.user?'已同步':'未登录'); });
+    });
+    outEl.addEventListener('click',logout);
+    forgetEl.addEventListener('click',function(){ recover(mailEl.value); });
+    mailEl.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); pwdEl.focus(); } });
+    pwdEl.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); login(cred('in')); } });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
     m.classList.remove('on');
   }
@@ -408,33 +509,68 @@
       localStorage.setItem = function(k,v){
         orig(k,v);
         if(st.applying || CONF.skip.indexOf(k)>=0) return;
-        if(CONF.keys.indexOf(k)>=0 || (k && k.indexOf(CONF.prefix)===0 && k.indexOf('kb-sync-')!==0)) schedulePush();
+        if(CONF.keys.indexOf(k)>=0 || (k && k.indexOf(CONF.prefix)===0 && k.indexOf('kb-sync-')!==0 && k.indexOf('kb-sb-')!==0)) schedulePush();
       };
     }catch(e){}
+  }
+
+  /* ---------- 邮件链接回跳：确认邮箱 / 重置密码 ---------- */
+  function hashParams(){
+    var h=(location.hash||'').replace(/^#/,''); if(!h) return null;
+    var o={}, ps=h.split('&');
+    for(var i=0;i<ps.length;i++){
+      var j=ps[i].indexOf('=');
+      if(j>0) o[decodeURIComponent(ps[i].slice(0,j))]=decodeURIComponent(ps[i].slice(j+1));
+    }
+    return o;
+  }
+  function handleHash(){
+    var p=hashParams();
+    if(!p || !p.access_token) return Promise.resolve(false);
+    var t=p.type||'';
+    if(t!=='recovery' && t!=='signup' && t!=='magiclink' && t!=='email_change') return Promise.resolve(false);
+    st.token=p.access_token;
+    st.refresh=p.refresh_token||'';
+    st.exp=Date.now()+((+p.expires_in||3600)*1000);
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+    return req('/auth/v1/user').then(function(u){
+      st.uid=(u&&u.id)||''; st.user=(u&&u.email)||'';
+      if(t==='recovery'){
+        st.recovery=true;
+        openModal(); setRecoveryUI(true);
+        showMsg('设置一个新密码，保存后即登录', false);
+        if(pwdEl) pwdEl.focus();
+        return true;
+      }
+      saveSes(); setState();
+      toast('邮箱已确认，已登录');
+      return pull().then(function(){ return push(); }).then(function(){ return true; });
+    }).catch(function(){ return false; });
   }
 
   /* ---------- 启动 ---------- */
   function boot(){
     buildUI();
     hookWrites();
-    st.token = ls(TK) || '';
-    st.user = ls(UK) || '';
+    var s=loadSes();
+    if(s){ st.token=s.a; st.refresh=s.r; st.exp=s.e||0; st.user=s.u||''; st.uid=s.id||''; }
     setState();
-    var gd=document.getElementById('kb-sync-guide');
     if(/[?&]sync=1(&|$)/.test(location.search)) setTimeout(openModal, 300);
-    if(st.token){
-      setState();
-      pull(true);
-      setInterval(function(){ pull(true); }, 60000);
-      document.addEventListener('visibilitychange',function(){
-        if(document.visibilityState==='visible') pull(true);
-      });
-      window.addEventListener('focus',function(){ pull(true); });
-    }
+    handleHash().then(function(){
+      if(st.token && st.user && !st.recovery){
+        pull(true);
+        setInterval(function(){ pull(true); }, 60000);
+        document.addEventListener('visibilitychange',function(){
+          if(document.visibilityState==='visible') pull(true);
+        });
+        window.addEventListener('focus',function(){ pull(true); });
+      }
+    });
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
   else boot();
 
-  window.KBSync = { pull:pull, push:push, logout:logout, login:login, state:st, close:closeModal,
+  window.KBSync = { pull:pull, push:push, logout:logout, login:login, recover:recover,
+    changePassword:changePassword, state:st, close:closeModal,
     logged:function(){ return !!st.token && !!st.user; } };
 })();

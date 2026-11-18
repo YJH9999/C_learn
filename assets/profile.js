@@ -1,7 +1,7 @@
 /* =============================================================================
    kb-profile.js · 右上角个人信息面板
    —— 头像 / 昵称 / 使用时长 / 做题数 / 错题数 / 正确率
-   —— 全部数据存 localStorage：未登录也在统计，登录同步后自动进 Gist
+   —— 全部数据存 localStorage：未登录也在统计，登录同步后自动进账号（Supabase）
    —— 依赖：sync.js（若存在则共用同一套同步机制）
    ============================================================================= */
 (function(){
@@ -183,13 +183,16 @@
       '.ob-state.ok{color:#1a9e4b}\n'+
       '.ob-state.err{color:#eb4d3d}\n'+
       '.ob-tok{width:100%;box-sizing:border-box;border:1px solid var(--line,var(--line-2,#e2e2e6));border-radius:9px;\n'+
-      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;font:11.5px/1.6 ui-monospace,Consolas,monospace;padding:9px 10px}\n'+
+      '  background:var(--panel2,var(--panel-2,#f6f6f8));color:inherit;font:12px/1.6 inherit;padding:9px 10px;margin-bottom:7px}\n'+
+      '.ob-tok.ob-mail{font:11.5px/1.6 ui-monospace,Consolas,monospace}\n'+
       '.ob-tok:focus{outline:none;border-color:var(--acc,var(--ac,#3b82f6));background:var(--panel-solid,var(--panel,#fff))}\n'+
       '.ob-tok:disabled{opacity:.62}\n'+
       '.ob-syncrow{display:flex;align-items:center;gap:9px;margin-top:9px}\n'+
       '.ob-login{flex:1;border:1px solid var(--acc,var(--ac,#3b82f6));border-radius:9px;background:transparent;\n'+
       '  color:var(--acc,var(--ac,#3b82f6));padding:9px 0;font:600 12.5px inherit;cursor:pointer}\n'+
       '.ob-login:hover{background:var(--acc-soft,rgba(59,130,246,.1))}\n'+
+      '.ob-login.pri{background:var(--acc,var(--ac,#3b82f6));color:#fff}\n'+
+      '.ob-login.pri:hover{filter:brightness(1.06);color:#fff}\n'+
       '.ob-login:disabled{opacity:.55;cursor:default}\n'+
       '.ob-link{font-size:10.5px;color:var(--acc,var(--ac,#3b82f6));text-decoration:none;white-space:nowrap}\n'+
       '.ob-link:hover{text-decoration:underline}\n'+
@@ -241,7 +244,7 @@
     if(nick && document.activeElement!==nick && nick.value !== (prof.name||'')) nick.value = prof.name||'';
     nick && (nick.placeholder = '点这里改昵称');
     var sub = panel.querySelector('#kbp-sub');
-    if(sub) sub.textContent = u ? ('@'+u+' · 已登录同步') : '未登录 · 数据只在这台设备';
+    if(sub) sub.textContent = u ? (u + ' · 已登录同步') : '未登录 · 数据只在这台设备';
     if(btn) btn.innerHTML = avatarHTML(26).replace('width:26px;height:26px','width:26px;height:26px');
   }
 
@@ -379,48 +382,36 @@
   var COLORS = ['#3b82f6','#6366f1','#8b5cf6','#ec4899','#ef4444','#f59e0b','#10b981','#14b8a6','#64748b'];
 
   function guideHTML(){
-    return '<details class="ob-guide"><summary>第一次用？令牌怎么建 · 换设备怎么办</summary>'
-      +'<p class="ob-g-h">第 1 步 · 创建令牌（二选一，推荐前者）</p>'
+    return '<details class="ob-guide"><summary>第一次用？怎么注册 · 换设备 · 数据存在哪</summary>'
+      +'<p class="ob-g-h">第 1 步 · 注册一个账号（约 20 秒）</p>'
       +'<ul>'
-      +'<li><b>细粒度令牌</b>：打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">personal-access-tokens/new</a>'
-      +'<ul>'
-      +'<li>Token name 随意（如 <code>kb-sync</code>），Expiration 选 <b>1 年</b>（Custom → 一年后的日期）</li>'
-      +'<li>Account permissions → 找到 <b>Gists</b> → 设为 <b>Read and write</b>（只开这一项）</li>'
-      +'<li>点 <b>Add permissions</b>，再点页面底部 <b>Generate token</b> → 复制 <code>github_pat_…</code>（<b>只显示这一次</b>，马上存好）</li>'
-      +'</ul></li>'
-      +'<li><b>或者经典令牌</b>：打开 <a href="https://github.com/settings/tokens/new?scopes=gist" target="_blank" rel="noopener">tokens/new?scopes=gist</a>'
-      +' → 只勾 <code>gist</code> → Generate token → 复制 <code>ghp_…</code>（<b>只显示这一次</b>）</li>'
+      +'<li>上面填一个常用邮箱 + 自己想的密码（<b>至少 6 位</b>），点 <b>「注册」</b>。</li>'
+      +'<li>如果提示要确认邮箱，去收件箱点那封链接，回到本站就自动登录了（没收到先看垃圾箱）。</li>'
+      +'<li>已经有账号：填同样的邮箱密码，点 <b>「登录」</b>。</li>'
       +'</ul>'
-      +'<p class="ob-g-h">⚠ 令牌只显示一次，之后再也看不到原值</p>'
+      +'<p class="ob-g-h">第 2 步 · 换设备 / 第二台设备</p>'
       +'<ul>'
-      +'<li>GitHub 只在点 <b>Generate token</b> 后的那一屏显示令牌明文，<b>关掉就永久看不到</b>；之后再打开这个令牌的页面，只有 <b>Regenerate token</b> 和 <b>Delete</b>，没有「查看」按钮。</li>'
-      +'<li>所以拿到令牌就<b>立刻复制、存进密码管理器 / 加密笔记 / 系统备忘录</b>。换设备时用的就是这串原文，本站只在这台设备的浏览器里留一份。</li>'
-      +'<li>已经找不到了：<b>无法找回</b>。在该页面点 <b>Regenerate token</b> 换一把新的（<b>旧令牌立即失效</b>），把新的存好，再到每台设备重新粘贴一次。</li>'
-      +'<li>Regenerate 只是换钥匙，<b>不影响</b> Gist 里的错题本、收藏、头像昵称，数据不会丢。</li>'
+      +'<li>在新设备打开本站 → 右上角「同步」→ 填<b>同一个邮箱和密码</b> → 登录，记录自动拉下来。</li>'
+      +'<li><b>不用令牌、不用 Regenerate、不用复制任何密钥</b> —— 这就是从 GitHub 令牌换过来的原因。</li>'
+      +'<li>三个站点共用同一个账号，每站第一次打开时各登录一次即可。</li>'
       +'</ul>'
-      +'<p class="ob-g-h">第 2 步 · 粘贴到上面的输入框 → 点「登录并同步」</p>'
-      +'<p class="ob-g-h">第 3 步 · 验证一下</p>'
-      +'<p>做一道题或收藏一个知识点，再打开 <a href="https://github.com/settings/gists" target="_blank" rel="noopener">github.com/settings/gists</a>，'
-      +'能看到 <code>kb-sync-store</code> 这个私密 Gist 就说明同步已生效。</p>'
-      +'<p class="ob-g-h">换设备 / 第二台设备：不用新建令牌</p>'
+      +'<p class="ob-g-h">忘记密码</p>'
       +'<ul>'
-      +'<li>同一个令牌可以在任意多台设备上重复使用：在新设备打开本站，粘贴<b>同一个</b>令牌登录即可。</li>'
-      +'<li><b>不需要点 Regenerate，也不用每台设备各建一个。</b>令牌只是一把钥匙，数据在你账号的私有 Gist 里。</li>'
-      +'<li>前提是<b>你还留着那串原文</b>——GitHub 页面上看不到它，只有当初存下来的那份能用。</li>'
+      +'<li>在「同步」面板里填好邮箱 → 点 <b>「忘记密码？」</b> → 邮箱里点链接 → 回到本站直接输新密码。</li>'
+      +'<li>免费发信服务有配额（大约每小时几封），点太多次会被限流，等几分钟再试。</li>'
       +'</ul>'
-      +'<p class="ob-g-h">什么时候才需要重新生成</p>'
+      +'<p class="ob-g-h">数据存在哪 · 别人能看到吗</p>'
       +'<ul>'
-      +'<li><b>令牌到期</b>（创建时设的有效期到了）→ 在同一个页面点 <b>Generate new token</b> 建一把新的，旧令牌自动失效。</li>'
-      +'<li><b>令牌泄露 / 想作废</b> → 点 <b>Regenerate</b>：立刻换钥匙，<b>旧令牌马上失效</b>，所有设备都要回来重新粘贴新的。</li>'
-      +'<li>重新生成或删除令牌都<b>不影响</b> Gist 里的数据，只是换钥匙，数据不会丢。</li>'
+      +'<li>存在 Supabase 数据库的 <code>public.user_progress</code> 表：一行是 <code>user_id + key + value + ts</code>。</li>'
+      +'<li>表上开了 <b>RLS（行级安全）</b>：数据库层面强制只能读写 <code>user_id = 自己</code> 的行。别人拿到项目地址和公开 key 也读不到你的记录。</li>'
+      +'<li>密码由 Supabase Auth 加密存储，本站拿不到明文；邮箱只用来登录，不会收到任何推广邮件。</li>'
       +'</ul>'
       +'<p class="ob-g-h">多设备 · 换账号 · 退出登录</p>'
       +'<ul>'
-      +'<li>多台设备可以同时登录，各自改动都会上传；同一条记录冲突时以最后修改的为准，不会互相清空。</li>'
-      +'<li>换账号：先「退出登录」，再粘贴另一个账号的令牌；两个账号的数据互不相通。</li>'
-      +'<li>退出登录只清这台设备的令牌，云端数据保留，下次粘贴同一个令牌就能拿回来。</li>'
-      +'<li>想彻底删除：GitHub → Your gists → 删掉 <code>kb-sync-store</code>。</li>'
-      +'<li>令牌只存在这台设备的浏览器里，别人用自己账号登录看不到你的数据。</li>'
+      +'<li>多台设备可同时登录，各自改动都会上传；同一条记录冲突时以最后修改的为准，不会互相清空。</li>'
+      +'<li>换账号：先「退出登录」，再用另一个邮箱登录；两个账号的数据互不相通。</li>'
+      +'<li>退出登录只清这台设备的登录状态，云端数据保留，下次登录还在。</li>'
+      +'<li>要彻底删除：Supabase 控制台里删掉该用户（连带删除其数据）。</li>'
       +'</ul>'
       +'</details>';
   }
@@ -440,19 +431,18 @@
     showLoginGate();
   }
 
-  /* ① 登录卡：只有 GitHub 登录这一步，不登录就跳过 */
+  /* ① 登录卡：只有注册/登录这一步，不登录就跳过 */
   function showLoginGate(){
     if (document.getElementById('kbp-ob')) return;
     var ob = obRoot(
-      '<h3>登录 GitHub，跨设备同步</h3>'
-      +'<p class="ob-sub">做题记录、错题本、收藏、头像昵称都跟着账号走，手机 / 平板 / 电脑共用一次登录。'
-      +'<b>换设备只要粘贴同一个令牌，不用新建。</b>不登录也能正常用，数据只留在这台设备。</p>'
-      +'<input class="ob-tok" id="ob-tok" type="password" autocomplete="off" spellcheck="false"'
-      +' placeholder="粘贴 GitHub 令牌（ghp_… / github_pat_…）">'
-      +'<p class="ob-tokhint">提示：<b>令牌只在生成那一屏显示一次</b>，之后页面上只剩 Regenerate，原值再也看不到 —— 生成后请立刻复制保存。</p>'
+      '<h3>注册 / 登录，跨设备同步</h3>'
+      +'<p class="ob-sub">做题记录、错题本、收藏、试卷记录、头像昵称都跟着账号走，手机 / 平板 / 电脑共用一次登录。'
+      +'<b>换设备只要同一个邮箱密码，不用再管令牌。</b>不登录也能正常用，数据只留在这台设备。</p>'
+      +'<input class="ob-tok ob-mail" id="ob-mail" type="email" autocomplete="username" spellcheck="false" placeholder="邮箱">'
+      +'<input class="ob-tok" id="ob-pwd" type="password" autocomplete="current-password" placeholder="密码（至少 6 位）">'
       +'<div class="ob-syncrow">'
-      +'<button class="ob-login" id="ob-login" type="button">登录并同步</button>'
-      +'<a class="ob-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">创建令牌 ↗</a>'
+      +'<button class="ob-login pri" id="ob-login" type="button">登录</button>'
+      +'<button class="ob-login" id="ob-signup" type="button">注册</button>'
       +'</div>'
       +'<p class="ob-state" id="ob-state">未登录</p>'
       +guideHTML()
@@ -460,9 +450,11 @@
       +'<p class="ob-note">之后随时可以点右上角「同步」登录；已经登录过的话，资料会直接带过来。</p>'
     );
 
-    var tokEl = ob.querySelector('#ob-tok');
-    var lgBtn = ob.querySelector('#ob-login');
-    var stEl  = ob.querySelector('#ob-state');
+    var mailEl = ob.querySelector('#ob-mail');
+    var pwdEl  = ob.querySelector('#ob-pwd');
+    var lgBtn  = ob.querySelector('#ob-login');
+    var upBtn  = ob.querySelector('#ob-signup');
+    var stEl   = ob.querySelector('#ob-state');
     function state(cls, txt){ stEl.className = 'ob-state' + (cls ? ' ' + cls : ''); stEl.textContent = txt; }
 
     function next(){
@@ -476,20 +468,31 @@
       showProfileCard();
     }
 
-    lgBtn.onclick = function(){
+    function go(mode){
       if (!window.KBSync){ state('err', '同步模块未加载'); return; }
-      var v = tokEl.value.trim();
-      if (!v){ state('err', '请先粘贴令牌'); tokEl.focus(); return; }
-      lgBtn.disabled = true; lgBtn.textContent = '登录中…';
-      state('', '正在验证令牌…');
-      KBSync.login(v, {
+      var email = mailEl.value.trim(), pwd = pwdEl.value;
+      if (!email){ state('err', '请填邮箱'); mailEl.focus(); return; }
+      if (!pwd){ state('err', '请填密码'); pwdEl.focus(); return; }
+      if (pwd.length < 6){ state('err', '密码至少 6 位'); pwdEl.focus(); return; }
+      lgBtn.disabled = upBtn.disabled = true;
+      (mode === 'up' ? upBtn : lgBtn).textContent = '请稍候…';
+      state('', mode === 'up' ? '正在创建账号…' : '正在登录…');
+      KBSync.login({ email: email, password: pwd, mode: mode }, {
         msg: function(t, isErr){ state(isErr ? 'err' : '', t); },
-        done: function(u){ state('ok', '已登录 @' + u + '，正在同步资料…'); setTimeout(next, 400); },
-        fail: function(m){ lgBtn.disabled = false; lgBtn.textContent = '登录并同步'; state('err', m || '登录失败，请检查令牌'); }
+        done: function(u){ state('ok', '已登录 ' + u + '，正在同步资料…'); setTimeout(next, 400); },
+        fail: function(m){
+          lgBtn.disabled = upBtn.disabled = false;
+          lgBtn.textContent = '登录'; upBtn.textContent = '注册';
+          state('err', m || '登录失败，请检查邮箱和密码');
+        }
       });
-    };
-    tokEl.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); lgBtn.click(); } });
+    }
+    lgBtn.onclick = function(){ go('in'); };
+    upBtn.onclick = function(){ go('up'); };
+    mailEl.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); pwdEl.focus(); } });
+    pwdEl.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); go('in'); } });
     ob.querySelector('#ob-skip').onclick = next;
+    setTimeout(function(){ try{ mailEl.focus(); }catch(e){} }, 80);
   }
 
   /* ② 头像昵称卡（登录或跳过后才出现） */
