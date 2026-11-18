@@ -89,6 +89,8 @@
     if(code==='user_already_exists' || /already registered/i.test(raw)) return '这个邮箱已经注册过了，直接点「登录」';
     if(code==='weak_password' || /password should be at least/i.test(raw)) return '密码太短，至少 6 位';
     if(code==='over_email_send_rate_limit' || status===429) return '操作太频繁，等几分钟再试（免费版邮箱发送有配额）';
+    if(code==='42501' || /permission denied for table/i.test(raw)) return '数据库没给登录用户授权：把建表脚本最后那句 GRANT 再跑一遍';
+    if(code==='PGRST301' || /JWT expired/i.test(raw)) return '登录已过期，请重新登录';
     if(status===401) return '登录已过期，请重新登录';
     if(status===403) return '没有权限（检查数据表的 RLS 策略是否建好）';
     if(status===409 || code==='42P10' || /no unique or exclusion constraint/i.test(raw)) return '数据表缺少唯一约束 (user_id, key)：按说明重建表或补一条唯一索引';
@@ -181,7 +183,7 @@
       return changed.length>0;
     }).catch(function(e){
       showMsg(e.message,true);
-      if(e.status===401 || /登录已过期/.test(e.message)) clearSes();
+      if(/登录已过期/.test(e.message)) clearSes();
       return false;
     }).then(function(r){ st.busy=false; setState(); return r; });
   }
@@ -212,7 +214,7 @@
       return true;
     }).catch(function(e){
       showMsg(e.message,true);
-      if(e.status===401 || /登录已过期/.test(e.message)) clearSes();
+      if(/登录已过期/.test(e.message)) clearSes();
       return false;
     }).then(function(r){ st.busy=false; setState(); return r; });
   }
@@ -273,6 +275,12 @@
     }).then(function(){ st.busy=false; setState(); });
   }
 
+  /* 重置密码邮件的回跳地址：对齐 Supabase 里登记的站点根（如 https://xxx.github.io/GS_learn，不带末尾斜杠） */
+  function siteBase(){
+    var seg=(location.pathname||'/').split('/').filter(Boolean);
+    return seg.length ? (location.origin + '/' + seg[0]) : (location.origin + '/');
+  }
+
   /* 忘记密码：发一封重置邮件，点链接回到本站设新密码 */
   function recover(email){
     email=(email||'').trim().toLowerCase();
@@ -280,7 +288,7 @@
     showMsg('正在发送重置邮件…');
     return req('/auth/v1/recover', {
       method:'POST', auth:false,
-      body:JSON.stringify({ email:email, redirect_to: location.origin+location.pathname })
+      body:JSON.stringify({ email:email, redirect_to: siteBase() })
     }).then(function(){
       showMsg('重置邮件已发送：到邮箱点链接，回到本站设置新密码（没收到看垃圾箱）');
     }).catch(function(e){ showMsg(e.message,true); });
