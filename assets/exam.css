@@ -313,3 +313,48 @@ select.ex-num{width:auto}
   .cmp .no{color:#c62828;font-weight:700}
   .ps-sol-head{text-align:center;font-size:15pt;margin:0 0 14px;page-break-before:always}
 }
+
+/* ============ MOBILE-ENHANCE-EXAM:BEGIN 备考中心 移动/平板排版 ============
+   追加到 exam.css（在 style.css 之后加载，用来覆盖 exam.css 自己的 flex 规则） */
+
+@media(max-width:1024px){
+  /* 快速套卷：2×2 等宽，不再 3+1 */
+  .preset-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .preset-row .chip{width:100%}
+  /* 题型与题量：3 列 */
+  .type-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .type-cell{min-width:0}
+  /* 章节 / 来源：3 列 */
+  .chip-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .chip-row .chip{width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+
+@media(max-width:640px){
+  .xmain{padding:16px 14px 84px}
+  .preset-row{grid-template-columns:1fr 1fr;gap:9px}
+  .preset-row .chip{padding:9px 10px;font-size:12.5px;line-height:1.45}
+  .preset-row .chip small{font-size:11px}
+
+  .type-row{grid-template-columns:1fr 1fr;gap:9px}
+  .type-cell{padding:10px 11px;border-radius:12px}
+  .type-cell .t-name{font-size:12.5px}
+  .type-cell .t-name small{display:block;margin-top:2px}
+  .type-cell:nth-child(5){grid-column:1/-1}
+  .stepper button{width:28px;height:28px}
+
+  .chip-row{grid-template-columns:1fr 1fr;gap:8px}
+  .chip-row .chip{padding:9px 8px;font-size:12.5px;border-radius:11px}
+
+  .frow.end{gap:10px;align-items:center}
+  .frow.end .btn{flex:1;padding:10px 0}
+  .paper-total{flex:1 1 100%;font-size:12px}
+  #history-list:empty::before{content:'还没有试卷记录，组一份试试 →';display:block;
+    padding:16px 0 6px;text-align:center;font-size:12.5px;color:var(--ink3,var(--fg-3,#8e8e93))}
+
+  .run-actions{bottom:10px;border-radius:12px;padding:9px 12px}
+  .res-item{padding:12px}
+  .panel{border-radius:14px}
+  .xhead h1{font-size:20.5px}
+  .q-item .ans-btn{min-width:0;flex:1}
+}
+/* ============ MOBILE-ENHANCE-EXAM:END ============ */

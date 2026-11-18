@@ -202,6 +202,10 @@
       '.ob-skip{width:100%;border:0;background:transparent;color:var(--ink2,var(--fg-2,#6e6e73));\n'+
       '  font:600 12px inherit;padding:10px 0 2px;cursor:pointer}\n'+
       '.ob-skip:hover{color:var(--acc,var(--ac,#3b82f6))}\n'+
+      '.ob-back{width:100%;margin-top:12px;border:0;border-top:1px dashed var(--line,var(--line-2,#e8e8ec));\n'+
+      '  background:transparent;color:var(--acc,var(--ac,#3b82f6));font:600 11.5px inherit;\n'+
+      '  padding:11px 0 0;cursor:pointer;text-align:center}\n'+
+      '.ob-back:hover{text-decoration:underline}\n'+
       /* ---- 首次引导：折叠说明 ---- */
       '.ob-guide{margin-top:12px;border-top:1px dashed var(--line,var(--line-2,#e8e8ec));padding-top:10px;\n'+
       '  font-size:11px;color:var(--ink2,var(--fg-2,#6e6e73));line-height:1.7}\n'+
@@ -217,6 +221,8 @@
       '  padding:1px 3px;border-radius:4px}\n'+
       '.ob-guide a{color:var(--acc,var(--ac,#3b82f6));text-decoration:none}\n'+
       '.ob-guide a:hover{text-decoration:underline}\n'+
+      '.x-hint{font-size:11px;color:var(--ink3,var(--fg-3,#8e8e93));text-align:right;\n'+
+      '  margin:-4px 2px 12px;line-height:1.5;letter-spacing:.3px}\n'+
       '@media print{body{zoom:1!important}}\n';
     document.head.appendChild(st);
   }
@@ -283,6 +289,7 @@
       '<div id="kbp-stats"></div>'+
       '<div class="kbp-foot">'+
         '<button class="kbp-btn2" id="kbp-sync" type="button">同步设置</button>'+
+        '<button class="kbp-btn2" id="kbp-theme" type="button">外观</button>'+
         '<button class="kbp-btn2" id="kbp-reset" type="button">重置统计</button>'+
       '</div>'+
       '<input type="file" id="kbp-file" accept="image/*" class="kbp-hide">';
@@ -312,6 +319,20 @@
       stat={t:0,n:0,ok:0,d:{},upd:Date.now()};
       dirty=true; flush(); renderStats();
     });
+
+    // 外观切换（手机上顶栏不显示主题按钮，收进这里）
+    var th = panel.querySelector('#kbp-theme');
+    if(th){
+      var paintTheme = function(){ th.textContent = document.body.classList.contains('dark') ? '外观 · 深' : '外观 · 浅'; };
+      paintTheme();
+      th.addEventListener('click', function(){
+        var was = document.body.classList.contains('dark');
+        var t = document.getElementById(was ? 'm-light' : 'm-dark');
+        if(t) t.click();
+        if(document.body.classList.contains('dark') === was) document.body.classList.toggle('dark');
+        paintTheme();
+      });
+    }
 
     btn.addEventListener('click', function(e){
       e.stopPropagation();
@@ -382,7 +403,7 @@
   var COLORS = ['#3b82f6','#6366f1','#8b5cf6','#ec4899','#ef4444','#f59e0b','#10b981','#14b8a6','#64748b'];
 
   function guideHTML(){
-    return '<details class="ob-guide"><summary>第一次用？怎么注册 · 换设备 · 数据存在哪</summary>'
+    return '<details class="ob-guide"><summary>第一次用？怎么注册 · 换设备 · 忘记密码</summary>'
       +'<p class="ob-g-h">第 1 步 · 注册一个账号（约 20 秒）</p>'
       +'<ul>'
       +'<li>上面填一个常用邮箱 + 自己想的密码（<b>至少 6 位</b>），点 <b>「注册」</b>。</li>'
@@ -399,12 +420,6 @@
       +'<ul>'
       +'<li>在「同步」面板里填好邮箱 → 点 <b>「忘记密码？」</b> → 邮箱里点链接 → 回到本站直接输新密码。</li>'
       +'<li>免费发信服务有配额（大约每小时几封），点太多次会被限流，等几分钟再试。</li>'
-      +'</ul>'
-      +'<p class="ob-g-h">数据存在哪 · 别人能看到吗</p>'
-      +'<ul>'
-      +'<li>存在 Supabase 数据库的 <code>public.user_progress</code> 表：一行是 <code>user_id + key + value + ts</code>。</li>'
-      +'<li>表上开了 <b>RLS（行级安全）</b>：数据库层面强制只能读写 <code>user_id = 自己</code> 的行。别人拿到项目地址和公开 key 也读不到你的记录。</li>'
-      +'<li>密码由 Supabase Auth 加密存储，本站拿不到明文；邮箱只用来登录，不会收到任何推广邮件。</li>'
       +'</ul>'
       +'<p class="ob-g-h">多设备 · 换账号 · 退出登录</p>'
       +'<ul>'
@@ -513,6 +528,7 @@
       +'<div class="kbp-swatches" id="ob-colors"></div>'
       +'<button class="ob-go" id="ob-go" type="button">保存并继续</button>'
       +'<p class="ob-note">昵称留空将使用默认的 Student；头像、昵称之后可以点右上角头像随时改。</p>'
+      +(!logged() ? '<button class="ob-back" id="ob-back" type="button">← 返回注册，顺便把记录同步到账号</button>' : '')
       +'<input type="file" id="ob-file" accept="image/*" class="kbp-hide">'
     );
 
@@ -570,11 +586,66 @@
       ob.remove();
       renderHead(); renderStats();
     };
+
+    // 先选了头像昵称、又想回去注册：把当前选择暂存，登录流程走完后资料卡会带回来
+    var bk = ob.querySelector('#ob-back');
+    if (bk) bk.onclick = function(){
+      prof.name = (nameEl.value || '').trim().slice(0,16) || 'Student';
+      prof.av = tmp.av; prof.color = tmp.color; prof.emoji = tmp.emoji;
+      saveProf();                    // 注意：不写 onboarded，回来时还会再问一次
+      ob.remove();
+      showLoginGate();
+    };
   }
 
   function saveProf(){
     lsSet(PROF_KEY, JSON.stringify(prof));
     // 主动触发一次同步（sync.js 的 hook 已监听 localStorage.setItem）
+  }
+
+  /* ---------- 手机端：表格放不下时提示可以左右滑 ---------- */
+  function hookTableHints(){
+    if(!(window.matchMedia && matchMedia('(max-width:640px)').matches)) return;
+    var scan = function(){
+      // 公式块：太宽需要横滑时改成左对齐，免得两端都被裁、不知道从哪读起
+      var fms = document.querySelectorAll('.fml');
+      for(var f=0;f<fms.length;f++){
+        fms[f].classList.toggle('fml-scroll', fms[f].scrollWidth > fms[f].clientWidth + 4);
+      }
+      var boxes = document.querySelectorAll('.tscroll');
+      for(var k=0;k<boxes.length;k++){
+        var box = boxes[k];
+        // 有的表格被压得太窄，单元格里的公式会溢出到格子外：让它按内容宽度展开，改为横滑
+        var tb = box.querySelector('table');
+        if(tb && tb.style.minWidth !== 'max-content'){
+          var cells = box.querySelectorAll('td,th'), cellOver = false;
+          for(var c=0;c<cells.length;c++){
+            if(cells[c].scrollWidth > cells[c].clientWidth + 2){ cellOver = true; break; }
+          }
+          if(cellOver) tb.style.minWidth = 'max-content';
+        }
+        var over = box.scrollWidth > box.clientWidth + 6;
+        var nx = box.nextElementSibling;
+        var has = nx && nx.className && String(nx.className).indexOf('x-hint') >= 0;
+        if(over && !has){
+          var d = document.createElement('div');
+          d.className = 'x-hint';
+          d.textContent = '← 表格可左右滑动 →';
+          box.parentNode.insertBefore(d, box.nextSibling);
+        }else if(!over && has){
+          nx.parentNode.removeChild(nx);
+        }
+      }
+    };
+    scan();
+    try{
+      var t = null;
+      var mo = new MutationObserver(function(){ clearTimeout(t); t = setTimeout(scan, 500); });
+      mo.observe(document.body, {childList:true, subtree:true});
+    }catch(e){}
+    window.addEventListener('resize', function(){
+      clearTimeout(window.__xh); window.__xh = setTimeout(scan, 350);
+    });
   }
 
   /* ---------- 进入备考中心后：未登录时提示同步（4s 内不重复） ---------- */
@@ -586,12 +657,11 @@
       if(logged()) return;
       var c = document.getElementById('kb-sync-card');
       if(c && c.classList.contains('on')) return; // 已经打开就别叠
-      var now = Date.now(), last = 0;
-      try{ last = +(sessionStorage.getItem('kb-sync-ask') || 0); }catch(e){}
-      if(now - last < 4000) return;
-      try{ sessionStorage.setItem('kb-sync-ask', String(now)); }catch(e){}
+      // 每个浏览器会话只提醒一次：刷新页面、来回切标签不再反复弹
+      try{ if(sessionStorage.getItem('kb-sync-ask')) return; }catch(e){}
+      try{ sessionStorage.setItem('kb-sync-ask', '1'); }catch(e){}
       askSync(0);
-    }, 900);
+    }, 1400);
   }
 
   function boot(){
@@ -599,6 +669,14 @@
     applyZoom();
     startTimer();
     hookExamCenter();
+    hookTableHints();
+    // 手机顶栏放不下长占位符，换成短文案
+    try{
+      if(window.matchMedia && matchMedia('(max-width:640px)').matches){
+        var qi = document.getElementById('q');
+        if(qi) qi.placeholder = '搜索';
+      }
+    }catch(e){}
     if(/[?&]me=1(&|$)/.test(location.search) && btn) setTimeout(function(){ btn.click(); }, 300);
     // 首次进入：先登录（可跳过），再设头像昵称
     if(!prof.onboarded) setTimeout(showOnboard, 420);

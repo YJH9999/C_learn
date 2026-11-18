@@ -1123,3 +1123,104 @@ header .fb-tip{font-size:10px;color:var(--fg-3)}
 .exam-dd .dd a>div{min-width:0}
 .exam-dd .dd a b{display:block;font-size:13px;font-weight:600;color:var(--fg);line-height:1.4}
 .exam-dd .dd a span{display:block;font-size:10.8px;color:var(--fg-3);line-height:1.5;white-space:normal}
+
+/* ================= MOBILE-ENHANCE:BEGIN 移动端 / 平板端增强（style.css） =================
+   只做覆盖、不改桌面端；三站共用同一份（GS / XD / C）。
+   目标：顶栏不被挤压换行、手机端控件瘦身、阅读区行宽舒适、表格可横滑。 */
+
+/* ---- 1. 顶栏：控件一律不换行、不被压窄 ---- */
+.top{gap:12px}
+.top .brand{flex:none;min-width:0}
+.top .brand>div{min-width:0}
+.top .brand b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .tb{white-space:nowrap;flex:none}
+.top .tools{flex:0 1 auto;flex-wrap:nowrap;margin-left:auto}
+.top .tools>*{flex:none}
+.top .seg{flex:none}
+.top .tabs{flex:none}
+.tab,#kb-sync-btn{white-space:nowrap}
+.srch{flex:1 1 auto}
+.srch input{text-overflow:ellipsis}
+
+/* 手机上把主题切换放进个人中心面板 */
+#kbp-theme{display:none}
+
+/* ---- 2. 平板（641–1024）：收起次要文字，给搜索留空间 ---- */
+@media(max-width:1024px){
+  .top{gap:8px;padding:0 12px}
+  .top .tb{padding:0 10px}
+  .main{max-width:760px}
+  #kbp-zoom span{display:none}          /* 字号控件只留 A− / A+ */
+  #kbp-zoom button{padding:5px 7px}
+  #kb-sync-t,.pdf-t{display:none}       /* 同步 / 导出 只留图标 */
+  .side{width:320px}
+  #ollist{display:none}
+  .pdf-item b{max-width:200px}
+  .tscroll th:first-child,.tscroll td:first-child{white-space:nowrap}
+}
+
+/* ---- 3. 手机（<=640）：顶栏瘦身 + 阅读节奏 ---- */
+@media(max-width:640px){
+  .top{gap:6px;padding:0 10px;height:52px}
+  .top .tb{height:30px;padding:0 9px;font-size:12px;border-radius:9px}
+  .top .brand{display:none}             /* 手机上让位给搜索与导航 */
+  .top>.tb{padding:0 7px}               /* exam 顶栏「← 知识库」只留箭头 */
+  .top>.tb span{display:none}
+  .seg{display:none}
+  #kbp-zoom{display:none}
+  .pdfbar{display:none}
+  #kb-sync-t{display:none}
+  .exam-dd span{display:none}
+  .fbar .fb-t{display:none}
+  .brand .lg{width:28px;height:28px;font-size:15px}
+  .srch{min-width:120px}
+  #kbp-panel{max-width:calc(100vw - 20px)}
+  .pdf-pop{top:46px}
+  #kbp-theme{display:block}
+
+  /* 正文：行宽、行距、标题字距 */
+  .main{padding:16px 15px 84px;max-width:none}
+  .main p{line-height:1.82}
+  .main h1{font-size:21.5px;letter-spacing:0;line-height:1.4}
+  .main h2{font-size:18px;margin:1.5em 0 .6em;padding-left:10px;border-left-width:3px}
+  .main h3{font-size:15.5px}
+  .main h4{font-size:14.5px}
+  .katex{font-size:1em}
+  .fml.fml-scroll{text-align:left}
+
+  /* 表格：允许横滑，第一列不再被压成竖排 */
+  .tscroll{-webkit-overflow-scrolling:touch;margin:10px -2px}
+  .tscroll table{min-width:100%}
+  .tscroll table:has(thead th:nth-child(4)){min-width:540px}
+  .tscroll th,.tscroll td{padding:8px 11px}
+  .tscroll .katex{font-size:.92em}
+  .tscroll th:first-child,.tscroll td:first-child{white-space:nowrap}
+
+  /* 卡片与提示块贴边更舒服 */
+  .ex{margin:13px 0;border-radius:12px}
+  .ex-h{padding:8px 12px;font-size:13px}
+  .ex-b{padding:4px 12px 10px;font-size:13.5px}
+  .callout{padding:10px 13px;font-size:13px;border-radius:10px}
+  .grid{grid-template-columns:1fr;gap:10px}
+  .qlist li{padding-left:32px}
+  details.ext>summary{font-size:12px}
+  .ldmore{margin:12px 0 18px}
+}
+
+/* ---- 4. 极窄（<=400）：再省一点 ---- */
+@media(max-width:400px){
+  .top{gap:5px;padding:0 8px}
+  .mbar button{padding:2px 8px}
+  .main{padding:14px 13px 82px}
+}
+
+/* ---- 5. 触屏：去掉 hover 残留、加大点击热区 ---- */
+@media(hover:none){
+  .top .tb:active,.chip:active,.btn:active,.tab:active,.ans-btn:active{transform:scale(.97)}
+  .node .row{padding:6px 8px}
+  .node a.tx{font-size:13.5px}
+  .tw{width:20px;height:20px}
+  .favpanel .fv{padding:9px 8px}
+  .opt{padding:12px 14px}
+}
+/* ================= MOBILE-ENHANCE:END ================= */
