@@ -365,8 +365,11 @@ var PRESETS={
   obj: {single:30,judge:20,fill:20,read:0},
   read:{single:0,judge:0,fill:0,read:10},
   mini:{single:10,judge:5,fill:5,read:1},
-  err: {single:15,judge:5,fill:10,read:0}
+  err: {single:15,judge:5,fill:10,read:0},
+  jn:  {single:20,judge:0,fill:15,read:0}
 };
+/* 江南大学机考范围：第 1~5 章（条件分支为止） */
+var JN_CHS=['ch1','ch2','ch3','ch4','ch5'];
 var SRC_TABS=[
   {id:'',name:'全部来源'},
   {id:'真题',name:'历年真题'},
@@ -428,6 +431,7 @@ function renderTheorySetup(bank){
       +'<button class="chip" data-preset="read">程序阅读 10<small>阅读程序专项</small></button>'
       +'<button class="chip" data-preset="mini">单选 10 · 判断 5 · 填空 5 · 阅读 1<small>小卷速测</small></button>'
       +'<button class="chip" data-preset="err">易错专练 30<small>只抽易错辨析题</small></button>'
+      +'<button class="chip" data-preset="jn">江南机考 20+15<small>考到第 5 章分支</small></button>'
     +'</div>'
     +'<h2>题型与题量</h2>'
     +'<div class="muted" id="th-stat" style="margin:-6px 0 10px"></div>'
@@ -466,10 +470,16 @@ function renderTheorySetup(bank){
     b.addEventListener('click',function(){
       counts=Object.assign({},PRESETS[b.dataset.preset]);
       $$('#th-presets .chip').forEach(function(x){ x.classList.toggle('on',x===b); });
-      /* 易错专练：顺带把来源筛到「原创·易错辨析」 */
-      filterSrc = (b.dataset.preset==='err') ? '原创·易错辨析' : '';
+      /* 易错专练：来源筛到「原创·易错辨析」；江南机考：章节锁到第 1~5 章 */
+      var pi=b.dataset.preset;
+      filterSrc = (pi==='err') ? '原创·易错辨析' : '';
+      filterChs  = (pi==='jn') ? JN_CHS.slice() : [];
       $$('#th-src-row .chip').forEach(function(x){
         x.classList.toggle('on', filterSrc ? x.dataset.src==='原创' : !x.dataset.src);
+      });
+      $$('#th-ch-row .chip').forEach(function(x){
+        var vv=x.dataset.ch;
+        x.classList.toggle('on', vv? filterChs.indexOf(vv)>=0 : !filterChs.length);
       });
       refreshSetup();
     });
