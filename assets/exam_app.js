@@ -115,8 +115,9 @@ window.addEventListener('hashchange',function(){
 /* ============================================================
    版块一：理论复习
    ============================================================ */
-/* ---- 要点标签芯片（重点/难点/易错/易混） ---- */
-var TAG_CLS={'重点':'imp','难点':'hard','易错':'err','易混':'mix'};
+/* ---- 要点标签芯片（重点/难点/易错/易混/偏僻） ---- */
+var TAG_CLS={'重点':'imp','难点':'hard','易错':'err','易混':'mix','偏僻':'odd'};
+var TAG_LIST=[['','全部'],['重点','重点'],['高频','高频'],['易错','易错'],['易混','易混'],['偏僻','偏僻']];
 function tagHTML(tags){
   if(!tags||!tags.length) return '';
   return '<span class="pt-tags">'+tags.map(function(t){
@@ -131,46 +132,151 @@ function confHTML(conf){
       return '<div class="conf-row"><b>'+inl(c.k)+'</b><span>'+inl(c.v)+'</span></div>';
     }).join('')+'</div>';
 }
+/* ---- 理论复习：状态 ---- */
+var REV={tag:'', kw:'', open:true, obs:null};
+function revHit(){ return $('#rev-hit'); }
+function attr(s){ return esc(s).replace(/"/g,'&quot;'); }
+function revPts(){ return $$('#rev-body .rev-pt'); }
+/* 只在文本节点上包 <mark>，不动结构 */
+function clearMark(root){
+  $$('mark.mk',root).forEach(function(m){
+    var t=document.createTextNode(m.textContent);
+    m.parentNode.replaceChild(t,m);
+  });
+  if(root.normalize) root.normalize();
+}
+function markIn(el,kw){
+  if(!kw) return 0;
+  var walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),nodes=[],n,cnt=0;
+  while((n=walker.nextNode())) if(n.nodeValue && n.nodeValue.toLowerCase().indexOf(kw)>=0) nodes.push(n);
+  nodes.forEach(function(node){
+    var s=node.nodeValue,low=s.toLowerCase(),i=low.indexOf(kw),frag=document.createDocumentFragment(),last=0;
+    while(i>=0){
+      if(i>last) frag.appendChild(document.createTextNode(s.slice(last,i)));
+      var m=document.createElement('mark'); m.className='mk'; m.textContent=s.slice(i,i+kw.length);
+      frag.appendChild(m); cnt++; last=i+kw.length; i=low.indexOf(kw,last);
+    }
+    if(last<s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag,node);
+  });
+  return cnt;
+}
+function applyRev(){
+  var body=$('#rev-body'); if(!body) return;
+  var kw=REV.kw, tag=REV.tag, hits=0, vis=0;
+  revPts().forEach(function(p){
+    var okTag = !tag || (p.dataset.tags||'').indexOf(tag)>=0;
+    var okKw  = !kw || norm(p.dataset.txt||'').indexOf(norm(kw))>=0;
+    var ok=okTag&&okKw;
+    p.style.display = ok?'':'none';
+    if(ok) vis++;
+  });
+  $$('#rev-body .rev-ch').forEach(function(sec){
+    var any=$$('.rev-pt',sec).some(function(p){return p.style.display!=='none'});
+    sec.style.display = any?'':'none';
+    sec.classList.toggle('has-hit', any && (!!kw||!!tag));
+  });
+  clearMark(body);
+  hits = kw ? markIn(body,kw) : 0;
+  if(kw||tag) revHit().textContent = vis+' 条'+(kw?(' / 命中 '+hits+' 处'):'');
+  else revHit().textContent = '';
+}
+function marksIn(root,kw){ markIn(root,kw); }
 function renderReview(data){
   var nav=$('#rev-nav'), body=$('#rev-body');
-  nav.innerHTML='<input class="ex-filter" id="rev-q" type="search" placeholder="筛选要点…" autocomplete="off">'
+  var total=data.reduce(function(a,s){return a+s.points.length},0);
+  var nErr=0,nOdd=0;
+  data.forEach(function(s){ s.points.forEach(function(p){
+    var t=(p.tags||[]).join(' '); if(t.indexOf('易错')>=0)nErr++; if(t.indexOf('偏僻')>=0)nOdd++;
+  }); });
+  nav.innerHTML='<div class="rev-tools">'
+    +'<input class="ex-filter" id="rev-q" type="search" placeholder="搜索要点（/ 聚焦）" autocomplete="off">'
+    +'<div class="rev-tagbar">'+TAG_LIST.map(function(t){
+        return '<button type="button" class="rev-tag'+(t[0]?'':' on')+'" data-tag="'+t[0]+'">'+t[1]+'</button>';
+      }).join('')+'</div>'
+    +'<div class="rev-ops"><button type="button" id="rev-open">展开</button>'
+    +'<button type="button" id="rev-close">收起</button>'
+    +'<span id="rev-hit"></span></div>'
+    +'<div class="rev-sum">'+total+' 要点 · 易错 '+nErr+' · 偏僻 '+nOdd+'</div>'
+    +'</div><div class="rev-navlist">'
     +CH.map(function(c){
       var sec=data.filter(function(x){return x.ch===c.id})[0];
       var n=sec?sec.points.length:0;
       return '<a href="#sec-'+c.id+'" class="ex-nav" data-ch="'+c.id+'">'
         +'<span>'+esc(c.name)+'</span><b>'+(n||'')+'</b></a>';
+    }).join('')+'</div>';
+
+  body.innerHTML=data.map(function(sec){
+    var pts=sec.points.map(function(p,i){
+      var txt=[p.t,p.d].concat((p.conf||[]).map(function(c){return c.k+c.v})).join(' ');
+      return '<article class="rev-pt" id="pt-'+sec.ch+'-'+i+'" data-tags="'+attr((p.tags||[]).join(' '))+'" data-txt="'+attr(txt)+'">'
+        +'<h3><i>'+String(i+1).padStart(2,'0')+'</i><span class="pt-t">'+inl(p.t)+'</span>'+tagHTML(p.tags)+'</h3>'
+        +(p.d?'<p>'+inl(p.d)+'</p>':'')
+        +confHTML(p.conf)
+        +(p.code?'<div class="ex-codewrap"><button class="ex-copy" type="button">复制</button><pre class="ex-code">'+esc(p.code)+'</pre></div>':'')
+        +'</article>';
     }).join('');
+    return '<section class="rev-ch" id="sec-'+sec.ch+'" data-ch="'+sec.ch+'">'
+      +'<h2 class="rev-h"><button class="rev-fold" type="button" aria-expanded="true">'
+      +'<span class="rev-caret">▾</span>'+esc(sec.name)+'</button>'
+      +'<span class="rev-cnt">'+sec.points.length+' 个要点</span></h2>'
+      +'<div class="rev-list">'+pts+'</div></section>';
+  }).join('')||'<div class="ex-empty">暂无数据</div>';
+
+  /* 章节跳转 */
   nav.addEventListener('click',function(e){
     var a=e.target.closest('.ex-nav');
-    if(!a) return;
-    e.preventDefault();
-    var el=document.getElementById('sec-'+a.dataset.ch);
-    if(el){ el.scrollIntoView({block:'start'}); markNav(a.dataset.ch); }
+    if(a){
+      e.preventDefault();
+      var el=document.getElementById('sec-'+a.dataset.ch);
+      if(el){ el.classList.remove('folded'); el.scrollIntoView({block:'start'}); markNav(a.dataset.ch); }
+      return;
+    }
+    var tg=e.target.closest('.rev-tag');
+    if(tg){
+      REV.tag=tg.dataset.tag;
+      $$('.rev-tag',nav).forEach(function(b){ b.classList.toggle('on', b===tg); });
+      applyRev();
+      return;
+    }
+    var op=e.target.id;
+    if(op==='rev-open'||op==='rev-close'){
+      REV.open=(op==='rev-open');
+      $$('#rev-body .rev-ch').forEach(function(s){ s.classList.toggle('folded',!REV.open); });
+      $$('#rev-body .rev-fold').forEach(function(b){ b.setAttribute('aria-expanded',String(REV.open)); });
+    }
   });
-  body.innerHTML=data.map(function(sec){
-    return '<section class="rev-ch" id="sec-'+sec.ch+'">'
-      +'<h2>'+esc(sec.name)+'<span class="rev-cnt">'+sec.points.length+' 个要点</span></h2>'
-      +sec.points.map(function(p,i){
-        return '<article class="rev-pt"><h3><i>'+String(i+1).padStart(2,'0')+'</i>'+inl(p.t)+tagHTML(p.tags)+'</h3>'
-          +(p.d?'<p>'+inl(p.d)+'</p>':'')
-          +confHTML(p.conf)
-          +(p.code?'<pre class="ex-code">'+esc(p.code)+'</pre>':'')
-          +'</article>';
-      }).join('')
-      +'</section>';
-  }).join('')||'<div class="ex-empty">暂无数据</div>';
-  /* 要点筛选 */
+  /* 单章折叠 */
+  body.addEventListener('click',function(e){
+    var f=e.target.closest('.rev-fold');
+    if(f){
+      var sec=f.closest('.rev-ch'); sec.classList.toggle('folded');
+      f.setAttribute('aria-expanded',String(!sec.classList.contains('folded')));
+      return;
+    }
+    var cp=e.target.closest('.ex-copy');
+    if(cp){
+      var code=cp.parentElement.querySelector('code,pre');
+      if(code&&navigator.clipboard){ navigator.clipboard.writeText(code.textContent);
+        cp.textContent='已复制'; setTimeout(function(){cp.textContent='复制'},1200); }
+    }
+  });
+  /* 搜索 */
   var fq=$('#rev-q');
-  fq.addEventListener('input',function(){
-    var k=norm(fq.value);
-    $$('.rev-pt',body).forEach(function(p){
-      p.style.display = (!k || norm(p.textContent).indexOf(k)>=0) ? '' : 'none';
-    });
-    $$('.rev-ch',body).forEach(function(sec){
-      var vis=$$('.rev-pt',sec).some(function(p){return p.style.display!=='none'});
-      sec.style.display = vis?'':'none';
-    });
+  fq.addEventListener('input',function(){ REV.kw=fq.value.trim(); applyRev(); });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='/' && document.activeElement!==fq && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)){
+      e.preventDefault(); fq.focus(); fq.select();
+    }
   });
+  /* 滚动联动：左栏高亮当前章 */
+  if(REV.obs) REV.obs.disconnect();
+  if(window.IntersectionObserver){
+    REV.obs=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting&&en.target.dataset.ch) markNav(en.target.dataset.ch); });
+    },{rootMargin:'-90px 0px -72% 0px'});
+    $$('#rev-body .rev-ch').forEach(function(s){ REV.obs.observe(s); });
+  }
 }
 function markNav(ch){
   $$('.ex-nav').forEach(function(a){ a.classList.toggle('cur',a.dataset.ch===ch); });
@@ -258,7 +364,8 @@ var PRESETS={
   std: {single:20,judge:5,fill:5,read:3},
   obj: {single:30,judge:20,fill:20,read:0},
   read:{single:0,judge:0,fill:0,read:10},
-  mini:{single:10,judge:5,fill:5,read:1}
+  mini:{single:10,judge:5,fill:5,read:1},
+  err: {single:15,judge:5,fill:10,read:0}
 };
 var SRC_TABS=[
   {id:'',name:'全部来源'},
@@ -320,6 +427,7 @@ function renderTheorySetup(bank){
       +'<button class="chip" data-preset="obj">单选 30 · 判断 20 · 填空 20<small>客观题专练</small></button>'
       +'<button class="chip" data-preset="read">程序阅读 10<small>阅读程序专项</small></button>'
       +'<button class="chip" data-preset="mini">单选 10 · 判断 5 · 填空 5 · 阅读 1<small>小卷速测</small></button>'
+      +'<button class="chip" data-preset="err">易错专练 30<small>只抽易错辨析题</small></button>'
     +'</div>'
     +'<h2>题型与题量</h2>'
     +'<div class="muted" id="th-stat" style="margin:-6px 0 10px"></div>'
@@ -358,6 +466,11 @@ function renderTheorySetup(bank){
     b.addEventListener('click',function(){
       counts=Object.assign({},PRESETS[b.dataset.preset]);
       $$('#th-presets .chip').forEach(function(x){ x.classList.toggle('on',x===b); });
+      /* 易错专练：顺带把来源筛到「原创·易错辨析」 */
+      filterSrc = (b.dataset.preset==='err') ? '原创·易错辨析' : '';
+      $$('#th-src-row .chip').forEach(function(x){
+        x.classList.toggle('on', filterSrc ? x.dataset.src==='原创' : !x.dataset.src);
+      });
       refreshSetup();
     });
   });
