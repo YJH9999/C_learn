@@ -11004,5 +11004,1020 @@
   "answer": 0,
   "explanation": "%d 读 12 后 %c 紧接着读下一个字符 'a'。若输入是 \"12 a\"，%c 会读空格——%c 不跳过空白。",
   "src": "原创·机考风格"
+ },
+ {
+  "id": "t-849",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i, s=0;\nfor(i=1;i<=10;i+=2) s+=i;\nprintf(\"%d\",s);",
+  "options": [
+   "25",
+   "30",
+   "20",
+   "9"
+  ],
+  "answer": 0,
+  "explanation": "i 取 1、3、5、7、9，和为 25。步长 2 时循环次数 = (末-初)/步长 + 1 = 5 次。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-850",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=0;\nwhile(i<3){ printf(\"%d\", i); i++; }\nprintf(\"%d\", i);",
+  "options": [
+   "0123",
+   "012",
+   "123",
+   "0122"
+  ],
+  "answer": 0,
+  "explanation": "循环内先输出 0、1、2，退出时 i 已为 3，最后再输出 3，共 0123。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-851",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i, j;\nfor(i=1;i<=3;i++) for(j=1;j<=i;j++) printf(\"%d\", j);",
+  "options": [
+   "123",
+   "112123",
+   "123123",
+   "111"
+  ],
+  "answer": 1,
+  "explanation": "外层 i=1 输出 1；i=2 输出 12；i=3 输出 123，连起来 112123。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-852",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=0;\ndo{ i++; if(i==2) continue; printf(\"%d\",i); }while(i<4);",
+  "options": [
+   "134",
+   "1234",
+   "124",
+   "234"
+  ],
+  "answer": 0,
+  "explanation": "i 为 2 时 continue 跳过输出，其余输出 1、3、4。continue 在 do-while 中会直接去判断条件。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-853",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint i, n=0;\nfor(i=100;i>0;i/=2) n++;\nprintf(\"%d\",n);",
+  "options": [],
+  "answer": "7",
+  "explanation": "100→50→25→12→6→3→1 共 7 次（i 变为 0 时退出）。等价于「100 的二进制位数」。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-854",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint i, s=0;\nfor(i=1;i<=100;i++){ if(i%3==0) break; s+=i; }\nprintf(\"%d\",s);",
+  "options": [],
+  "answer": "3",
+  "explanation": "i=1 时加 1（s=1），i=2 时加 2（s=3），i=3 被 3 整除触发 break，循环结束，输出 3。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-855",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下关于 for 语句的叙述中，错误的是（ ）",
+  "options": [
+   "三个表达式都可以省略",
+   "省略条件表达式时表示条件恒真",
+   "循环体可以是空语句",
+   "for 的循环体至少执行一次"
+  ],
+  "answer": 3,
+  "explanation": "for 与 while 一样是「先判断后执行」，条件一开始就不成立时循环体一次也不执行；至少执行一次的只有 do-while。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-856",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=5;\nfor(;i;i--) printf(\"%d\", i);",
+  "options": [
+   "12345",
+   "54321",
+   "5432",
+   "死循环"
+  ],
+  "answer": 1,
+  "explanation": "i 从 5 递减到 1 依次输出，i 为 0 时条件为假退出。for 三个部分都可省略，这里省了初值。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-857",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a[5]={1,2,3};\nint i;\nfor(i=0;i<5;i++) printf(\"%d\", a[i]);",
+  "options": [
+   "12300",
+   "123",
+   "12345",
+   "随机值"
+  ],
+  "answer": 0,
+  "explanation": "部分初始化时其余元素自动为 0，输出 12300。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-858",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nchar s[]=\"China\";\nprintf(\"%d,%d\", (int)strlen(s), (int)sizeof(s));",
+  "options": [
+   "5,5",
+   "5,6",
+   "6,6",
+   "6,5"
+  ],
+  "answer": 1,
+  "explanation": "strlen 不含 '\\0' 得 5；sizeof 数组总长度含 '\\0' 得 6。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-859",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a[3][4]={{1,2,3,4},{5,6,7,8},{9,10,11,12}};\nprintf(\"%d\", *(*(a+1)+2));",
+  "options": [
+   "3",
+   "7",
+   "6",
+   "8"
+  ],
+  "answer": 1,
+  "explanation": "*(a+1) 是第 1 行首地址，+2 指向 a[1][2]，再解引用得 7。数组下标写法就是 a[1][2]。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-860",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nchar s[]=\"abc\";\ns[0]='X';\nprintf(\"%s\", s);",
+  "options": [
+   "abc",
+   "Xbc",
+   "编译错误",
+   "X"
+  ],
+  "answer": 1,
+  "explanation": "字符数组是副本，可以修改，输出 Xbc。若写成 char *s=\"abc\" 则修改只读区会崩溃。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-861",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint i, s=0, a[5]={1,2,3,4,5};\nfor(i=0;i<5;i++) if(a[i]%2) s+=a[i];\nprintf(\"%d\",s);",
+  "options": [],
+  "answer": "9",
+  "explanation": "奇数元素 1+3+5 = 9。a[i]%2 非零即奇数。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-862",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nchar a[]=\"good\", b[]=\"morning\";\nprintf(\"%d\", (int)strlen(a)+ (int)strlen(b));",
+  "options": [],
+  "answer": "11",
+  "explanation": "4 + 7 = 11。strlen 不含各自的 '\\0'。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-863",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nchar c='A';\nprintf(\"%c\", c+2);",
+  "options": [
+   "A",
+   "B",
+   "C",
+   "67"
+  ],
+  "answer": 2,
+  "explanation": "c+2 是整数 67，用 %c 输出就是字符 'C'。字符与整数在 C 里是同一回事。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-864",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "以下关于二维数组的定义中，合法的是（ ）",
+  "options": [
+   "int a[2][]={{1,2},{3,4}};",
+   "int a[][2]={{1,2},{3,4}};",
+   "int a[2][2]={1,2,3,4,5};",
+   "int a[][]={1,2};"
+  ],
+  "answer": 1,
+  "explanation": "二维数组只能省略第一维（行数），列数必须给出；初始化项也不能多于元素总数。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-865",
+  "ch": "ch7",
+  "type": "judge",
+  "stem": "数组名作函数实参时，函数内可以求出数组长度（用 sizeof）。",
+  "options": [],
+  "answer": false,
+  "explanation": "数组名传参后退化为指针，函数内 sizeof(a) 得到的是指针大小（4 或 8），不是数组长度。必须另传长度参数。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-866",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "字符串比较不能用 ==，应使用标准库函数______。",
+  "options": [],
+  "answer": "strcmp | strcmp()",
+  "explanation": "strcmp(a,b) 返回 0 表示内容相同；== 比较的是两个地址。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-867",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint f(int x){ return x*x; }\nint main(void){ printf(\"%d\", f(f(2))); }",
+  "options": [
+   "4",
+   "8",
+   "16",
+   "2"
+  ],
+  "answer": 2,
+  "explanation": "f(2)=4，f(4)=16。函数可以嵌套调用，返回值又作为实参。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-868",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nvoid f(int x){ x=100; }\nint main(void){ int a=1; f(a); printf(\"%d\", a); }",
+  "options": [
+   "100",
+   "1",
+   "0",
+   "语法错误"
+  ],
+  "answer": 1,
+  "explanation": "值传递：形参 x 是 a 的副本，函数内改成 100 不影响 a，输出 1。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-869",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint f(int n){ if(n<=1) return 1; return n*f(n-1); }\nprintf(\"%d\", f(5));",
+  "options": [],
+  "answer": "120",
+  "explanation": "5! = 120。递归出口 n<=1 返回 1，其余 f(n)=n*f(n-1)。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-870",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint f(void){ static int s=0; s++; return s; }\nint a=f(); int b=f(); printf(\"%d,%d\", a, b);",
+  "options": [
+   "1,1",
+   "1,2",
+   "2,2",
+   "2,1"
+  ],
+  "answer": 1,
+  "explanation": "static 局部变量只初始化一次，调用两次分别返回 1、2，所以输出 1,2。若写成 printf(\"%d,%d\", f(), f())，实参求值顺序未规定（gcc 从右往左），结果可能变成 2,1 —— 这是经典陷阱。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-871",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "以下关于函数声明的叙述中，正确的是（ ）",
+  "options": [
+   "声明会分配内存",
+   "声明让编译器检查调用的参数类型与个数",
+   "声明必须写形参名",
+   "函数定义前不需要声明"
+  ],
+  "answer": 1,
+  "explanation": "声明只给编译器「长相」，用于类型检查；不分配内存，形参名可省略；定义在被调用之前时可省声明。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-872",
+  "ch": "ch8",
+  "type": "judge",
+  "stem": "C 语言允许函数重载（同名不同参数）。",
+  "options": [],
+  "answer": false,
+  "explanation": "C 不支持重载，同名函数只能有一个定义，参数不同也不行。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-873",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "函数 int g(int a, int b){ return a>b?a:b; } 中 g(3,7) 的值是______。",
+  "options": [],
+  "answer": "7",
+  "explanation": "a>b 不成立，取 b=7。这是求最大值的三目写法。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-874",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a[5]={10,20,30,40,50}, *p=a;\nprintf(\"%d\", *(p+3));",
+  "options": [
+   "20",
+   "30",
+   "40",
+   "50"
+  ],
+  "answer": 2,
+  "explanation": "p+3 指向 a[3]，解引用得 40。*(p+i) 与 p[i]、a[i] 完全等价。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-875",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a=5, *p=&a;\n*p = *p + 5;\nprintf(\"%d\", a);",
+  "options": [
+   "5",
+   "10",
+   "0",
+   "地址值"
+  ],
+  "answer": 1,
+  "explanation": "*p 就是 a，*p = *p+5 等价于 a = a+5，输出 10。通过指针可以修改原变量。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-876",
+  "ch": "ch9",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nchar s[]=\"abcdef\", *p=s;\nwhile(*p) p++;\nprintf(\"%d\", (int)(p-s));",
+  "options": [],
+  "answer": "6",
+  "explanation": "p 从 s 走到 '\\0'，共前进 6 个字符，所以 p-s = 6，等价于 strlen。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-877",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若有 int a[5], *p=a; 则下列写法错误的是（ ）",
+  "options": [
+   "p++",
+   "p = a+2",
+   "a++",
+   "p[2]"
+  ],
+  "answer": 2,
+  "explanation": "数组名是地址常量，不能自增或赋值；指针变量 p 可以自由移动。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-878",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a[3]={1,2,3}, *p=&a[2];\nprintf(\"%d\", *--p);",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "越界"
+  ],
+  "answer": 1,
+  "explanation": "--p 先把指针前移一个元素（指向 a[1]），再解引用得 2。前置自减先改后用。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-879",
+  "ch": "ch9",
+  "type": "judge",
+  "stem": "指针变量的大小与它所指的类型无关。",
+  "options": [],
+  "answer": true,
+  "explanation": "同一平台下所有指针都是同样大小（32 位 4 字节 / 64 位 8 字节），不同的是所指类型决定的步长与解引用宽度。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-880",
+  "ch": "ch9",
+  "type": "fill",
+  "stem": "若有 int a[10]; 则表达式 &a[3] - a 的值是______。",
+  "options": [],
+  "answer": "3",
+  "explanation": "两个同数组内指针相减得到元素个数：&a[3] 与 a 相隔 3 个元素。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-881",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nchar *s=\"hello\";\nprintf(\"%c\", *(s+1));",
+  "options": [
+   "h",
+   "e",
+   "l",
+   "ello"
+  ],
+  "answer": 1,
+  "explanation": "s 指向 'h'，s+1 指向 'e'，解引用得 'e'。字符串常量本身就是一个字符指针。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-882",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nstruct P{ int x, y; } p={1,2}, *q=&p;\nprintf(\"%d\", q->x + q->y);",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "编译错误"
+  ],
+  "answer": 2,
+  "explanation": "q->x 与 q->y 分别是 1 和 2，和为 3。p={1,2} 按成员顺序初始化。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-883",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "若有 struct S{ char c; int i; }; 则 sizeof(struct S) 在 4 字节对齐平台上通常是（ ）",
+  "options": [
+   "5",
+   "8",
+   "6",
+   "12"
+  ],
+  "answer": 1,
+  "explanation": "char 占 1 后补 3 个字节使 int 对齐到 4，总共 8。这就是内存对齐。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-884",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nstruct S{ int a; char b; } s={5,'A'};\nprintf(\"%d%c\", s.a, s.b);",
+  "options": [],
+  "answer": "5A",
+  "explanation": "结构体按成员声明顺序初始化：a=5，b='A'，输出 5A。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-885",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "下列关于结构体的叙述中，错误的是（ ）",
+  "options": [
+   "结构体可以整体赋值",
+   "结构体不能用 == 直接比较",
+   "结构体成员可以是另一个结构体",
+   "结构体成员不能是指向自身的指针"
+  ],
+  "answer": 3,
+  "explanation": "自引用结构体正是链表的基础：成员可以是指向自身类型的指针（不能是自身类型的变量，否则无限大）。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-886",
+  "ch": "ch10",
+  "type": "judge",
+  "stem": "共用体（union）的长度等于其所有成员长度之和。",
+  "options": [],
+  "answer": false,
+  "explanation": "共用体所有成员共用同一块内存，长度取最长成员（再按对齐调整），不是求和。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-887",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "访问结构体指针 p 所指对象的成员 m，应写 p->m 或 (*p).______。",
+  "options": [],
+  "answer": "m",
+  "explanation": "p->m 就是 (*p).m 的简写。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-888",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "以 \"w\" 方式打开已存在的文件 data.txt，结果是（ ）",
+  "options": [
+   "在原内容后追加",
+   "原内容被清空",
+   "打开失败",
+   "只能读"
+  ],
+  "answer": 1,
+  "explanation": "\"w\" 是只写且截断：文件存在就清空重写，不存在就创建。要追加请用 \"a\"。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-889",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "fopen 函数返回值的类型是（ ）",
+  "options": [
+   "int",
+   "FILE *",
+   "char *",
+   "void"
+  ],
+  "answer": 1,
+  "explanation": "返回文件指针 FILE*，失败返回 NULL。所有文件读写函数都以它为句柄。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-890",
+  "ch": "ch11",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nFILE *fp=fopen(\"a.txt\",\"w\");\nfprintf(fp,\"%d\",123);\nfclose(fp);\nfp=fopen(\"a.txt\",\"r\");\nint x; fscanf(fp,\"%d\",&x);\nprintf(\"%d\", x+1);",
+  "options": [],
+  "answer": "124",
+  "explanation": "写 123 再读回 123，加 1 输出 124。写完必须 fclose（冲刷缓冲区）再重新打开读。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-891",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "关于 feof 函数，正确的用法是（ ）",
+  "options": [
+   "while(!feof(fp)) { fgets(...); 处理 }",
+   "读完一个数据后判断 feof 决定是否处理",
+   "把 feof 写在循环条件里最安全",
+   "feof 返回文件的字节数"
+  ],
+  "answer": 1,
+  "explanation": "feof 只有在「读失败之后」才为真，直接做循环条件会多执行一轮。正确做法是判断读函数的返回值（如 fgets 是否为 NULL）。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-892",
+  "ch": "ch11",
+  "type": "judge",
+  "stem": "fclose 会冲刷缓冲区并把数据真正写入磁盘。",
+  "options": [],
+  "answer": true,
+  "explanation": "fclose = flush + 释放句柄。程序异常退出时缓冲区数据会丢失，所以必须成对使用 fopen/fclose。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-893",
+  "ch": "ch11",
+  "type": "fill",
+  "stem": "把文件位置指针移回文件开头的函数是______。",
+  "options": [],
+  "answer": "rewind | rewind()",
+  "explanation": "rewind(fp) 等价于 fseek(fp,0,SEEK_SET)，并清除错误标志。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-894",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "要从文件一次读入一整块结构体数组，应使用（ ）",
+  "options": [
+   "fscanf",
+   "fread",
+   "fgetc",
+   "fgets"
+  ],
+  "answer": 1,
+  "explanation": "fread/fwrite 按字节块读写，适合结构体；fscanf 适合可读文本。注意含指针或填充字节的结构体不宜直接落盘。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-895",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "下列代码的输出是：FILE *fp=fopen(\"no_such.txt\",\"r\"); printf(\"%d\", fp==NULL);（ ）",
+  "options": [
+   "0",
+   "1",
+   "随机值",
+   "崩溃"
+  ],
+  "answer": 1,
+  "explanation": "r 模式打开不存在的文件返回 NULL，fp==NULL 为真，输出 1。判空是文件操作的第一课。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-896",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\n#define N 3+2\nprintf(\"%d\", N*2);",
+  "options": [
+   "10",
+   "7",
+   "6",
+   "8"
+  ],
+  "answer": 1,
+  "explanation": "宏是文本替换：展开成 3+2*2 = 7。所以宏定义必须写 #define N (3+2)。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-897",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\n#define SQ(x) ((x)*(x))\nprintf(\"%d\", SQ(1+2));",
+  "options": [
+   "5",
+   "9",
+   "6",
+   "3"
+  ],
+  "answer": 1,
+  "explanation": "参数与整体都加了括号，展开为 ((1+2)*(1+2)) = 9。不加括号就是 1+2*1+2 = 5。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-898",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\n#define A 2\n#define B A+3\nprintf(\"%d\", B*2);",
+  "options": [],
+  "answer": "8",
+  "explanation": "B 展开为 A+3，再展开为 2+3，最后 2+3*2 = 8。宏是「先替换后计算」，不是先算 B 的值。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-899",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "关于宏定义，下列说法错误的是（ ）",
+  "options": [
+   "宏没有类型检查",
+   "宏在预处理阶段展开",
+   "宏定义行末要加分号",
+   "宏可以带参数"
+  ],
+  "answer": 2,
+  "explanation": "宏定义不是语句，行末加分号会把分号也纳入替换文本，可能引起语法错误。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-900",
+  "ch": "ch12",
+  "type": "judge",
+  "stem": "条件编译 #ifdef DEBUG 可以整段去掉代码，发布版不产生任何运行开销。",
+  "options": [],
+  "answer": true,
+  "explanation": "预处理阶段整段删除，连判断都不存在；而 if(DEBUG) 会真的执行一次判断。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-901",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "防止头文件被重复包含的标准写法是 #ifndef XXX_H / #define XXX_H / … / ______。",
+  "options": [],
+  "answer": "#endif | #endif XXX_H",
+  "explanation": "三件套缺一不可；#pragma once 是同功能的编译器扩展，不属于标准。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-902",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "以下关于 #include 的说法正确的是（ ）",
+  "options": [
+   "< > 形式优先查当前目录",
+   "\" \" 形式优先查当前目录",
+   "两者完全等价",
+   "\" \" 只能包含系统头文件"
+  ],
+  "answer": 1,
+  "explanation": "双引号先在源文件所在目录找，找不到再查系统路径；尖括号只查系统路径。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-903",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a=5, b=3;\nprintf(\"%d\", a & b);",
+  "options": [
+   "1",
+   "7",
+   "8",
+   "2"
+  ],
+  "answer": 0,
+  "explanation": "5=101B，3=011B，按位与得 001B = 1。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-904",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a=5, b=3;\nprintf(\"%d\", a | b);",
+  "options": [
+   "1",
+   "7",
+   "8",
+   "6"
+  ],
+  "answer": 1,
+  "explanation": "101B | 011B = 111B = 7。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-905",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a=6;\nprintf(\"%d\", a<<2);",
+  "options": [
+   "12",
+   "24",
+   "3",
+   "8"
+  ],
+  "answer": 1,
+  "explanation": "左移 2 位等于乘 4：6*4 = 24。左移 k 位即乘 2^k（不溢出时）。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-906",
+  "ch": "ch13",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint n=7;\nprintf(\"%d\", n & 1);",
+  "options": [],
+  "answer": "1",
+  "explanation": "7 是奇数，最低位为 1。n&1 判奇偶比 n%2 更稳（对负数也成立）。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-907",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "要把整数 n 的第 3 位置 1（其余位不变），应执行（ ）",
+  "options": [
+   "n = n | (1<<3)",
+   "n = n & (1<<3)",
+   "n = n ^ (1<<3)",
+   "n = n >> 3"
+  ],
+  "answer": 0,
+  "explanation": "或运算可以置位；与运算用来清位或取值；异或是翻转。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-908",
+  "ch": "ch13",
+  "type": "fill",
+  "stem": "表达式 ~5 的值是______。",
+  "options": [],
+  "answer": "-6",
+  "explanation": "按位取反后按补码解释：~n = -n-1，所以 ~5 = -6。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-909",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "以下关于位运算优先级的叙述正确的是（ ）",
+  "options": [
+   "位运算优先级高于关系运算",
+   "位运算优先级低于关系运算，混用时必须加括号",
+   "位运算与逻辑运算优先级相同",
+   "移位运算优先级最低"
+  ],
+  "answer": 1,
+  "explanation": "& | ^ 的优先级低于 == 和 < 等关系运算，所以 if(n & 1 == 1) 会先算 1==1，结果与预期不同。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-910",
+  "ch": "ch13",
+  "type": "judge",
+  "stem": "对无符号数右移时，高位补 0。",
+  "options": [],
+  "answer": true,
+  "explanation": "无符号右移是逻辑右移（补 0）；有符号负数右移多为算术右移（补 1），属实现定义行为。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-911",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint *p=(int*)malloc(3*sizeof(int));\np[0]=1;p[1]=2;p[2]=3;\nprintf(\"%d\", p[0]+p[1]+p[2]);\nfree(p);",
+  "options": [
+   "6",
+   "3",
+   "0",
+   "随机值"
+  ],
+  "answer": 0,
+  "explanation": "申请 3 个 int，赋值 1、2、3，和为 6。free 在输出之后才执行，不影响结果。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-912",
+  "ch": "ch14",
+  "type": "judge",
+  "stem": "free(p) 之后 p 会自动变成 NULL。",
+  "options": [],
+  "answer": false,
+  "explanation": "free 只回收内存、不改变指针值，p 成为悬垂指针；应手动 p = NULL。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-913",
+  "ch": "ch14",
+  "type": "fill",
+  "stem": "动态申请 n 个 int 的语句是 p = (int*)malloc(n * ______)。",
+  "options": [],
+  "answer": "sizeof(int) | sizeof int",
+  "explanation": "malloc 的参数是字节数，必须写成元素个数 × sizeof(元素类型)，不能写死 4。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-914",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "关于 realloc，下列说法正确的是（ ）",
+  "options": [
+   "一定在原地址扩容",
+   "可能搬家，必须用临时指针接收返回值",
+   "失败时原内存被释放",
+   "不需要 free"
+  ],
+  "answer": 1,
+  "explanation": "realloc 可能在别处分配新块并释放旧块；失败返回 NULL 且原块仍有效，所以不能直接 a = realloc(a, ...)。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-915",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "以下哪段代码会造成内存泄漏（ ）",
+  "options": [
+   "int *p=malloc(10); free(p);",
+   "int *p=malloc(10); p=malloc(20); free(p);",
+   "int *p=calloc(10,1); free(p);",
+   "int a[10];"
+  ],
+  "answer": 1,
+  "explanation": "第二次 malloc 覆盖了 p，第一块内存地址丢失，再也无法 free。这就是泄漏。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-916",
+  "ch": "ch14",
+  "type": "fill",
+  "stem": "释放动态内存的函数是______。",
+  "options": [],
+  "answer": "free | free()",
+  "explanation": "malloc/calloc/realloc 申请的内存都必须用 free 释放，且只能释放一次。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-917",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a=3, b=4;\nprintf(\"%d\", a>b?a:b);",
+  "options": [
+   "3",
+   "4",
+   "0",
+   "1"
+  ],
+  "answer": 1,
+  "explanation": "条件为假，取冒号后的 b=4。三目运算符常用于求最大值。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-918",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nprintf(\"%5d|\", 42);",
+  "options": [
+   "42|",
+   "   42|",
+   "42   |",
+   "00042|"
+  ],
+  "answer": 1,
+  "explanation": "%5d 表示占 5 列、右对齐，42 前面补 3 个空格。左对齐要写 %-5d。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-919",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nprintf(\"%.2f\", 3.14159);",
+  "options": [
+   "3.14",
+   "3.14159",
+   "3.1",
+   "3.142"
+  ],
+  "answer": 0,
+  "explanation": "%.2f 保留两位小数，第三位是 1 舍去，得 3.14。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-920",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint a=5, b=2;\nprintf(\"%d\", a/b);",
+  "options": [],
+  "answer": "2",
+  "explanation": "整数相除截断取整，5/2 = 2。要得到 2.5 必须写成 5/2.0。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-921",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nprintf(\"%d\", 'A'+1);",
+  "options": [],
+  "answer": "66",
+  "explanation": "'A' 的码值是 65，加 1 得 66。用 %c 输出则是 'B'。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-922",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint x=1;\nprintf(\"%d\", x++ + ++x);",
+  "options": [
+   "4",
+   "3",
+   "5",
+   "未定义，结果不可靠"
+  ],
+  "answer": 3,
+  "explanation": "同一表达式内对 x 修改两次且无序列点，属未定义行为。考试中遇到应指出其未定义，不要硬算。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-923",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint a=1, b=0;\nif(a && b) printf(\"T\"); else printf(\"F\");",
+  "options": [
+   "T",
+   "F",
+   "TF",
+   "什么都不输出"
+  ],
+  "answer": 1,
+  "explanation": "a&&b 中 b 为 0，整个表达式为假，走 else 输出 F。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-924",
+  "ch": "ch5",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint x=10;\nif(x>5) x=1; else x=2;\nprintf(\"%d\",x);",
+  "options": [],
+  "answer": "1",
+  "explanation": "x>5 成立，x 被赋为 1 并输出。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-925",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nprintf(\"%c\", 'a'-32);",
+  "options": [
+   "a",
+   "A",
+   "65",
+   "97"
+  ],
+  "answer": 1,
+  "explanation": "小写转大写是减 32：'a'(97)-32 = 65 = 'A'，用 %c 输出得到 A。",
+  "src": "原创·机考风格"
+ },
+ {
+  "id": "t-926",
+  "ch": "ch2",
+  "type": "fill",
+  "stem": "算法必须在有限步内结束，这一特征称为______。",
+  "options": [],
+  "answer": "有穷性 | 有限性",
+  "explanation": "有穷性是算法与无限计算过程的本质区别。",
+  "src": "原创·机考风格"
  }
 ]

@@ -391,6 +391,22 @@ select.ex-num{width:auto}
 /* 题库列表：长列表离屏推迟渲染 */
 #bk-list>*{content-visibility:auto;contain-intrinsic-size:auto 120px}
 
+/* ============ 出题方向预测面板 ============ */
+#th-predict .pr-row{
+  padding:11px 0;border-top:.5px solid var(--line-2)}
+#th-predict .pr-row:first-of-type{border-top:0;padding-top:2px}
+.pr-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:7px}
+.pr-h b{font-size:13.2px;color:var(--fg)}
+.pr-h i{
+  font-style:normal;font:600 10px var(--mono);letter-spacing:.04em;
+  color:var(--ac);background:var(--ac-dim);border:.5px solid var(--ac-dim-2);
+  padding:2px 7px;border-radius:5px;white-space:nowrap}
+.pr-h .btn{margin-left:auto}
+.pr-pts{display:flex;flex-wrap:wrap;gap:6px}
+.pr-pt{
+  font-size:11.6px;color:var(--fg-2);background:var(--panel-2);
+  border:.5px solid var(--line-2);border-radius:6px;padding:3px 8px;white-space:nowrap}
+
 /* ============ REVIEW-V2 理论复习：工具栏 / 折叠 / 高亮 ============ */
 .rev-tools{
   position:sticky;top:0;z-index:6;background:var(--bg);

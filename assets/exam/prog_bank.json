@@ -2238,5 +2238,95 @@
    "in": "1\n10",
    "out": "[1] apple\r\n[2] pear\r\n[3] orange\r\n[4] grape\r\n[0] exit\r\napple:\r\nprice = 3.00\r\nsale = 85%\r\npay = 25.5\r"
   }
+ },
+ {
+  "id": "p-148",
+  "ch": "ch6",
+  "level": 2,
+  "title": "统计区间内完数的个数",
+  "stem": "完数是指等于其所有真因子之和的正整数（如 6=1+2+3）。统计 [2, n] 内完数的个数并输出其中最大的一个。\n输入格式：一行，一个整数 n（2 ≤ n ≤ 10000）。\n输出格式：两行：count=… 与 max=…（不存在时 max=0）。\n样例输入：\n1000\n样例输出：\ncount=3\nmax=496",
+  "hint": "对每个数试除到 n/2 累加真因子；可以用 sqrt 优化但要记得成对加因子。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int n, i, j, s, cnt = 0, mx = 0;\n    scanf(\"%d\", &n);\n    for (i = 2; i <= n; i++) {\n        s = 0;\n        for (j = 1; j <= i / 2; j++)\n            if (i % j == 0) s += j;\n        if (s == i) { cnt++; mx = i; }\n    }\n    printf(\"count=%d\\n\", cnt);\n    printf(\"max=%d\\n\", mx);\n    return 0;\n}\n",
+  "explanation": "真因子不含自身，所以试除到 i/2 即可。1000 以内的完数是 6、28、496，共 3 个，最大 496。",
+  "src": "原创·机考风格",
+  "io": {
+   "in": "1000",
+   "out": "count=3\r\nmax=496\r"
+  }
+ },
+ {
+  "id": "p-149",
+  "ch": "ch7",
+  "level": 2,
+  "title": "数组循环右移 k 位",
+  "stem": "读入 n 个整数，把数组循环右移 k 位后输出（k 可能大于 n）。\n输入格式：第一行 n 和 k，第二行 n 个整数。\n输出格式：一行，n 个整数，空格分隔。\n样例输入：\n5 2\n1 2 3 4 5\n样例输出：\n4 5 1 2 3",
+  "hint": "先 k %= n，再用「三次翻转」或额外数组；最省事的是从 (n-k) 开始按环形下标输出。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a[100], n, k, i, p;\n    scanf(\"%d%d\", &n, &k);\n    for (i = 0; i < n; i++) scanf(\"%d\", &a[i]);\n    k %= n;\n    for (i = 0; i < n; i++) {\n        p = (n - k + i) % n;\n        printf(\"%d\", a[p]);\n        if (i < n - 1) printf(\" \");\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "右移 k 位后，新数组第 i 个元素来自原数组的 (n-k+i)%n 位置。k %= n 处理 k>n，环形下标用取模而不是真的搬数据。",
+  "src": "原创·机考风格",
+  "io": {
+   "in": "5 2\n1 2 3 4 5",
+   "out": "4 5 1 2 3\r"
+  }
+ },
+ {
+  "id": "p-150",
+  "ch": "ch8",
+  "level": 2,
+  "title": "用函数判断回文素数",
+  "stem": "输出 [m, n] 内所有既是回文数又是素数的整数，每行一个。要求把判断封装成两个函数。\n输入格式：一行，两个整数 m n（2 ≤ m ≤ n ≤ 10000）。\n输出格式：每个满足条件的数一行；一个都没有时输出 none。\n样例输入：\n10 200\n样例输出：\n11\n101\n131\n151\n181\n191",
+  "hint": "is_prime 试除到 sqrt；is_pal 用整数反转或转字符串双指针。",
+  "answer": "#include <stdio.h>\n\nint is_prime(int x)\n{\n    int i;\n    if (x < 2) return 0;\n    for (i = 2; i * i <= x; i++)\n        if (x % i == 0) return 0;\n    return 1;\n}\n\nint is_pal(int x)\n{\n    int t = x, r = 0;\n    while (t > 0) { r = r * 10 + t % 10; t /= 10; }\n    return r == x;\n}\n\nint main(void)\n{\n    int m, n, i, found = 0;\n    scanf(\"%d%d\", &m, &n);\n    for (i = m; i <= n; i++) {\n        if (is_prime(i) && is_pal(i)) { printf(\"%d\\n\", i); found = 1; }\n    }\n    if (!found) printf(\"none\\n\");\n    return 0;\n}\n",
+  "explanation": "把「是不是素数」和「是不是回文」各封装成函数，主函数只剩组合判断，逻辑清晰、便于单独测试。is_pal 用整数反转不需要字符串，也不占额外空间。",
+  "src": "原创·机考风格",
+  "io": {
+   "in": "10 200",
+   "out": "11\r\n101\r\n131\r\n151\r\n181\r\n191\r"
+  }
+ },
+ {
+  "id": "p-151",
+  "ch": "ch9",
+  "level": 3,
+  "title": "用指针把字符串按单词逆序输出",
+  "stem": "读入一行（含空格），把其中的单词顺序倒过来输出，单词内部字符顺序不变，单个空格分隔。\n输入格式：一行，长度 < 200 的字符串。\n输出格式：一行，单词逆序后的结果。\n样例输入：\nhello world c language\n样例输出：\nlanguage c world hello",
+  "hint": "先用指针数组记下每个单词的起点，再倒着输出；或者整体反转后逐词再反转。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nint main(void)\n{\n    char s[200], *w[50];\n    int n = 0, i;\n    fgets(s, sizeof s, stdin);\n    s[strcspn(s, \"\\n\")] = '\\0';\n\n    for (i = 0; s[i] != '\\0'; ) {\n        if (s[i] == ' ') { i++; continue; }\n        w[n++] = &s[i];\n        while (s[i] != '\\0' && s[i] != ' ') i++;\n        if (s[i] == ' ') s[i++] = '\\0';\n    }\n    for (i = n - 1; i >= 0; i--) {\n        printf(\"%s\", w[i]);\n        if (i > 0) printf(\" \");\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "指针数组只保存每个单词的首地址，切分时把空格改成 '\\0' 就地断词，不复制任何字符。倒着遍历指针数组即可得到「单词逆序」。strcspn 用来去掉 fgets 读进来的换行。",
+  "src": "原创·机考风格",
+  "io": {
+   "in": "hello world c language",
+   "out": "language c world hello\r"
+  }
+ },
+ {
+  "id": "p-152",
+  "ch": "ch10",
+  "level": 2,
+  "title": "结构体数组按总分排序",
+  "stem": "读入 n 个学生的姓名和三门课成绩，按总分从高到低排序输出（总分相同按姓名升序）。\n输入格式：第一行 n，随后 n 行：姓名 成绩1 成绩2 成绩3。\n输出格式：n 行：姓名 总分。\n样例输入：\n3\nTom 80 90 70\nAmy 95 90 88\nBob 70 80 90\n样例输出：\nAmy 273\nBob 240\nTom 240",
+  "hint": "用结构体数组存数据，排序时整体交换结构体；总分相同用 strcmp 比较姓名。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nstruct Stu {\n    char name[20];\n    int s[3];\n    int sum;\n};\n\nint main(void)\n{\n    struct Stu a[50], t;\n    int n, i, j;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) {\n        scanf(\"%19s%d%d%d\", a[i].name, &a[i].s[0], &a[i].s[1], &a[i].s[2]);\n        a[i].sum = a[i].s[0] + a[i].s[1] + a[i].s[2];\n    }\n    for (i = 0; i < n - 1; i++)\n        for (j = 0; j < n - 1 - i; j++) {\n            if (a[j].sum < a[j + 1].sum ||\n                (a[j].sum == a[j + 1].sum && strcmp(a[j].name, a[j + 1].name) > 0)) {\n                t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;\n            }\n        }\n    for (i = 0; i < n; i++)\n        printf(\"%s %d\\n\", a[i].name, a[i].sum);\n    return 0;\n}\n",
+  "explanation": "结构体可以整体赋值，所以排序时一句 t = a[j] 就完成了整条记录的交换。二级排序键用 strcmp 判断姓名先后，注意 strcmp 返回的是差值符号而不是长度。",
+  "src": "原创·机考风格",
+  "io": {
+   "in": "3\nTom 80 90 70\nAmy 95 90 88\nBob 70 80 90",
+   "out": "Amy 273\r\nBob 240\r\nTom 240\r"
+  }
+ },
+ {
+  "id": "p-153",
+  "ch": "ch11",
+  "level": 3,
+  "title": "文件词频统计",
+  "stem": "从 words.txt 中读入若干单词（以空白分隔），统计出现次数并输出出现最多的单词及其次数（并列时输出字典序最小的）。\n输入格式：数据文件 words.txt 的内容见样例输入。\n输出格式：两行：word=… 与 count=…。\n样例输入：\napple pear apple banana apple pear\n样例输出：\nword=apple\ncount=3",
+  "hint": "用 fscanf(fp,\"%s\",buf) 循环读词，用字符串数组 + strcmp 手工去重计数。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nint main(void)\n{\n    FILE *fp;\n    char buf[32], w[100][32];\n    int c[100] = {0}, n = 0, i, best = -1;\n    fp = fopen(\"words.txt\", \"r\");\n    if (fp == NULL) { printf(\"open failed\\n\"); return 1; }\n    while (fscanf(fp, \"%31s\", buf) == 1) {\n        for (i = 0; i < n; i++)\n            if (strcmp(w[i], buf) == 0) break;\n        if (i == n) { strcpy(w[n], buf); c[n] = 1; n++; }\n        else c[i]++;\n    }\n    fclose(fp);\n    for (i = 0; i < n; i++) {\n        if (best < 0 || c[i] > c[best] || (c[i] == c[best] && strcmp(w[i], w[best]) < 0)) best = i;\n    }\n    printf(\"word=%s\\n\", w[best]);\n    printf(\"count=%d\\n\", c[best]);\n    return 0;\n}\n",
+  "explanation": "fscanf 的 %s 自动跳过空白，正好按单词切分；读到文件尾返回 EOF，循环自然结束。「并列取字典序最小」用 strcmp<0 补一个次级条件即可。",
+  "src": "原创·机考风格",
+  "io": {
+   "in": "apple pear apple banana apple pear",
+   "out": "word=apple\r\ncount=3\r"
+  }
  }
 ]
