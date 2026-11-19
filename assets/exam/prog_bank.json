@@ -2193,5 +2193,50 @@
    "in": "",
    "out": "sum=21, capacity=6\r"
   }
+ },
+ {
+  "id": "p-145",
+  "ch": "ch7",
+  "level": 2,
+  "title": "ISBN 号码校验",
+  "stem": "ISBN 码格式为 x-xxx-xxxxx-x：前 9 位是数字，最后一位是识别码。识别码 = (第1位×1 + 第2位×2 + … + 第9位×9) mod 11，若余数为 10 则识别码写成大写 X。\n读入一个 ISBN 码，若识别码正确输出 Right；否则输出正确的 ISBN 码（保留原分隔符）。\n输入格式：一行，一个符合格式的 ISBN 码（含 3 个 '-'）。\n输出格式：一行：Right 或修正后的 ISBN 码。\n样例输入：\n0-670-82162-0\n样例输出：\n0-670-82162-4",
+  "hint": "用 %s 读整串，跳过 '-' 逐个取数字累加；最后一位单独判断（可能是 'X'）。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    char s[20];\n    int i, k = 0, sum = 0, code;\n    scanf(\"%19s\", s);\n    for (i = 0; s[i] != '\\0'; i++) {\n        if (s[i] == '-') continue;\n        if (k < 9) { sum += (s[i] - '0') * (k + 1); k++; }\n        else break;\n    }\n    code = sum % 11;\n    if ((code == 10 && s[12] == 'X') || (code != 10 && s[12] - '0' == code))\n        printf(\"Right\\n\");\n    else {\n        if (code == 10) s[12] = 'X';\n        else s[12] = (char)('0' + code);\n        printf(\"%s\\n\", s);\n    }\n    return 0;\n}\n",
+  "explanation": "按位取数字时要注意跳过 '-'，权重从 1 递增；识别码可能是 'X'，所以不能简单地用数字比较。修改字符串最后一位再整体输出，比自己重新拼接省事。",
+  "src": "江南大学机考真题（测试1-2）",
+  "io": {
+   "in": "0-670-82162-0",
+   "out": "0-670-82162-4\r"
+  }
+ },
+ {
+  "id": "p-146",
+  "ch": "ch5",
+  "level": 3,
+  "title": "打酱油（买三送一 / 买五送二）",
+  "stem": "酱油 10 元一瓶，促销规则：每买 3 瓶送 1 瓶，或每买 5 瓶送 2 瓶。给定 N 元（10 的整数倍，N ≤ 300），问最多能得到多少瓶酱油。\n输入格式：一行，一个整数 N（10 的倍数）。\n输出格式：一行，一个整数表示最多能得到的瓶数。\n样例输入：\n80\n样例输出：\n11",
+  "hint": "买 5 瓶送 2 瓶更划算（每 10 元得 1.4 瓶 vs 1.33 瓶），所以优先凑 5 瓶的档，再凑 3 瓶的档，最后按 10 元 1 瓶买。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int n, total = 0;\n    scanf(\"%d\", &n);\n    while (n >= 50) { n -= 50; total += 7; }   /* 买 5 瓶送 2 瓶 */\n    while (n >= 30) { n -= 30; total += 4; }   /* 买 3 瓶送 1 瓶 */\n    total += n / 10;                            /* 剩下按原价买 */\n    printf(\"%d\\n\", total);\n    return 0;\n}\n",
+  "explanation": "这是贪心：先算「每 10 元能拿到几瓶」——5 瓶档是 7/50=0.14 瓶/元，3 瓶档是 4/30≈0.133 瓶/元，所以 5 瓶档优先。枚举验证 N=10~300 的所有倍数，贪心结果与穷举最优一致。",
+  "src": "江南大学机考真题（测试1-2）",
+  "io": {
+   "in": "80",
+   "out": "11\r"
+  }
+ },
+ {
+  "id": "p-147",
+  "ch": "ch5",
+  "level": 3,
+  "title": "购买水果（菜单 + 折扣 + 金额四舍五入到角）",
+  "stem": "四种水果单价：apple 3.00 元/公斤、pear 2.50、orange 4.10、grape 10.20。折扣规则：满 2.5 公斤 9.5 折，满 5 公斤 9 折，满 10 公斤 8.5 折，满 20 公斤 8 折。\n先打印菜单（[1] apple / [2] pear / [3] orange / [4] grape / [0] exit），再读入编号和重量，输出单价、折扣率与实付金额（四舍五入到角，保留 1 位小数）。编号不在 1~4 或重量 ≤ 0 时输出 ERROR（编号 0 表示退出，不输出 ERROR）。\n输入格式：两行：第一行编号（整数），第二行重量（实数）。\n输出格式：菜单 5 行，随后输出结果块（形如 apple: / price = 3.00 / sale = 85% / pay = 25.5）或 ERROR。\n样例输入：\n1\n10\n样例输出：\n[1] apple\n[2] pear\n[3] orange\n[4] grape\n[0] exit\napple:\nprice = 3.00\nsale = 85%\npay = 25.5",
+  "hint": "折扣用 if-else 从大到小判断重量；四舍五入到角：pay = (int)(pay*10+0.5)/10.0。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int code, i;\n    double w, price = 0, rate = 1.0, pay;\n    const char *name[5] = {\"\", \"apple\", \"pear\", \"orange\", \"grape\"};\n    double unit[5] = {0, 3.00, 2.50, 4.10, 10.20};\n\n    printf(\"[1] apple\\n[2] pear\\n[3] orange\\n[4] grape\\n[0] exit\\n\");\n\n    if (scanf(\"%d\", &code) != 1) { printf(\"ERROR\\n\"); return 0; }\n    if (code == 0) return 0;\n    if (code < 1 || code > 4) { printf(\"ERROR\\n\"); return 0; }\n    if (scanf(\"%lf\", &w) != 1 || w <= 0) { printf(\"ERROR\\n\"); return 0; }\n\n    price = unit[code];\n    if (w >= 20)      rate = 0.80;\n    else if (w >= 10) rate = 0.85;\n    else if (w >= 5)  rate = 0.90;\n    else if (w >= 2.5) rate = 0.95;\n\n    pay = price * w * rate;\n    pay = (int)(pay * 10 + 0.5) / 10.0;   /* 四舍五入到角 */\n\n    printf(\"%s:\\n\", name[code]);\n    printf(\"price = %.2f\\n\", price);\n    printf(\"sale = %d%%\\n\", (int)(rate * 100 + 0.5));\n    printf(\"pay = %.1f\\n\", pay);\n    return 0;\n}\n",
+  "explanation": "折扣判断要从「满 20」往小判，否则 10 公斤会被 2.5 公斤的条件先截住。四舍五入到角靠 (int)(x*10+0.5)/10.0，注意先乘 10 再加 0.5。原 OJ 样例输出省略了菜单行，本平台保留菜单以便完整对照。",
+  "src": "江南大学机考真题（测试1-2）",
+  "io": {
+   "in": "1\n10",
+   "out": "[1] apple\r\n[2] pear\r\n[3] orange\r\n[4] grape\r\n[0] exit\r\napple:\r\nprice = 3.00\r\nsale = 85%\r\npay = 25.5\r"
+  }
  }
 ]
