@@ -8,7 +8,11 @@
   "hint": "用 scanf(\"%d%f\",...) 读入，printf 的 %.2f 控制小数位数。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int x;\n    float y;\n    scanf(\"%d%f\", &x, &y);\n    printf(\"x*y=%.2f\\n\", x * y);\n    return 0;\n}",
   "explanation": "考查 scanf/printf 格式符与格式化输出。常见错误：把 %f 写成 %d，或忘记 %.2f 导致输出默认 6 位小数。",
-  "src": "2014 真题改编"
+  "src": "2014 真题改编",
+  "io": {
+   "in": "2 3.14",
+   "out": "x*y=6.28\r"
+  }
  },
  {
   "id": "p-002",
@@ -20,7 +24,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    double c, f;\n    scanf(\"%lf\", &c);\n    f = c * 9 / 5 + 32;\n    printf(\"f=%.1f\\n\", f);\n    return 0;\n}",
   "explanation": "考查算术表达式与类型转换。常见错误：写成 c*9/5+32 时依赖 c 为实数才正确，若 c 定义为 int 则结果出错；注意 5/9 恒为 0。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "36.5",
+   "out": "f=97.7\r"
+  }
  },
  {
   "id": "p-003",
@@ -31,7 +39,11 @@
   "hint": "三个整数相加除以 3 时要除以 3.0 才能得到实数结果。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a, b, c;\n    scanf(\"%d%d%d\", &a, &b, &c);\n    printf(\"average=%.2f\\n\", (a + b + c) / 3.0);\n    return 0;\n}",
   "explanation": "考查整数除法与实数输出的区别。常见错误：/3 写成整数除法，80+90+85=255，255/3 整除虽碰巧对，但换成 81 82 85 就会丢掉小数。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "80 90 85",
+   "out": "average=85.00\r"
+  }
  },
  {
   "id": "p-004",
@@ -43,7 +55,11 @@
   "answer": "#include <stdio.h>\n#define PI 3.14159\nint main()\n{\n    double r, c, s;\n    scanf(\"%lf\", &r);\n    c = 2 * PI * r;\n    s = PI * r * r;\n    printf(\"c=%.2f,s=%.2f\\n\", c, s);\n    return 0;\n}",
   "explanation": "考查符号常量 #define 与表达式计算。常见错误：把 PI 定义成 3.14159 却用 %d 输出，或输出顺序与题目要求不符。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "3",
+   "out": "c=18.85,s=28.27\r"
+  }
  },
  {
   "id": "p-005",
@@ -54,7 +70,11 @@
   "hint": "大写字母加 32 即为对应小写字母，字符可以与整数混合运算。",
   "answer": "#include <stdio.h>\nint main()\n{\n    char ch;\n    scanf(\"%c\", &ch);\n    ch = ch + 32;\n    printf(\"%c %d\\n\", ch, ch);\n    return 0;\n}",
   "explanation": "考查 char 类型与整数的通用性、ASCII 码。常见错误：对同一个 ch 先后输出两次时第二次已是小写值，直接 %c、%d 各输出一次即可。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "B",
+   "out": "b 98\r"
+  }
  },
  {
   "id": "p-006",
@@ -66,7 +86,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    double x, y;\n    scanf(\"x=%lf,y=%lf\", &x, &y);\n    printf(\"sum=%.2f,prod=%.2f\\n\", x + y, x * y);\n    return 0;\n}",
   "explanation": "考查 scanf 格式串中普通字符必须原样匹配的规则。常见错误：格式串写成 %lf,%lf 而输入里有 x=，导致变量得不到正确值。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "x=10,y=66.6",
+   "out": "sum=76.60,prod=666.00\r"
+  }
  },
  {
   "id": "p-007",
@@ -77,7 +101,11 @@
   "hint": "if 语句比较后把较大者存入 max 再输出。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int x, y, max;\n    scanf(\"%d%d\", &x, &y);\n    max = x;\n    if (max < y) max = y;\n    printf(\"max=%d\\n\", max);\n    return 0;\n}",
   "explanation": "考查单分支 if。常见错误：写成 if(max<y);（多加分号）或漏掉 max 的初始化。",
-  "src": "2016 真题改编"
+  "src": "2016 真题改编",
+  "io": {
+   "in": "3 5",
+   "out": "max=5\r"
+  }
  },
  {
   "id": "p-008",
@@ -88,7 +116,11 @@
   "hint": "用 c>='0'&&c<='9' 这类区间判断，注意多分支的顺序与 else 的配对。",
   "answer": "#include <stdio.h>\nint main()\n{\n    char c;\n    scanf(\" %c\", &c);\n    if (c >= '0' && c <= '9') printf(\"0-9\\n\");\n    else if (c >= 'A' && c <= 'Z') printf(\"A-Z\\n\");\n    else if (c >= 'a' && c <= 'z') printf(\"a-z\\n\");\n    else printf(\"other\\n\");\n    return 0;\n}",
   "explanation": "考查多分支 if-else 与字符区间比较。常见错误：把 && 写成 &，或 else-if 链条件顺序写反导致判断失效。",
-  "src": "2017 真题改编"
+  "src": "2017 真题改编",
+  "io": {
+   "in": "5",
+   "out": "0-9\r"
+  }
  },
  {
   "id": "p-009",
@@ -99,7 +131,11 @@
   "hint": "用 scanf(\"%d%c%d\") 读入，switch 分支处理；除法先把操作数转成实数再相除。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a, b;\n    char op;\n    scanf(\"%d%c%d\", &a, &op, &b);\n    switch (op)\n    {\n        case '+': printf(\"%d+%d=%d\\n\", a, b, a + b); break;\n        case '-': printf(\"%d-%d=%d\\n\", a, b, a - b); break;\n        case '*': printf(\"%d*%d=%d\\n\", a, b, a * b); break;\n        case '/':\n            if (b == 0) printf(\"error\\n\");\n            else printf(\"%d/%d=%.2f\\n\", a, b, (double)a / b);\n            break;\n        default: printf(\"error\\n\");\n    }\n    return 0;\n}",
   "explanation": "考查 switch 与整数除法转实数。常见错误：除法忘记 (double) 强制转换得到整数商，或 case 分支漏写 break 造成穿透。",
-  "src": "2014 真题改编"
+  "src": "2014 真题改编",
+  "io": {
+   "in": "12*5",
+   "out": "12*5=60\r"
+  }
  },
  {
   "id": "p-010",
@@ -110,7 +146,11 @@
   "hint": "先判断合法性，再由 a==b&&b==c、两边相等、其余三种情况依次判断。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a, b, c;\n    scanf(\"%d%d%d\", &a, &b, &c);\n    if (a + b <= c || a + c <= b || b + c <= a)\n        printf(\"no\\n\");\n    else if (a == b && b == c)\n        printf(\"equilateral\\n\");\n    else if (a == b || b == c || a == c)\n        printf(\"isosceles\\n\");\n    else\n        printf(\"ordinary\\n\");\n    return 0;\n}",
   "explanation": "考查嵌套 if 与逻辑表达式。常见错误：判断三角形用 && 连接（应为任一不满足即不行），或先判等腰再判等边导致等边被当成等腰。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "3 3 3",
+   "out": "equilateral\r"
+  }
  },
  {
   "id": "p-011",
@@ -122,7 +162,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    double x, y;\n    scanf(\"%lf\", &x);\n    if (x < 1) y = x;\n    else if (x < 10) y = 2 * x - 1;\n    else y = 3 * x - 11;\n    printf(\"y=%.2f\\n\", y);\n    return 0;\n}",
   "explanation": "考查分段函数的多分支写法。常见错误：第二个条件写成 1<=x<10（C 中不合法），或边界重复计算。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "5",
+   "out": "y=9.00\r"
+  }
  },
  {
   "id": "p-012",
@@ -133,7 +177,11 @@
   "hint": "条件可写成 (y%4==0 && y%100!=0) || y%400==0。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int y;\n    scanf(\"%d\", &y);\n    if ((y % 4 == 0 && y % 100 != 0) || y % 400 == 0)\n        printf(\"yes\\n\");\n    else\n        printf(\"no\\n\");\n    return 0;\n}",
   "explanation": "考查逻辑运算符 && || 的组合。常见错误：漏掉 y%400==0 分支使 2000 判错，或把 % 写成 /。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "2024",
+   "out": "yes\r"
+  }
  },
  {
   "id": "p-013",
@@ -144,7 +192,11 @@
   "hint": "先排除非法数据，再用 if-else if 链从高到低判断。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int s;\n    scanf(\"%d\", &s);\n    if (s < 0 || s > 100) printf(\"error\\n\");\n    else if (s >= 90) printf(\"A\\n\");\n    else if (s >= 80) printf(\"B\\n\");\n    else if (s >= 70) printf(\"C\\n\");\n    else if (s >= 60) printf(\"D\\n\");\n    else printf(\"E\\n\");\n    return 0;\n}",
   "explanation": "考查多分支选择与边界处理。常见错误：条件写成 s>=90||s<=100，或忘记处理非法输入。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "85",
+   "out": "B\r"
+  }
  },
  {
   "id": "p-014",
@@ -156,7 +208,11 @@
   "answer": "#include <stdio.h>\n#include <math.h>\nint main()\n{\n    double a, b, c, d, x1, x2;\n    scanf(\"%lf%lf%lf\", &a, &b, &c);\n    d = b * b - 4 * a * c;\n    if (d > 0)\n    {\n        x1 = (-b + sqrt(d)) / (2 * a);\n        x2 = (-b - sqrt(d)) / (2 * a);\n        printf(\"x1=%.2f,x2=%.2f\\n\", x1, x2);\n    }\n    else if (d == 0)\n    {\n        x1 = -b / (2 * a);\n        printf(\"x1=x2=%.2f\\n\", x1);\n    }\n    else\n        printf(\"no real root\\n\");\n    return 0;\n}",
   "explanation": "考查嵌套选择与数学库函数。常见错误：sqrt 后忘记除以 2a 括号、判别式 d<0 仍开平方，或相等时仍输出两个根。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "1 -3 2",
+   "out": "x1=2.00,x2=1.00\r"
+  }
  },
  {
   "id": "p-015",
@@ -167,7 +223,11 @@
   "hint": "用 n%10 取出个位累加，再 n/=10，循环直到 n 为 0。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, sum = 0;\n    scanf(\"%d\", &n);\n    while (n > 0)\n    {\n        sum += n % 10;\n        n /= 10;\n    }\n    printf(\"%d\\n\", sum);\n    return 0;\n}",
   "explanation": "考查数字拆位（while + %10 + /10）。常见错误：循环条件写成 n>=1 之外还误处理负数，或把 %10 写成 /10。2018 年期末编程原题。",
-  "src": "2018 真题改编"
+  "src": "2018 真题改编",
+  "io": {
+   "in": "20151220",
+   "out": "13\r"
+  }
  },
  {
   "id": "p-016",
@@ -178,7 +238,11 @@
   "hint": "用一项累乘 term*=i 得到 i!，i 为奇数时累加到 sum，避免重复计算阶乘。",
   "answer": "#include <stdio.h>\nint main()\n{\n    double sum = 0, term = 1;\n    int i;\n    for (i = 1; i <= 19; i++)\n    {\n        term *= i;\n        if (i % 2 == 1) sum += term;\n    }\n    printf(\"sum=%e\\n\", sum);\n    return 0;\n}",
   "explanation": "考查循环中递推求阶乘并累加。常见错误：用 int 存 19! 造成溢出（13! 已超 int 范围），或每次都从 1 重算阶乘。",
-  "src": "2014 真题改编"
+  "src": "2014 真题改编",
+  "io": {
+   "in": "（无）",
+   "out": "sum=1.220021e+17\r"
+  }
  },
  {
   "id": "p-017",
@@ -189,7 +253,11 @@
   "hint": "枚举 100~999，拆出百位、十位、个位分别求立方和比较。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, a, b, c;\n    for (n = 100; n <= 999; n++)\n    {\n        a = n / 100;\n        b = n / 10 % 10;\n        c = n % 10;\n        if (n == a * a * a + b * b * b + c * c * c)\n            printf(\"%d\\n\", n);\n    }\n    return 0;\n}",
   "explanation": "经典拆位枚举题。常见错误：立方写成 a*3，或百位写成 n/10。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "（无）",
+   "out": "153\r\n370\r\n371\r\n407\r"
+  }
  },
  {
   "id": "p-018",
@@ -200,7 +268,11 @@
   "hint": "每天剩余 x = x - x/2 - 2（整数除法），while 循环累计天数。2017 年卷曾以 1020 个西瓜出题。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, day = 0;\n    scanf(\"%d\", &n);\n    while (n > 0)\n    {\n        n -= n / 2 + 2;\n        day++;\n    }\n    printf(\"day=%d\\n\", day);\n    return 0;\n}",
   "explanation": "考查倒推式循环（while + 计数）。常见错误：写成 n=n/2-2 后当剩余不足 4 个时出现负数，逻辑上仍是卖完，但边界要按题意取整。",
-  "src": "2017 真题改编"
+  "src": "2017 真题改编",
+  "io": {
+   "in": "1020",
+   "out": "day=8\r"
+  }
  },
  {
   "id": "p-019",
@@ -211,7 +283,11 @@
   "hint": "用循环找 1~n/2 的因子并求和，记住是否为第一个因子以控制 + 号的输出。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, i, sum = 0, first = 1;\n    scanf(\"%d\", &n);\n    for (i = 1; i <= n / 2; i++)\n        if (n % i == 0) sum += i;\n    if (sum != n)\n        printf(\"no\\n\");\n    else\n    {\n        printf(\"%d=\", n);\n        for (i = 1; i <= n / 2; i++)\n            if (n % i == 0)\n            {\n                if (first) { printf(\"%d\", i); first = 0; }\n                else printf(\"+%d\", i);\n            }\n        printf(\"\\n\");\n    }\n    return 0;\n}",
   "explanation": "2020 年卷完数填空题的编程化改编。常见错误：因子循环上界写成 n（会把 n 本身算进去），或输出 + 号时首尾处理不当。",
-  "src": "2020 真题改编"
+  "src": "2020 真题改编",
+  "io": {
+   "in": "6",
+   "out": "6=1+2+3\r"
+  }
  },
  {
   "id": "p-020",
@@ -222,7 +298,11 @@
   "hint": "递推：当前项 = 上一项*10 + a，边递推边累加。2022 年卷填空题改编。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a, n, i, t, sum = 0;\n    scanf(\"%d%d\", &a, &n);\n    t = a;\n    for (i = 1; i <= n; i++)\n    {\n        sum += t;\n        t = t * 10 + a;\n    }\n    printf(\"Sn=%d\\n\", sum);\n    return 0;\n}",
   "explanation": "考查递推数列求和。常见错误：直接用 pow 计算 10 的幂（浮点误差），或递推式写成 t*10 而漏加 a。",
-  "src": "2022 真题改编"
+  "src": "2022 真题改编",
+  "io": {
+   "in": "3 4",
+   "out": "Sn=3702\r"
+  }
  },
  {
   "id": "p-021",
@@ -233,7 +313,11 @@
   "hint": "用 f1、f2 两个变量滚动递推，第一个数单独输出以控制空格。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, i, f1 = 1, f2 = 1, f;\n    scanf(\"%d\", &n);\n    for (i = 1; i <= n; i++)\n    {\n        if (i == 1 || i == 2) printf(\"%d\", 1);\n        else\n        {\n            f = f1 + f2;\n            printf(\"%d\", f);\n            f1 = f2;\n            f2 = f;\n        }\n        if (i < n) printf(\" \");\n    }\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查迭代递推。常见错误：滚动变量更新顺序写反（应先算新值再平移），或最后一个数后多输出空格。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "7",
+   "out": "1 1 2 3 5 8 13\r"
+  }
  },
  {
   "id": "p-022",
@@ -245,7 +329,11 @@
   "answer": "#include <stdio.h>\n#include <math.h>\nint main()\n{\n    double pi = 0, term = 1;\n    int sign = 1, i = 1;\n    while (fabs(term) >= 1e-6)\n    {\n        pi += term;\n        sign = -sign;\n        i += 2;\n        term = 1.0 * sign / i;\n    }\n    printf(\"pi=%.6f\\n\", pi * 4);\n    return 0;\n}",
   "explanation": "考查通项交替的级数求和。常见错误：先累加后判断造成多加一项，或 sign 翻转位置不对导致收敛方向错误。",
   "src": "2020 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "（无）",
+   "out": "pi=3.141591\r"
+  }
  },
  {
   "id": "p-023",
@@ -256,7 +344,11 @@
   "hint": "每次用 %10 拆出 4 位存入数组，排序后拼成最大数与最小数（最小数允许前导 0），循环到差值为 6174。2020 年卷曾以此题考填空。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, i, j, t, d[4], big, small, diff, first = 1;\n    scanf(\"%d\", &n);\n    do\n    {\n        for (i = 0; i < 4; i++) { d[i] = n % 10; n /= 10; }\n        for (i = 0; i < 3; i++)\n            for (j = 0; j < 3 - i; j++)\n                if (d[j] > d[j+1]) { t = d[j]; d[j] = d[j+1]; d[j+1] = t; }\n        big = small = 0;\n        for (i = 0; i < 4; i++)\n        {\n            big = big * 10 + d[3 - i];\n            small = small * 10 + d[i];\n        }\n        diff = big - small;\n        if (first) { printf(\"%d\", diff); first = 0; }\n        else printf(\" %d\", diff);\n        n = diff;\n    } while (diff != 6174);\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "综合拆位、排序（冒泡）与 do-while。常见错误：最小数忘记前导 0 的情况（如 0378 应按 378 参与运算），或循环条件写成 n!=6174 而第一次输入恰为 6174 时死循环。",
-  "src": "2020 真题改编"
+  "src": "2020 真题改编",
+  "io": {
+   "in": "1234",
+   "out": "3087 8352 6174\r"
+  }
  },
  {
   "id": "p-024",
@@ -267,7 +359,11 @@
   "hint": "两层循环枚举起点与长度，内层把连续数字拼成整数，再用试除法判素数；用数组记录已输出的数去重。2020 年卷填空题改编。",
   "answer": "#include <stdio.h>\n#include <string.h>\nint is_prime(int n)\n{\n    int i;\n    if (n < 2) return 0;\n    for (i = 2; i * i <= n; i++)\n        if (n % i == 0) return 0;\n    return 1;\n}\nint main()\n{\n    char s[16];\n    int len, i, j, k, num, m, out[45], cnt = 0, found;\n    scanf(\"%s\", s);\n    len = strlen(s);\n    for (k = 1; k <= len; k++)\n        for (i = 0; i + k <= len; i++)\n        {\n            num = 0;\n            for (j = i; j < i + k; j++) num = num * 10 + s[j] - '0';\n            if (is_prime(num))\n            {\n                found = 0;\n                for (m = 0; m < cnt; m++)\n                    if (out[m] == num) found = 1;\n                if (!found) out[cnt++] = num;\n            }\n        }\n    for (m = 0; m < cnt; m++)\n        printf(\"%d%c\", out[m], m == cnt - 1 ? '\\n' : ' ');\n    if (cnt == 0) printf(\"\\n\");\n    return 0;\n}",
   "explanation": "综合字符串遍历、进制拼数与素数判断。常见错误：枚举顺序不符合题目要求（应先按长度），或忘记去重。",
-  "src": "2020 真题改编"
+  "src": "2020 真题改编",
+  "io": {
+   "in": "123",
+   "out": "2 3 23\r"
+  }
  },
  {
   "id": "p-025",
@@ -279,7 +375,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[5], i;\n    for (i = 0; i < 5; i++) scanf(\"%d\", &a[i]);\n    for (i = 4; i >= 0; i--)\n        printf(\"%d%c\", a[i], i == 0 ? '\\n' : ' ');\n    return 0;\n}",
   "explanation": "考查一维数组的输入输出与下标控制。常见错误：输出循环边界写成 i>0 少输出第一个数。",
   "src": "2017 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "1 2 3 4 5",
+   "out": "5 4 3 2 1\r"
+  }
  },
  {
   "id": "p-026",
@@ -291,7 +391,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[10], i, max, pos;\n    for (i = 0; i < 10; i++) scanf(\"%d\", &a[i]);\n    max = a[0];\n    pos = 0;\n    for (i = 1; i < 10; i++)\n        if (a[i] > max) { max = a[i]; pos = i; }\n    printf(\"max=%d,pos=%d\\n\", max, pos);\n    return 0;\n}",
   "explanation": "考查打擂台求最值。常见错误：max 初始化为 0（负数数组会错），或比较时用 >= 导致不是最前面的下标。",
   "src": "2016 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "1 5 7 2 9 8 3 6 0 4",
+   "out": "max=9,pos=4\r"
+  }
  },
  {
   "id": "p-027",
@@ -303,7 +407,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, i, x, count = 0, sum = 0;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &x);\n        if (x >= 0) { count++; sum += x; }\n    }\n    printf(\"count=%d,sum=%d\\n\", count, sum);\n    return 0;\n}",
   "explanation": "考查循环计数与条件累加。常见错误：非负判断写成 x>0 把 0 漏掉。",
   "src": "2016 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "5\n-1 2 -3 4 0",
+   "out": "count=3,sum=6\r"
+  }
  },
  {
   "id": "p-028",
@@ -315,7 +423,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[10], b[9], i;\n    for (i = 0; i < 10; i++) scanf(\"%d\", &a[i]);\n    for (i = 0; i < 9; i++) b[i] = a[i] + a[i+1];\n    for (i = 0; i < 9; i++)\n    {\n        printf(\"%3d\", b[i]);\n        if (i % 3 == 2) printf(\"\\n\");\n    }\n    return 0;\n}",
   "explanation": "考查数组下标映射与输出排版。常见错误：b 数组下标写成 b[i+1]，或每 3 个换行的条件写成 i%3==0 造成首行只有 1 个数。",
   "src": "2017 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "1 2 3 4 5 6 7 8 9 10",
+   "out": "  3  5  7\r\n  9 11 13\r\n 15 17 19\r"
+  }
  },
  {
   "id": "p-029",
@@ -327,7 +439,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[100], n, i, j, t;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) scanf(\"%d\", &a[i]);\n    for (i = 0; i < n - 1; i++)\n        for (j = i + 1; j < n; j++)\n            if (a[i] > a[j]) { t = a[i]; a[i] = a[j]; a[j] = t; }\n    for (i = 0; i < n; i++)\n        printf(\"%d%c\", a[i], i == n - 1 ? '\\n' : ' ');\n    return 0;\n}",
   "explanation": "考查排序算法的基本实现。常见错误：内层循环从 0 开始重复交换，或 n-1 写成 n 造成下标越界。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "6\n9 1 3 8 2 4",
+   "out": "1 2 3 4 8 9\r"
+  }
  },
  {
   "id": "p-030",
@@ -339,7 +455,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[3][3], i, j;\n    for (i = 0; i < 3; i++)\n        for (j = 0; j < 3; j++)\n            scanf(\"%d\", &a[i][j]);\n    for (i = 0; i < 3; i++)\n        for (j = 0; j < 3; j++)\n            printf(\"%d%c\", a[j][i], j == 2 ? '\\n' : ' ');\n    return 0;\n}",
   "explanation": "考查二维数组的行列遍历。常见错误：转置时行列下标没换，或内层换行条件写成 i==2。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "1 2 3\n4 5 6\n7 8 9",
+   "out": "1 4 7\r\n2 5 8\r\n3 6 9\r"
+  }
  },
  {
   "id": "p-031",
@@ -350,7 +470,11 @@
   "hint": "先求长度，再从最后一个字符开始倒序输出，注意 '\\0' 不是有效字符。",
   "answer": "#include <stdio.h>\n#include <string.h>\nint main()\n{\n    char s[81];\n    int i, len;\n    scanf(\"%s\", s);\n    len = strlen(s);\n    for (i = len - 1; i >= 0; i--)\n        printf(\"%c\", s[i]);\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查字符数组与 strlen。常见错误：循环从 len 开始输出把 '\\0' 也输出，或忘记包含 string.h。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "abcde",
+   "out": "edcba\r"
+  }
  },
  {
   "id": "p-032",
@@ -362,7 +486,11 @@
   "answer": "#include <stdio.h>\n#include <string.h>\nint main()\n{\n    char line[210];\n    int i, count = 0, inword = 0;\n    fgets(line, sizeof(line), stdin);\n    for (i = 0; line[i] != '\\0'; i++)\n    {\n        if (line[i] != ' ' && line[i] != '\\t' && line[i] != '\\n' && line[i] != '\\r')\n        {\n            if (!inword) { count++; inword = 1; }\n        }\n        else\n            inword = 0;\n    }\n    printf(\"%d\\n\", count);\n    return 0;\n}",
   "explanation": "考查整行读入与状态标记。常见错误：用 scanf(\"%s\") 只能读一个单词；多个连续空格时用\"空格数+1\"统计会算错。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "I   love  china",
+   "out": "3\r"
+  }
  },
  {
   "id": "p-033",
@@ -373,7 +501,11 @@
   "hint": "用 int count[26] 统计各字母次数，再找最大；并列时用 > 而非 >= 保证取 ASCII 最小的。",
   "answer": "#include <stdio.h>\n#include <string.h>\nint main()\n{\n    char s[1001];\n    int count[26] = {0};\n    int i, max, best = 0;\n    scanf(\"%s\", s);\n    for (i = 0; s[i] != '\\0'; i++)\n        count[s[i] - 'a']++;\n    max = count[0];\n    for (i = 1; i < 26; i++)\n        if (count[i] > max) { max = count[i]; best = i; }\n    printf(\"%c %d\\n\", 'a' + best, max);\n    return 0;\n}",
   "explanation": "考查计数数组思想（哈希的雏形）。常见错误：并列时用 >= 输出了 ASCII 大的字母，或下标换算 'a' 偏移写错。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "banana",
+   "out": "a 3\r"
+  }
  },
  {
   "id": "p-034",
@@ -384,7 +516,11 @@
   "hint": "用标记数组表示出列，报数循环中只对未出列者计数，数到 3 标记出列；下标取模实现循环。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int out[51] = {0};\n    int n, i = 0, cnt = 0, remain, first = 1;\n    scanf(\"%d\", &n);\n    remain = n;\n    while (remain > 0)\n    {\n        if (!out[i])\n        {\n            cnt++;\n            if (cnt == 3)\n            {\n                out[i] = 1;\n                remain--;\n                cnt = 0;\n                if (first) { printf(\"%d\", i + 1); first = 0; }\n                else printf(\" %d\", i + 1);\n            }\n        }\n        i = (i + 1) % n;\n    }\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查循环数组模拟。常见错误：出列后忘记重置报数器，或 % n 的取模时机不对导致数组越界。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "5",
+   "out": "3 1 5 2 4\r"
+  }
  },
  {
   "id": "p-035",
@@ -395,7 +531,11 @@
   "hint": "函数内 for 循环累乘即可，返回类型用 double 可容纳 20!。",
   "answer": "#include <stdio.h>\ndouble fact(int n)\n{\n    double r = 1;\n    int i;\n    for (i = 2; i <= n; i++) r *= i;\n    return r;\n}\nint main()\n{\n    int n;\n    scanf(\"%d\", &n);\n    printf(\"%.0f\\n\", fact(n));\n    return 0;\n}",
   "explanation": "考查函数定义、形参与返回值。常见错误：在函数内 scanf 而不是通过参数传入，或返回类型写 void 却 return 值。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "5",
+   "out": "120\r"
+  }
  },
  {
   "id": "p-036",
@@ -407,7 +547,11 @@
   "answer": "#include <stdio.h>\ndouble calc_pow(double x, int n)\n{\n    if (n == 0) return 1;\n    return x * calc_pow(x, n - 1);\n}\nint main()\n{\n    double x;\n    int n;\n    scanf(\"%lf%d\", &x, &n);\n    printf(\"result=%.2f\\n\", calc_pow(x, n));\n    return 0;\n}",
   "explanation": "考查递归函数的边界与递推式。常见错误：漏写 n==0 的边界导致无穷递归，或递归式写成 calc_pow(x,n) 自身调用无进展。",
   "src": "2020 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "2 10",
+   "out": "result=1024.00\r"
+  }
  },
  {
   "id": "p-037",
@@ -419,7 +563,11 @@
   "answer": "#include <stdio.h>\n#include <string.h>\nint fun(char *s, char *t)\n{\n    int i, j, count = 0, lt;\n    lt = strlen(t);\n    for (i = 0; s[i] != '\\0'; i++)\n    {\n        for (j = 0; t[j] != '\\0' && s[i+j] == t[j]; j++) ;\n        if (j == lt) count++;\n    }\n    return count;\n}\nint main()\n{\n    char s[200], t[100];\n    fgets(s, sizeof(s), stdin);\n    fgets(t, sizeof(t), stdin);\n    s[strcspn(s, \"\\r\\n\")] = '\\0';\n    t[strcspn(t, \"\\r\\n\")] = '\\0';\n    printf(\"%d\\n\", fun(s, t));\n    return 0;\n}",
   "explanation": "考查字符串匹配的基本思想。常见错误：匹配成功后让 i 跳过整个 t（题目按可重叠计数），或忘了把 fgets 读入的换行符去掉。",
   "src": "2022 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "excellent students\nent",
+   "out": "2\r"
+  }
  },
  {
   "id": "p-038",
@@ -430,7 +578,11 @@
   "hint": "辗转相除：gcd(a,b)=gcd(b,a%b)，b 为 0 时 a 即结果；先除后乘防溢出。",
   "answer": "#include <stdio.h>\nint gcd(int a, int b)\n{\n    while (b != 0)\n    {\n        int t = a % b;\n        a = b;\n        b = t;\n    }\n    return a;\n}\nint main()\n{\n    int a, b, g;\n    scanf(\"%d%d\", &a, &b);\n    g = gcd(a, b);\n    printf(\"gcd=%d,lcm=%d\\n\", g, a / g * b);\n    return 0;\n}",
   "explanation": "考查辗转相除法。常见错误：lcm 写成 a*b/g 在大数时溢出（应先除后乘），或 gcd 循环条件写反。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "12 18",
+   "out": "gcd=6,lcm=36\r"
+  }
  },
  {
   "id": "p-039",
@@ -442,7 +594,11 @@
   "answer": "#include <stdio.h>\nvoid squeeze(char s[], char c)\n{\n    int i, j;\n    for (i = j = 0; s[i] != '\\0'; i++)\n        if (s[i] != c) s[j++] = s[i];\n    s[j] = '\\0';\n}\nint main()\n{\n    char s[81], c;\n    scanf(\"%s\", s);\n    scanf(\" %c\", &c);\n    squeeze(s, c);\n    printf(\"%s\\n\", s);\n    return 0;\n}",
   "explanation": "考查双下标原地删除算法。常见错误：边删边让 i++ 造成跳字符，或删除后忘记在 j 处补 '\\0'。",
   "src": "2017 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "programming\nm",
+   "out": "prograing\r"
+  }
  },
  {
   "id": "p-040",
@@ -453,7 +609,11 @@
   "hint": "加权因子存入 int w[18] 数组；字符转数值时注意最后一位可能是 X/x 按 10 处理。2022 年期末编程原题。",
   "answer": "#include <stdio.h>\nint VerifyCode(char n[])\n{\n    int w[18] = {7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2,1};\n    int i, a, sum = 0;\n    for (i = 0; i < 18; i++)\n    {\n        if (i == 17 && (n[i] == 'X' || n[i] == 'x')) a = 10;\n        else a = n[i] - '0';\n        sum += a * w[i];\n    }\n    return sum % 11 == 1;\n}\nint main()\n{\n    char id[19];\n    scanf(\"%s\", id);\n    if (VerifyCode(id)) printf(\"True\\n\");\n    else printf(\"False\\n\");\n    return 0;\n}",
   "explanation": "考查字符串逐字符处理与数组应用。常见错误：忘记把字符转成数值直接乘，或 X/x 只判断了其中一种。",
-  "src": "2022 真题改编"
+  "src": "2022 真题改编",
+  "io": {
+   "in": "53010219200508011X",
+   "out": "True\r"
+  }
  },
  {
   "id": "p-041",
@@ -465,7 +625,11 @@
   "answer": "#include <stdio.h>\n#include <math.h>\nint main()\n{\n    int n, i, a[1000];\n    double avg = 0, d = 0;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &a[i]);\n        avg += a[i];\n    }\n    avg /= n;\n    for (i = 0; i < n; i++)\n        d += (a[i] - avg) * (a[i] - avg);\n    d /= n;\n    for (i = 0; i < n; i++)\n        printf(\"%f\\n\", (a[i] - avg) / sqrt(d));\n    return 0;\n}",
   "explanation": "考查多遍处理与数学函数综合。常见错误：方差分母写成 n-1，或 avg 未除 n 就计算 d。",
   "src": "2022 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "3\n-1 0 1",
+   "out": "-1.224745\r\n0.000000\r\n1.224745\r"
+  }
  },
  {
   "id": "p-042",
@@ -477,7 +641,11 @@
   "answer": "#include <stdio.h>\nvoid stat(int a[], int n, int *pmax, int *pmin, double *pavg)\n{\n    int i, sum = 0;\n    *pmax = a[0];\n    *pmin = a[0];\n    for (i = 0; i < n; i++)\n    {\n        if (a[i] > *pmax) *pmax = a[i];\n        if (a[i] < *pmin) *pmin = a[i];\n        sum += a[i];\n    }\n    *pavg = 1.0 * sum / n;\n}\nint main()\n{\n    int a[100], n, i, max, min;\n    double avg;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) scanf(\"%d\", &a[i]);\n    stat(a, n, &max, &min, &avg);\n    printf(\"max=%d,min=%d,avg=%.2f\\n\", max, min, avg);\n    return 0;\n}",
   "explanation": "考查数组作参数与指针返回多个结果。常见错误：在 stat 内定义局部变量返回（一个 return 只能回一个值），或调用时实参忘了取地址 &。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "5\n78 92 65 88 54",
+   "out": "max=92,min=54,avg=75.40\r"
+  }
  },
  {
   "id": "p-043",
@@ -488,7 +656,11 @@
   "hint": "借临时变量通过 *p1、*p2 交换所指对象的值。",
   "answer": "#include <stdio.h>\nvoid swap(int *p1, int *p2)\n{\n    int t;\n    t = *p1;\n    *p1 = *p2;\n    *p2 = t;\n}\nint main()\n{\n    int a, b;\n    scanf(\"%d%d\", &a, &b);\n    swap(&a, &b);\n    printf(\"%d %d\\n\", a, b);\n    return 0;\n}",
   "explanation": "考查指针作参数实现传址调用。常见错误：函数内只交换了形参指针本身的指向，实参不变；或调用时漏写 &。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "3 8",
+   "out": "8 3\r"
+  }
  },
  {
   "id": "p-044",
@@ -500,7 +672,11 @@
   "answer": "#include <stdio.h>\nint my_strlen(char *s)\n{\n    char *p = s;\n    while (*p != '\\0') p++;\n    return p - s;\n}\nint main()\n{\n    char s[81];\n    scanf(\"%s\", s);\n    printf(\"%d\\n\", my_strlen(s));\n    return 0;\n}",
   "explanation": "考查指针遍历字符串与指针相减。常见错误：循环条件写成 *p>0（应与 '\\0' 比较），或返回 p 而不是长度。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "hello",
+   "out": "5\r"
+  }
  },
  {
   "id": "p-045",
@@ -512,7 +688,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[100], n, i, sum = 0;\n    int *p;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) scanf(\"%d\", &a[i]);\n    for (p = a; p < a + n; p++) sum += *p;\n    printf(\"sum=%d,avg=%.2f\\n\", sum, 1.0 * sum / n);\n    return 0;\n}",
   "explanation": "考查指针与一维数组的关系（p+i 等价 a+i）。常见错误：*p++ 与 (*p)++ 混淆，或循环条件写成 p<=a+n 越界。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "4\n1 2 3 4",
+   "out": "sum=10,avg=2.50\r"
+  }
  },
  {
   "id": "p-046",
@@ -524,7 +704,11 @@
   "answer": "#include <stdio.h>\nvoid my_strcat(char *s1, char *s2)\n{\n    while (*s1 != '\\0') s1++;\n    while (*s2 != '\\0') *s1++ = *s2++;\n    *s1 = '\\0';\n}\nint main()\n{\n    char a[81], b[41];\n    scanf(\"%s%s\", a, b);\n    my_strcat(a, b);\n    printf(\"%s\\n\", a);\n    return 0;\n}",
   "explanation": "考查指针遍历与 *s1++=*s2++ 写法。常见错误：第一步循环写成 while(*s1++) 使指针越过 '\\0'，或末尾忘记写 '\\0'。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "abc\nde",
+   "out": "abcde\r"
+  }
  },
  {
   "id": "p-047",
@@ -535,7 +719,11 @@
   "hint": "扫描字符串：遇数字 num=num*10+当前位，遇非数字时把 num 累加进 sum 并清零；结束后再补加一次。",
   "answer": "#include <stdio.h>\nint main()\n{\n    char s[101];\n    int i, num = 0, sum = 0;\n    scanf(\"%s\", s);\n    for (i = 0; s[i] != '\\0'; i++)\n    {\n        if (s[i] >= '0' && s[i] <= '9')\n            num = num * 10 + (s[i] - '0');\n        else\n        {\n            sum += num;\n            num = 0;\n        }\n    }\n    sum += num;\n    printf(\"%d\\n\", sum);\n    return 0;\n}",
   "explanation": "综合指针/数组扫描与拼数。常见错误：循环结束后忘记把最后一段数字累加进 sum。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "ab12cd3e456",
+   "out": "471\r"
+  }
  },
  {
   "id": "p-048",
@@ -546,7 +734,11 @@
   "hint": "两遍扫描：第一遍输出所有数字字符，第二遍输出所有字母字符（借助另一数组更稳）。",
   "answer": "#include <stdio.h>\nint main()\n{\n    char s[101], t[101];\n    int i, j = 0;\n    scanf(\"%s\", s);\n    for (i = 0; s[i] != '\\0'; i++)\n        if (s[i] >= '0' && s[i] <= '9') t[j++] = s[i];\n    for (i = 0; s[i] != '\\0'; i++)\n        if (!(s[i] >= '0' && s[i] <= '9')) t[j++] = s[i];\n    t[j] = '\\0';\n    printf(\"%s\\n\", t);\n    return 0;\n}",
   "explanation": "考查按条件重排字符。常见错误：一遍扫描中直接交换元素破坏相对顺序；本解法用辅助数组保持稳定。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "a1b2c3",
+   "out": "123abc\r"
+  }
  },
  {
   "id": "p-049",
@@ -558,7 +750,11 @@
   "answer": "#include <stdio.h>\nstruct student\n{\n    int num;\n    char name[20];\n    int score;\n};\nint main()\n{\n    struct student stu;\n    scanf(\"%d%s%d\", &stu.num, stu.name, &stu.score);\n    printf(\"num=%d,name=%s,score=%d\\n\", stu.num, stu.name, stu.score);\n    return 0;\n}",
   "explanation": "考查结构体定义、成员引用。常见错误：对成员数组 name 误加 & 取地址。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "1001 Tom 89",
+   "out": "num=1001,name=Tom,score=89\r"
+  }
  },
  {
   "id": "p-050",
@@ -570,7 +766,11 @@
   "answer": "#include <stdio.h>\n#include <string.h>\nstruct person\n{\n    char name[20];\n    int age;\n};\nint main()\n{\n    struct person p[3];\n    int i, max = 0, min = 0;\n    for (i = 0; i < 3; i++)\n        scanf(\"%s%d\", p[i].name, &p[i].age);\n    for (i = 1; i < 3; i++)\n    {\n        if (p[i].age > p[max].age) max = i;\n        if (p[i].age < p[min].age) min = i;\n    }\n    for (i = 0; i < 3; i++)\n        if (i != max && i != min)\n            printf(\"%s %d\\n\", p[i].name, p[i].age);\n    return 0;\n}",
   "explanation": "考查结构体数组与下标式最值查找。常见错误：结构体整体比较（结构体不能直接用 > 比较），应比较成员 age。",
   "src": "2017 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "Li 18\nWang 19\nZhang 20",
+   "out": "Wang 19\r"
+  }
  },
  {
   "id": "p-051",
@@ -582,7 +782,11 @@
   "answer": "#include <stdio.h>\nstruct student\n{\n    int num;\n    char name[20];\n    int score;\n};\nint main()\n{\n    struct student stu[50], t;\n    int n, i, j;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d%s%d\", &stu[i].num, stu[i].name, &stu[i].score);\n    for (i = 0; i < n - 1; i++)\n        for (j = i + 1; j < n; j++)\n            if (stu[j].score > stu[i].score)\n            {\n                t = stu[i];\n                stu[i] = stu[j];\n                stu[j] = t;\n            }\n    for (i = 0; i < n; i++)\n        printf(\"%d %s %d\\n\", stu[i].num, stu[i].name, stu[i].score);\n    return 0;\n}",
   "explanation": "考查结构体数组排序与整体赋值。常见错误：逐成员手工交换时漏掉 name（字符串不能直接 =，需 strcpy），利用结构体整体赋值可避免。",
   "src": "2022 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "3\n1001 Tom 78\n1002 Jerry 92\n1003 Carol 85",
+   "out": "1002 Jerry 92\r\n1003 Carol 85\r\n1001 Tom 78\r"
+  }
  },
  {
   "id": "p-052",
@@ -594,7 +798,11 @@
   "answer": "#include <stdio.h>\nstruct student\n{\n    char name[20];\n    int s[3];\n    double avg;\n};\nint main()\n{\n    struct student stu[50], *p, *best;\n    int n, i;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n    {\n        p = &stu[i];\n        scanf(\"%s%d%d%d\", p->name, &p->s[0], &p->s[1], &p->s[2]);\n        p->avg = (p->s[0] + p->s[1] + p->s[2]) / 3.0;\n        printf(\"%s %.2f\\n\", p->name, p->avg);\n    }\n    best = &stu[0];\n    for (i = 1; i < n; i++)\n        if (stu[i].avg > best->avg) best = &stu[i];\n    printf(\"%s %.2f\\n\", best->name, best->avg);\n    return 0;\n}",
   "explanation": "考查结构体数组、结构体指针 -> 运算符的综合使用。常见错误：p->s[0] 写成 p->s（数组名不能当成员值用），或求平均时用整数除法。",
   "src": "模拟",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "2\nTom 80 85 90\nJerry 90 90 90",
+   "out": "Tom 85.00\r\nJerry 90.00\r\nJerry 90.00\r"
+  }
  },
  {
   "id": "p-053",
@@ -606,7 +814,11 @@
   "answer": "#include <stdio.h>\nvoid convert(char ch, char *s)\n{\n    int i = 7, k = 0, n = ch;\n    while (n > 0)\n    {\n        s[i--] = n % 2 + '0';\n        if (n % 2 == 1) k++;\n        n /= 2;\n    }\n    while (i >= 1) s[i--] = '0';\n    s[0] = (k % 2 == 0) ? '1' : '0';\n    s[8] = '\\0';\n}\nint main()\n{\n    char ch, s[9];\n    scanf(\"%c\", &ch);\n    convert(ch, s);\n    printf(\"%s\\n\", s);\n    return 0;\n}",
   "explanation": "综合进制转换与数组下标控制。常见错误：位数从高到低填反了方向，或校验位规则记反（偶数个 1 应置 1）。",
   "src": "2020 真题改编",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "0",
+   "out": "10110000\r"
+  }
  },
  {
   "id": "p-054",
@@ -617,7 +829,11 @@
   "hint": "从第 7 位到第 0 位依次输出 (n>>i)&1。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, i;\n    scanf(\"%d\", &n);\n    for (i = 7; i >= 0; i--)\n        printf(\"%d\", (n >> i) & 1);\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查移位与按位与提取二进制位。常见错误：i 从 0 开始输出导致高低位颠倒，或忘写 &1 使结果出现大于 1 的数字。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "10",
+   "out": "00001010\r"
+  }
  },
  {
   "id": "p-055",
@@ -628,7 +844,11 @@
   "hint": "让指针 p 先指向 a，max=*p，再用 p++ 依次走过 a+1 到 a+9，逐个比较更新 max。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[10], i, max, *p;\n    for (i = 0; i < 10; i++)\n        scanf(\"%d\", &a[i]);\n    p = a;\n    max = *p;\n    for (p = a + 1; p < a + 10; p++)\n        if (*p > max)\n            max = *p;\n    printf(\"max=%d\\n\", max);\n    return 0;\n}",
   "explanation": "考查用指针访问数组元素。常见错误：p<a+10 写成 p<=a+10 造成越界，或忘记先给 max 赋初值 *p 而赋 0 或 1。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "85 90 78 92 88 79 95 84 91 93",
+   "out": "max=95\r"
+  }
  },
  {
   "id": "p-056",
@@ -639,7 +859,11 @@
   "hint": "定义 char *p 指向数组首地址，while (*p!='\\0') 中 len++ 且 p++，循环结束时的 len 就是长度。",
   "answer": "#include <stdio.h>\nint main()\n{\n    char s[100], *p;\n    int len = 0;\n    scanf(\"%s\", s);\n    p = s;\n    while (*p != '\\0')\n    {\n        len++;\n        p++;\n    }\n    printf(\"len=%d\\n\", len);\n    return 0;\n}",
   "explanation": "考查字符指针与字符串结束标志 '\\0'。常见错误：循环条件写成 *p=='\\n'，或 scanf(\"%s\",&s) 多写了取地址符。",
-  "src": "原创"
+  "src": "原创",
+  "io": {
+   "in": "hello",
+   "out": "len=5\r"
+  }
  },
  {
   "id": "p-057",
@@ -650,7 +874,11 @@
   "hint": "p 指向 a、q 指向 a+9，当 p<q 时交换 *p 与 *q，随后 p++、q--。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[10], i, t, *p, *q;\n    for (i = 0; i < 10; i++)\n        scanf(\"%d\", &a[i]);\n    p = a;\n    q = a + 9;\n    while (p < q)\n    {\n        t = *p;\n        *p = *q;\n        *q = t;\n        p++;\n        q--;\n    }\n    for (i = 0; i < 10; i++)\n    {\n        if (i > 0)\n            printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查指针的双向扫描与交换。常见错误：循环条件写成 p!=q（偶数个元素时会跳过中间交换），或交换后忘记移动指针导致死循环。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "1 2 3 4 5 6 7 8 9 10",
+   "out": "10 9 8 7 6 5 4 3 2 1\r"
+  }
  },
  {
   "id": "p-058",
@@ -662,7 +890,11 @@
   "answer": "#include <stdio.h>\nstruct Student\n{\n    int num;\n    char name[20];\n    float score;\n};\nint main()\n{\n    struct Student s;\n    scanf(\"%d%s%f\", &s.num, s.name, &s.score);\n    printf(\"%d %s %.1f\\n\", s.num, s.name, s.score);\n    return 0;\n}",
   "jscpp": false,
   "explanation": "考查结构体类型定义与成员访问。常见错误：scanf 中对 s.name 再取地址写成 &s.name，或结构体定义末尾漏掉分号。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "101 Zhang 89.5",
+   "out": "101 Zhang 89.5\r"
+  }
  },
  {
   "id": "p-059",
@@ -674,7 +906,11 @@
   "answer": "#include <stdio.h>\nstruct Student\n{\n    int num;\n    char name[20];\n    float score;\n};\nint main()\n{\n    struct Student s[3];\n    int i, k = 0;\n    for (i = 0; i < 3; i++)\n        scanf(\"%d%s%f\", &s[i].num, s[i].name, &s[i].score);\n    for (i = 1; i < 3; i++)\n        if (s[i].score > s[k].score)\n            k = i;\n    printf(\"%d %s %.1f\\n\", s[k].num, s[k].name, s[k].score);\n    return 0;\n}",
   "jscpp": false,
   "explanation": "考查结构体数组的输入与打擂台求最值。常见错误：比较时写成 s[i]>s[k]（不能对整个结构体比较），或输出时忘记用 s[k].成员 的形式。",
-  "src": "2018 真题改编"
+  "src": "2018 真题改编",
+  "io": {
+   "in": "101 Zhang 85.5\n102 Wang 92\n103 Li 78.5",
+   "out": "102 Wang 92.0\r"
+  }
  },
  {
   "id": "p-060",
@@ -686,7 +922,11 @@
   "answer": "#include <stdio.h>\nstruct Student\n{\n    int num;\n    char name[20];\n    float score;\n};\nint main()\n{\n    struct Student s[3], t;\n    int i, j;\n    for (i = 0; i < 3; i++)\n        scanf(\"%d%s%f\", &s[i].num, s[i].name, &s[i].score);\n    for (j = 0; j < 2; j++)\n        for (i = 0; i < 2 - j; i++)\n            if (s[i].score < s[i + 1].score)\n            {\n                t = s[i];\n                s[i] = s[i + 1];\n                s[i + 1] = t;\n            }\n    for (i = 0; i < 3; i++)\n        printf(\"%d %s %.1f\\n\", s[i].num, s[i].name, s[i].score);\n    return 0;\n}",
   "jscpp": false,
   "explanation": "考查结构体数组排序与结构体整体赋值。常见错误：排序时只交换 score 而忘记交换 num、name，导致数据错位；同类型结构体变量之间可以直接赋值这一点也常被误认为非法。",
-  "src": "原创"
+  "src": "原创",
+  "io": {
+   "in": "101 Zhang 85.5\n102 Wang 92\n103 Li 78.5",
+   "out": "102 Wang 92.0\r\n101 Zhang 85.5\r\n103 Li 78.5\r"
+  }
  },
  {
   "id": "p-061",
@@ -698,7 +938,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    FILE *fp;\n    int n, i, x;\n    scanf(\"%d\", &n);\n    fp = fopen(\"data.txt\", \"w\");\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &x);\n        fprintf(fp, \"%d \", x);\n    }\n    fclose(fp);\n    fp = fopen(\"data.txt\", \"r\");\n    for (i = 0; i < n; i++)\n    {\n        fscanf(fp, \"%d\", &x);\n        if (i > 0)\n            printf(\" \");\n        printf(\"%d\", x);\n    }\n    printf(\"\\n\");\n    fclose(fp);\n    return 0;\n}",
   "jscpp": false,
   "explanation": "考查 FILE 指针、fopen/fprintf/fscanf/fclose 的基本用法。常见错误：写模式未关闭就重新以读模式打开，或 fopen 返回值赋给的变量类型写成 int 而不是 FILE*。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "4 10 20 30 40",
+   "out": "10 20 30 40\r"
+  }
  },
  {
   "id": "p-062",
@@ -710,7 +954,11 @@
   "answer": "#include <stdio.h>\nint main()\n{\n    FILE *fp;\n    int n, i, x, sum = 0;\n    float avg;\n    fp = fopen(\"data.txt\", \"r\");\n    fscanf(fp, \"%d\", &n);\n    for (i = 0; i < n; i++)\n    {\n        fscanf(fp, \"%d\", &x);\n        sum += x;\n    }\n    fclose(fp);\n    avg = (float)sum / n;\n    printf(\"sum=%d\\n\", sum);\n    printf(\"avg=%.2f\\n\", avg);\n    return 0;\n}",
   "jscpp": false,
   "explanation": "考查从文件读数据与统计计算。常见错误：sum 初值忘赋 0，或求平均值时写成 sum/n 的整数除法导致小数部分丢失。",
-  "src": "2016 真题改编"
+  "src": "2016 真题改编",
+  "io": {
+   "in": "5 1 2 3 4 5",
+   "out": "sum=15\r\navg=3.00\r"
+  }
  },
  {
   "id": "p-063",
@@ -721,7 +969,11 @@
   "hint": "#define MAX(a,b) ((a)>(b)?(a):(b))，注意每个参数和整个表达式都要加括号；调用时嵌套 MAX(MAX(a,b),c)。",
   "answer": "#include <stdio.h>\n#define MAX(a, b) ((a) > (b) ? (a) : (b))\nint main()\n{\n    int a, b, c, m;\n    scanf(\"%d%d%d\", &a, &b, &c);\n    m = MAX(MAX(a, b), c);\n    printf(\"max=%d\\n\", m);\n    return 0;\n}",
   "explanation": "考查带参宏定义与宏展开。常见错误：参数不加括号，如 #define MAX(a,b) a>b?a:b，当参数本身是表达式时会因优先级出错；宏定义行末也不能写分号。",
-  "src": "2017 真题改编"
+  "src": "2017 真题改编",
+  "io": {
+   "in": "3 7 5",
+   "out": "max=7\r"
+  }
  },
  {
   "id": "p-064",
@@ -732,7 +984,11 @@
   "hint": "13 的二进制是 1101，共 3 个 1。用 count+=n&1; n=n>>1; 循环直到 n 为 0。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, count = 0;\n    scanf(\"%d\", &n);\n    while (n != 0)\n    {\n        count += n & 1;\n        n = n >> 1;\n    }\n    printf(\"%d\\n\", count);\n    return 0;\n}",
   "explanation": "考查按位与提取最低位与右移运算。常见错误：把 n&1 写成 n%1，或循环条件写成 n>1 漏掉最高位的 1。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "13",
+   "out": "3\r"
+  }
  },
  {
   "id": "p-065",
@@ -743,7 +999,11 @@
   "hint": "n&1 的结果就是二进制最低位：为 1 是奇数，为 0 是偶数。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n;\n    scanf(\"%d\", &n);\n    if ((n & 1) == 0)\n        printf(\"%d is even\\n\", n);\n    else\n        printf(\"%d is odd\\n\", n);\n    return 0;\n}",
   "explanation": "考查按位与做掩码。常见错误：if(n&1==0) 因 == 优先级高于 & 而逻辑出错，必须写成 (n&1)==0。",
-  "src": "原创"
+  "src": "原创",
+  "io": {
+   "in": "7",
+   "out": "7 is odd\r"
+  }
  },
  {
   "id": "p-066",
@@ -755,7 +1015,11 @@
   "answer": "#include <stdio.h>\n#include <stdlib.h>\nint main()\n{\n    int n, i, sum = 0;\n    int *p;\n    float avg;\n    scanf(\"%d\", &n);\n    p = (int *)malloc(n * sizeof(int));\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", p + i);\n        sum += *(p + i);\n    }\n    avg = (float)sum / n;\n    printf(\"sum=%d\\n\", sum);\n    printf(\"avg=%.2f\\n\", avg);\n    free(p);\n    return 0;\n}",
   "jscpp": false,
   "explanation": "考查 malloc/free 动态内存管理与指针访问。常见错误：malloc 后忘记强制类型转换或漏写 sizeof，用完不 free 造成内存泄漏，或访问 *(p+i) 误写成 *p+i。",
-  "src": "模拟"
+  "src": "模拟",
+  "io": {
+   "in": "5 1 2 3 4 5",
+   "out": "sum=15\r\navg=3.00\r"
+  }
  },
  {
   "id": "p-067",
@@ -767,7 +1031,11 @@
   "answer": "#include <stdio.h>\n#include <stdlib.h>\nint main()\n{\n    int n, i, j, t, *a;\n    scanf(\"%d\", &n);\n    a = (int *)malloc(n * sizeof(int));\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n    for (j = 0; j < n - 1; j++)\n        for (i = 0; i < n - 1 - j; i++)\n            if (a[i] > a[i + 1])\n            {\n                t = a[i];\n                a[i] = a[i + 1];\n                a[i + 1] = t;\n            }\n    for (i = 0; i < n; i++)\n    {\n        if (i > 0)\n            printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    free(a);\n    return 0;\n}",
   "jscpp": false,
   "explanation": "考查动态内存申请与排序算法的综合运用。常见错误：malloc 的大小写成 n 而不是 n*sizeof(int)，排序循环边界写错导致漏排，或释放后继续访问已 free 的指针。",
-  "src": "原创"
+  "src": "原创",
+  "io": {
+   "in": "5 3 1 4 2 5",
+   "out": "1 2 3 4 5\r"
+  }
  },
  {
   "id": "p-068",
@@ -778,7 +1046,11 @@
   "hint": "在循环里用同一个变量累乘：t=t*i 得到 i!，同时 sum=sum+t 累加，不必每次重算阶乘。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, i, t = 1, sum = 0;\n    scanf(\"%d\", &n);\n    for (i = 1; i <= n; i++)\n    {\n        t = t * i;\n        sum = sum + t;\n    }\n    printf(\"%d\\n\", sum);\n    return 0;\n}",
   "explanation": "考查循环与累乘累加的迭代思想。常见错误：每次循环都把 t 重置为 1（只加了最后一项），或求和变量忘赋初值 0。",
-  "src": "2020 真题改编"
+  "src": "2020 真题改编",
+  "io": {
+   "in": "5",
+   "out": "153\r"
+  }
  },
  {
   "id": "p-069",
@@ -789,7 +1061,11 @@
   "hint": "百位 a=n/100，十位 b=n/10%10，个位 c=n%10，判断 a*a*a+b*b*b+c*c*c 是否等于 n。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int n, a, b, c, s;\n    scanf(\"%d\", &n);\n    a = n / 100;\n    b = n / 10 % 10;\n    c = n % 10;\n    s = a * a * a + b * b * b + c * c * c;\n    if (s == n)\n        printf(\"yes\\n\");\n    else\n        printf(\"no\\n\");\n    return 0;\n}",
   "explanation": "考查整数分解各位数字与条件判断。常见错误：十位写成 n%10/10（先取余后整除顺序错），或立方漏乘一项。",
-  "src": "2014 真题改编"
+  "src": "2014 真题改编",
+  "io": {
+   "in": "153",
+   "out": "yes\r"
+  }
  },
  {
   "id": "p-070",
@@ -800,7 +1076,11 @@
   "hint": "定义 int a[3][3]，输入按 a[i][j]，输出时交换行列下标输出 a[j][i] 即可，不必真的交换数组元素。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[3][3], i, j;\n    for (i = 0; i < 3; i++)\n        for (j = 0; j < 3; j++)\n            scanf(\"%d\", &a[i][j]);\n    for (i = 0; i < 3; i++)\n    {\n        for (j = 0; j < 3; j++)\n        {\n            if (j > 0)\n                printf(\" \");\n            printf(\"%d\", a[j][i]);\n        }\n        printf(\"\\n\");\n    }\n    return 0;\n}",
   "explanation": "考查二维数组的行列下标变换。常见错误：输出时内外层循环变量 i、j 用反，或行末多输出一个空格导致格式错误。",
-  "src": "2015 真题改编"
+  "src": "2015 真题改编",
+  "io": {
+   "in": "1 2 3 4 5 6 7 8 9",
+   "out": "1 4 7\r\n2 5 8\r\n3 6 9\r"
+  }
  },
  {
   "id": "p-071",
@@ -811,7 +1091,11 @@
   "hint": "用 scanf(\"%c\",&ch) 逐个读入，读到 '#' 停止；字母用 (ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z') 判断，不必调用库函数。",
   "answer": "#include <stdio.h>\nint main()\n{\n    char ch;\n    int letter = 0, digit = 0, other = 0;\n    while (1)\n    {\n        scanf(\"%c\", &ch);\n        if (ch == '#')\n            break;\n        if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))\n            letter++;\n        else if (ch >= '0' && ch <= '9')\n            digit++;\n        else\n            other++;\n    }\n    printf(\"letter=%d\\n\", letter);\n    printf(\"digit=%d\\n\", digit);\n    printf(\"other=%d\\n\", other);\n    return 0;\n}",
   "explanation": "考查字符的 ASCII 码比较与循环终止条件。常见错误：忘记空格属于其他字符，或把结束符 # 也统计进去。",
-  "src": "2019 真题改编"
+  "src": "2019 真题改编",
+  "io": {
+   "in": "abc123 XY!#",
+   "out": "letter=5\r\ndigit=3\r\nother=2\r"
+  }
  },
  {
   "id": "p-072",
@@ -822,7 +1106,11 @@
   "hint": "外层循环 j 从 0 到 8 共 9 趟，内层 i 从 0 到 8-j，相邻比较 a[i]>a[i+1] 就交换，每趟把当前最大值“冒泡”到末尾。",
   "answer": "#include <stdio.h>\nint main()\n{\n    int a[10], i, j, t;\n    for (i = 0; i < 10; i++)\n        scanf(\"%d\", &a[i]);\n    for (j = 0; j < 9; j++)\n        for (i = 0; i < 9 - j; i++)\n            if (a[i] > a[i + 1])\n            {\n                t = a[i];\n                a[i] = a[i + 1];\n                a[i + 1] = t;\n            }\n    for (i = 0; i < 10; i++)\n    {\n        if (i > 0)\n            printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查冒泡排序的双层循环与元素交换。常见错误：内层边界漏掉 -j 造成重复比较，或交换时临时变量 t 使用顺序颠倒。",
-  "src": "2022 真题改编"
+  "src": "2022 真题改编",
+  "io": {
+   "in": "9 1 8 2 7 3 6 4 5 10",
+   "out": "1 2 3 4 5 6 7 8 9 10\r"
+  }
  },
  {
   "id": "p-073",
@@ -833,7 +1121,11 @@
   "hint": "两个比值互为倒数：miles/gallons 与 gallons/miles，注意输出精度的位数不同。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    float miles, gallons;\n    scanf(\"%f%f\", &miles, &gallons);\n    printf(\"miles per gallon=%.2f\\n\", miles / gallons);\n    printf(\"gallons per mile=%.4f\\n\", gallons / miles);\n    return 0;\n}",
   "explanation": "考查顺序结构中最简单的算术运算与格式化输出。注意除法两侧必须有一侧是实型，若写成整数相除会丢失小数部分；%f 默认输出 6 位小数，需用 %.2f/%.4f 控制。",
-  "src": "《实验与辅导》第4章编程题"
+  "src": "《实验与辅导》第4章编程题",
+  "io": {
+   "in": "500 40",
+   "out": "miles per gallon=12.50\r\ngallons per mile=0.0800\r"
+  }
  },
  {
   "id": "p-074",
@@ -844,7 +1136,11 @@
   "hint": "用强制类型转换 (int)x 取整数部分，再用 x-(int)x 得到小数部分。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    float x;\n    int i;\n    scanf(\"%f\", &x);\n    i = (int)x;\n    printf(\"integer part=%d\\n\", i);\n    printf(\"decimal part=%.3f\\n\", x - i);\n    return 0;\n}",
   "explanation": "考查强制类型转换与浮点数的存储误差。(int)x 只截取整数部分，不做四舍五入；x-i 得到的是一串二进制近似值，所以小数部分必须限定输出位数，不能指望它精确等于 0.14。",
-  "src": "《实验与辅导》第4章编程题"
+  "src": "《实验与辅导》第4章编程题",
+  "io": {
+   "in": "3.14",
+   "out": "integer part=3\r\ndecimal part=0.140\r"
+  }
  },
  {
   "id": "p-075",
@@ -855,7 +1151,11 @@
   "hint": "若 x<0 则取相反数，否则保持不变；也可直接用条件表达式 x<0?-x:x。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    float x;\n    scanf(\"%f\", &x);\n    if (x < 0)\n        x = -x;\n    printf(\"absolute value=%.2f\\n\", x);\n    return 0;\n}",
   "explanation": "考查单分支 if 语句。绝对值就是把负数取反、非负数保持原值，注意 0 既不属于正数也不属于负数，用 x<0 判断可自然覆盖 0 的情况。",
-  "src": "《实验与辅导》第5章编程题"
+  "src": "《实验与辅导》第5章编程题",
+  "io": {
+   "in": "-3.5",
+   "out": "absolute value=3.50\r"
+  }
  },
  {
   "id": "p-076",
@@ -866,7 +1166,11 @@
   "hint": "分段累进：8000 元档的税额固定为 3000*3%=90，15000 元档再固定加 7000*10%=700。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    float income, tax = 0;\n    scanf(\"%f\", &income);\n    if (income <= 5000)\n        tax = 0;\n    else if (income <= 8000)\n        tax = (income - 5000) * 0.03f;\n    else if (income <= 15000)\n        tax = 3000 * 0.03f + (income - 8000) * 0.10f;\n    else\n        tax = 3000 * 0.03f + 7000 * 0.10f + (income - 15000) * 0.20f;\n    printf(\"tax=%.2f\\n\", tax);\n    return 0;\n}",
   "explanation": "考查 if-else if 多分支「逐级筛选」的写法。else if 隐含了前面条件不成立，所以分支条件只需写单边比较，不必写成 income>5000&&income<=8000 这种冗余形式。分段累进的关键是：高档税额 = 低档已满额税额 + 超出部分×本档税率。",
-  "src": "《实验与辅导》第5章编程题"
+  "src": "《实验与辅导》第5章编程题",
+  "io": {
+   "in": "10000",
+   "out": "tax=290.00\r"
+  }
  },
  {
   "id": "p-077",
@@ -877,7 +1181,11 @@
   "hint": "用 switch 语句，把项目相同的 case 标签写在一起共用一段处理代码。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    char c;\n    scanf(\" %c\", &c);\n    switch (c)\n    {\n    case 'A':\n    case 'C':\n        printf(\"乒乓球\\n\");\n        break;\n    case 'B':\n    case 'D':\n        printf(\"篮球\\n\");\n        break;\n    case 'E':\n        printf(\"保龄球\\n\");\n        break;\n    case 'F':\n        printf(\"吉他\\n\");\n        break;\n    case 'G':\n        printf(\"舞蹈\\n\");\n        break;\n    default:\n        printf(\"error\\n\");\n    }\n    return 0;\n}",
   "explanation": "考查 switch 多分支与 case 穿透。多个 case 之间不写 break 就会「落空」到下一段代码，本题正好利用这一特性把星期一、三合并；default 负责处理非法输入。scanf(\" %c\") 中的空格可以跳过输入缓冲区里的空白字符。",
-  "src": "《实验与辅导》第5章编程题"
+  "src": "《实验与辅导》第5章编程题",
+  "io": {
+   "in": "E",
+   "out": "保龄球\r"
+  }
  },
  {
   "id": "p-078",
@@ -888,7 +1196,11 @@
   "hint": "按「乘 2 加本位」递推：d=(…((a1×2+a2)×2+a3)×2+…)+a0，边读边算，无需先求长度。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    char s[64];\n    int i, dec = 0;\n    scanf(\"%s\", s);\n    for (i = 0; s[i] != '\\0'; i++)\n        dec = dec * 2 + (s[i] - '0');\n    printf(\"%d\\n\", dec);\n    return 0;\n}",
   "explanation": "考查循环中「迭代累积」的思想。把 1101 看成 ((((0×2+1)×2+1)×2+0)×2+1)，每读一位就乘 2 再加该位数字，正好等价于按权展开求和，而且不用事先知道位数。",
-  "src": "《实验与辅导》第6章编程题"
+  "src": "《实验与辅导》第6章编程题",
+  "io": {
+   "in": "1101",
+   "out": "13\r"
+  }
  },
  {
   "id": "p-079",
@@ -899,7 +1211,11 @@
   "hint": "用 while(pop<p1){ pop*=1+r/100; year++; } 循环累乘，年数在循环体内自增。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    float p0, r, p1, pop;\n    int year = 0;\n    scanf(\"%f%f%f\", &p0, &r, &p1);\n    pop = p0;\n    while (pop < p1)\n    {\n        pop = pop * (1 + r / 100);\n        year++;\n    }\n    printf(\"years=%d\\n\", year);\n    return 0;\n}",
   "explanation": "考查不定次数循环（当型循环）。循环次数事先未知，只能由条件 pop<p1 控制；年数初值为 0，每乘一次增长率就加 1，退出时即为达到目标的年数。注意 r/100 中 r 是实型，若把 r 定义成 int 会得到 0。",
-  "src": "《实验与辅导》第6章编程题"
+  "src": "《实验与辅导》第6章编程题",
+  "io": {
+   "in": "13 1 20",
+   "out": "years=44\r"
+  }
  },
  {
   "id": "p-080",
@@ -910,7 +1226,11 @@
   "hint": "边读边转换：while((c=getchar())!='\\n')，用 c>='a'&&c<='z' 判断后加减 32。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    char s[256];\n    int i = 0, c;\n    while ((c = getchar()) != '\\n' && c != EOF && i < 255)\n        s[i++] = (char)c;\n    s[i] = '\\0';\n    for (i = 0; s[i] != '\\0'; i++)\n    {\n        if (s[i] >= 'a' && s[i] <= 'z')\n            s[i] = s[i] - 'a' + 'A';\n        else if (s[i] >= 'A' && s[i] <= 'Z')\n            s[i] = s[i] - 'A' + 'a';\n    }\n    printf(\"%s\\n\", s);\n    return 0;\n}",
   "explanation": "考查字符的 ASCII 码运算与「读入一行」的模式。'a'-'A' 恰好等于 32，所以小写转大写可用 s[i]-32，大写转小写可用 s[i]+32。用 int 型变量接收 getchar() 的返回值才能正确判断 EOF；读入时要防止越界。",
-  "src": "《实验与辅导》第6章编程题"
+  "src": "《实验与辅导》第6章编程题",
+  "io": {
+   "in": "Hello World 2024",
+   "out": "hELLO wORLD 2024\r"
+  }
  },
  {
   "id": "p-081",
@@ -921,7 +1241,11 @@
   "hint": "用 (i-1+n)%n 处理行回绕、(j+1)%n 处理列回绕；若目标格非 0 说明已被占，改放 (i+1)%n 行同列。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    int a[15][15] = {0};\n    int n, i, j, k, r, c;\n    scanf(\"%d\", &n);\n    i = 0;\n    j = n / 2;\n    a[i][j] = 1;\n    for (k = 2; k <= n * n; k++)\n    {\n        r = (i - 1 + n) % n;\n        c = (j + 1) % n;\n        if (a[r][c] != 0)\n        {\n            r = (i + 1) % n;\n            c = j;\n        }\n        a[r][c] = k;\n        i = r;\n        j = c;\n    }\n    for (i = 0; i < n; i++)\n    {\n        for (j = 0; j < n; j++)\n            printf(\"%5d\", a[i][j]);\n        printf(\"\\n\");\n    }\n    return 0;\n}",
   "explanation": "考查二维数组与「环形下标」技巧。(i-1+n)%n 使行下标 0 减 1 后回绕到 n-1，比写 if(i-1<0) 更简洁；判断目标格是否被占用是规则的第 4 条，冲突时改放正下方 (i+1)%n 行。生成后可用行列求和相同来验证结果。",
-  "src": "《实验与辅导》第7章编程题"
+  "src": "《实验与辅导》第7章编程题",
+  "io": {
+   "in": "3",
+   "out": "    8    1    6\r\n    3    5    7\r\n    4    9    2\r"
+  }
  },
  {
   "id": "p-082",
@@ -932,7 +1256,11 @@
   "hint": "三重循环：C[i][j] = Σ(k=0..3) A[i][k]*B[k][j]，注意 A 的列数必须等于 B 的行数。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    int a[3][4], b[4][3], c[3][3];\n    int i, j, k;\n    for (i = 0; i < 3; i++)\n        for (j = 0; j < 4; j++)\n            scanf(\"%d\", &a[i][j]);\n    for (i = 0; i < 4; i++)\n        for (j = 0; j < 3; j++)\n            scanf(\"%d\", &b[i][j]);\n    for (i = 0; i < 3; i++)\n        for (j = 0; j < 3; j++)\n        {\n            c[i][j] = 0;\n            for (k = 0; k < 4; k++)\n                c[i][j] += a[i][k] * b[k][j];\n        }\n    for (i = 0; i < 3; i++)\n    {\n        for (j = 0; j < 3; j++)\n            printf(\"%5d\", c[i][j]);\n        printf(\"\\n\");\n    }\n    return 0;\n}",
   "explanation": "考查二维数组作矩阵运算。结果矩阵的每个元素是 A 的第 i 行与 B 的第 j 列的对应元素乘积之和，所以最内层循环必须累加后再输出。常见错误是写成 c[i][j]=a[i][k]*b[k][j] 而没有累加。",
-  "src": "《实验与辅导》第7章编程题"
+  "src": "《实验与辅导》第7章编程题",
+  "io": {
+   "in": "1 2 3 4 5 6 7 8 9 10 11 12 1 0 0 0 1 0 0 0 1 0 0 0",
+   "out": "    1    2    3\r\n    5    6    7\r\n    9   10   11\r"
+  }
  },
  {
   "id": "p-083",
@@ -943,7 +1271,11 @@
   "hint": "先在本行找最大值所在列 k，再沿第 k 列检查它是否最小；若整列都比它大或相等则条件成立。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    int a[3][3];\n    int i, j, k, found = 0;\n    for (i = 0; i < 3; i++)\n        for (j = 0; j < 3; j++)\n            scanf(\"%d\", &a[i][j]);\n    for (i = 0; i < 3; i++)\n    {\n        k = 0;\n        for (j = 1; j < 3; j++)\n            if (a[i][j] > a[i][k])\n                k = j;\n        for (j = 0; j < 3; j++)\n            if (a[j][k] < a[i][k])\n                break;\n        if (j == 3)\n        {\n            printf(\"%d %d %d\\n\", i + 1, k + 1, a[i][k]);\n            found = 1;\n        }\n    }\n    if (!found)\n        printf(\"no saddle point\\n\");\n    return 0;\n}",
   "explanation": "考查二维数组的双向扫描。行内找最大值用打擂台法记录列下标 k，再沿第 k 列自上而下比较；循环正常结束（j==3）说明本列没有更小的元素，即为鞍点。用一个标志变量 found 区分「一个都没有」的情况。",
-  "src": "《实验与辅导》第7章编程题"
+  "src": "《实验与辅导》第7章编程题",
+  "io": {
+   "in": "1 2 3 4 5 6 7 8 9",
+   "out": "1 3 3\r"
+  }
  },
  {
   "id": "p-084",
@@ -954,7 +1286,11 @@
   "hint": "按列累加绝对值：sum += a[i][j]<0 ? -a[i][j] : a[i][j]，再取各列和的最大值。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    int a[3][3];\n    int i, j;\n    float sum, max = 0;\n    for (i = 0; i < 3; i++)\n        for (j = 0; j < 3; j++)\n            scanf(\"%d\", &a[i][j]);\n    for (j = 0; j < 3; j++)\n    {\n        sum = 0;\n        for (i = 0; i < 3; i++)\n            sum += (a[i][j] < 0) ? -a[i][j] : a[i][j];\n        if (j == 0 || sum > max)\n            max = sum;\n    }\n    printf(\"norm=%.2f\\n\", max);\n    return 0;\n}",
   "explanation": "考查二维数组的「按列访问」与绝对值处理。外层循环走列、内层走行，下标写成 a[i][j] 时列号固定为 j，这才是按列求和。求最大值时把 max 的初值取为第 0 列的和，可以避免矩阵元素全为负时出错。",
-  "src": "《实验与辅导》第7章编程题"
+  "src": "《实验与辅导》第7章编程题",
+  "io": {
+   "in": "1 -2 3 -4 5 -6 7 -8 9",
+   "out": "norm=18.00\r"
+  }
  },
  {
   "id": "p-085",
@@ -965,7 +1301,11 @@
   "hint": "先保存待插入元素 t=a[i]，再从 i-1 往前把比 t 大的元素后移一位，最后把 t 放到空出的位置。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    int a[10], i, j, t;\n    for (i = 0; i < 10; i++)\n        scanf(\"%d\", &a[i]);\n    for (i = 1; i < 10; i++)\n    {\n        t = a[i];\n        j = i - 1;\n        while (j >= 0 && a[j] > t)\n        {\n            a[j + 1] = a[j];\n            j--;\n        }\n        a[j + 1] = t;\n    }\n    for (i = 0; i < 10; i++)\n    {\n        if (i > 0)\n            printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查插入排序。与冒泡、选择排序不同，插入排序是「边找位置边后移」，必须先把 a[i] 暂存到 t，否则后移时会把待插入值覆盖掉。循环条件 j>=0 要放在 a[j]>t 前面，否则会下标越界。",
-  "src": "《实验与辅导》第7章编程题"
+  "src": "《实验与辅导》第7章编程题",
+  "io": {
+   "in": "5 3 8 1 9 2 7 4 6 0",
+   "out": "0 1 2 3 4 5 6 7 8 9\r"
+  }
  },
  {
   "id": "p-086",
@@ -976,7 +1316,11 @@
   "hint": "用「结果区」双指针法：m 记录已保留的元素个数，对每个 a[i] 检查它是否已在结果区出现，未出现才追加。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    int a[20], n, i, j, m = 0;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n    for (i = 0; i < n; i++)\n    {\n        for (j = 0; j < m; j++)\n            if (a[j] == a[i])\n                break;\n        if (j == m)\n            a[m++] = a[i];\n    }\n    for (i = 0; i < m; i++)\n    {\n        if (i > 0)\n            printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}",
   "explanation": "考查「就地压缩」思想：数组前半段当结果区，m 是结果区长度。由于 m 始终不大于 i，a[m++]=a[i] 不会覆盖尚未处理的元素。内层循环正常结束时 j==m，说明结果区里没有相同值，该元素应当保留。",
-  "src": "《实验与辅导》第7章编程题"
+  "src": "《实验与辅导》第7章编程题",
+  "io": {
+   "in": "10\n1 2 2 3 1 4 3 5 5 6",
+   "out": "1 2 3 4 5 6\r"
+  }
  },
  {
   "id": "p-087",
@@ -987,7 +1331,11 @@
   "hint": "函数返回 int，形参用值传递；函数体内先假定第一个数最大，再逐个比较更新。",
   "answer": "#include <stdio.h>\nint max3(int a, int b, int c)\n{\n    int m = a;\n    if (b > m)\n        m = b;\n    if (c > m)\n        m = c;\n    return m;\n}\nint min3(int a, int b, int c)\n{\n    int m = a;\n    if (b < m)\n        m = b;\n    if (c < m)\n        m = c;\n    return m;\n}\nint main(void)\n{\n    int a, b, c;\n    scanf(\"%d%d%d\", &a, &b, &c);\n    printf(\"max=%d\\n\", max3(a, b, c));\n    printf(\"min=%d\\n\", min3(a, b, c));\n    return 0;\n}",
   "explanation": "考查函数的定义、调用与返回值。实参与形参是值传递，函数内部改变形参不影响主函数；两个函数结构完全对称，可以对比记忆。函数定义写在调用之前，就不需要另外写函数原型声明。",
-  "src": "《实验与辅导》第8章编程题"
+  "src": "《实验与辅导》第8章编程题",
+  "io": {
+   "in": "3 9 -2",
+   "out": "max=9\r\nmin=-2\r"
+  }
  },
  {
   "id": "p-088",
@@ -998,7 +1346,11 @@
   "hint": "除 2 以外的素数都是奇数，所以 a 从 3 开始每次加 2 判断即可；判断素数用 i*i<=n 作循环条件。",
   "answer": "#include <stdio.h>\nint is_prime(int n)\n{\n    int i;\n    if (n < 2)\n        return 0;\n    for (i = 2; i * i <= n; i++)\n        if (n % i == 0)\n            return 0;\n    return 1;\n}\nint main(void)\n{\n    int n, i, count = 0;\n    scanf(\"%d\", &n);\n    for (i = 3; i + 2 <= n; i += 2)\n        if (is_prime(i) && is_prime(i + 2))\n        {\n            printf(\"%d %d\\n\", i, i + 2);\n            count++;\n        }\n    printf(\"count=%d\\n\", count);\n    return 0;\n}",
   "explanation": "考查函数的封装与复用。is_prime 只负责判断一个数，主函数负责枚举与统计，职责分离清晰。循环条件写成 i*i<=n 而不是 i<=n/2，可把判断复杂度从 O(n) 降到 O(√n)；判断 a+2 是否越界要放在循环条件 i+2<=n 里。",
-  "src": "《实验与辅导》第8章编程题"
+  "src": "《实验与辅导》第8章编程题",
+  "io": {
+   "in": "50",
+   "out": "3 5\r\n5 7\r\n11 13\r\n17 19\r\n29 31\r\n41 43\r\ncount=6\r"
+  }
  },
  {
   "id": "p-089",
@@ -1009,7 +1361,11 @@
   "hint": "外层循环执行 n 次「保存首字符→整体前移一位→末尾补回首字符」；n 超过串长时先做 n%=len。",
   "answer": "#include <stdio.h>\nvoid strmoveleft(char a[], int n)\n{\n    int len = 0, i, j;\n    char c;\n    while (a[len] != '\\0')\n        len++;\n    if (len == 0)\n        return;\n    n = n % len;\n    for (j = 0; j < n; j++)\n    {\n        c = a[0];\n        for (i = 0; i < len - 1; i++)\n            a[i] = a[i + 1];\n        a[len - 1] = c;\n    }\n}\nint main(void)\n{\n    char a[200];\n    int n;\n    scanf(\"%s %d\", a, &n);\n    strmoveleft(a, n);\n    printf(\"%s\\n\", a);\n    return 0;\n}",
   "explanation": "考查数组作函数参数（地址传递，函数内的修改会直接影响实参数组）。移动时要先把首字符保存到临时变量 c，否则前移第一步就会把它覆盖掉；内层循环只走到 len-2，最后一次把 c 放到末尾。n%=len 处理 n 大于串长的情况。",
-  "src": "《实验与辅导》第8章编程题"
+  "src": "《实验与辅导》第8章编程题",
+  "io": {
+   "in": "abcdefg1234567 5",
+   "out": "fg1234567abcde\r"
+  }
  },
  {
   "id": "p-090",
@@ -1020,7 +1376,11 @@
   "hint": "递归出口是 n==0 返回 1、n==1 返回 x；其余情况按公式两次调用自身（n-1 与 n-2）。",
   "answer": "#include <stdio.h>\nfloat legendre(int n, float x)\n{\n    if (n == 0)\n        return 1;\n    if (n == 1)\n        return x;\n    return ((2 * n - 1) * x * legendre(n - 1, x) - (n - 1) * legendre(n - 2, x)) / n;\n}\nint main(void)\n{\n    int n;\n    float x;\n    scanf(\"%d%f\", &n, &x);\n    printf(\"%.4f\\n\", legendre(n, x));\n    return 0;\n}",
   "explanation": "考查「双路递归」：递归公式里同时出现 P(n-1) 和 P(n-2)，因此必须有两个递归出口（n=0 与 n=1），否则递归无法终止。n 必须用 int（公式中要参与整数运算），x 用 float 即可；返回值定义为 float 以保留小数。",
-  "src": "《实验与辅导》第8章编程题"
+  "src": "《实验与辅导》第8章编程题",
+  "io": {
+   "in": "2 0.5",
+   "out": "-0.1250\r"
+  }
  },
  {
   "id": "p-091",
@@ -1031,7 +1391,11 @@
   "hint": "先求不小于该数的最小 10 的幂 m（如 25 对应 100），再用 x*x%m==x 判断。",
   "answer": "#include <stdio.h>\nint tonggou(int x)\n{\n    int m = 1, y = x;\n    while (y > 0)\n    {\n        m = m * 10;\n        y = y / 10;\n    }\n    return (x * x % m == x);\n}\nint main(void)\n{\n    int n, i, count = 0;\n    scanf(\"%d\", &n);\n    for (i = 1; i <= n; i++)\n        if (tonggou(i))\n        {\n            printf(\"%d %d\\n\", i, i * i);\n            count++;\n        }\n    printf(\"count=%d\\n\", count);\n    return 0;\n}",
   "explanation": "考查「按位数取模」的技巧。x 有 k 位，x² 的末 k 位就是 x²%10^k，所以先循环求出 m=10^k，再用取余比较。函数用 return 表达式直接返回比较结果（1 或 0），体现了 C 语言中关系表达式本身就是一个整数值。",
-  "src": "《实验与辅导》第8章编程题"
+  "src": "《实验与辅导》第8章编程题",
+  "io": {
+   "in": "100",
+   "out": "1 1\r\n5 25\r\n6 36\r\n25 625\r\n76 5776\r\ncount=5\r"
+  }
  },
  {
   "id": "p-092",
@@ -1042,7 +1406,11 @@
   "hint": "swap 的形参是 int*，函数内用 *p、*q 间接访问实参；比较三次即可完成三数排序。",
   "answer": "#include <stdio.h>\nvoid swap(int *p, int *q)\n{\n    int t = *p;\n    *p = *q;\n    *q = t;\n}\nint main(void)\n{\n    int a, b, c;\n    int *p1 = &a, *p2 = &b, *p3 = &c;\n    scanf(\"%d%d%d\", &a, &b, &c);\n    if (a < b)\n        swap(p1, p2);\n    if (a < c)\n        swap(p1, p3);\n    if (b < c)\n        swap(p2, p3);\n    printf(\"%d %d %d\\n\", a, b, c);\n    return 0;\n}",
   "explanation": "考查指针作函数参数实现「双向传递」。若 swap 的形参写成 int p,int q，交换的只是副本，实参不变；只有传入地址、在函数内解引用赋值，才能真正改变主函数中的变量。三次比较的逻辑与三数排序一致：先定最大，再定次大。",
-  "src": "《实验与辅导》第9章编程题"
+  "src": "《实验与辅导》第9章编程题",
+  "io": {
+   "in": "3 1 2",
+   "out": "3 2 1\r"
+  }
  },
  {
   "id": "p-093",
@@ -1053,7 +1421,11 @@
   "hint": "char *name[13]={...} 中每个元素是一个 char*，取 name[n] 就能直接交给 %s 输出。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    char *name[13] = {\"illegal month\", \"January\", \"February\", \"March\",\n                     \"April\", \"May\", \"June\", \"July\", \"August\",\n                     \"September\", \"October\", \"November\", \"December\"};\n    int n;\n    scanf(\"%d\", &n);\n    if (n >= 1 && n <= 12)\n        printf(\"%s\\n\", name[n]);\n    else\n        printf(\"%s\\n\", name[0]);\n    return 0;\n}",
   "explanation": "考查指针数组。数组的每个元素存放的是字符串常量的首地址，所以 name[n] 就是一个字符串，不需要再取地址；下标 13 而不是 12，是为了把「非法月份」也放进数组统一处理，省去一处 if 分支。",
-  "src": "《实验与辅导》第9章编程题"
+  "src": "《实验与辅导》第9章编程题",
+  "io": {
+   "in": "3",
+   "out": "March\r"
+  }
  },
  {
   "id": "p-094",
@@ -1064,7 +1436,11 @@
   "hint": "排序比较的是 *p[i] 指向的内容，交换的是 p[i] 与 p[k] 这两个指针本身，代价只有一次赋值。",
   "answer": "#include <stdio.h>\nint main(void)\n{\n    char s[5][20];\n    char *p[5], *t;\n    int i, j, k, m;\n    for (i = 0; i < 5; i++)\n    {\n        scanf(\"%s\", s[i]);\n        p[i] = s[i];\n    }\n    for (i = 0; i < 4; i++)\n    {\n        k = i;\n        for (j = i + 1; j < 5; j++)\n        {\n            m = 0;\n            while (p[k][m] != '\\0' && p[k][m] == p[j][m])\n                m++;\n            if (p[j][m] < p[k][m])\n                k = j;\n        }\n        if (k != i)\n        {\n            t = p[i];\n            p[i] = p[k];\n            p[k] = t;\n        }\n    }\n    for (i = 0; i < 5; i++)\n        printf(\"%s\\n\", p[i]);\n    return 0;\n}",
   "explanation": "考查指针数组排序的核心思想：数据不动，只动指针。逐字符比较时，只要对应字符相同就继续后移，遇到不同字符（或某个串已结束）即可判出大小，短串是长串前缀时短串更小（此时 p[k][m] 为 '\\0'，与 0 比较自然成立）。若改用交换字符数组内容，需要临时数组和逐个字符复制，效率低得多。",
-  "src": "《实验与辅导》第9章编程题"
+  "src": "《实验与辅导》第9章编程题",
+  "io": {
+   "in": "pear\napple\norange\nbanana\ngrape",
+   "out": "apple\r\nbanana\r\ngrape\r\norange\r\npear\r"
+  }
  },
  {
   "id": "p-095",
@@ -1076,7 +1452,11 @@
   "answer": "#include <stdio.h>\n#include <math.h>\nstruct point\n{\n    float x;\n    float y;\n};\nint main(void)\n{\n    struct point a, b;\n    float dx, dy, d;\n    scanf(\"%f%f%f%f\", &a.x, &a.y, &b.x, &b.y);\n    dx = a.x - b.x;\n    dy = a.y - b.y;\n    d = (float)sqrt(dx * dx + dy * dy);\n    printf(\"distance=%.3f\\n\", d);\n    return 0;\n}",
   "explanation": "考查结构体类型的定义与成员访问。struct point 只是「图纸」，a、b 才是真正的变量，各自拥有独立的 x、y 成员；scanf 取成员地址要写 &a.x。sqrt 的形参是 double，用 float 接收返回值时加显式转换可以消除编译警告。",
   "src": "《实验与辅导》第10章编程题",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "0 0 3 4",
+   "out": "distance=5.000\r"
+  }
  },
  {
   "id": "p-096",
@@ -1088,6 +1468,730 @@
   "answer": "#include <stdio.h>\nstruct date\n{\n    int y;\n    int m;\n    int d;\n};\nint leap(int y)\n{\n    return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;\n}\nint day_of_year(struct date t)\n{\n    int days[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};\n    int i, s = t.d;\n    if (leap(t.y))\n        days[2] = 29;\n    for (i = 1; i < t.m; i++)\n        s += days[i];\n    return s;\n}\nlong total_day(struct date t)\n{\n    long s = 0;\n    int y;\n    for (y = 1; y < t.y; y++)\n        s += leap(y) ? 366 : 365;\n    return s + day_of_year(t);\n}\nint main(void)\n{\n    struct date a, b;\n    long d;\n    scanf(\"%d%d%d%d%d%d\", &a.y, &a.m, &a.d, &b.y, &b.m, &b.d);\n    d = total_day(b) - total_day(a);\n    if (d < 0)\n        d = -d;\n    printf(\"days=%ld\\n\", d);\n    return 0;\n}",
   "explanation": "考查结构体作函数参数，以及「化零为整」的换算思路：与其直接判断两个日期跨越了哪些月份，不如把日期统一折算成绝对天数再相减，逻辑简单且不易漏掉闰年。闰年规则是「四年一闰、百年不闰、四百年再闰」，用逻辑表达式一次写清即可。",
   "src": "《实验与辅导》第10章编程题",
-  "jscpp": false
+  "jscpp": false,
+  "io": {
+   "in": "2020 1 1 2021 1 1",
+   "out": "days=366\r"
+  }
+ },
+ {
+  "id": "p-097",
+  "ch": "ch1",
+  "level": 1,
+  "title": "交换两个整数并输出",
+  "stem": "读入两个整数 a、b，借助第三个变量交换它们的值，然后按 “交换前 / 交换后” 的格式输出。本题考查顺序结构：定义变量、赋值、printf 格式输出。\n输入格式：一行，两个整数 a b，用空格分隔。\n输出格式：两行，第一行形如 before: a=…, b=…；第二行形如 after: a=…, b=…。\n样例输入：\n3 8\n样例输出：\nbefore: a=3, b=8\nafter: a=8, b=3",
+  "hint": "临时变量 t：t=a; a=b; b=t;，三步缺一不可。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b, t;\n    scanf(\"%d%d\", &a, &b);\n    printf(\"before: a=%d, b=%d\\n\", a, b);\n    t = a;\n    a = b;\n    b = t;\n    printf(\"after: a=%d, b=%d\\n\", a, b);\n    return 0;\n}\n",
+  "explanation": "交换必须借第三个变量；直接写 a=b; b=a; 会让两个变量都变成 b 的原值，这是最经典的顺序错误。C 语言中每条语句自上而下依次执行，没有「同时赋值」的概念。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "3 8",
+   "out": "before: a=3, b=8\r\nafter: a=8, b=3\r"
+  }
+ },
+ {
+  "id": "p-098",
+  "ch": "ch1",
+  "level": 1,
+  "title": "按指定格式打印成绩单表头",
+  "stem": "用一个 printf 输出三列表头与一条分隔线，列宽分别为 8、10、8，左对齐。本题不涉及输入，考查 printf 的 %-8s 宽度控制与制表对齐。\n输入格式：无输入。\n输出格式：共三行：表头行、分隔线、说明行（见样例）。\n样例输入：\n（无输入）\n样例输出：\nName    Subject   Score   \n--------------------------\nTom     C         92      ",
+  "hint": "%-8s 表示「左对齐、占 8 列」，列宽不足自动补空格。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    printf(\"%-8s%-10s%-8s\\n\", \"Name\", \"Subject\", \"Score\");\n    printf(\"--------------------------\\n\");\n    printf(\"%-8s%-10s%-8d\\n\", \"Tom\", \"C\", 92);\n    return 0;\n}\n",
+  "explanation": "%-8s 中负号代表左对齐；右对齐（默认）时数字看起来更整齐。表头对齐靠的是格式宽度，而不是手敲空格——后者换个字体就散架。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "Name    Subject   Score   \r\n--------------------------\r\nTom     C         92      \r"
+  }
+ },
+ {
+  "id": "p-099",
+  "ch": "ch2",
+  "level": 2,
+  "title": "比较交换法把三个数排成升序",
+  "stem": "读入三个整数，用「两两比较、必要时交换」的思路把它们排成从小到大的顺序后输出。这是选择排序的雏形，只需三次比较即可完成。\n输入格式：一行，三个整数 a b c。\n输出格式：一行，三个整数，以空格分隔，从小到大。\n样例输入：\n7 2 9\n样例输出：\n2 7 9",
+  "hint": "a>b 就交换，再 b>c 交换，最后再 a>b 交换一次。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b, c, t;\n    scanf(\"%d%d%d\", &a, &b, &c);\n    if (a > b) { t = a; a = b; b = t; }\n    if (b > c) { t = b; b = c; c = t; }\n    if (a > b) { t = a; a = b; b = t; }\n    printf(\"%d %d %d\\n\", a, b, c);\n    return 0;\n}\n",
+  "explanation": "三次比较交换就能保证 a≤b≤c：前两次把最大值顶到 c，第三次把剩下两个理顺。这个「局部有序逐步扩展」的思想，正是后面选择排序的算法核心。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "7 2 9",
+   "out": "2 7 9\r"
+  }
+ },
+ {
+  "id": "p-100",
+  "ch": "ch3",
+  "level": 1,
+  "title": "输出各基本类型的字节数",
+  "stem": "用 sizeof 运算符输出 char、short、int、long、float、double 在当前平台上的字节数。注意 sizeof 的结果是 size_t，用 %zu 输出最稳妥。\n输入格式：无输入。\n输出格式：六行，每行形如 char: 1 byte。\n样例输入：\n（无输入）\n样例输出：\nchar: 1 byte\nshort: 2 byte\nint: 4 byte\nlong: 4 byte\nfloat: 4 byte\ndouble: 8 byte",
+  "hint": "sizeof 不是函数，括号里的类型名不参与运算。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    printf(\"char: %zu byte\\n\", sizeof(char));\n    printf(\"short: %zu byte\\n\", sizeof(short));\n    printf(\"int: %zu byte\\n\", sizeof(int));\n    printf(\"long: %zu byte\\n\", sizeof(long));\n    printf(\"float: %zu byte\\n\", sizeof(float));\n    printf(\"double: %zu byte\\n\", sizeof(double));\n    return 0;\n}\n",
+  "explanation": "常见 32/64 位 Windows 平台：char 1、short 2、int 4、long 4、float 4、double 8。long 在 Linux 64 位上是 8 字节，所以考试若问「long 一定 4 字节」应判错。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "char: 1 byte\r\nshort: 2 byte\r\nint: 4 byte\r\nlong: 4 byte\r\nfloat: 4 byte\r\ndouble: 8 byte\r"
+  }
+ },
+ {
+  "id": "p-101",
+  "ch": "ch3",
+  "level": 1,
+  "title": "字符与其 ASCII 码互查",
+  "stem": "读入一个可见字符，输出它的 ASCII 码值、它的前一个字符和后一个字符。字符在 C 里就是小整数，可以直接参与算术运算。\n输入格式：一行，一个字符。\n输出格式：一行，形如 A -> 65, prev=@, next=B。\n样例输入：\nA\n样例输出：\nA -> 65, prev=@, next=B",
+  "hint": "用 %c 读入，用 %d 打印即为码值；ch-1、ch+1 直接当整数用。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    char ch;\n    scanf(\"%c\", &ch);\n    printf(\"%c -> %d, prev=%c, next=%c\\n\", ch, ch, ch - 1, ch + 1);\n    return 0;\n}\n",
+  "explanation": "字符常量 'A' 的类型是 int，char 变量参与运算时会整型提升。所以 ch+1 得到的是整数 66，用 %c 输出时又按字符解释成 'B'。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "A",
+   "out": "A -> 65, prev=@, next=B\r"
+  }
+ },
+ {
+  "id": "p-102",
+  "ch": "ch3",
+  "level": 2,
+  "title": "整除与浮点除的区别",
+  "stem": "读入两个整数，分别输出它们的整除结果与浮点除结果（保留 3 位小数）。整除时若除数为 0 要给出提示。\n输入格式：一行，两个整数 a b（b 可能为 0）。\n输出格式：一行：整除结果用 a/b=…，浮点结果保留 3 位小数；b 为 0 时输出 error: divide by zero。\n样例输入：\n7 2\n样例输出：\na/b=3\na/b=3.500",
+  "hint": "(double)a / b 才能得到浮点结果；直接 a/b 是整除。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b;\n    scanf(\"%d%d\", &a, &b);\n    if (b == 0) {\n        printf(\"error: divide by zero\\n\");\n        return 0;\n    }\n    printf(\"a/b=%d\\n\", a / b);\n    printf(\"a/b=%.3f\\n\", (double)a / b);\n    return 0;\n}\n",
+  "explanation": "整数相除结果向零截断，7/2 得 3 而不是 3.5；想要小数必须至少一边是浮点类型。注意 (double)(a/b) 是错的——先整除再转换，精度已经丢了。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "7 2",
+   "out": "a/b=3\r\na/b=3.500\r"
+  }
+ },
+ {
+  "id": "p-103",
+  "ch": "ch3",
+  "level": 2,
+  "title": "无符号字符的回绕特性",
+  "stem": "把 255 赋给 unsigned char，再加 1，输出加之前与加之后的值；同时对 signed char 做同样的事（提示：本题只要求实现无符号部分，有符号溢出属未定义行为，不要模仿）。\n输入格式：无输入。\n输出格式：两行，形如 before: 255 / after: 0。\n样例输入：\n（无输入）\n样例输出：\nbefore: 255\nafter: 0",
+  "hint": "unsigned char 的取值范围是 0~255，超出后按 256 取模回绕。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    unsigned char c = 255;\n    printf(\"before: %u\\n\", (unsigned)c);\n    c = c + 1;\n    printf(\"after: %u\\n\", (unsigned)c);\n    return 0;\n}\n",
+  "explanation": "无符号整数的运算是「模 2^n」的，溢出后回绕是标准规定行为；而有符号整数溢出是未定义行为（UB），结果取决于编译器优化，绝不能依赖。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "before: 255\r\nafter: 0\r"
+  }
+ },
+ {
+  "id": "p-104",
+  "ch": "ch4",
+  "level": 1,
+  "title": "秒数换算成时分秒",
+  "stem": "读入一个非负整数表示的总秒数，换算成「时 分 秒」输出。\n输入格式：一行，一个整数 seconds。\n输出格式：一行，形如 01:02:03（时分秒各两位，不足补 0）。\n样例输入：\n3723\n样例输出：\n01:02:03",
+  "hint": "/ 与 % 配合：时 = s/3600，分 = s%3600/60，秒 = s%60。%02d 补零。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int s;\n    scanf(\"%d\", &s);\n    printf(\"%02d:%02d:%02d\\n\", s / 3600, s % 3600 / 60, s % 60);\n    return 0;\n}\n",
+  "explanation": "整除与取余是拆分十进制位（或时间单位）的通用套路：先取高位用 /，再取低位用 %。%02d 的 0 表示不足两位时用 0 补齐。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "3723",
+   "out": "01:02:03\r"
+  }
+ },
+ {
+  "id": "p-105",
+  "ch": "ch4",
+  "level": 2,
+  "title": "三门课平均分（保留两位并对齐）",
+  "stem": "读入三门课的成绩（实数），输出总分与平均分，平均分保留 2 位小数，并且两个数字都占 8 列宽、右对齐。\n输入格式：一行，三个实数。\n输出格式：两行：total 与 average，数字部分按 %8.2f 右对齐。\n样例输入：\n88.5 92 79.5\n样例输出：\ntotal     260.00\naverage    86.67",
+  "hint": "printf(\"total   %8.2f\\n\", sum);",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    double a, b, c, sum;\n    scanf(\"%lf%lf%lf\", &a, &b, &c);\n    sum = a + b + c;\n    printf(\"total   %8.2f\\n\", sum);\n    printf(\"average %8.2f\\n\", sum / 3);\n    return 0;\n}\n",
+  "explanation": "%8.2f 中 8 是「总宽度含小数点」，不足补空格；宽度不够时会自动撑开，不会截断。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "88.5 92 79.5",
+   "out": "total     260.00\r\naverage    86.67\r"
+  }
+ },
+ {
+  "id": "p-106",
+  "ch": "ch4",
+  "level": 2,
+  "title": "圆柱的表面积与体积",
+  "stem": "读入底面半径 r 和高 h（实数），取 π = 3.14159，输出圆柱的表面积和体积，均保留 3 位小数。表面积 = 2πr² + 2πrh，体积 = πr²h。\n输入格式：一行，两个实数 r h。\n输出格式：两行：surface=… 与 volume=…。\n样例输入：\n1.5 4\n样例输出：\nsurface=51.836\nvolume=28.274",
+  "hint": "先算底面积 s = π*r*r，表面积 = 2*s + 2*π*r*h。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    const double PI = 3.14159;\n    double r, h, base;\n    scanf(\"%lf%lf\", &r, &h);\n    base = PI * r * r;\n    printf(\"surface=%.3f\\n\", 2 * base + 2 * PI * r * h);\n    printf(\"volume=%.3f\\n\", base * h);\n    return 0;\n}\n",
+  "explanation": "把重复出现的子表达式存进中间变量（base），既少算一次也少写错一次。注意 2πr 是侧面积，别把 2πr² 当成侧面积。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "1.5 4",
+   "out": "surface=51.836\r\nvolume=28.274\r"
+  }
+ },
+ {
+  "id": "p-107",
+  "ch": "ch5",
+  "level": 1,
+  "title": "判断闰年",
+  "stem": "读入一个年份，判断它是否为闰年。规则：能被 4 整除且不能被 100 整除，或能被 400 整除。\n输入格式：一行，一个整数 year。\n输出格式：一行，闰年输出 leap year，否则输出 common year。\n样例输入：\n1900\n样例输出：\ncommon year",
+  "hint": "(y%4==0 && y%100!=0) || y%400==0，括号不能省。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int y;\n    scanf(\"%d\", &y);\n    if ((y % 4 == 0 && y % 100 != 0) || y % 400 == 0)\n        printf(\"leap year\\n\");\n    else\n        printf(\"common year\\n\");\n    return 0;\n}\n",
+  "explanation": "1900 能被 4 整除但也能被 100 整除、不能被 400 整除，所以不是闰年；2000 是闰年。这里 && 的优先级高于 ||，但加上括号更不容易看错。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "1900",
+   "out": "common year\r"
+  }
+ },
+ {
+  "id": "p-108",
+  "ch": "ch5",
+  "level": 1,
+  "title": "成绩等级（switch 版本）",
+  "stem": "读入一个整数成绩（0~100），用 switch 语句输出等级：90~100 为 A，80~89 为 B，70~79 为 C，60~69 为 D，其余为 E。超出范围输出 invalid。\n输入格式：一行，一个整数 score。\n输出格式：一行，一个大写字母或 invalid。\n样例输入：\n85\n样例输出：\nB",
+  "hint": "switch(score/10)，然后 10 和 9 共用一个 case。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int score;\n    scanf(\"%d\", &score);\n    if (score < 0 || score > 100) {\n        printf(\"invalid\\n\");\n        return 0;\n    }\n    switch (score / 10) {\n    case 10:\n    case 9:  printf(\"A\\n\"); break;\n    case 8:  printf(\"B\\n\"); break;\n    case 7:  printf(\"C\\n\"); break;\n    case 6:  printf(\"D\\n\"); break;\n    default: printf(\"E\\n\"); break;\n    }\n    return 0;\n}\n",
+  "explanation": "switch 的表达式必须是整型；case 10 故意不写 break，让 100 分「穿透」到 case 9。这是 case 穿透唯一正当的用法，其余情况漏写 break 都是 bug。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "85",
+   "out": "B\r"
+  }
+ },
+ {
+  "id": "p-109",
+  "ch": "ch5",
+  "level": 2,
+  "title": "判断三角形类型并求面积",
+  "stem": "读入三条边长（实数），先判断能否构成三角形（任意两边之和大于第三边），再判断是否为等边、等腰或普通三角形，最后用海伦公式输出面积（保留 2 位小数）。\n输入格式：一行，三个实数 a b c。\n输出格式：两行：第一行类型（equilateral / isosceles / scalene / not a triangle），第二行 area=…（不构成三角形时不输出）。\n样例输入：\n3 4 5\n样例输出：\nscalene\narea=6.00",
+  "hint": "海伦公式：p=(a+b+c)/2，面积 = sqrt(p(p-a)(p-b)(p-c))，需要 math.h。",
+  "answer": "#include <stdio.h>\n#include <math.h>\n\nint main(void)\n{\n    double a, b, c, p, s;\n    scanf(\"%lf%lf%lf\", &a, &b, &c);\n    if (a + b <= c || a + c <= b || b + c <= a) {\n        printf(\"not a triangle\\n\");\n        return 0;\n    }\n    if (a == b && b == c)\n        printf(\"equilateral\\n\");\n    else if (a == b || b == c || a == c)\n        printf(\"isosceles\\n\");\n    else\n        printf(\"scalene\\n\");\n    p = (a + b + c) / 2;\n    s = sqrt(p * (p - a) * (p - b) * (p - c));\n    printf(\"area=%.2f\\n\", s);\n    return 0;\n}\n",
+  "explanation": "浮点数判等要谨慎，本题输入为整数边长所以 == 可用；一般应写成 fabs(a-b) < 1e-6。用 gcc 编译时若用到 sqrt 记得加 -lm（本平台已默认链接）。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "3 4 5",
+   "out": "scalene\r\narea=6.00\r"
+  }
+ },
+ {
+  "id": "p-110",
+  "ch": "ch5",
+  "level": 2,
+  "title": "简易四则运算器",
+  "stem": "读入形如 a op b 的表达式（op 为 + - * / 之一），输出运算结果。除法按整除处理，除数为 0 时输出 error。运算符不是这四个之一时输出 unknown operator。\n输入格式：一行，形如 7 * 6（数字、运算符、数字之间用空格分隔）。\n输出格式：一行，结果或错误提示。\n样例输入：\n7 * 6\n样例输出：\n42",
+  "hint": "scanf(\"%d %c %d\", &a, &op, &b)：%c 前面的空格用来跳过空白。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b, r;\n    char op;\n    scanf(\"%d %c %d\", &a, &op, &b);\n    switch (op) {\n    case '+': printf(\"%d\\n\", a + b); break;\n    case '-': printf(\"%d\\n\", a - b); break;\n    case '*': printf(\"%d\\n\", a * b); break;\n    case '/':\n        if (b == 0) printf(\"error\\n\");\n        else printf(\"%d\\n\", a / b);\n        break;\n    default: printf(\"unknown operator\\n\"); break;\n    }\n    return 0;\n}\n",
+  "explanation": "%c 不会跳过空白字符，所以格式串里 %c 前面留一个空格是有意为之——不写这个空格，op 会读到数字后面的空格，而不是运算符。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "7 * 6",
+   "out": "42\r"
+  }
+ },
+ {
+  "id": "p-111",
+  "ch": "ch6",
+  "level": 1,
+  "title": "求 n 的阶乘",
+  "stem": "读入一个 0~12 的整数 n，输出 n! 的值。用 for 循环累乘实现。\n输入格式：一行，一个整数 n（0 ≤ n ≤ 12）。\n输出格式：一行，形如 5! = 120。\n样例输入：\n5\n样例输出：\n5! = 120",
+  "hint": "累乘变量初值必须是 1（不是 0），否则永远是 0。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int n, i;\n    long long f = 1;\n    scanf(\"%d\", &n);\n    for (i = 2; i <= n; i++)\n        f *= i;\n    printf(\"%d! = %lld\\n\", n, f);\n    return 0;\n}\n",
+  "explanation": "n 超过 12 后 13! 已超 int 范围（约 21 亿），所以这里用 long long 并限定 n ≤ 12。累加初值 0、累乘初值 1，是循环「累积变量」的铁律。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "5",
+   "out": "5! = 120\r"
+  }
+ },
+ {
+  "id": "p-112",
+  "ch": "ch6",
+  "level": 1,
+  "title": "1 到 n 的奇数之和与偶数之和",
+  "stem": "读入正整数 n，分别求 1~n 中所有奇数之和与偶数之和。\n输入格式：一行，一个整数 n。\n输出格式：两行：odd=… 与 even=…。\n样例输入：\n10\n样例输出：\nodd=25\neven=30",
+  "hint": "用 i%2 判断奇偶；也可以让 i 每次加 2。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int n, i, odd = 0, even = 0;\n    scanf(\"%d\", &n);\n    for (i = 1; i <= n; i++) {\n        if (i % 2) odd += i;\n        else       even += i;\n    }\n    printf(\"odd=%d\\n\", odd);\n    printf(\"even=%d\\n\", even);\n    return 0;\n}\n",
+  "explanation": "i%2 为 1 即奇数——C 里非 0 即真，不必写 ==1。若 n 很大（如 10^9）循环会超时，应改用等差数列公式。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "10",
+   "out": "odd=25\r\neven=30\r"
+  }
+ },
+ {
+  "id": "p-113",
+  "ch": "ch6",
+  "level": 2,
+  "title": "斐波那契数列前 n 项",
+  "stem": "读入 n，输出斐波那契数列的前 n 项（1 1 2 3 5 8 …），每项之间用空格分隔。\n输入格式：一行，一个整数 n（1 ≤ n ≤ 40）。\n输出格式：一行，n 个整数。\n样例输入：\n10\n样例输出：\n1 1 2 3 5 8 13 21 34 55",
+  "hint": "只需保存前两项：c = a + b; a = b; b = c;",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int n, i, a = 1, b = 1, c;\n    scanf(\"%d\", &n);\n    for (i = 1; i <= n; i++) {\n        if (i == 1) c = 1;\n        else if (i == 2) c = 1;\n        else { c = a + b; a = b; b = c; }\n        printf(\"%d\", c);\n        if (i < n) printf(\" \");\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "递推只要保留最近的几项，不需要数组——这就是「滚动变量」思路。若要求第 40 项之后，int 会溢出，需换 long long。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "10",
+   "out": "1 1 2 3 5 8 13 21 34 55\r"
+  }
+ },
+ {
+  "id": "p-114",
+  "ch": "ch6",
+  "level": 2,
+  "title": "判断素数（试除到平方根）",
+  "stem": "读入一个大于 1 的整数，判断它是否为素数。要求循环只试除到 sqrt(n)，并输出总共试除了多少次。\n输入格式：一行，一个整数 n（2 ≤ n ≤ 100000）。\n输出格式：两行：第一行 prime 或 not prime，第二行形如 tried=…。\n样例输入：\n97\n样例输出：\nprime\ntried=8",
+  "hint": "for (i = 2; i * i <= n; i++)，用 i*i<=n 比 sqrt 更稳（不会有浮点误差）。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int n, i, cnt = 0, prime = 1;\n    scanf(\"%d\", &n);\n    for (i = 2; i * i <= n; i++) {\n        cnt++;\n        if (n % i == 0) { prime = 0; break; }\n    }\n    printf(\"%s\\n\", prime ? \"prime\" : \"not prime\");\n    printf(\"tried=%d\\n\", cnt);\n    return 0;\n}\n",
+  "explanation": "试除只需到 √n：若 n 有大于 √n 的因子，必有一个小于 √n 的配对因子。写 i*i<=n 而不是 i<=sqrt(n)，既省一次函数调用也避免浮点误差。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "97",
+   "out": "prime\r\ntried=8\r"
+  }
+ },
+ {
+  "id": "p-115",
+  "ch": "ch6",
+  "level": 2,
+  "title": "读到 0 为止统计正负数",
+  "stem": "不断读入整数，直到读到 0 为止（0 不统计）。输出正数个数、负数个数与所有数的平均值（保留 2 位小数）。\n输入格式：一行，若干个整数，以 0 结尾。\n输出格式：三行：positive=…、negative=…、average=…（没有任何非零数时平均值输出 0.00）。\n样例输入：\n3 -5 7 -2 0\n样例输出：\npositive=2\nnegative=2\naverage=0.75",
+  "hint": "while (scanf(\"%d\", &x) == 1 && x != 0)，用输入返回值判断结束更稳。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int x, pos = 0, neg = 0, sum = 0, cnt = 0;\n    while (scanf(\"%d\", &x) == 1 && x != 0) {\n        if (x > 0) pos++;\n        else neg++;\n        sum += x;\n        cnt++;\n    }\n    printf(\"positive=%d\\n\", pos);\n    printf(\"negative=%d\\n\", neg);\n    if (cnt) printf(\"average=%.2f\\n\", (double)sum / cnt);\n    else     printf(\"average=0.00\\n\");\n    return 0;\n}\n",
+  "explanation": "scanf 返回成功读入的项数，读到文件结束或格式不匹配时返回 EOF/0，用它做循环条件比「先读再判」少一次重复读入。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "3 -5 7 -2 0",
+   "out": "positive=2\r\nnegative=2\r\naverage=0.75\r"
+  }
+ },
+ {
+  "id": "p-116",
+  "ch": "ch6",
+  "level": 3,
+  "title": "打印 n 行菱形",
+  "stem": "读入奇数 n，打印一个由 * 组成的菱形，共 n 行，最中间一行有 n 个星号。\n输入格式：一行，一个奇数 n（1 ≤ n ≤ 21）。\n输出格式：n 行，每行星号前有若干空格，行末无多余空格。\n样例输入：\n7\n样例输出：\n   *\n  ***\n *****\n*******\n *****\n  ***\n   *",
+  "hint": "上半部分 i 从 1 到 (n+1)/2：空格 = (n+1)/2 - i，星号 = 2i-1；下半部分对称。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int n, i, j, h, sp, st;\n    scanf(\"%d\", &n);\n    h = (n + 1) / 2;\n    for (i = 1; i <= n; i++) {\n        if (i <= h) st = 2 * i - 1;\n        else        st = 2 * (n - i + 1) - 1;\n        sp = (n - st) / 2;\n        for (j = 0; j < sp; j++) printf(\" \");\n        for (j = 0; j < st; j++) printf(\"*\");\n        printf(\"\\n\");\n    }\n    return 0;\n}\n",
+  "explanation": "对称图形用「绝对行号换算」比上下两段分别写更省事：第 i 行与第 n-i+1 行星号数相同，取较小者即可。行末不留空格可避免评测机判错。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "7",
+   "out": "   *\r\n  ***\r\n *****\r\n*******\r\n *****\r\n  ***\r\n   *\r"
+  }
+ },
+ {
+  "id": "p-117",
+  "ch": "ch7",
+  "level": 1,
+  "title": "数组元素逆序输出",
+  "stem": "读入 n 个整数存入数组，按下标从大到小的顺序输出（不改变数组本身）。\n输入格式：第一行一个整数 n（1 ≤ n ≤ 100），第二行 n 个整数。\n输出格式：一行，n 个整数，逆序，空格分隔。\n样例输入：\n5\n1 2 3 4 5\n样例输出：\n5 4 3 2 1",
+  "hint": "for (i = n-1; i >= 0; i--)，注意 i 是有符号 int，用无符号会死循环。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a[100], n, i;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n    for (i = n - 1; i >= 0; i--) {\n        printf(\"%d\", a[i]);\n        if (i > 0) printf(\" \");\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "倒着遍历时循环变量必须是有符号类型：若写成 unsigned i，i>=0 恒成立，循环永不结束——这是数组倒序最隐蔽的坑。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "5\n1 2 3 4 5",
+   "out": "5 4 3 2 1\r"
+  }
+ },
+ {
+  "id": "p-118",
+  "ch": "ch7",
+  "level": 1,
+  "title": "求最大值及其下标",
+  "stem": "读入 n 个整数，输出最大值、它的最小下标以及平均值（保留 2 位小数）。\n输入格式：第一行一个整数 n，第二行 n 个整数。\n输出格式：一行，形如 max=9, index=2, avg=4.60。\n样例输入：\n5\n3 9 1 9 4\n样例输出：\nmax=9, index=1, avg=5.20",
+  "hint": "打擂台法：假定 a[0] 最大，遇到更大的就更新 max 与 idx。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a[100], n, i, max, idx = 0, sum = 0;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n    max = a[0];\n    for (i = 1; i < n; i++) {\n        if (a[i] > max) { max = a[i]; idx = i; }\n        sum += a[i];\n    }\n    sum += a[0];\n    printf(\"max=%d, index=%d, avg=%.2f\\n\", max, idx, (double)sum / n);\n    return 0;\n}\n",
+  "explanation": "用 > 而不是 >= 才能拿到「最小下标」；想要最大下标就用 >=。打擂台法只遍历一遍，O(n) 完成，是数组题的通用模板。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "5\n3 9 1 9 4",
+   "out": "max=9, index=1, avg=5.20\r"
+  }
+ },
+ {
+  "id": "p-119",
+  "ch": "ch7",
+  "level": 2,
+  "title": "冒泡排序（每轮输出一次）",
+  "stem": "读入 n 个整数，用冒泡排序升序排列，并把每一轮结束后的数组打印出来，最后输出排序结果。\n输入格式：第一行 n，第二行 n 个整数。\n输出格式：先输出 n-1 行（每轮一行，数组元素用空格分隔），最后一行形如 sorted: …。\n样例输入：\n5\n5 1 4 2 8\n样例输出：\nround 1: 1 4 2 5 8\nround 2: 1 2 4 5 8\nround 3: 1 2 4 5 8\nround 4: 1 2 4 5 8\nsorted: 1 2 4 5 8",
+  "hint": "外层 i 控制轮数，内层 j 从 0 到 n-1-i，相邻逆序就交换。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a[100], n, i, j, t;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n    for (i = 0; i < n - 1; i++) {\n        for (j = 0; j < n - 1 - i; j++) {\n            if (a[j] > a[j + 1]) {\n                t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;\n            }\n        }\n        printf(\"round %d:\", i + 1);\n        for (j = 0; j < n; j++) printf(\" %d\", a[j]);\n        printf(\"\\n\");\n    }\n    printf(\"sorted:\");\n    for (j = 0; j < n; j++) printf(\" %d\", a[j]);\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "每轮结束，最大的元素就「冒」到了末尾，所以内层边界是 n-1-i。比较次数是 n(n-1)/2，时间复杂度 O(n²)。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "5\n5 1 4 2 8",
+   "out": "round 1: 1 4 2 5 8\r\nround 2: 1 2 4 5 8\r\nround 3: 1 2 4 5 8\r\nround 4: 1 2 4 5 8\r\nsorted: 1 2 4 5 8\r"
+  }
+ },
+ {
+  "id": "p-120",
+  "ch": "ch7",
+  "level": 2,
+  "title": "统计字符串中的字母、数字、空格和其他",
+  "stem": "用 fgets 读入一整行（可含空格），统计其中字母、数字、空格和其他字符各有多少个，换行符不计入任何一类。\n输入格式：一行字符串（长度 < 100）。\n输出格式：一行，形如 letters=…, digits=…, spaces=…, others=…。\n样例输入：\nHello C 2024!\n样例输出：\nletters=6, digits=4, spaces=2, others=1",
+  "hint": "用 isalpha / isdigit / isspace（ctype.h），或者自己用区间判断。",
+  "answer": "#include <stdio.h>\n#include <ctype.h>\n\nint main(void)\n{\n    char s[100];\n    int i, L = 0, D = 0, S = 0, O = 0;\n    fgets(s, sizeof(s), stdin);\n    for (i = 0; s[i] != '\\0'; i++) {\n        if (s[i] == '\\n') continue;\n        if (isalpha((unsigned char)s[i]))      L++;\n        else if (isdigit((unsigned char)s[i])) D++;\n        else if (s[i] == ' ')                  S++;\n        else                                   O++;\n    }\n    printf(\"letters=%d, digits=%d, spaces=%d, others=%d\\n\", L, D, S, O);\n    return 0;\n}\n",
+  "explanation": "fgets 会把行末的 '\\n' 一起读进来，所以必须先跳过它，否则会被算进「其他」。把 char 传给 ctype 函数前强转 unsigned char，可避免负数下标越界。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "Hello C 2024!",
+   "out": "letters=6, digits=4, spaces=2, others=1\r"
+  }
+ },
+ {
+  "id": "p-121",
+  "ch": "ch7",
+  "level": 2,
+  "title": "判断回文字符串",
+  "stem": "读入一行字符串（不含空格，可用 scanf 的 %s），判断它正读和反读是否相同，输出 YES 或 NO，并输出字符串长度。\n输入格式：一行，一个不含空白的字符串（长度 < 100）。\n输出格式：第一行 YES 或 NO，第二行形如 len=…。\n样例输入：\nlevel\n样例输出：\nYES\nlen=5",
+  "hint": "双指针：i 从头、j 从尾，向中间靠拢比较。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nint main(void)\n{\n    char s[100];\n    int i = 0, j, n, ok = 1;\n    scanf(\"%99s\", s);\n    n = (int)strlen(s);\n    j = n - 1;\n    while (i < j) {\n        if (s[i] != s[j]) { ok = 0; break; }\n        i++; j--;\n    }\n    printf(\"%s\\n\", ok ? \"YES\" : \"NO\");\n    printf(\"len=%d\\n\", n);\n    return 0;\n}\n",
+  "explanation": "双指针只需比较一半长度，效率比「复制反转再 strcmp」高，也不需要额外空间。scanf 的 %99s 里 99 是限宽，防止输入超长时把数组写爆——这就是 C 里最实用的防越界手段。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "level",
+   "out": "YES\r\nlen=5\r"
+  }
+ },
+ {
+  "id": "p-122",
+  "ch": "ch7",
+  "level": 3,
+  "title": "不用 strcat 手工拼接两个字符串",
+  "stem": "读入两个不含空白的字符串，把它们拼接成一个新字符串并输出，再输出拼接后的长度。要求不使用 strcat，自己用循环实现（考试常见要求）。\n输入格式：两行，每行一个不含空白的字符串（合计长度 < 100）。\n输出格式：两行：拼接结果、形如 len=…。\n样例输入：\nhello\nworld\n样例输出：\nhelloworld\nlen=10",
+  "hint": "先找到第一个串的 '\\0' 位置，从那里开始逐字符复制第二个串，最后补 '\\0'。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    char a[100], b[50], r[150];\n    int i, j;\n    scanf(\"%49s\", a);\n    scanf(\"%49s\", b);\n    for (i = 0; a[i] != '\\0'; i++)\n        r[i] = a[i];\n    for (j = 0; b[j] != '\\0'; j++)\n        r[i + j] = b[j];\n    r[i + j] = '\\0';\n    printf(\"%s\\n\", r);\n    printf(\"len=%d\\n\", i + j);\n    return 0;\n}\n",
+  "explanation": "字符串复制的本质就是「从起始位置逐字节搬运，最后补 '\\0'」。最容易漏的是结尾的 '\\0'——漏了以后 printf 会一直往后读内存，直到撞见随机出现的 0。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "hello\nworld",
+   "out": "helloworld\r\nlen=10\r"
+  }
+ },
+ {
+  "id": "p-123",
+  "ch": "ch8",
+  "level": 2,
+  "title": "用递归求最大公约数",
+  "stem": "写一个递归函数 gcd(a, b) 求两个正整数的最大公约数（辗转相除法），在主函数中读入并输出结果。\n输入格式：一行，两个正整数 a b。\n输出格式：一行，形如 gcd=…。\n样例输入：\n36 24\n样例输出：\ngcd=12",
+  "hint": "gcd(a,b) = b==0 ? a : gcd(b, a%b)",
+  "answer": "#include <stdio.h>\n\nint gcd(int a, int b)\n{\n    if (b == 0) return a;\n    return gcd(b, a % b);\n}\n\nint main(void)\n{\n    int a, b;\n    scanf(\"%d%d\", &a, &b);\n    printf(\"gcd=%d\\n\", gcd(a, b));\n    return 0;\n}\n",
+  "explanation": "递归必须有终止条件（b==0），且每次递归规模都严格变小，才保证不会无限递归。辗转相除法的递归深度是 O(log n)，非常安全。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "36 24",
+   "out": "gcd=12\r"
+  }
+ },
+ {
+  "id": "p-124",
+  "ch": "ch8",
+  "level": 2,
+  "title": "函数返回最大值与最小值（指针带回）",
+  "stem": "写一个函数 void minmax(int a[], int n, int *pmin, int *pmax)，一次遍历同时求出数组的最小值和最大值，通过指针参数带回主函数输出。\n输入格式：第一行 n，第二行 n 个整数。\n输出格式：一行，形如 min=…, max=…。\n样例输入：\n6\n4 -2 9 9 0 7\n样例输出：\nmin=-2, max=9",
+  "hint": "函数只能 return 一个值，多结果要靠指针参数往外带。",
+  "answer": "#include <stdio.h>\n\nvoid minmax(int a[], int n, int *pmin, int *pmax)\n{\n    int i;\n    *pmin = *pmax = a[0];\n    for (i = 1; i < n; i++) {\n        if (a[i] < *pmin) *pmin = a[i];\n        if (a[i] > *pmax) *pmax = a[i];\n    }\n}\n\nint main(void)\n{\n    int a[100], n, i, lo, hi;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n    minmax(a, n, &lo, &hi);\n    printf(\"min=%d, max=%d\\n\", lo, hi);\n    return 0;\n}\n",
+  "explanation": "C 的函数只能返回一个值，需要「带回多个结果」时，标准做法是把指针传进去，在函数里用 *p 写回。数组名作参数时退化为指针，函数内 sizeof(a) 得到的是指针大小而不是数组大小。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "6\n4 -2 9 9 0 7",
+   "out": "min=-2, max=9\r"
+  }
+ },
+ {
+  "id": "p-125",
+  "ch": "ch8",
+  "level": 2,
+  "title": "递归把十进制转成二进制输出",
+  "stem": "写一个递归函数把非负整数按二进制形式输出（高位在前），不要用数组保存。\n输入格式：一行，一个非负整数 n（0 ≤ n ≤ 10^9）。\n输出格式：一行，二进制表示（n 为 0 时输出 0）。\n样例输入：\n26\n样例输出：\n11010",
+  "hint": "先递归处理 n/2，再输出 n%2 —— 递归返回的过程正好是逆序输出。",
+  "answer": "#include <stdio.h>\n\nvoid tobin(unsigned int n)\n{\n    if (n > 1) tobin(n / 2);\n    putchar('0' + n % 2);\n}\n\nint main(void)\n{\n    unsigned int n;\n    scanf(\"%u\", &n);\n    if (n == 0) { printf(\"0\\n\"); return 0; }\n    tobin(n);\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "递归天然是「栈」：先压入高位，回溯时再打印，于是高位先出。用 putchar('0'+n%2) 比 printf 更快，也更能看清「数字即字符码值差」这一点。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "26",
+   "out": "11010\r"
+  }
+ },
+ {
+  "id": "p-126",
+  "ch": "ch8",
+  "level": 3,
+  "title": "用函数统计区间内素数个数",
+  "stem": "写函数 int is_prime(int n)，在主函数中统计闭区间 [a, b] 内素数的个数并输出。\n输入格式：一行，两个整数 a b（2 ≤ a ≤ b ≤ 20000）。\n输出格式：一行，形如 count=…。\n样例输入：\n10 50\n样例输出：\ncount=11",
+  "hint": "is_prime 里 i*i<=n 循环；主函数逐个调用即可。",
+  "answer": "#include <stdio.h>\n\nint is_prime(int n)\n{\n    int i;\n    if (n < 2) return 0;\n    for (i = 2; i * i <= n; i++)\n        if (n % i == 0) return 0;\n    return 1;\n}\n\nint main(void)\n{\n    int a, b, i, cnt = 0;\n    scanf(\"%d%d\", &a, &b);\n    for (i = a; i <= b; i++)\n        if (is_prime(i)) cnt++;\n    printf(\"count=%d\\n\", cnt);\n    return 0;\n}\n",
+  "explanation": "把「判断一个数是不是素数」封装成函数，主函数就只剩一句调用，逻辑清爽、易改易测。这就是函数带来的可读性与复用性。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "10 50",
+   "out": "count=11\r"
+  }
+ },
+ {
+  "id": "p-127",
+  "ch": "ch8",
+  "level": 2,
+  "title": "数组作为函数参数求平均与及格率",
+  "stem": "写函数 double average(int a[], int n) 返回平均分；再写 int pass_rate(int a[], int n) 返回及格（≥60）人数。主函数读入 n 个成绩并输出平均分（2 位小数）与及格率（百分数，1 位小数）。\n输入格式：第一行 n，第二行 n 个整数成绩。\n输出格式：两行：avg=… 与 pass=…%。\n样例输入：\n6\n90 55 72 60 48 83\n样例输出：\navg=68.00\npass=66.7%",
+  "hint": "数组传参只需要数组名和长度，函数里用 a[i] 访问；注意函数内无法用 sizeof 求长度。",
+  "answer": "#include <stdio.h>\n\ndouble average(int a[], int n)\n{\n    int i, sum = 0;\n    for (i = 0; i < n; i++) sum += a[i];\n    return (double)sum / n;\n}\n\nint pass_rate(int a[], int n)\n{\n    int i, c = 0;\n    for (i = 0; i < n; i++) if (a[i] >= 60) c++;\n    return c;\n}\n\nint main(void)\n{\n    int a[100], n, i;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) scanf(\"%d\", &a[i]);\n    printf(\"avg=%.2f\\n\", average(a, n));\n    printf(\"pass=%.1f%%\\n\", 100.0 * pass_rate(a, n) / n);\n    return 0;\n}\n",
+  "explanation": "数组名作实参时传的是首地址，函数内修改会改到原数组（这叫「地址传递」）。想在函数里知道长度，只能额外传一个 n——sizeof 在函数内测的是指针大小。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "6\n90 55 72 60 48 83",
+   "out": "avg=68.00\r\npass=66.7%\r"
+  }
+ },
+ {
+  "id": "p-128",
+  "ch": "ch9",
+  "level": 2,
+  "title": "用指针遍历数组求和",
+  "stem": "用指针（不用下标）遍历数组，求所有元素之和与最大值。\n输入格式：第一行 n，第二行 n 个整数。\n输出格式：一行，形如 sum=…, max=…。\n样例输入：\n5\n2 8 1 8 4\n样例输出：\nsum=23, max=8",
+  "hint": "int *p = a; for (; p < a + n; p++) sum += *p;",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a[100], n, i, sum = 0, max;\n    int *p;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n    p = a;\n    max = *p;\n    for (; p < a + n; p++) {\n        sum += *p;\n        if (*p > max) max = *p;\n    }\n    printf(\"sum=%d, max=%d\\n\", sum, max);\n    return 0;\n}\n",
+  "explanation": "a[i] 与 *(a+i) 完全等价，指针遍历只是换了一种写法。指针加减的单位是「元素」而不是字节：p+1 前进 sizeof(int) 个字节，由类型自动换算。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "5\n2 8 1 8 4",
+   "out": "sum=23, max=8\r"
+  }
+ },
+ {
+  "id": "p-129",
+  "ch": "ch9",
+  "level": 2,
+  "title": "用指针实现字符串长度与逆序",
+  "stem": "不用 strlen，用指针求字符串长度；再把字符串原地逆序并输出。\n输入格式：一行，一个不含空白的字符串。\n输出格式：两行：len=… 与逆序后的字符串。\n样例输入：\nabcdef\n样例输出：\nlen=6\nfedcba",
+  "hint": "求长度：while (*p) p++; 逆序：双指针 swap。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    char s[100];\n    char *p, *q, t;\n    int n = 0;\n    scanf(\"%99s\", s);\n    for (p = s; *p != '\\0'; p++) n++;\n    printf(\"len=%d\\n\", n);\n    p = s;\n    q = s + n - 1;\n    while (p < q) {\n        t = *p; *p = *q; *q = t;\n        p++; q--;\n    }\n    printf(\"%s\\n\", s);\n    return 0;\n}\n",
+  "explanation": "*p != '\\0' 可以简写成 *p——'\\0' 的码值是 0，即假。原地逆序不需要额外空间，双指针从两端向中间夹，交换 n/2 次即可。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "abcdef",
+   "out": "len=6\r\nfedcba\r"
+  }
+ },
+ {
+  "id": "p-130",
+  "ch": "ch9",
+  "level": 3,
+  "title": "二级指针修改指针的指向",
+  "stem": "写函数 void retarget(int **pp, int *target) 让指针 p 改指向另一个变量，在主函数中验证修改前后 *p 的值。\n输入格式：无输入（程序内部构造两个变量 10 和 20）。\n输出格式：两行：before: *p=10 与 after: *p=20。\n样例输入：\n（无输入）\n样例输出：\nbefore: *p=10\nafter: *p=20",
+  "hint": "要修改「指针本身」，必须传指针的地址，即二级指针。",
+  "answer": "#include <stdio.h>\n\nvoid retarget(int **pp, int *target)\n{\n    *pp = target;\n}\n\nint main(void)\n{\n    int x = 10, y = 20;\n    int *p = &x;\n    printf(\"before: *p=%d\\n\", *p);\n    retarget(&p, &y);\n    printf(\"after: *p=%d\\n\", *p);\n    return 0;\n}\n",
+  "explanation": "一级指针能改「指针指向的变量」，二级指针才能改「指针本身指向谁」。这个层级关系在后面动态内存、链表头指针的修改里会反复用到。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "before: *p=10\r\nafter: *p=20\r"
+  }
+ },
+ {
+  "id": "p-131",
+  "ch": "ch10",
+  "level": 1,
+  "title": "结构体表示矩形并计算周长面积",
+  "stem": "定义结构体 struct Rect { double w, h; }，读入宽和高，用结构体变量（分别用 . 与 -> 两种方式访问）输出周长与面积，均保留 2 位小数。\n输入格式：一行，两个实数 w h。\n输出格式：两行：perimeter=… 与 area=…。\n样例输入：\n3.5 2\n样例输出：\nperimeter=11.00\narea=7.00",
+  "hint": "struct Rect r; struct Rect *p = &r; 之后 r.w 与 p->w 等价。",
+  "answer": "#include <stdio.h>\n\nstruct Rect {\n    double w;\n    double h;\n};\n\nint main(void)\n{\n    struct Rect r, *p = &r;\n    scanf(\"%lf%lf\", &p->w, &p->h);\n    printf(\"perimeter=%.2f\\n\", 2 * (r.w + r.h));\n    printf(\"area=%.2f\\n\", r.w * r.h);\n    return 0;\n}\n",
+  "explanation": "p->w 就是 (*p).w 的简写。结构体变量本身可以整体赋值（r1 = r2），但不能用 == 直接比较两个结构体是否相等，必须逐成员比较。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "3.5 2",
+   "out": "perimeter=11.00\r\narea=7.00\r"
+  }
+ },
+ {
+  "id": "p-132",
+  "ch": "ch10",
+  "level": 2,
+  "title": "结构体数组统计平均分最高的学生",
+  "stem": "定义结构体 struct Stu { char name[20]; int score; }，读入 n 个学生，输出平均分（2 位小数）以及分数最高的学生姓名（并列时取最先出现的）。\n输入格式：第一行 n，随后 n 行每行一个姓名和一个整数成绩。\n输出格式：两行：avg=… 与 top=…。\n样例输入：\n4\nTom 88\nAmy 95\nBob 72\nCindy 95\n样例输出：\navg=87.50\ntop=Amy",
+  "hint": "先遍历求总分与最高分，再第二次遍历找第一个等于最高分的人。",
+  "answer": "#include <stdio.h>\n\nstruct Stu {\n    char name[20];\n    int score;\n};\n\nint main(void)\n{\n    struct Stu s[50];\n    int n, i, sum = 0, best = 0;\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) {\n        scanf(\"%19s%d\", s[i].name, &s[i].score);\n        sum += s[i].score;\n        if (s[i].score > best) best = s[i].score;\n    }\n    printf(\"avg=%.2f\\n\", (double)sum / n);\n    for (i = 0; i < n; i++) {\n        if (s[i].score == best) {\n            printf(\"top=%s\\n\", s[i].name);\n            break;\n        }\n    }\n    return 0;\n}\n",
+  "explanation": "结构体数组就是「一条记录一行」的天然表示法，s[i].name 是字符数组，作 scanf 参数时本身就退化为地址，不能再加 &。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "4\nTom 88\nAmy 95\nBob 72\nCindy 95",
+   "out": "avg=87.50\r\ntop=Amy\r"
+  }
+ },
+ {
+  "id": "p-133",
+  "ch": "ch10",
+  "level": 2,
+  "title": "枚举与 switch 输出星期",
+  "stem": "定义枚举 enum Week { MON = 1, TUE, WED, THU, FRI, SAT, SUN }，读入 1~7，用枚举值配合 switch 输出对应的英文缩写，非法输入输出 invalid。\n输入格式：一行，一个整数（1~7）。\n输出格式：一行，三个大写字母缩写或 invalid。\n样例输入：\n3\n样例输出：\nWED",
+  "hint": "枚举常量从 MON=1 开始自动递增；switch 的 case 直接写 MON 即可。",
+  "answer": "#include <stdio.h>\n\nenum Week { MON = 1, TUE, WED, THU, FRI, SAT, SUN };\n\nint main(void)\n{\n    int n;\n    enum Week w;\n    scanf(\"%d\", &n);\n    if (n < 1 || n > 7) { printf(\"invalid\\n\"); return 0; }\n    w = (enum Week)n;\n    switch (w) {\n    case MON: printf(\"MON\\n\"); break;\n    case TUE: printf(\"TUE\\n\"); break;\n    case WED: printf(\"WED\\n\"); break;\n    case THU: printf(\"THU\\n\"); break;\n    case FRI: printf(\"FRI\\n\"); break;\n    case SAT: printf(\"SAT\\n\"); break;\n    case SUN: printf(\"SUN\\n\"); break;\n    }\n    return 0;\n}\n",
+  "explanation": "枚举本质上是具名的整型常量，提高可读性而不增加开销。MON=1 之后 TUE 自动为 2，依此类推——这是「隐式递增」规则。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "3",
+   "out": "WED\r"
+  }
+ },
+ {
+  "id": "p-134",
+  "ch": "ch10",
+  "level": 2,
+  "title": "共用体观察内存共享",
+  "stem": "定义 union U { int i; char c[4]; }，把一个整数写进去，再逐字节输出它的 4 个字节值，验证「小端序」存储方式。\n输入格式：无输入（程序中固定 i = 0x01020304）。\n输出格式：一行，形如 bytes: 4 3 2 1。\n样例输入：\n（无输入）\n样例输出：\nbytes: 4 3 2 1",
+  "hint": "union 的所有成员共用同一块内存，写 i 再读 c[]，看到的就是该整数的字节布局。",
+  "answer": "#include <stdio.h>\n\nunion U {\n    int i;\n    char c[4];\n};\n\nint main(void)\n{\n    union U u;\n    int k;\n    u.i = 0x01020304;\n    printf(\"bytes:\");\n    for (k = 0; k < 4; k++)\n        printf(\" %d\", (int)u.c[k]);\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "x86 是小端序：低位字节放在低地址，所以 0x01020304 在内存里是 04 03 02 01。共用体的长度等于最长成员的长度，任一时刻只有一个成员「有意义」。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "bytes: 4 3 2 1\r"
+  }
+ },
+ {
+  "id": "p-135",
+  "ch": "ch11",
+  "level": 1,
+  "title": "写入文件再读回",
+  "stem": "把 1~5 这 5 个整数写入 out.txt（每行一个），关闭文件后重新打开读回，输出它们的和。本题考察 fopen/fprintf/fclose 的成对使用。\n输入格式：无输入（程序内部生成数据；产生的 out.txt 内容即样例输入）。\n输出格式：两行：第一行 written=5，第二行 sum=15。\n样例输入：\n1\n2\n3\n4\n5\n样例输出：\nwritten=5\nsum=15",
+  "hint": "每次 fopen 成功都要 fclose；读之前记得重新打开（或 rewind）。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    FILE *fp;\n    int i, x, sum = 0;\n    fp = fopen(\"out.txt\", \"w\");\n    if (fp == NULL) { printf(\"open failed\\n\"); return 1; }\n    for (i = 1; i <= 5; i++)\n        fprintf(fp, \"%d\\n\", i);\n    fclose(fp);\n\n    fp = fopen(\"out.txt\", \"r\");\n    if (fp == NULL) { printf(\"open failed\\n\"); return 1; }\n    while (fscanf(fp, \"%d\", &x) == 1)\n        sum += x;\n    fclose(fp);\n\n    printf(\"written=5\\n\");\n    printf(\"sum=%d\\n\", sum);\n    return 0;\n}\n",
+  "explanation": "fopen 返回 NULL 说明打开失败（路径不对、权限不足、文件被占用），必须判断。写完不 fclose，缓冲区里的内容可能还没落盘，后面读到的就是空的。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "1\n2\n3\n4\n5",
+   "out": "written=5\r\nsum=15\r"
+  }
+ },
+ {
+  "id": "p-136",
+  "ch": "ch11",
+  "level": 2,
+  "title": "读文件统计行数与最长行长度",
+  "stem": "从 data.txt 逐行读入（fgets），输出总行数与最长一行的字符数（不含换行符）。\n输入格式：数据文件 data.txt 的内容见样例输入（程序运行时该文件已存在）。\n输出格式：两行：lines=… 与 longest=…。\n样例输入：\nhello world\nC language\nok\n样例输出：\nlines=3\nlongest=11",
+  "hint": "用 fgets(buf, sizeof buf, fp)，每读到一行就 strlen 求长度并去掉 '\\n'。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nint main(void)\n{\n    FILE *fp;\n    char buf[256];\n    int lines = 0, longest = 0, n;\n    fp = fopen(\"data.txt\", \"r\");\n    if (fp == NULL) { printf(\"open failed\\n\"); return 1; }\n    while (fgets(buf, sizeof buf, fp) != NULL) {\n        lines++;\n        n = (int)strlen(buf);\n        if (n > 0 && buf[n - 1] == '\\n') n--;\n        if (n > longest) longest = n;\n    }\n    fclose(fp);\n    printf(\"lines=%d\\n\", lines);\n    printf(\"longest=%d\\n\", longest);\n    return 0;\n}\n",
+  "explanation": "fgets 会把 '\\n' 一起读进来，所以求长度后要减 1；fgets 还在读到 EOF 时返回 NULL，用它做 while 条件是读文件的惯用法。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "hello world\nC language\nok",
+   "out": "lines=3\r\nlongest=11\r"
+  }
+ },
+ {
+  "id": "p-137",
+  "ch": "ch11",
+  "level": 2,
+  "title": "追加写文件并统计字符数",
+  "stem": "以追加方式（\"a\"）向 log.txt 连续写入两行日志，再以读方式打开，统计文件总字节数与行数。\n输入格式：无输入（程序自行写入；log.txt 的内容即样例输入）。\n输出格式：两行：bytes=… 与 lines=…。\n样例输入：\nstart\nC program\nend\n样例输出：\nbytes=20\nlines=3",
+  "hint": "\"a\" 模式在文件末尾追加，文件不存在会自动创建；统计字节用 fgetc 逐字符读。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    FILE *fp;\n    int ch, bytes = 0, lines = 0;\n    fp = fopen(\"log.txt\", \"w\");\n    if (fp == NULL) return 1;\n    fprintf(fp, \"start\\n\");\n    fclose(fp);\n\n    fp = fopen(\"log.txt\", \"a\");\n    if (fp == NULL) return 1;\n    fprintf(fp, \"C program\\n\");\n    fprintf(fp, \"end\\n\");\n    fclose(fp);\n\n    fp = fopen(\"log.txt\", \"r\");\n    if (fp == NULL) return 1;\n    while ((ch = fgetc(fp)) != EOF) {\n        bytes++;\n        if (ch == '\\n') lines++;\n    }\n    fclose(fp);\n    printf(\"bytes=%d\\n\", bytes);\n    printf(\"lines=%d\\n\", lines);\n    return 0;\n}\n",
+  "explanation": "\"w\" 会清空原文件，\"a\" 才是在末尾追加。fgetc 的返回值必须用 int 接收——因为 EOF 是 -1，若用 char 接收，某些平台上 0xFF 会被误判为文件结束。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "start\nC program\nend",
+   "out": "bytes=20\r\nlines=3\r"
+  }
+ },
+ {
+  "id": "p-138",
+  "ch": "ch12",
+  "level": 1,
+  "title": "宏展开的括号陷阱",
+  "stem": "定义两个宏：#define SQ1(x) x*x 与 #define SQ2(x) ((x)*(x))，分别用参数 2+3 调用，输出两个结果，观察括号带来的差异。\n输入格式：无输入。\n输出格式：两行：SQ1(2+3)=… 与 SQ2(2+3)=…。\n样例输入：\n（无输入）\n样例输出：\nSQ1(2+3)=11\nSQ2(2+3)=25",
+  "hint": "宏是纯文本替换，不做计算、不加括号就会出错。",
+  "answer": "#include <stdio.h>\n\n#define SQ1(x) x*x\n#define SQ2(x) ((x)*(x))\n\nint main(void)\n{\n    printf(\"SQ1(2+3)=%d\\n\", SQ1(2 + 3));\n    printf(\"SQ2(2+3)=%d\\n\", SQ2(2 + 3));\n    return 0;\n}\n",
+  "explanation": "SQ1(2+3) 展开成 2+3*2+3 = 11（不是 25），这正是宏「只做文本替换」的后果。写宏的铁律：每个参数都加括号，整个表达式再加一层括号。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "SQ1(2+3)=11\r\nSQ2(2+3)=25\r"
+  }
+ },
+ {
+  "id": "p-139",
+  "ch": "ch12",
+  "level": 2,
+  "title": "带参宏求三个数的最大值",
+  "stem": "定义宏 MAX3(a,b,c) 求三个数的最大值（要求参数与整体都加括号），读入三个整数并输出结果。\n输入格式：一行，三个整数。\n输出格式：一行，形如 max=…。\n样例输入：\n7 15 3\n样例输出：\nmax=15",
+  "hint": "#define MAX2(a,b) ((a)>(b)?(a):(b))，再嵌套一层。",
+  "answer": "#include <stdio.h>\n\n#define MAX2(a, b) ((a) > (b) ? (a) : (b))\n#define MAX3(a, b, c) MAX2(MAX2(a, b), c)\n\nint main(void)\n{\n    int a, b, c;\n    scanf(\"%d%d%d\", &a, &b, &c);\n    printf(\"max=%d\\n\", MAX3(a, b, c));\n    return 0;\n}\n",
+  "explanation": "带参宏没有类型，任何类型都能用，也不产生函数调用开销；代价是没有类型检查、调试时看不到宏名、参数带副作用时会重复求值（如 MAX2(i++, j)）。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "7 15 3",
+   "out": "max=15\r"
+  }
+ },
+ {
+  "id": "p-140",
+  "ch": "ch12",
+  "level": 2,
+  "title": "条件编译输出不同版本信息",
+  "stem": "用 #define DEBUG 1 配合 #if/#else/#endif，根据 DEBUG 的值输出调试信息或正式信息。本题要求 DEBUG 为 1，因此输出调试行加正式行。\n输入格式：无输入。\n输出格式：两行：debug: build 2024 与 release: ready。\n样例输入：\n（无输入）\n样例输出：\ndebug: build 2024\nrelease: ready",
+  "hint": "#if DEBUG 判断的是宏的值，#ifdef 只判断是否定义。",
+  "answer": "#include <stdio.h>\n\n#define DEBUG 1\n\nint main(void)\n{\n#if DEBUG\n    printf(\"debug: build 2024\\n\");\n#else\n    printf(\"debug: off\\n\");\n#endif\n    printf(\"release: ready\\n\");\n    return 0;\n}\n",
+  "explanation": "#if 后面的表达式在预处理阶段求值，可以写 #if VERSION >= 2 这类比较；#ifdef 只能判「有没有定义」。头文件保护宏用的就是 #ifndef / #define / #endif 三件套。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "debug: build 2024\r\nrelease: ready\r"
+  }
+ },
+ {
+  "id": "p-141",
+  "ch": "ch13",
+  "level": 2,
+  "title": "输出整数的 32 位二进制",
+  "stem": "读入一个非负整数，按从高位到低位的顺序输出它的 32 位二进制表示（不足 32 位左边补 0）。\n输入格式：一行，一个非负整数 n。\n输出格式：一行，32 个 0/1 字符。\n样例输入：\n26\n样例输出：\n00000000000000000000000000011010",
+  "hint": "for (i = 31; i >= 0; i--) putchar('0' + ((n >> i) & 1));",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    unsigned int n;\n    int i;\n    scanf(\"%u\", &n);\n    for (i = 31; i >= 0; i--)\n        putchar('0' + ((n >> i) & 1));\n    putchar('\\n');\n    return 0;\n}\n",
+  "explanation": "(n >> i) & 1 取出第 i 位：先右移到最低位，再与 1 相与屏蔽其他位。用 unsigned 是为了避免右移时符号位扩展（有符号负数右移是算术右移，会补 1）。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "26",
+   "out": "00000000000000000000000000011010\r"
+  }
+ },
+ {
+  "id": "p-142",
+  "ch": "ch13",
+  "level": 3,
+  "title": "用异或交换两个数并判断奇偶",
+  "stem": "不用临时变量，用三次异或交换两个整数并输出；再用 n & 1 判断并输出两者的奇偶性。\n输入格式：一行，两个整数 a b。\n输出格式：三行：after: a=…, b=…、a 与 b 的奇偶（odd/even）。\n样例输入：\n3 8\n样例输出：\nafter: a=8, b=3\na is even\nb is odd",
+  "hint": "a^=b; b^=a; a^=b; —— 顺序不能错。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b;\n    scanf(\"%d%d\", &a, &b);\n    a = a ^ b;\n    b = a ^ b;\n    a = a ^ b;\n    printf(\"after: a=%d, b=%d\\n\", a, b);\n    printf(\"a is %s\\n\", (a & 1) ? \"odd\" : \"even\");\n    printf(\"b is %s\\n\", (b & 1) ? \"odd\" : \"even\");\n    return 0;\n}\n",
+  "explanation": "异或满足交换律、结合律，且 x^x=0、x^0=x，所以三步就能互换。但它只是面试技巧：若 a、b 是同一个变量的别名，会被清零，实际工程里还是用临时变量。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "3 8",
+   "out": "after: a=8, b=3\r\na is even\r\nb is odd\r"
+  }
+ },
+ {
+  "id": "p-143",
+  "ch": "ch14",
+  "level": 3,
+  "title": "动态二维数组的行列和",
+  "stem": "读入 m、n，用二级指针 + malloc 构造 m 行 n 列的动态二维数组，读入数据后输出每行之和。\n输入格式：第一行 m n，随后 m 行每行 n 个整数。\n输出格式：m 行，每行形如 row i sum=…。\n样例输入：\n2 3\n1 2 3\n4 5 6\n样例输出：\nrow 0 sum=6\nrow 1 sum=15",
+  "hint": "先 malloc m 个 int*，再对每个指针 malloc n 个 int；释放时反过来逐行 free。",
+  "answer": "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    int **a, m, n, i, j, sum;\n    scanf(\"%d%d\", &m, &n);\n    a = (int **)malloc(m * sizeof(int *));\n    if (a == NULL) return 1;\n    for (i = 0; i < m; i++) {\n        a[i] = (int *)malloc(n * sizeof(int));\n        if (a[i] == NULL) return 1;\n    }\n    for (i = 0; i < m; i++)\n        for (j = 0; j < n; j++)\n            scanf(\"%d\", &a[i][j]);\n    for (i = 0; i < m; i++) {\n        sum = 0;\n        for (j = 0; j < n; j++) sum += a[i][j];\n        printf(\"row %d sum=%d\\n\", i, sum);\n    }\n    for (i = 0; i < m; i++) free(a[i]);\n    free(a);\n    return 0;\n}\n",
+  "explanation": "二维动态数组是「指针的数组」：a[i] 本身也是 malloc 出来的，所以释放要两层，且顺序必须由内向外——先 free 每行，再 free 行指针数组。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "2 3\n1 2 3\n4 5 6",
+   "out": "row 0 sum=6\r\nrow 1 sum=15\r"
+  }
+ },
+ {
+  "id": "p-144",
+  "ch": "ch14",
+  "level": 3,
+  "title": "realloc 扩容并保留原数据",
+  "stem": "先申请 3 个 int 存 1 2 3，再用 realloc 扩到 6 个并追加 4 5 6，输出全部 6 个元素之和。\n输入格式：无输入（程序中固定数据）。\n输出格式：一行，形如 sum=21, capacity=6。\n样例输入：\n（无输入）\n样例输出：\nsum=21, capacity=6",
+  "hint": "realloc 可能搬家，必须用临时指针接收返回值，成功后再赋回原指针。",
+  "answer": "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void)\n{\n    int *a, *t, i, sum = 0;\n    a = (int *)malloc(3 * sizeof(int));\n    if (a == NULL) return 1;\n    for (i = 0; i < 3; i++) a[i] = i + 1;\n\n    t = (int *)realloc(a, 6 * sizeof(int));\n    if (t == NULL) { free(a); return 1; }\n    a = t;\n    for (i = 3; i < 6; i++) a[i] = i + 1;\n\n    for (i = 0; i < 6; i++) sum += a[i];\n    printf(\"sum=%d, capacity=6\\n\", sum);\n    free(a);\n    return 0;\n}\n",
+  "explanation": "realloc 可能把数据搬到新地址并释放旧块，所以绝不能写 a = realloc(a, …)——一旦失败返回 NULL，原指针就丢了，那块内存再也 free 不掉，成为内存泄漏。",
+  "src": "《C Primer Plus（第 6 版）》改编",
+  "io": {
+   "in": "",
+   "out": "sum=21, capacity=6\r"
+  }
  }
 ]

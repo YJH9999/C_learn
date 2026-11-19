@@ -9,9 +9,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" href="assets/favicon-180.png">
-<link rel="stylesheet" href="assets/fonts.css?v=20261118c">
-<link rel="stylesheet" href="assets/style.css?v=20261118c">
-<link rel="stylesheet" href="assets/exam.css?v=20261118c">
+<link rel="stylesheet" href="assets/fonts.css?v=20261119a">
+<link rel="stylesheet" href="assets/style.css?v=20261119a">
+<link rel="stylesheet" href="assets/exam.css?v=20261119a">
 </head>
 <body>
 
@@ -64,51 +64,34 @@
 
   <!-- ============ 理论模拟 ============ -->
   <section class="view" id="view-theory">
-    <div class="ex-wrap" id="th-wrap">
-      <div class="ex-hero">
-        <span class="kicker">期末 · 理论模拟</span>
-        <h1>随机组卷 · 在线判分</h1>
-        <p>选择章节与题型，随机抽取组成模拟卷；交卷后自动判分并逐题讲解。题目源自 2014—2022 历年真题与仿真新题。</p>
-      </div>
-      <div id="th-stage"></div>
+    <div class="xhead">
+      <span class="kicker">EXAM · PAPER</span>
+      <h1>期末组卷模拟</h1>
+      <p class="sub">题型与题量参照课程期末卷结构（单选 20 · 判断 5 · 填空 5 · 程序阅读 3）。随机抽题并乱序，交卷后自动判分、逐题讲解。</p>
     </div>
+    <div id="th-stage"></div>
   </section>
 
   <!-- ============ 编程模拟 ============ -->
   <section class="view" id="view-prog">
-    <div class="ex-wrap" id="pg-wrap">
-      <div class="ex-hero">
-        <span class="kicker">期末 · 编程模拟</span>
-        <h1>编程题实战演练</h1>
-        <p>按章节与难度抽取编程题，先自己写、在线运行验证，再对照参考答案与讲评。答案均经 GCC 实测。</p>
-      </div>
-      <div id="pg-stage"></div>
+    <div class="xhead">
+      <span class="kicker">EXAM · CODE</span>
+      <h1>编程题实战演练</h1>
+      <p class="sub">按章节与难度抽题，先自己动手写，再对照参考答案与「输入 / 输出」示例。参考答案均经 GCC 实测。</p>
     </div>
+    <div id="pg-stage"></div>
   </section>
+
   <!-- ============ 题库浏览 ============ -->
   <section class="view" id="view-bank">
-    <div class="ex-hero">
-      <span class="kicker">期末 · 题库浏览</span>
-      <h1>题库全览</h1>
-      <p>浏览全部理论题与编程题，支持按章节、难度与关键词筛选；答案与解析默认折叠，先自查再展开对照。</p>
+    <div class="xhead">
+      <span class="kicker">BANK</span>
+      <h1>题库总览</h1>
+      <p class="sub">按题型、章节、来源筛选，也可直接搜关键词。答案与解析默认折叠，先自查再展开对照。</p>
     </div>
-    <div class="ex-panel bk-bar">
-      <div class="seg" id="bk-seg" role="group" aria-label="题库切换">
-        <button data-bk="theory" class="on">理论题库</button>
-        <button data-bk="prog">编程题库</button>
-      </div>
-      <input class="ex-filter" id="bk-q" type="search" placeholder="搜索题干 / 答案…" autocomplete="off">
-      <select class="ex-filter" id="bk-ch" aria-label="章节筛选"></select>
-      <select class="ex-filter" id="bk-lv" aria-label="难度筛选" hidden>
-        <option value="0">全部难度</option>
-        <option value="1">★ 基础</option>
-        <option value="2">★★ 中等</option>
-        <option value="3">★★★ 提高</option>
-      </select>
-      <span class="bk-cnt" id="bk-cnt"></span>
-    </div>
-    <div class="ex-qs" id="bk-list"><div class="ex-empty">正在加载题库…</div></div>
-    <div id="bk-pager"></div>
+    <div class="panel" id="bk-filters"><div class="empty-tip">正在加载题库…</div></div>
+    <div id="bk-list"></div>
+    <div class="pager" id="bk-pager"></div>
   </section>
 
 </main>
@@ -118,9 +101,9 @@
 <!-- 打印导出容器（浏览器打印为 PDF） -->
 <div id="print-wrap" aria-hidden="true"><div id="print-sheet"></div></div>
 
-<script src="assets/sync.js?v=20261118c" data-site="c"></script>
-<script src="assets/kb-paper.js?v=20261118c" data-site="c"></script>
-<script src="assets/profile.js?v=20261118c" data-site="c"></script>
-<script src="assets/exam_app.js?v=20261118c"></script>
+<script src="assets/sync.js?v=20261119a" data-site="c"></script>
+<script src="assets/kb-paper.js?v=20261119a" data-site="c"></script>
+<script src="assets/profile.js?v=20261119a" data-site="c"></script>
+<script src="assets/exam_app.js?v=20261119a"></script>
 </body>
 </html>

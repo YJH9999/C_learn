@@ -2,7 +2,7 @@
    C 语言备考中心 · exam_app.js
    三个版块：理论复习 / 理论模拟（组卷判分）/ 编程模拟（在线运行）
    数据：assets/exam/{review_data,theory_bank,prog_bank}.json
-   依赖：style.css 设计令牌 + assets/jscpp.js（JSCPP 在线运行）
+   依赖：style.css 设计令牌（代码示例一律用构建期 GCC 实跑结果，前端不再执行代码）
    ============================================================ */
 (function(){
 'use strict';
@@ -247,90 +247,179 @@ function chChecks(idAll){
       +esc(c.name)+'</label>';
   }).join('')+'</div>';
 }
+/* ---------- 组卷面板（对齐 GS / XD 的组卷方式） ---------- */
+var TY=[
+  {id:'single',name:'单选题'},
+  {id:'judge', name:'判断题'},
+  {id:'fill',  name:'填空题'},
+  {id:'read',  name:'程序阅读'}
+];
+var PRESETS={
+  std: {single:20,judge:5,fill:5,read:3},
+  obj: {single:30,judge:20,fill:20,read:0},
+  read:{single:0,judge:0,fill:0,read:10},
+  mini:{single:10,judge:5,fill:5,read:1}
+};
+var SRC_TABS=[
+  {id:'',name:'全部来源'},
+  {id:'真题',name:'历年真题'},
+  {id:'模拟',name:'模拟卷'},
+  {id:'原创',name:'原创 / 易错辨析'},
+  {id:'教材',name:'教材样例改编'},
+  {id:'实验与辅导',name:'实验与辅导'},
+  {id:'二级',name:'二级真题改编'}
+];
+var counts=Object.assign({},PRESETS.std);
+var filterChs=[], filterSrc='';
+
+function poolOf(bank,ty){
+  return bank.filter(function(q){
+    return q.type===ty
+      && (!filterChs.length || filterChs.indexOf(q.ch)>=0)
+      && (!filterSrc || String(q.src||'').indexOf(filterSrc)>=0);
+  });
+}
+function refreshSetup(){
+  var bank=DATA.theory||[];
+  $$('#th-type-row .type-cell').forEach(function(cell){
+    var ty=cell.dataset.ty;
+    cell.querySelector('.stepper b').textContent=counts[ty]||0;
+    var n=poolOf(bank,ty).length;
+    cell.querySelector('.t-avail').textContent=n;
+    cell.classList.toggle('lack',(counts[ty]||0)>n);
+    cell.title=(counts[ty]||0)>n?('当前范围内仅 '+n+' 题，组卷时按实际数量抽取'):('可用 '+n+' 题');
+  });
+  var total=0; TY.forEach(function(t){ total+=+counts[t.id]||0; });
+  var per=TY.map(function(t){ return counts[t.id]?(t.name.replace('题','')+' '+counts[t.id]):''; })
+             .filter(Boolean).join(' · ');
+  $('#th-total').textContent=total?('本次组卷：'+total+' 题　'+per):'';
+  $('#th-stat').textContent='题库共 '+bank.length+' 题 — '
+    +TY.map(function(t){
+        return t.name+' '+bank.filter(function(q){ return q.type===t.id; }).length;
+      }).join(' · ');
+}
 function renderTheorySetup(bank){
   TH.stage='setup';
+  bank=bank||DATA.theory||[];
   var last=lget('ex-th-last',null);
   var wrong=lget('ex-th-wrong',[]);
-  var byType={}; bank.forEach(function(q){ byType[q.type]=(byType[q.type]||0)+1; });
+  var map={}; bank.forEach(function(q){ map[q.id]=q; });
+  var wl=wrong.slice(-6).reverse().map(function(id,k){
+    var q=map[id]; if(!q) return '';
+    var st=String(q.stem||'').replace(/\s+/g,' ').slice(0,58);
+    return '<div class="wl-item"><b>'+(k+1)+'</b><span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
+      +'<span class="wl-stem">'+esc(st)+'</span></div>';
+  }).join('');
   $('#th-stage').innerHTML=
-    (last?'<div class="ex-banner">上次成绩：<b>'+last.score+'/'+last.total+'</b>'
-      +'（'+last.pct+'%） · '+esc(last.date)
+    (last?'<div class="ex-banner">上次成绩：<b>'+last.score+'/'+last.total+'</b>（'+last.pct+'%）· '+esc(last.date)
       +'　<button class="btn btn-sm" id="th-review-last">查看卷面</button></div>':'')
-    +(wrong.length?'<div class="ex-banner warn">待巩固错题 <b>'+wrong.length+'</b> 道'
-      +'　<button class="btn btn-sm btn-primary" id="th-redo">错题重做</button>'
-      +'　<button class="btn btn-sm" id="th-exp-wrong">导出错题</button></div>':'')
-    +'<div class="ex-panel"><h2><span class="no">卷</span>历史试卷'
-    +'<span class="ex-muted">'+(window.KBPaper&&KBPaper.list().length?KBPaper.list().length+' 份 · 可继续作答 / 挂离线答案':'')+'</span></h2>'
-    +'<div id="th-hist"></div></div>'
-    +'<div class="ex-panel"><h2><span class="no">壹</span>选择范围</h2>'
-    +'<div class="ex-line"><b>章节</b>'
-    +'<button class="btn btn-sm" data-sel="all">全选</button>'
-    +'<button class="btn btn-sm" data-sel="none">清空</button>'
-    +'<button class="btn btn-sm" data-sel="inv">反选</button>'
-    +'</div>'+chChecks('th')+''
-    +'<div class="ex-line"><b>题型</b>'
-    +['single','judge','fill','read'].map(function(t){
-        return '<label class="ex-chk"><input type="checkbox" class="th-type" value="'+t+'" checked>'
-          +TYPE_NAME[t]+'<i>('+(byType[t]||0)+')</i></label>';
+    +'<div class="panel">'
+    +'<h2>快速套卷</h2>'
+    +'<div class="preset-row" id="th-presets">'
+      +'<button class="chip on" data-preset="std">单选 20 · 判断 5 · 填空 5 · 阅读 3<small>期末主流结构</small></button>'
+      +'<button class="chip" data-preset="obj">单选 30 · 判断 20 · 填空 20<small>客观题专练</small></button>'
+      +'<button class="chip" data-preset="read">程序阅读 10<small>阅读程序专项</small></button>'
+      +'<button class="chip" data-preset="mini">单选 10 · 判断 5 · 填空 5 · 阅读 1<small>小卷速测</small></button>'
+    +'</div>'
+    +'<h2>题型与题量</h2>'
+    +'<div class="muted" id="th-stat" style="margin:-6px 0 10px"></div>'
+    +'<div class="type-row" id="th-type-row">'
+      +TY.map(function(t){
+        return '<div class="type-cell" data-ty="'+t.id+'">'
+          +'<div class="t-name">'+t.name+'<small>题库 <b class="t-avail">0</b></small></div>'
+          +'<div class="stepper"><button data-d="-1" type="button">−</button><b>'+counts[t.id]+'</b>'
+          +'<button data-d="1" type="button">＋</button></div></div>';
       }).join('')
-    +'<button class="btn btn-sm" data-sel="tall" style="margin-left:auto">全选</button></div>'
-    +'<div class="ex-line"><b>题量</b><input type="number" id="th-num" value="25" min="1" max="260" class="ex-num">'
-    +'<button class="btn btn-sm preset" data-n="10">速测 10</button>'
-    +'<button class="btn btn-sm preset" data-n="25">标准 25</button>'
-    +'<button class="btn btn-sm preset" data-n="50">强化 50</button>'
-    +'<button class="btn btn-sm preset" data-n="full">全真模拟</button></div>'
-    +'<div class="ex-line" style="justify-content:flex-end">'
-    +'<button class="btn btn-primary" id="th-gen">生成试卷</button></div>'
+    +'</div>'
+    +'<h2>章节范围 <span class="muted">可多选，不选=全部</span></h2>'
+    +'<div class="chip-row" id="th-ch-row"><button class="chip on" data-ch="">全部章节</button>'
+      +CH.map(function(c,i){ return '<button class="chip" data-ch="'+c.id+'">'+(i+1)+' '+esc(c.name)+'</button>'; }).join('')
+    +'</div>'
+    +'<h2>题目来源</h2>'
+    +'<div class="chip-row" id="th-src-row">'
+      +SRC_TABS.map(function(s,i){ return '<button class="chip'+(i?'':' on')+'" data-src="'+s.id+'">'+s.name+'</button>'; }).join('')
+    +'</div>'
+    +'<div class="frow end"><div class="paper-total" id="th-total"></div>'
+    +'<button class="btn btn-primary" id="th-gen">开始组卷</button></div>'
+    +'</div>'
+    +'<div class="panel"><h2>历史试卷 <span class="muted" id="th-hist-n">'
+      +(window.KBPaper&&KBPaper.list().length?KBPaper.list().length+' 份':'')+'</span></h2>'
+      +'<div id="th-hist"></div></div>'
+    +'<div class="panel"><h2>错题待巩固 <span class="muted">'+(wrong.length?wrong.length+' 道':'')+'</span></h2>'
+      +'<div class="wrong-list">'+(wl||'<div class="muted">还没有错题，交卷后答错的题会自动收进来</div>')+'</div>'
+      +(wrong.length?'<div class="btnrow" style="margin-top:10px">'
+        +'<button class="btn btn-sm" id="th-redo">重练错题</button>'
+        +'<button class="btn btn-sm" id="th-exp-wrong">导出错题</button>'
+        +'<button class="btn btn-sm btn-ghost" id="th-clear-wrong">清空错题本</button></div>':'')
     +'</div>';
-  /* 事件 */
-  $$('#th-stage [data-sel]').forEach(function(b){
+
+  /* 快速套卷 */
+  $$('#th-presets .chip').forEach(function(b){
     b.addEventListener('click',function(){
-      var m=b.dataset.sel;
-      if(m==='tall'){ $$('.th-type').forEach(function(c){c.checked=true}); return; }
-      $$('#th-stage [data-for="th"]').forEach(function(c){
-        c.checked = m==='all'?true : m==='none'?false : !c.checked;
+      counts=Object.assign({},PRESETS[b.dataset.preset]);
+      $$('#th-presets .chip').forEach(function(x){ x.classList.toggle('on',x===b); });
+      refreshSetup();
+    });
+  });
+  /* 题量 stepper */
+  $$('#th-type-row .stepper button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var ty=b.closest('.type-cell').dataset.ty;
+      counts[ty]=Math.max(0,Math.min(100,(+counts[ty]||0)+(+b.dataset.d)));
+      refreshSetup();
+    });
+  });
+  /* 章节多选 */
+  $$('#th-ch-row .chip').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.dataset.ch;
+      if(!v) filterChs=[];
+      else{
+        var i=filterChs.indexOf(v);
+        if(i>=0) filterChs.splice(i,1); else filterChs.push(v);
+      }
+      $$('#th-ch-row .chip').forEach(function(x){
+        var vv=x.dataset.ch;
+        x.classList.toggle('on', vv? filterChs.indexOf(vv)>=0 : !filterChs.length);
       });
+      refreshSetup();
     });
   });
-  $$('#th-stage .preset').forEach(function(b){
+  /* 来源单选 */
+  $$('#th-src-row .chip').forEach(function(b){
     b.addEventListener('click',function(){
-      var n=b.dataset.n;
-      if(n==='full'){ genTheory(bank,'full'); return; }
-      $('#th-num').value=n;
+      $$('#th-src-row .chip').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on'); filterSrc=b.dataset.src; refreshSetup();
     });
   });
-  $('#th-review-last') && $('#th-review-last').addEventListener('click',function(){
-    if(TH.lastPaper) renderTheoryResult(TH.lastPaper, TH.lastResult, true);
+  $('#th-gen').addEventListener('click',function(){ genTheory(bank); });
+  var rl=$('#th-review-last');
+  if(rl) rl.addEventListener('click',function(){
+    if(TH.lastPaper) renderTheoryResult(TH.lastPaper,TH.lastResult,true);
   });
-  $('#th-redo') && $('#th-redo').addEventListener('click',function(){
-    genTheory(bank, null, lget('ex-th-wrong',[]));
-  });
-  $('#th-gen').addEventListener('click',function(){ genTheory(bank,null,null); });
-  if(window.KBPaper) KBPaper.render($('#th-hist'), {onOpen:openRec, attOpts:function(rec){ return {estSec:estFromRec(rec)}; }});
-  var ew=$('#th-exp-wrong');
+  var rd=$('#th-redo'), cw=$('#th-clear-wrong'), ew=$('#th-exp-wrong');
+  if(rd) rd.addEventListener('click',function(){ genTheory(bank,null,lget('ex-th-wrong',[])); });
   if(ew) ew.addEventListener('click',function(){ doPrint('wrong'); });
+  if(cw) cw.addEventListener('click',function(){
+    if(!confirm('清空错题本？（只影响本机这一份错题记录）')) return;
+    lstore('ex-th-wrong',[]); renderTheorySetup(bank);
+  });
+  if(window.KBPaper) KBPaper.render($('#th-hist'),{onOpen:openRec, attOpts:function(rec){ return {estSec:estFromRec(rec)}; }});
+  refreshSetup();
 }
 
 /* ---- 抽题 ---- */
-function pickQuestions(bank,chs,types,num){
-  var pool=bank.filter(function(q){
-    return chs.indexOf(q.ch)>=0 && types.indexOf(q.type)>=0;
+/* ---- 抽题：按题型配额 + 章节 / 来源过滤，题量不足时按实际数量抽 ---- */
+function pickQuestions(bank,chs,types,want){
+  var out=[];
+  types.forEach(function(t){
+    var n=+want[t]||0; if(n<=0) return;
+    var pool=bank.filter(function(q){
+      return q.type===t && chs.indexOf(q.ch)>=0;
+    });
+    out=out.concat(shuffle(pool).slice(0,n));
   });
-  if(!pool.length) return null;
-  /* 按 type 配额均匀抽：先每类型按比例分配，不足则并回公共池 */
-  var byType={}; types.forEach(function(t){ byType[t]=shuffle(pool.filter(function(q){return q.type===t})); });
-  var per=Math.max(1,Math.floor(num/types.length));
-  var picked=[];
-  types.forEach(function(t){ picked=picked.concat(byType[t].slice(0,per)); });
-  if(picked.length<num){
-    var used={}; picked.forEach(function(q){ used[q.id]=1; });
-    var rest=shuffle(pool.filter(function(q){return !used[q.id]}));
-    picked=picked.concat(rest.slice(0,num-picked.length));
-  }
-  picked=shuffle(picked).slice(0,num);
-  /* id 顺序稳定输出 */
-  picked.sort(function(a,b){ return a.id<b.id?-1:1; });
-  return picked;
+  return out;
 }
 /* ---------- 作答方式：线上做题 / 离线做题 ---------- */
 var EXAM_MIN={single:1.5, judge:1.2, fill:3, read:6};   /* 每题预计分钟 */
@@ -361,44 +450,34 @@ function askMode(bank){
     onCancel: function(){ renderTheorySetup(bank || DATA.theory); }
   });
 }
-function genTheory(bank, mode, fixedIds, ask){
-  /* result/other 视图下再次组卷时，先重建组卷面板（供读章节/题量） */
-  if(!$('#th-stage [data-for="th"]') && !fixedIds) renderTheorySetup(bank);
+function genTheory(bank, mode, fixedIds){
+  bank=bank||DATA.theory||[];
   var qs;
   if(fixedIds && fixedIds.length){
     qs=bank.filter(function(q){ return fixedIds.indexOf(q.id)>=0; });
+    if(!qs.length){ alert('题库里找不到这些题了'); return; }
     qs=shuffle(qs);
-  }else if(mode==='full'){
-    /* 全真模拟：20 单选 + 5 判断 + 5 填空 + 3 阅读 */
-    var chs=selChs(), pool=bank.filter(function(q){return chs.indexOf(q.ch)>=0;});
-    if(!pool.length){ alert('请至少选择一个章节'); return; }
-    qs=[];
-    [['single',20],['judge',5],['fill',5],['read',3]].forEach(function(it){
-      var t=it[0], n=it[1];
-      var sub=shuffle(pool.filter(function(q){return q.type===t})).slice(0,n);
-      qs=qs.concat(sub);
-    });
-    if(!qs.length){ alert('所选章节暂无题目'); return; }
   }else{
-    var num=Math.max(1,Math.min(260,+($('#th-num').value)||25));
-    var types=$$('.th-type').filter(function(c){return c.checked}).map(function(c){return c.value});
-    var chs=selChs();
-    if(!types.length){ alert('请至少选择一种题型'); return; }
-    if(!chs.length){ alert('请至少选择一个章节'); return; }
-    qs=pickQuestions(bank,chs,types,num);
-    if(!qs){ alert('所选范围内暂无题目，请调整章节或题型'); return; }
+    var want=(mode==='full')?PRESETS.std:counts;
+    var tips=[];
+    qs=[];
+    TY.forEach(function(t){
+      var n=+want[t.id]||0; if(n<=0) return;
+      var pool=poolOf(bank,t.id);
+      if(!pool.length){ tips.push(t.name+'：当前范围内没有题目'); return; }
+      if(pool.length<n) tips.push(t.name+'只够 '+pool.length+' 题');
+      qs=qs.concat(shuffle(pool).slice(0,n));
+    });
+    if(!qs.length){ alert('所选范围内没有题目，请放宽章节或来源'); return; }
+    qs=shuffle(qs);
+    if(tips.length) setTimeout(function(){ alert('题量提示：\n'+tips.join('\n')+'\n\n已按实际可用数量组卷。'); },80);
   }
   TH.paper={qs:qs, t0:Date.now()};
   TH.rec=null;
   makeRec(qs);
   TH.stage='paper';
-  if(ask===false){ renderTheoryPaper(); return; }
-  askMode(bank);          /* 先选线上 / 离线，再决定要不要渲染作答页 */
+  askMode(bank);
 }
-function selChs(){
-  return $$('#th-stage [data-for="th"]').filter(function(c){return c.checked}).map(function(c){return c.value});
-}
-
 /* ---- 试卷作答 ---- */
 function qHTML(q,i){
   var h='<article class="ex-q" data-i="'+i+'">'
@@ -736,153 +815,140 @@ function renderTheoryResult(p,res,isReplay){
    版块三：编程模拟
    ============================================================ */
 var PG={qs:null};
-function renderProg(bank){
-  if(PG.qs){ renderProgList(PG.qs); return; }
-  var chs={};
-  bank.forEach(function(q){ chs[q.ch]=(chs[q.ch]||0)+1; });
-  $('#pg-stage').innerHTML=
-    '<div class="ex-panel"><h2><span class="no">壹</span>选择范围</h2>'
-    +'<div class="ex-line"><b>章节</b>'
-    +'<button class="btn btn-sm" id="pg-all">全选</button>'
-    +'<button class="btn btn-sm" id="pg-none">清空</button></div>'
-    +'<div class="ex-chgrid">'+Object.keys(chs).sort().map(function(ch){
-        return '<label class="ex-chk"><input type="checkbox" class="pg-ch" value="'+ch+'" checked>'
-          +esc(CHMAP[ch]||ch)+'<i>('+chs[ch]+')</i></label>';
-      }).join('')+'</div>'
-    +'<div class="ex-line"><b>难度</b><select id="pg-level" class="ex-num">'
-    +'<option value="">全部难度</option><option value="1">★ 基础</option>'
-    +'<option value="2">★★ 中等</option><option value="3">★★★ 提高</option></select>'
-    +'<b style="margin-left:14px">数量</b><input type="number" id="pg-num" class="ex-num" value="5" min="1" max="54">'
-    +'<button class="btn btn-sm preset" data-n="3">速练 3</button>'
-    +'<button class="btn btn-sm preset" data-n="5">标准 5</button>'
-    +'<button class="btn btn-sm preset" data-n="10">强化 10</button></div>'
-    +'<div class="ex-line" style="justify-content:flex-end">'
-    +'<button class="btn btn-primary" id="pg-gen">开始练习</button></div></div>';
-  $('#pg-all').addEventListener('click',function(){ $$('.pg-ch').forEach(function(c){c.checked=true}); });
-  $('#pg-none').addEventListener('click',function(){ $$('.pg-ch').forEach(function(c){c.checked=false}); });
-  $$('#pg-stage .preset').forEach(function(b){
-    b.addEventListener('click',function(){ $('#pg-num').value=b.dataset.n; });
-  });
-  $('#pg-gen').addEventListener('click',function(){
-    var chs2=$$('.pg-ch').filter(function(c){return c.checked}).map(function(c){return c.value});
-    if(!chs2.length){ alert('请至少选择一个章节'); return; }
-    var lv=$('#pg-level').value;
-    var pool=bank.filter(function(q){
-      return chs2.indexOf(q.ch)>=0 && (!lv || +q.level===+lv);
-    });
-    if(!pool.length){ alert('所选范围内暂无题目'); return; }
-    var num=Math.max(1,Math.min(pool.length,+($('#pg-num').value)||5));
-    /* 优先抽可在线运行的题，不足时再补不支持的 */
-    var run=shuffle(pool.filter(function(q){return q.jscpp!==false}));
-    var nor=shuffle(pool.filter(function(q){return q.jscpp===false}));
-    PG.qs=run.slice(0,num).concat(nor.slice(0,Math.max(0,num-run.length)));
-    renderProgList(PG.qs);
+/* ============================================================
+   版块三：编程模拟（对齐 GS / XD 的组卷方式；不再内嵌运行器，
+   答案下方直接附「输入 / 输出」示例）
+   ============================================================ */
+var PG={qs:null, chs:[], lv:0, n:5};
+
+function pgPool(){
+  var bank=DATA.prog||[];
+  return bank.filter(function(q){
+    return (!PG.chs.length || PG.chs.indexOf(q.ch)>=0) && (!PG.lv || +q.level===+PG.lv);
   });
 }
+function pgRefresh(){
+  var n=pgPool().length;
+  var total=TY_PROG.length;
+  $('#pg-total').textContent='本次练习：'+Math.min(PG.n,n)+' 题'+(n<PG.n?'（范围内共 '+n+' 题）':'');
+  var num=$('#pg-num'); if(num) num.textContent=PG.n;
+}
+var TY_PROG=[1,2,3];
+
+function renderProg(bank){
+  if(PG.qs){ renderProgList(PG.qs); return; }
+  bank=bank||DATA.prog||[];
+  var cnt={}; bank.forEach(function(q){ cnt[q.ch]=(cnt[q.ch]||0)+1; });
+  $('#pg-stage').innerHTML=
+    '<div class="panel">'
+    +'<h2>快速套卷</h2>'
+    +'<div class="preset-row" id="pg-presets">'
+      +'<button class="chip" data-n="3">速练 3 题<small>约 20 分钟</small></button>'
+      +'<button class="chip on" data-n="5">标准 5 题<small>覆盖多种题型</small></button>'
+      +'<button class="chip" data-n="10">强化 10 题<small>综合训练</small></button>'
+    +'</div>'
+    +'<h2>题目数量</h2>'
+    +'<div class="type-row"><div class="type-cell" style="flex:0 1 240px">'
+      +'<div class="t-name">本次练习<small>题库共 '+bank.length+' 题</small></div>'
+      +'<div class="stepper"><button data-d="-1" type="button">−</button><b id="pg-num">'+PG.n+'</b>'
+      +'<button data-d="1" type="button">＋</button></div></div></div>'
+    +'<h2>难度</h2>'
+    +'<div class="chip-row" id="pg-lv-row">'
+      +'<button class="chip on" data-lv="0">全部难度</button>'
+      +'<button class="chip" data-lv="1">★ 基础</button>'
+      +'<button class="chip" data-lv="2">★★ 中等</button>'
+      +'<button class="chip" data-lv="3">★★★ 提高</button>'
+    +'</div>'
+    +'<h2>章节范围 <span class="muted">可多选，不选=全部</span></h2>'
+    +'<div class="chip-row" id="pg-ch-row"><button class="chip'+(PG.chs.length?'':' on')+'" data-ch="">全部章节</button>'
+      +CH.map(function(c,i){
+        return cnt[c.id]
+          ? '<button class="chip'+(PG.chs.indexOf(c.id)>=0?' on':'')+'" data-ch="'+c.id+'">'
+            +(i+1)+' '+esc(c.name)+'<small>'+cnt[c.id]+' 题</small></button>'
+          : '';
+      }).join('')
+    +'</div>'
+    +'<div class="frow end"><div class="paper-total" id="pg-total"></div>'
+    +'<button class="btn btn-primary" id="pg-gen">开始练习</button></div>'
+    +'</div>';
+  $$('#pg-presets .chip').forEach(function(b){
+    b.addEventListener('click',function(){
+      PG.n=+b.dataset.n;
+      $$('#pg-presets .chip').forEach(function(x){ x.classList.toggle('on',x===b); });
+      pgRefresh();
+    });
+  });
+  $$('#pg-stage .stepper button').forEach(function(b){
+    b.addEventListener('click',function(){
+      PG.n=Math.max(1,Math.min(30,PG.n+(+b.dataset.d)));
+      pgRefresh();
+    });
+  });
+  $$('#pg-lv-row .chip').forEach(function(b){
+    b.addEventListener('click',function(){
+      PG.lv=+b.dataset.lv;
+      $$('#pg-lv-row .chip').forEach(function(x){ x.classList.toggle('on',x===b); });
+      pgRefresh();
+    });
+  });
+  $$('#pg-ch-row .chip').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.dataset.ch;
+      if(!v) PG.chs=[];
+      else{
+        var i=PG.chs.indexOf(v);
+        if(i>=0) PG.chs.splice(i,1); else PG.chs.push(v);
+      }
+      $$('#pg-ch-row .chip').forEach(function(x){
+        var vv=x.dataset.ch;
+        x.classList.toggle('on', vv? PG.chs.indexOf(vv)>=0 : !PG.chs.length);
+      });
+      pgRefresh();
+    });
+  });
+  $('#pg-gen').addEventListener('click',function(){
+    var pool=pgPool();
+    if(!pool.length){ alert('所选范围内没有题目'); return; }
+    PG.qs=shuffle(pool.slice()).slice(0,Math.min(PG.n,pool.length));
+    renderProgList(PG.qs);
+  });
+  pgRefresh();
+}
+
 function renderProgList(qs){
   $('#pg-stage').innerHTML=
-    '<div class="ex-paperbar"><span>本组 <b>'+qs.length+'</b> 题 · 在线运行由内置解释器驱动（教学级，支持 scanf 输入）</span>'
+    '<div class="ex-paperbar"><span>本组 <b>'+qs.length+'</b> 题 · 参考答案均经 GCC 实测，附输入 / 输出示例</span>'
     +'<button class="btn btn-sm" id="pg-reset">重新选题</button></div>'
     +qs.map(function(q,i){ return progCard(q,i); }).join('');
   $('#pg-reset').addEventListener('click',function(){
     PG.qs=null; renderProg(DATA.prog);
   });
-  /* 绑定运行与载入答案（仅可运行题有编辑器） */
-  $$('#pg-stage .ex-pcard').forEach(function(card){
-    var runBtn=card.querySelector('.pg-run');
-    var out=card.querySelector('.pg-out');
-    var ta=card.querySelector('.pg-code');
-    var inp=card.querySelector('.pg-in');
-    if(runBtn){
-      var doRun=function(){
-        var code=ta.value;
-        if(!code.trim()){ out.hidden=false; out.textContent='（请先在编辑器中输入代码）'; return; }
-        runCode(code, inp.value, out, runBtn);
-      };
-      runBtn.addEventListener('click',doRun);
-      card.querySelector('.pg-load').addEventListener('click',function(){
-        var ans=card.querySelector('.pg-anscode').textContent;
-        ta.value=ans;
-        out.hidden=false; out.textContent='已把参考答案载入编辑器，点「▶ 运行」执行。';
-      });
-    }
-  });
   window.scrollTo(0,0);
 }
+
+function cioBlock(io){
+  if(!io) return '';
+  var ins=String(io.in||''), outs=String(io.out||'');
+  return '<div class="cio" style="margin:10px 0 2px">'
+    +'<div class="cio-body" style="border-top:0">'
+    +(ins?'<div class="cio-l in">输入 <i>stdin</i></div><pre class="cio-pre">'+esc(ins)+'</pre>':'')
+    +('<div class="cio-l out">输出 <i>stdout</i></div><pre class="cio-pre">'+esc(outs)+'</pre>')
+    +'</div></div>';
+}
+
 function progCard(q,i){
-  var runnable = q.jscpp!==false;
-  var h='<article class="ex-pcard" data-i="'+i+'">'
+  return '<article class="ex-pcard">'
     +'<div class="ex-qh"><b>'+(i+1)+'</b><span class="ex-title">'+esc(q.title)+'</span>'
     +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
     +'<span class="ex-tag t">'+LEVEL_NAME[q.level]+'</span>'
     +'<span class="ex-tag s">'+esc(q.src||'')+'</span></div>'
     +'<div class="ex-stem">'+inl(q.stem)+'</div>'
-    +(q.hint?'<details class="ex-det"><summary>💡 查看思路提示</summary><p>'+inl(q.hint)+'</p></details>':'');
-  if(runnable){
-    h+='<div class="pg-edlabel">我的代码（C）</div>'
-      +'<textarea class="pg-code" rows="10" spellcheck="false"></textarea>'
-      +'<div class="pg-edlabel">输入数据（stdin）—— 程序有 scanf 时在此填入，多行用换行分隔</div>'
-      +'<textarea class="pg-in" rows="2" spellcheck="false"></textarea>'
-      +'<div class="ex-line" style="padding:10px 0 0">'
-      +'<button class="btn btn-primary pg-run">▶ 运行</button>'
-      +'<pre class="pg-out" hidden></pre></div>';
-  }else{
-    h+='<div class="ex-banner warn" style="margin-top:12px">此题涉及内置解释器不支持的结构'
-      +'（如 <code>%lf</code>、结构体、<code>fgets</code> 等），请把参考答案复制到本地编译器（gcc / VS）运行验证。</div>';
-  }
-  h+='<details class="ex-det ans"><summary>📁 参考答案与讲评</summary>'
-    +'<pre class="ex-code pg-anscode">'+esc(q.answer)+'</pre>'
-    +(runnable?'<div class="ex-line"><button class="btn btn-sm pg-load">载入答案到编辑器</button></div>':'')
+    +(q.hint?'<details class="ex-det"><summary>💡 思路提示</summary><p>'+inl(q.hint)+'</p></details>':'')
+    +'<details class="ex-det ans"><summary>📁 参考答案与讲评</summary>'
+    +'<pre class="ex-code">'+esc(q.answer)+'</pre>'
+    +cioBlock(q.io)
     +'<div class="ex-exp"><b>讲评</b>'+inl(q.explanation||'')+'</div></details>'
     +'</article>';
-  return h;
-}
-
-/* ============================================================
-   JSCPP 在线运行（与主站一键运行同引擎）
-   ============================================================ */
-var LOAD_TIMEOUT=30000, RUN_TIMEOUT=15000, _runWURL=null;
-function runWorkerSrc(){ return [
-  "var CDNS=['assets/jscpp.js',",
-  "  'https://cdn.jsdelivr.net/gh/felixhao28/JSCPP@gh-pages/dist/JSCPP.es5.min.js',",
-  "  'https://fastly.jsdelivr.net/gh/felixhao28/JSCPP@gh-pages/dist/JSCPP.es5.min.js'];",
-  "(function load(i){",
-  "  if(i>=CDNS.length){ self.postMessage({err:-1,msg:'运行引擎加载失败，请检查网络后重试'}); return; }",
-  "  try{ importScripts(CDNS[i]); }catch(e){ load(i+1); return; }",
-  "  self.postMessage({type:'ready'});",
-  "})(0);"
-].join('\n'); }
-function runCode(code,input,out,btn){
-  if(btn._rw){ btn._rw.terminate(); btn._rw=null; }
-  if(!_runWURL) _runWURL=URL.createObjectURL(new Blob([runWorkerSrc()],{type:'text/javascript'}));
-  var w=new Worker(_runWURL); btn._rw=w;
-  var done=false, buf='';
-  out.hidden=false;
-  out.textContent='⏳ 正在加载运行引擎…（约 600KB，仅首次需等待）';
-  btn.disabled=true;
-  var finish=function(t){ if(done)return; done=true; clearTimeout(timer); w.terminate();
-    out.textContent=t; btn.disabled=false; };
-  var timer=setTimeout(function(){ finish('⏰ 引擎加载超时，请检查网络后重试。'); },LOAD_TIMEOUT);
-  var armed=false;
-  function armRun(){
-    if(armed)return; armed=true; clearTimeout(timer);
-    timer=setTimeout(function(){ finish('⏰ 运行超过 15 秒，可能存在死循环，已终止。'); },RUN_TIMEOUT);
-  }
-  w.onmessage=function(msg){
-    var d=msg.data||{};
-    if(d&&d.type==='ready'){ armRun(); if(!buf) out.textContent='⏳ 正在运行…'; return; }
-    if(d&&d.type==='stdio.write'){ buf+=d.data; return; }
-    if(!done && d.err===-1 && d.id===undefined){ finish('✕ '+(d.msg||'运行引擎加载失败')); return; }
-    if(d.id===undefined) return;
-    armRun();
-    if(d.err){ finish((buf?buf+'\n':'')+'✕ 运行出错：'+(d.msg||'未知错误')); return; }
-    var t=buf||'（无输出）';
-    if(d.data===0) t+='\n\n[程序正常结束，返回码 0]';
-    else if(d.data!==undefined) t+='\n\n[程序结束，返回码 '+d.data+']';
-    finish(t);
-  };
-  w.onerror=function(e){ finish((buf?buf+'\n':'')+'✕ 运行出错：'+(e.message||'未知错误')); };
-  w.postMessage([1,'run',code,input,{unsigned_overflow:'warn'}]);
 }
 
 /* ---------- 回到顶部 ---------- */
@@ -896,31 +962,118 @@ topBtn.addEventListener('click',function(){ window.scrollTo({top:0}); });
    版块四：题库浏览（理论 + 编程，筛选与搜索，答案折叠）
    ============================================================ */
 
-function loadBank(){
-  loadJSON('theory', function(){ BK.loaded.theory=DATA.theory; renderBank(); });
-  loadJSON('prog',   function(){ BK.loaded.prog=DATA.prog;   renderBank(); });
-  if(!BK.bound){
-    BK.bound=true;
-    /* 章节下拉 */
-    $('#bk-ch').innerHTML='<option value="">全部章节</option>'
-      +CH.map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('');
-    $('#bk-seg').addEventListener('click',function(e){
-      var b=e.target.closest('[data-bk]'); if(!b) return;
-      BK.kind=b.dataset.bk;
-      $$('#bk-seg [data-bk]').forEach(function(x){x.classList.toggle('on',x===b)});
-      $('#bk-lv').hidden=(BK.kind!=='prog');
-      renderBank();
+/* ============================================================
+   版块四：题库浏览（chip 行筛选 + 搜索 + 分页 + 答案折叠，
+   与 GS / XD 的题库总览保持一致）
+   ============================================================ */
+var BK={kind:'theory', ty:'', lv:0, ch:'', src:'', kw:'', pg:1, bound:false};
+var BKSZ=30;
+
+function bkData(){ return (BK.kind==='theory'?DATA.theory:DATA.prog)||[]; }
+function bkText(q){
+  return norm((q.title||'')+' '+(q.stem||'')+' '+(q.code||'')+' '
+    +(q.options||[]).join(' ')+' '+(q.answer||'')+' '+(q.explanation||'')+' '+(q.hint||''));
+}
+
+function bkFilters(){
+  var isT=BK.kind==='theory';
+  var bank=bkData();
+  $('#bk-filters').innerHTML=
+    '<div class="chip-row" id="bk-kind-row">'
+      +'<button class="chip'+(isT?' on':'')+'" data-kind="theory">理论题库</button>'
+      +'<button class="chip'+(!isT?' on':'')+'" data-kind="prog">编程题库</button>'
+      +'<span class="muted" id="bk-cnt" style="margin-left:auto;align-self:center"></span>'
+    +'</div>'
+    +'<div class="chip-row" id="bk-ty-row" style="margin-top:10px">'
+    +(isT
+      ? '<button class="chip'+(BK.ty?'':' on')+'" data-ty="">全部题型</button>'
+        +TY.map(function(t){
+            return '<button class="chip'+(BK.ty===t.id?' on':'')+'" data-ty="'+t.id+'">'
+              +t.name.replace('题','')+'<small>'+bank.filter(function(q){return q.type===t.id}).length+'</small></button>';
+          }).join('')
+      : '<button class="chip'+(BK.lv?'':' on')+'" data-lv="0">全部难度</button>'
+        +'<button class="chip'+(BK.lv===1?' on':'')+'" data-lv="1">★ 基础</button>'
+        +'<button class="chip'+(BK.lv===2?' on':'')+'" data-lv="2">★★ 中等</button>'
+        +'<button class="chip'+(BK.lv===3?' on':'')+'" data-lv="3">★★★ 提高</button>')
+    +'</div>'
+    +'<div class="chip-row" id="bk-ch-row" style="margin-top:10px">'
+      +'<button class="chip'+(BK.ch?'':' on')+'" data-ch="">全部章节</button>'
+      +CH.map(function(c,i){
+          var n=bank.filter(function(q){ return q.ch===c.id; }).length;
+          return n?'<button class="chip'+(BK.ch===c.id?' on':'')+'" data-ch="'+c.id+'">'
+            +(i+1)+' '+esc(c.name)+'<small>'+n+'</small></button>':'';
+        }).join('')
+    +'</div>'
+    +'<div class="chip-row" id="bk-src-row" style="margin-top:10px">'
+      +SRC_TABS.map(function(s){
+          return '<button class="chip'+(BK.src===s.id?' on':'')+'" data-src="'+s.id+'">'+s.name+'</button>';
+        }).join('')
+    +'</div>'
+    +'<input class="bank-kw" id="bk-q" style="margin-top:12px" value="'+esc(BK.kw)+'"'
+      +' placeholder="🔍 搜索题干 / 答案关键词（如：strcpy、数组越界、指针）" autocomplete="off">';
+
+  $$('#bk-kind-row .chip').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(BK.kind===b.dataset.kind) return;
+      BK.kind=b.dataset.kind; BK.ty=''; BK.lv=0; BK.ch=''; BK.src=''; BK.kw=''; BK.pg=1;
+      bkFilters(); bkRender();
     });
-    $('#bk-q').addEventListener('input',applyBankFilter);
-    $('#bk-ch').addEventListener('change',applyBankFilter);
-    $('#bk-lv').addEventListener('change',applyBankFilter);
-  }
+  });
+  $$('#bk-ty-row .chip').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(BK.kind==='theory') BK.ty=b.dataset.ty||''; else BK.lv=+b.dataset.lv||0;
+      BK.pg=1; bkFilters(); bkRender();
+    });
+  });
+  $$('#bk-ch-row .chip').forEach(function(b){
+    b.addEventListener('click',function(){ BK.ch=b.dataset.ch||''; BK.pg=1; bkFilters(); bkRender(); });
+  });
+  $$('#bk-src-row .chip').forEach(function(b){
+    b.addEventListener('click',function(){ BK.src=b.dataset.src||''; BK.pg=1; bkFilters(); bkRender(); });
+  });
+  var q=$('#bk-q');
+  q.addEventListener('input',function(){ BK.kw=q.value; BK.pg=1; bkRender(); });
+}
+
+function bkFiltered(){
+  var isT=BK.kind==='theory';
+  var k=norm(BK.kw);
+  return bkData().filter(function(q){
+    if(isT){ if(BK.ty && q.type!==BK.ty) return false; }
+    else{ if(BK.lv && +q.level!==BK.lv) return false; }
+    if(BK.ch && q.ch!==BK.ch) return false;
+    if(BK.src && String(q.src||'').indexOf(BK.src)<0) return false;
+    if(k && bkText(q).indexOf(k)<0) return false;
+    return true;
+  });
+}
+
+function bkRender(){
+  var arr=bkFiltered();
+  var pages=Math.max(1,Math.ceil(arr.length/BKSZ));
+  if(BK.pg>pages) BK.pg=pages;
+  var start=(BK.pg-1)*BKSZ;
+  var list=$('#bk-list');
+  list.innerHTML=arr.length
+    ? arr.slice(start,start+BKSZ).map(function(q,i){ return bankItem(q,start+i); }).join('')
+    : '<div class="empty-tip">没有符合条件的题目 —— 放宽筛选或换个关键词试试</div>';
+  var cnt=$('#bk-cnt');
+  if(cnt) cnt.textContent=bkData().length?('显示 '+arr.length+' / '+bkData().length+' 题'):'';
+  var pager=$('#bk-pager');
+  pager.innerHTML=pages>1
+    ?('<button class="chip" id="bk-prev"'+(BK.pg<=1?' disabled':'')+'>‹ 上一页</button>'
+      +'<span class="pg-info">'+BK.pg+' / '+pages+'</span>'
+      +'<button class="chip" id="bk-next"'+(BK.pg>=pages?' disabled':'')+'>下一页 ›</button>')
+    :'';
+  var p1=$('#bk-prev'), p2=$('#bk-next');
+  if(p1) p1.addEventListener('click',function(){ BK.pg--; bkRender(); window.scrollTo({top:180,behavior:'smooth'}); });
+  if(p2) p2.addEventListener('click',function(){ BK.pg++; bkRender(); window.scrollTo({top:180,behavior:'smooth'}); });
 }
 
 function bankItem(q,i){
   if(BK.kind==='theory'){
-    var h='<article class="ex-q bk-it" data-ch="'+q.ch+'" data-lv="0">'
-      +'<div class="ex-qh"><b>'+String(i+1).padStart(3,'0')+'</b>'
+    var h='<article class="ex-q bk-it">'
+      +'<div class="ex-qh"><b>'+('00'+(i+1)).slice(-3)+'</b>'
       +'<span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
       +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
       +'<span class="ex-tag s">'+esc(q.src||'')+'</span></div>'
@@ -928,69 +1081,34 @@ function bankItem(q,i){
       +(q.code?'<pre class="ex-code">'+esc(q.code)+'</pre>':'');
     if(q.type==='single'){
       h+='<div class="ex-opts">'+q.options.map(function(o,j){
-        return '<label class="ex-opt"><input type="radio" disabled><i>'
-          +String.fromCharCode(65+j)+'．</i>'+inl(o)+'</label>';
+        return '<label class="ex-opt"><input type="radio" disabled><i>'+String.fromCharCode(65+j)+'．</i>'+inl(o)+'</label>';
       }).join('')+'</div>';
     }
     return h+'<details class="ex-det ans"><summary>答案与解析</summary>'
       +'<div class="ex-ansline">正确答案：<b class="ok">'+esc(ansText(q))+'</b></div>'
       +'<div class="ex-exp"><b>解析</b>'+inl(q.explanation||'')+'</div></details></article>';
   }
-  return '<article class="ex-q bk-it" data-ch="'+q.ch+'" data-lv="'+q.level+'">'
-    +'<div class="ex-qh"><b>'+String(i+1).padStart(3,'0')+'</b>'
+  return '<article class="ex-q bk-it">'
+    +'<div class="ex-qh"><b>'+('00'+(i+1)).slice(-3)+'</b>'
     +'<span class="ex-title">'+esc(q.title)+'</span>'
     +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
     +'<span class="ex-tag t">'+LEVEL_NAME[q.level]+'</span>'
     +'<span class="ex-tag s">'+esc(q.src||'')+'</span></div>'
     +'<div class="ex-stem">'+inl(q.stem)+'</div>'
-    +(q.hint?'<details class="ex-det"><summary>💡 查看思路提示</summary><p>'+inl(q.hint)+'</p></details>':'')
+    +(q.hint?'<details class="ex-det"><summary>💡 思路提示</summary><p>'+inl(q.hint)+'</p></details>':'')
     +'<details class="ex-det ans"><summary>参考答案与讲评</summary>'
     +'<pre class="ex-code">'+esc(q.answer)+'</pre>'
-    +(q.jscpp===false?'<div class="ex-exp">ℹ 该题用到 JSCPP 在线运行暂不支持的功能，请复制到本地编译器运行验证。</div>':'')
+    +cioBlock(q.io)
     +'<div class="ex-exp"><b>讲评</b>'+inl(q.explanation||'')+'</div></details></article>';
 }
 
-/* ---------- 分页渲染：每页 30 题，数据级筛选，避免一次性渲染几百条 DOM ---------- */
-var BKSZ=30, BKPG=1, BKDATA=null;
-function bkText(q){
-  return norm((q.title||'')+' '+(q.stem||'')+' '+(q.code||'')+' '
-    +(q.options||[]).join(' ')+' '+(q.answer||'')+' '+(q.explanation||'')+' '+(q.hint||''));
-}
-function renderBank(){
-  var list=$('#bk-list'), data=BK.loaded[BK.kind];
-  if(!data){ list.innerHTML='<div class="ex-empty">正在加载题库…</div>'; return; }
-  /* 切换题库时重置筛选，避免旧条件过滤掉全部题目 */
-  $('#bk-q').value=''; $('#bk-ch').value=''; $('#bk-lv').value='0';
-  BKDATA=data; BKPG=1;
-  renderBankPage();
-}
-function renderBankPage(){
-  var list=$('#bk-list'); if(!list) return;
-  var data=BKDATA||[];
-  var k=norm($('#bk-q').value), ch=$('#bk-ch').value, lv=+$('#bk-lv').value;
-  var arr=data.filter(function(q){
-    return (ch===''||String(q.ch)===ch)
-      &&(!lv||+q.level===lv)
-      &&(!k||bkText(q).indexOf(k)>=0);
-  });
-  var pages=Math.max(1,Math.ceil(arr.length/BKSZ));
-  if(BKPG>pages) BKPG=pages;
-  list.innerHTML=arr.length
-    ?arr.slice((BKPG-1)*BKSZ,BKPG*BKSZ).map(function(q,j){return bankItem(q,(BKPG-1)*BKSZ+j)}).join('')
-    :'<div class="ex-empty">没有符合条件的题目——放宽筛选或换个关键词试试</div>';
-  $('#bk-cnt').textContent=data.length?('显示 '+arr.length+' / '+data.length+' 题'):'';
-  var pager=$('#bk-pager');
-  if(pager){
-    pager.innerHTML=pages>1
-      ?('<button class="ex-pg" id="bk-prev"'+(BKPG<=1?' disabled':'')+'>‹ 上一页</button>'
-        +'<span class="ex-pg-info">'+BKPG+' / '+pages+'</span>'
-        +'<button class="ex-pg" id="bk-next"'+(BKPG>=pages?' disabled':'')+'>下一页 ›</button>')
-      :'';
-    var p1=$('#bk-prev'), p2=$('#bk-next');
-    if(p1) p1.onclick=function(){ BKPG--; renderBankPage(); window.scrollTo({top:0}); };
-    if(p2) p2.onclick=function(){ BKPG++; renderBankPage(); window.scrollTo({top:0}); };
+function loadBank(){
+  if(!BK.bound){
+    BK.bound=true;
+    $('#bk-filters').innerHTML='<div class="empty-tip">正在加载题库…</div>';
   }
+  loadJSON('theory', function(){ if(BK.kind==='theory'){ bkFilters(); bkRender(); } });
+  loadJSON('prog',   function(){ if(BK.kind==='prog'){ bkFilters(); bkRender(); } });
 }
-function applyBankFilter(){ BKPG=1; renderBankPage(); }
 
 })();

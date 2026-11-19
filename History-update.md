@@ -163,3 +163,12 @@
 - 第5次选择结构.ppt 是图片型幻灯无法提文本，主题由第五次实验 docx 覆盖
 - 站点：字符集增至 1208 → 字体重裁剪（fonts.css 1.41MB），index.html 1.35MB，标签配对 0 失配
 - GitHub 仓库：D:/Web/C_learn（git init main + 首次提交，index.html + assets + README + .gitignore）
+
+## 第九轮：《C Primer Plus（第 6 版）》+ 第七次实验（数组）全量吸收
+- 材料：C Primer Plus 6e 中文版 epub（17 章 + 附录 A/B）抽成 `.workbuddy/bp_text/part0000~0024.txt`（81 万字符）；`第7章 数组(1).ppt` 用 PowerPoint COM 导出 71 页文本（zipfile 打不开 .ppt）；`第七次 数组-1实验知识点和注意点.docx`
+- 关闭代码运行模块：内容里 192 个 `▶ 运行` 按钮全清、`app.js` 删掉 JSCPP+Worker 整段（-4.9KB）、`exam_app.js` 删掉 `runCode/runWorkerSrc`；改为构建期用 `gcc -std=gnu99` 实跑，把 stdin/stdout 写成 `<details class="cio">` 折叠块挂在代码后面（知识库 151 处、编程题 143 题带 `io`）
+- 代码折叠优化：`.codeblk.fold` 遮罩改 118px 三段渐变、`.cexp` 加三角箭头与 hover 位移；新增整段 `.cio*` 样式与打印时强制展开
+- 第 7 章新增 10 个小节（52→62 个标题）：7.1.5 C89/C99 与变长数组（含 C89 报错、VLA 五条限制、二维 VLA 形参）、7.1.6 段错误与下标越界（六种越界形态、三招排查）、7.3.6 scanf 读不到空格（四种输入方式对照）、7.3.7 strcpy 家族（原型表、sizeof vs strlen、三个必踩坑）、7.6 教材例题精选 5 例（倒序 / 二维统计 / 单词数 / 指针遍历 / 指针数组排序）
+- 题库扩容：编程题 96→144（新增 48 题覆盖 ch1~ch14，含文件、宏、位运算、malloc/realloc 类），理论题 480→570（新增 90 题，标 `《C Primer Plus（第 6 版）》改编`）
+- 目录/大纲/搜索三处同步：`manifest.js` 的 CK_HEADMAP/CK_TITLES 用 vm 读出对象后重建（不再字符串拼 JSON）；`index.html` 的**静态**目录树手工插入 10 个 `<li>` 并修 cnt（7.1: 4→6、7.3: 5→7、第 7 章: 6→7）；`search-index.js` 按 DOM 顺序补 10 条
+- 坑记录：① `manifest.js` 字符串切片定位 `"第-8-章-函数": 15` 会吃掉前面的逗号 → 改成先 vm 解析成对象再整体序列化；② 新增 h4 的生成器把 `data-fav="%s"` 原样写进 HTML（9 处），收藏键全废 → 按所在 h4 的 id 回填；③ `index.html` 的目录是静态标记，只改 manifest 侧栏不会更新；④ 浏览器缓存导致验证时读旧文件，URL 加 `?t=随机数` 才能看到新内容

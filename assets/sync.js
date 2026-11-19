@@ -328,6 +328,13 @@
   }
 
   /* ---------- UI ---------- */
+  /* 遮罩与卡片必须同开同关：任何异常时序都不能留下挡住页面的灰幕 */
+  function syncMask(){
+    var mk=document.getElementById('kb-sync-mask');
+    var c=document.getElementById('kb-sync-card');
+    if(!mk||!c) return;
+    if(c.classList.contains('on')) mk.classList.add('on'); else mk.classList.remove('on');
+  }
   function openModal(){
     if(modal){ modal.classList.add('on'); }
     var mk=document.getElementById('kb-sync-mask'); if(mk) mk.classList.add('on');
@@ -502,6 +509,8 @@
     pwdEl.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); login(cred('in')); } });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
     m.classList.remove('on');
+    syncMask();
+    setTimeout(syncMask, 60);
   }
 
   /* ---------- 变更挂钩：监听 localStorage 写入 ---------- */

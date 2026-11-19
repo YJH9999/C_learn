@@ -314,6 +314,83 @@ select.ex-num{width:auto}
   .ps-sol-head{text-align:center;font-size:15pt;margin:0 0 14px;page-break-before:always}
 }
 
+/* ================= 组卷 / 题库通用组件（对齐 GS · XD） ================= */
+.xhead{margin:6px 0 20px}
+.xhead .kicker{
+  display:inline-block;font:700 10px/1 var(--mono);letter-spacing:.18em;color:var(--ac);
+  background:var(--ac-dim);border:.5px solid var(--ac-dim-2);padding:5px 9px;border-radius:6px;
+}
+.xhead h1{font-size:25px;line-height:1.3;margin:12px 0 6px;letter-spacing:-.01em}
+.xhead .sub{margin:0;color:var(--fg-3);font-size:13.5px;line-height:1.75;max-width:680px}
+.muted{color:var(--fg-3);font-weight:400;font-size:12px}
+.panel{
+  border:.5px solid var(--line-2);border-radius:16px;background:var(--panel-solid);
+  padding:18px 22px;margin:14px 0;box-shadow:var(--sh-1);
+}
+.panel h2{display:flex;align-items:baseline;gap:8px;font-size:15px;font-weight:700;margin:0 0 12px;letter-spacing:-.01em}
+.panel h2 .muted{font-weight:400;font-size:12px}
+.panel h2:not(:first-child){margin-top:20px}
+.frow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.frow.end{justify-content:space-between;margin-top:18px;padding-top:14px;border-top:.5px solid var(--line)}
+.paper-total{font-size:13px;color:var(--fg-2)}
+.paper-total:empty::before{content:"调整题型与题量后开始组卷";color:var(--fg-3);font-size:12.5px}
+
+.preset-row{display:flex;flex-wrap:wrap;gap:10px}
+.preset-row .chip{white-space:nowrap}
+.chip{
+  border:.5px solid var(--line-2);background:var(--panel-solid);border-radius:12px;color:var(--fg);
+  font:600 12.8px/1.5 var(--sans);padding:8px 14px;cursor:pointer;transition:.15s;
+  text-align:left;box-shadow:var(--sh-1);
+}
+.chip small{display:block;color:var(--fg-3);font-weight:500;font-size:11px;margin-top:2px}
+.chip:hover{border-color:var(--ac);color:var(--ac)}
+.chip.on{background:var(--ac-dim);border-color:var(--ac-dim-2);color:var(--ac)}
+.chip.on small{color:var(--ac);opacity:.75}
+.chip:disabled{opacity:.42;cursor:default}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px}
+
+.type-row{display:flex;flex-wrap:wrap;gap:10px}
+.type-cell{
+  flex:1;min-width:136px;border:.5px solid var(--line-2);border-radius:14px;
+  background:var(--panel-2-solid);padding:10px 12px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:9px;
+}
+.type-cell.lack{border-color:var(--sys-orange)}
+.type-cell .t-name{font-size:12.8px;font-weight:700;white-space:nowrap}
+.type-cell .t-name small{display:block;color:var(--fg-3);font-weight:500;font-size:11px;margin-top:3px;white-space:normal}
+.t-avail{font:700 11px var(--mono);color:var(--ac)}
+.type-cell.lack .t-avail{color:var(--sys-orange)}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{
+  width:28px;height:28px;border-radius:9px;border:.5px solid var(--line-2);
+  background:var(--panel-solid);color:var(--fg);font:700 15px var(--sans);cursor:pointer;transition:.15s;
+}
+.stepper button:hover{border-color:var(--ac);color:var(--ac)}
+.stepper b{font:700 17px var(--mono);min-width:26px;text-align:center;color:var(--ac)}
+
+.bank-kw{
+  width:100%;box-sizing:border-box;border:.5px solid var(--line-2);border-radius:11px;
+  background:var(--panel-2-solid);color:var(--fg);font:13px var(--sans);padding:9px 12px;
+  outline:0;transition:.15s;
+}
+.bank-kw::placeholder{color:var(--fg-3)}
+.bank-kw:focus{border-color:var(--ac);background:var(--panel-solid);box-shadow:0 0 0 3.5px var(--ac-dim)}
+
+.pager{display:flex;align-items:center;justify-content:center;gap:10px;margin:20px 0 10px}
+.pager .chip{padding:7px 15px;min-width:auto}
+.pg-info{font:600 12px var(--mono);color:var(--fg-3)}
+.empty-tip{padding:26px 0;text-align:center;color:var(--fg-3);font-size:12.8px}
+
+/* 错题摘要行 */
+.wrong-list{margin:2px 0 0}
+.wl-item{display:flex;align-items:center;gap:8px;padding:7px 2px;border-bottom:.5px solid var(--line);font-size:12.5px}
+.wl-item:last-child{border-bottom:0}
+.wl-item>b{font:700 11px var(--mono);color:var(--fg-3);flex:none}
+.wl-stem{color:var(--fg-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 题库列表：长列表离屏推迟渲染 */
+#bk-list>*{content-visibility:auto;contain-intrinsic-size:auto 120px}
+
 /* ============ MOBILE-ENHANCE-EXAM:BEGIN 备考中心 移动/平板排版 ============
    追加到 exam.css（在 style.css 之后加载，用来覆盖 exam.css 自己的 flex 规则） */
 

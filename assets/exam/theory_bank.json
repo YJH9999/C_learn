@@ -6254,5 +6254,1170 @@
   "answer": 2,
   "explanation": "宏替换只是字符替换。NN 展开为 N*N/2，N 又展开为 M+1，M 再展开为 3，得到 3+1*3+1/2；按优先级计算：1*3=3、1/2=0，故第一个输出 3+3+0=6。第二句 5*NN 展开为 5*3+1*3+1/2=15+3+0=18。若误把宏当成函数先算值，就会得到 4 和 20 之类的结果。",
   "src": "学习指导 第12章"
+ },
+ {
+  "id": "t-481",
+  "ch": "ch1",
+  "type": "judge",
+  "stem": "预处理命令（如 #include、#define）不是 C 语句，行末不写分号。",
+  "options": [],
+  "answer": true,
+  "explanation": "预处理命令由预处理器在编译之前处理，语法上不属于 C 语句，所以不加分号；加了分号反而可能被当成宏的一部分。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-482",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "一个 .c 源程序要变成可执行文件，正确的顺序是（ ）",
+  "options": [
+   "预处理 → 编译 → 链接 → 运行",
+   "编译 → 预处理 → 链接 → 运行",
+   "预处理 → 链接 → 编译 → 运行",
+   "编译 → 链接 → 预处理 → 运行"
+  ],
+  "answer": 0,
+  "explanation": "四个阶段固定：预处理展开宏与头文件，编译生成 .obj/.o 目标文件，链接把库函数与多个目标文件合成 .exe，最后才是运行。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-483",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "下列标识符中合法的是（ ）",
+  "options": [
+   "2sum",
+   "sum-2",
+   "_sum2",
+   "int"
+  ],
+  "answer": 2,
+  "explanation": "标识符只能由字母、数字、下划线组成，且不能以数字开头，也不能是关键字。_sum2 合法；2sum 数字开头非法；sum-2 含减号非法；int 是关键字。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-484",
+  "ch": "ch1",
+  "type": "fill",
+  "stem": "C 源程序经过预处理、编译、______、运行四个阶段才得到最终结果。",
+  "options": [],
+  "answer": "链接 | 连接 | 链接（link） | link",
+  "explanation": "编译只把单个源文件翻译成目标文件，各目标文件与库函数的「拼装」由链接器完成，这一步才解决函数在别处定义的问题。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-485",
+  "ch": "ch1",
+  "type": "single",
+  "stem": "关于注释，下列说法正确的是（ ）",
+  "options": [
+   "/* */ 可以嵌套使用",
+   "// 注释可以写在语句后面",
+   "注释会被编译进可执行文件",
+   "注释里不能出现中文"
+  ],
+  "answer": 1,
+  "explanation": "/* */ 不允许嵌套（第一个 */ 就结束注释）；// 是单行注释，可以跟在语句后面；注释在预处理阶段就被替换成空格，不进入可执行文件。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-486",
+  "ch": "ch1",
+  "type": "judge",
+  "stem": "printf 是 C 语言的关键字。",
+  "options": [],
+  "answer": false,
+  "explanation": "printf 是标准库函数（声明在 stdio.h 中），不是关键字，所以可以被同名变量覆盖——但绝不要这么做。C99 的关键字只有 37 个。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-487",
+  "ch": "ch2",
+  "type": "judge",
+  "stem": "传统流程图中，菱形框表示判断，矩形框表示处理。",
+  "options": [],
+  "answer": true,
+  "explanation": "流程图符号：椭圆起止、矩形处理、菱形判断、平行四边形输入输出、箭头流向。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-488",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "结构化程序设计的三种基本结构是（ ）",
+  "options": [
+   "顺序、选择、循环",
+   "顺序、跳转、循环",
+   "函数、数组、指针",
+   "输入、处理、输出"
+  ],
+  "answer": 0,
+  "explanation": "任何复杂算法都可由顺序、选择（分支）、循环三种结构组合而成，且每种结构只有一个入口一个出口。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-489",
+  "ch": "ch2",
+  "type": "fill",
+  "stem": "算法必须在执行有限步之后结束，这一特征称为______。",
+  "options": [],
+  "answer": "有穷性 | 有限性",
+  "explanation": "有穷性是算法与「计算过程」的分水岭：死循环的程序不满足有穷性，不能算算法。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-490",
+  "ch": "ch2",
+  "type": "single",
+  "stem": "关于 N-S 图（盒图），下列说法正确的是（ ）",
+  "options": [
+   "它用箭头表示流程走向",
+   "它完全去掉了流程线，用嵌套的矩形表示结构",
+   "它只能描述顺序结构",
+   "它比流程图更早出现"
+  ],
+  "answer": 1,
+  "explanation": "N-S 图用矩形框的嵌套表达三种基本结构，取消了流程线，因此不会出现「面条式」乱跳的流程图问题。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-491",
+  "ch": "ch2",
+  "type": "judge",
+  "stem": "一个算法可以没有输出。",
+  "options": [],
+  "answer": false,
+  "explanation": "算法必须有输出（至少一个），但可以没有输入——例如求 1~100 之和的算法不需要外部输入。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-492",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下列整数常量中，合法的八进制常量是（ ）",
+  "options": [
+   "0x1F",
+   "018",
+   "017",
+   "0b101"
+  ],
+  "answer": 2,
+  "explanation": "八进制以 0 开头，且数字只能取 0~7，所以 018 非法；0x1F 是十六进制；0b101 是部分编译器扩展的二进制写法，标准 C 不支持。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-493",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "已知 'A' 的 ASCII 码是 65，则 'a' - 'A' 的值是（ ）",
+  "options": [
+   "26",
+   "32",
+   "48",
+   "97"
+  ],
+  "answer": 1,
+  "explanation": "ASCII 表中同一字母的大小写相差 32，小写更大。所以 ch - 'a' + 'A' 就是把小写转大写的常用写法。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-494",
+  "ch": "ch3",
+  "type": "judge",
+  "stem": "在 C89 中，const int n = 10; int a[n]; 这样的数组定义是合法的。",
+  "options": [],
+  "answer": false,
+  "explanation": "C89 要求数组长度必须是常量表达式，const 修饰的变量在 C 里仍是「只读变量」而不是常量，不能当数组长度。C99 引入变长数组（VLA）后 int a[n] 才合法。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-495",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "关于 C99 的变长数组（VLA），下列说法错误的是（ ）",
+  "options": [
+   "长度可以在运行时由变量决定",
+   "可以在定义时用 { } 初始化",
+   "VLA 只能定义在函数内部（块作用域）",
+   "VLA 一旦定义，长度在本作用域内不能再改"
+  ],
+  "answer": 1,
+  "explanation": "VLA 的长度要等运行时才知道，编译器无法在编译期确定初始化数据的布局，因此 VLA 不允许初始化，也不能是静态/全局变量。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-496",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "表达式 sizeof(\"abc\") 的值是______。",
+  "options": [],
+  "answer": "4",
+  "explanation": "字符串字面量末尾隐含一个 '\\0'，所以 \"abc\" 占 3 个字符 + 1 个结束符 = 4 字节。而 strlen(\"abc\") 是 3。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-497",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "若 int a = -1; unsigned int b = 1; 则表达式 a < b 的结果是（ ）",
+  "options": [
+   "真",
+   "假",
+   "编译错误",
+   "结果不确定"
+  ],
+  "answer": 1,
+  "explanation": "int 与 unsigned int 混合运算时，int 会被转换成 unsigned，-1 变成 0xFFFFFFFF（最大值），因此 a < b 为假。这是最常见的隐形坑。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-498",
+  "ch": "ch3",
+  "type": "judge",
+  "stem": "浮点数不能用 == 直接比较是否相等。",
+  "options": [],
+  "answer": true,
+  "explanation": "0.1+0.2 并不精确等于 0.3，二进制浮点无法精确表示多数十进制小数。正确做法是判断两数之差的绝对值是否小于很小的 epsilon。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-499",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "表达式 5 / 2 * 2.0 的值是（ ）",
+  "options": [
+   "5.0",
+   "4.0",
+   "4",
+   "2.5"
+  ],
+  "answer": 1,
+  "explanation": "同级运算符从左到右：5/2 是整除得 2，再 2*2.0 = 4.0（结果为 double）。写成 5/2.0*2 才会得到 5.0。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-500",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "printf(\"%5.2f\", 3.14159); 的输出是（ ）",
+  "options": [
+   "3.14",
+   " 3.14",
+   "3.14159",
+   "**3.14"
+  ],
+  "answer": 1,
+  "explanation": "5 是总宽度（含小数点），.2 是小数位数，3.14 只占 4 列，右对齐补 1 个空格，共 5 列。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-501",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "若有 scanf(\"%d,%d\", &a, &b);，则正确的输入是（ ）",
+  "options": [
+   "3 4",
+   "3,4",
+   "3 4,",
+   "a=3,b=4"
+  ],
+  "answer": 1,
+  "explanation": "scanf 格式串中的普通字符（如逗号）必须与输入严格匹配。想用空格分隔，格式串里就该写 %d%d 或 %d %d。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-502",
+  "ch": "ch4",
+  "type": "judge",
+  "stem": "scanf 的 %s 可以读入含空格的整行字符串。",
+  "options": [],
+  "answer": false,
+  "explanation": "%s 遇到空白（空格、制表符、换行）就停止，只能读一个「词」。要读整行请用 fgets 或 gets_s。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-503",
+  "ch": "ch4",
+  "type": "fill",
+  "stem": "要在 printf 中输出一个百分号，应写成______。",
+  "options": [],
+  "answer": "%%",
+  "explanation": "printf 中 % 是格式引导符，要输出字面量 % 必须写两个连续的 %。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-504",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "先 scanf(\"%d\", &n); 再 scanf(\"%c\", &ch);，ch 读到的往往是（ ）",
+  "options": [
+   "用户输入的下一个可见字符",
+   "回车换行符 '\\n'",
+   "空字符 '\\0'",
+   "随机值"
+  ],
+  "answer": 1,
+  "explanation": "%c 不跳过任何空白字符，而 %d 读完后把换行留在了缓冲区里，于是 %c 直接吃掉了 '\\n'。修法：写成 \" %c\"（前面加空格）。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-505",
+  "ch": "ch4",
+  "type": "single",
+  "stem": "关于 printf 的 %f 与 %lf，下列说法正确的是（ ）",
+  "options": [
+   "%f 只能输出 float，%lf 只能输出 double",
+   "printf 中两者等价，scanf 中 %f 对应 float、%lf 对应 double",
+   "%lf 是非法写法",
+   "%f 输出会有精度损失"
+  ],
+  "answer": 1,
+  "explanation": "printf 的可变参数会发生默认实参提升，float 一律提升为 double，所以 %f/%lf 等价；scanf 传的是地址、没有提升，必须严格区分 %f（float*）与 %lf（double*）。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-506",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "switch 语句中 case 后面跟的必须是（ ）",
+  "options": [
+   "任意表达式",
+   "整型常量表达式",
+   "变量名",
+   "关系表达式"
+  ],
+  "answer": 1,
+  "explanation": "case 的标号必须在编译期确定，且与 switch 表达式同为整型（char/int/enum），不能是变量，也不能是浮点或字符串。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-507",
+  "ch": "ch5",
+  "type": "judge",
+  "stem": "if (x = 0) 是合法语句，但它几乎总是逻辑错误。",
+  "options": [],
+  "answer": true,
+  "explanation": "赋值表达式的值是赋完之后 x 的值，即 0，条件恒为假。编译器通常会给出「assignment used as condition」警告。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-508",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下代码中 else 与哪个 if 配对：if(a) if(b) x=1; else x=2;（ ）",
+  "options": [
+   "第一个 if",
+   "第二个 if",
+   "两个都配对",
+   "语法错误"
+  ],
+  "answer": 1,
+  "explanation": "else 总是与最近的、尚未配对的 if 结合，这叫悬空 else 问题。加花括号可以消除歧义。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-509",
+  "ch": "ch5",
+  "type": "fill",
+  "stem": "C 语言中唯一的三目运算符是______运算符。",
+  "options": [],
+  "answer": "条件 | 三目 | ?: | 条件（?:）",
+  "explanation": "条件运算符 a ? b : c 是 C 中唯一的三目运算符，优先级只高于赋值和逗号，低于关系与逻辑运算。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-510",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "表达式 !0 的值是（ ）",
+  "options": [
+   "0",
+   "1",
+   "-1",
+   "不确定"
+  ],
+  "answer": 1,
+  "explanation": "逻辑非把非零变 0、把 0 变 1。C99 中关系与逻辑运算的结果严格是 int 型的 0 或 1。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-511",
+  "ch": "ch5",
+  "type": "judge",
+  "stem": "switch 中的 default 分支必须写在所有 case 之后。",
+  "options": [],
+  "answer": false,
+  "explanation": "default 可以出现在 switch 体内任意位置，匹配不到任何 case 时才跳转过去。写在末尾只是可读性更好。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-512",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "for (i = 1; i <= 10; i += 2) 的循环体共执行（ ）次",
+  "options": [
+   "5",
+   "6",
+   "10",
+   "无限"
+  ],
+  "answer": 0,
+  "explanation": "i 依次取 1、3、5、7、9，共 5 次。数循环次数就看循环变量第一次和最后一次的取值。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-513",
+  "ch": "ch6",
+  "type": "judge",
+  "stem": "do-while 循环的循环体至少执行一次。",
+  "options": [],
+  "answer": true,
+  "explanation": "do-while 先执行后判断，条件写在末尾，所以即使初始条件为假，循环体也已经跑过一遍。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-514",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下列写法中，构成死循环的是（ ）",
+  "options": [
+   "for (i = 0; i < 10; i++)",
+   "for (;;)",
+   "while (i < 10) i++;",
+   "do { i++; } while (i < 10);"
+  ],
+  "answer": 1,
+  "explanation": "for (;;) 的三个表达式都省略，条件恒真，是标准的无限循环写法。其余三种都有明确的终止条件。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-515",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "在循环中，break 的作用是结束______循环，continue 的作用是结束______循环。",
+  "options": [],
+  "answer": "整个 | 本层 | 本次 | 当前这一次",
+  "explanation": "break 跳出整个循环（只跳一层），continue 只跳过本次剩余语句、直接进入下一次判断。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-516",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "嵌套循环中使用 break，其效果是（ ）",
+  "options": [
+   "跳出所有循环",
+   "只跳出最内层循环",
+   "只跳出最外层循环",
+   "程序终止"
+  ],
+  "answer": 1,
+  "explanation": "break 只终止它所在的那一层循环。要一次跳出多层，可用标志变量配合判断，或使用 goto。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-517",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "while (scanf(\"%d\", &x) == 1) 这种写法的作用是（ ）",
+  "options": [
+   "读入一个数后立刻退出",
+   "当输入不是整数或到达文件末尾时结束循环",
+   "判断 x 是否等于 1",
+   "只读第一个数"
+  ],
+  "answer": 1,
+  "explanation": "scanf 返回成功读入的项数，遇到无法匹配的字符或 EOF 时返回 0 或 EOF，循环自然结束。这是 C 里读「不定长输入」的常用手段。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-518",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有 int a[5]; 则执行 a[5] = 1; 的后果是（ ）",
+  "options": [
+   "编译错误",
+   "运行时一定崩溃并给出明确提示",
+   "越界写内存，行为未定义（可能正常结束，也可能段错误）",
+   "自动扩展到 6 个元素"
+  ],
+  "answer": 2,
+  "explanation": "C 语言不做数组越界检查，下标 5 已越过 a 的合法范围（0~4）。越界写会踩坏相邻内存，可能毫无反应，也可能直接 segmentation fault，取决于运气。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-519",
+  "ch": "ch7",
+  "type": "judge",
+  "stem": "C 语言在运行时会对数组下标做越界检查，越界时会抛出异常。",
+  "options": [],
+  "answer": false,
+  "explanation": "这正是 C 的「快但危险」之处：编译器不插检查代码。代价是程序员必须自己保证 0 <= i < 长度。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-520",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "字符串 \"abc\" 在内存中占______个字节。",
+  "options": [],
+  "answer": "4",
+  "explanation": "3 个可见字符加 1 个 '\\0'。char s[] = \"abc\"; 时 sizeof(s) 为 4，strlen(s) 为 3。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-521",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "设 char s[] = \"hello\"; 则 sizeof(s) 与 strlen(s) 的值分别是（ ）",
+  "options": [
+   "5 和 5",
+   "6 和 5",
+   "5 和 6",
+   "6 和 6"
+  ],
+  "answer": 1,
+  "explanation": "sizeof 是数组总字节数（含 '\\0'，共 6）；strlen 只数到 '\\0' 之前的字符（5）。注意数组作函数参数后 sizeof 退化为指针大小，这个结论只在数组定义所在的作用域成立。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-522",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若目标数组只有 10 个字节，却用 strcpy 复制一个 20 字节的字符串，会发生（ ）",
+  "options": [
+   "strcpy 自动截断，安全",
+   "缓冲区溢出，可能改写其他变量甚至崩溃",
+   "编译报错",
+   "strcpy 返回错误码"
+  ],
+  "answer": 1,
+  "explanation": "strcpy 不检查目标容量，也不做截断——这正是历史上大量安全漏洞的来源。生产代码应改用 strncpy/snprintf 并手动补 '\\0'。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-523",
+  "ch": "ch7",
+  "type": "judge",
+  "stem": "strncpy(dst, src, n) 一定会给 dst 补上 '\\0'。",
+  "options": [],
+  "answer": false,
+  "explanation": "若 src 长度 ≥ n，strncpy 只复制前 n 个字符且不补 '\\0'，必须手动 dst[n] = '\\0'。而 strncpy 在 src 较短时反而会用 '\\0' 填满剩余空间。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-524",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "用 scanf(\"%s\", s) 读入 \"hello world\" 时，s 中得到的是（ ）",
+  "options": [
+   "hello world",
+   "hello",
+   "world",
+   "读取失败"
+  ],
+  "answer": 1,
+  "explanation": "%s 以空白为分隔符，读到空格即停止，剩下的 \"world\" 留在输入缓冲区里。要一次读入整行请用 fgets。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-525",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "若有 int a[2][3]; 则 a 中元素的个数是（ ）",
+  "options": [
+   "2",
+   "3",
+   "5",
+   "6"
+  ],
+  "answer": 3,
+  "explanation": "二维数组的元素总数是各维长度之积：2 × 3 = 6。sizeof(a) 为 6 × sizeof(int)，而 sizeof(a[0]) 为 3 × sizeof(int)。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-526",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "求字符串长度（不含 '\\0'）的标准库函数是______。",
+  "options": [],
+  "answer": "strlen | strlen() | strlen 函数",
+  "explanation": "strlen 从首地址开始逐字节数到 '\\0' 为止，时间复杂度 O(n)；它不把 '\\0' 计入长度。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-527",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "数组名作为函数实参时，传递给形参的是（ ）",
+  "options": [
+   "整个数组的副本",
+   "数组首元素的地址",
+   "数组的长度",
+   "数组最后一个元素的地址"
+  ],
+  "answer": 1,
+  "explanation": "数组名在表达式中退化为指向首元素的指针，所以函数内对 a[i] 的修改会反映到原数组——这叫地址传递。函数也无法用 sizeof 求出数组长度，必须额外传 n。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-528",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "下列代码段中最可能导致 segmentation fault 的是（ ）",
+  "options": [
+   "int a[10]; a[0] = 1;",
+   "int a[10]; for (i = 0; i <= 10; i++) a[i] = i;",
+   "char s[10] = \"abc\";",
+   "int a[10] = {0};"
+  ],
+  "answer": 1,
+  "explanation": "循环上界写成 i <= 10，i = 10 时写了 a[10]，已越过数组末尾。段错误的典型成因就是这类「多走一步」的下标越界。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-529",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "函数返回类型写 void 表示（ ）",
+  "options": [
+   "函数没有参数",
+   "函数不返回任何值",
+   "函数不能被调用",
+   "函数返回 0"
+  ],
+  "answer": 1,
+  "explanation": "void 修饰返回类型表示「无返回值」；void 修饰参数列表（void f(void)）才表示「无参数」。两者不可混淆。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-530",
+  "ch": "ch8",
+  "type": "judge",
+  "stem": "C 语言允许在一个函数内部再定义另一个函数。",
+  "options": [],
+  "answer": false,
+  "explanation": "C 不支持嵌套定义函数，所有函数都是平行的、独立的。函数内只能调用别的函数，不能定义。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-531",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "void swap(int x, int y) { int t = x; x = y; y = t; } 调用后实参不变，原因是（ ）",
+  "options": [
+   "形参类型写错",
+   "值传递只交换了形参副本",
+   "缺少 return 语句",
+   "函数名不合法"
+  ],
+  "answer": 1,
+  "explanation": "值传递把实参的值复制给形参，函数内操作的只是副本。要改实参必须传地址（int *），用 *p 写回。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-532",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "递归函数必须包含______，否则会无限递归直到栈溢出。",
+  "options": [],
+  "answer": "终止条件 | 递归出口 | 出口 | 边界条件",
+  "explanation": "递归 = 递推 + 回归，缺了终止条件就没有「回归」的时机，每层调用都会占栈帧，最终栈溢出（stack overflow）。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-533",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "函数声明（原型）int max(int a, int b); 的主要作用是（ ）",
+  "options": [
+   "分配内存",
+   "让编译器在调用处检查参数与返回值类型",
+   "定义函数体",
+   "提高运行速度"
+  ],
+  "answer": 1,
+  "explanation": "声明只告诉编译器「有这么个函数、长这样」，使调用处能做类型检查并正确生成调用代码；定义才提供函数体。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-534",
+  "ch": "ch8",
+  "type": "judge",
+  "stem": "数组作为函数参数时，函数内修改数组元素会影响到调用者的原数组。",
+  "options": [],
+  "answer": true,
+  "explanation": "数组名退化为首元素地址，函数拿到的是地址而不是副本，所以 a[i] = 1 改的就是原数组。这与普通变量的值传递完全不同。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-535",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "函数内定义的 static 局部变量的特点是（ ）",
+  "options": [
+   "每次调用都重新初始化",
+   "生命周期贯穿整个程序，但作用域仍限于该函数",
+   "可以被其他函数访问",
+   "存放在栈上"
+  ],
+  "answer": 1,
+  "explanation": "static 局部变量存放在静态存储区，只在程序启动时初始化一次，函数返回后值仍保留；但作用域不变，其他函数看不见它。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-536",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若有 int a = 5; int *p = &a; 则表达式 *p 表示（ ）",
+  "options": [
+   "p 的地址",
+   "a 的值 5",
+   "a 的地址",
+   "指针 p 的大小"
+  ],
+  "answer": 1,
+  "explanation": "* 在指针前是「解引用」：取该地址上存放的值，即 a 的值 5。而 &a 才是地址。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-537",
+  "ch": "ch9",
+  "type": "judge",
+  "stem": "在同一平台上，int* 与 char* 变量本身占用的字节数一定不同。",
+  "options": [],
+  "answer": false,
+  "explanation": "指针变量存的都是地址，同一平台下所有指针类型大小相同（32 位为 4 字节，64 位为 8 字节）。不同的是「指向的类型」决定的解引用宽度与步长。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-538",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "对空指针执行 *p = 1; 的后果是（ ）",
+  "options": [
+   "把 1 写到地址 0，通常触发段错误",
+   "什么也不发生",
+   "自动分配内存",
+   "编译错误"
+  ],
+  "answer": 0,
+  "explanation": "空指针不指向任何有效对象，解引用属于未定义行为，实践中几乎都会因访问非法地址而崩溃。使用前务必判空。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-539",
+  "ch": "ch9",
+  "type": "fill",
+  "stem": "获取变量地址的运算符是______。",
+  "options": [],
+  "answer": "& | 取地址运算符 & | &运算符",
+  "explanation": "& 是取地址（引用）运算符，与 * 互为逆运算：*&a 就是 a。scanf 的参数必须传地址，正是因为它要通过指针写回变量。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-540",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "若有 int a[5]; int *p = a; 则执行 p++ 后，p 的值比原来增加了（ ）",
+  "options": [
+   "1 个字节",
+   "sizeof(int) 个字节",
+   "5 个字节",
+   "由编译器随意决定"
+  ],
+  "answer": 1,
+  "explanation": "指针加减的单位是「所指类型的大小」：int 指针 +1 前进 4 字节（32 位平台）。这正是 a[i] 与 *(a+i) 等价的由来。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-541",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "关于数组名 a，下列说法正确的是（ ）",
+  "options": [
+   "a 可以被赋值，如 a = p;",
+   "a 表示数组首元素地址，不能赋值",
+   "a 与 &a 完全相同",
+   "a 是一个普通变量"
+  ],
+  "answer": 1,
+  "explanation": "数组名是地址常量，不能被赋值（a++ 也非法）。a 的类型是 int*（指向首元素），而 &a 的类型是「指向整个数组的指针」，值相同但类型不同，+1 步长也不同。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-542",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "int *p[3] 与 int (*p)[3] 的区别是（ ）",
+  "options": [
+   "完全相同",
+   "前者是指针数组（3 个指针），后者是数组指针（指向含 3 个 int 的数组）",
+   "前者是数组指针，后者是指针数组",
+   "两者都非法"
+  ],
+  "answer": 1,
+  "explanation": "看优先级：[] 高于 *，所以 int *p[3] 先结合成「3 个元素的数组，元素是 int*」；加括号改变结合顺序后 int (*p)[3] 是「一个指针，指向含 3 个 int 的数组」。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-543",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "struct { char c; int i; }; 在常见 32 位平台上占用（ ）字节",
+  "options": [
+   "5",
+   "8",
+   "4",
+   "12"
+  ],
+  "answer": 1,
+  "explanation": "结构体要做内存对齐：int 必须放在 4 的倍数地址上，char 后补 3 个填充字节，总长 8。对齐用空间换访问速度。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-544",
+  "ch": "ch10",
+  "type": "judge",
+  "stem": "同类型的两个结构体变量可以整体赋值（s1 = s2）。",
+  "options": [],
+  "answer": true,
+  "explanation": "结构体支持整体赋值，相当于逐成员拷贝（含数组成员）。但不能用 == 直接比较两个结构体是否相等，必须逐成员比较。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-545",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "若 p 是指向结构体的指针，访问其成员 m 应写成（ ）",
+  "options": [
+   "p.m",
+   "*p.m",
+   "p->m",
+   "p&m"
+  ],
+  "answer": 2,
+  "explanation": "p->m 是 (*p).m 的简写。注意 . 的优先级高于 *，所以 *p.m 会被理解成 *(p.m)，是错的。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-546",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "共用体（union）所占的字节数等于其______的长度。",
+  "options": [],
+  "answer": "最长成员 | 最大成员 | 最长成员变量",
+  "explanation": "共用体的所有成员共用同一块内存，因此长度取最长成员的长度（再按对齐规则调整）。任一时刻只有一个成员的值有意义。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-547",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "关于 typedef 与 #define，下列说法正确的是（ ）",
+  "options": [
+   "两者完全等价",
+   "typedef 由编译器处理、有类型语义；#define 只是预处理阶段的文本替换",
+   "#define 更安全",
+   "typedef 不能用于结构体"
+  ],
+  "answer": 1,
+  "explanation": "typedef 定义的是「类型别名」，参与类型检查，作用域规则正常；#define 是纯文本替换，容易在没有括号时出错。定义结构体别名推荐 typedef。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-548",
+  "ch": "ch10",
+  "type": "judge",
+  "stem": "枚举（enum）中的成员本质上是一组具名的整型常量。",
+  "options": [],
+  "answer": true,
+  "explanation": "枚举成员在编译期就是整数常量（从 0 或指定值开始递增），可参与整型运算和 switch，但不做范围检查——赋一个超出枚举的值编译器一般只给警告。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-549",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "fopen 返回 NULL 说明（ ）",
+  "options": [
+   "文件为空",
+   "打开失败（路径错误、权限不足或文件不存在等）",
+   "文件已到末尾",
+   "文件被成功打开"
+  ],
+  "answer": 1,
+  "explanation": "fopen 失败返回空指针，所以每次 fopen 之后都必须判断。直接对 NULL 调用 fscanf/fprintf 会立刻崩溃。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-550",
+  "ch": "ch11",
+  "type": "judge",
+  "stem": "文件用完不 fclose，可能导致数据没有真正写入磁盘。",
+  "options": [],
+  "answer": true,
+  "explanation": "标准 I/O 带缓冲区，fprintf/fwrite 只是写进内存缓冲；fclose 会 flush 缓冲并释放资源。程序正常退出时也会 flush，但异常退出就会丢数据。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-551",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "用 while (!feof(fp)) { fgets(buf, sizeof buf, fp); ... } 统计行数，常见错误是（ ）",
+  "options": [
+   "feof 只能用于二进制文件",
+   "最后一行会被多读一次（多统计一行）",
+   "fgets 不能用于文本文件",
+   "feof 会清空缓冲区"
+  ],
+  "answer": 1,
+  "explanation": "feof 只有在「读过并失败」之后才变真，所以循环体会多跑一轮，把上一次的内容再处理一遍。正确做法是拿 fgets 的返回值做循环条件。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-552",
+  "ch": "ch11",
+  "type": "fill",
+  "stem": "以 \"r\" 方式打开一个不存在的文件，fopen 会返回______。",
+  "options": [],
+  "answer": "NULL | 空指针 | 0",
+  "explanation": "\"r\" 只读且要求文件必须存在；要「不存在就创建」请用 \"w\"、\"a\" 或 \"r+\"（部分平台）等方式。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-553",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "fgetc 的返回值类型是 int 而不是 char，原因是（ ）",
+  "options": [
+   "为了兼容老编译器",
+   "需要用 -1（EOF）区分「文件结束」与「读到字节 0xFF」",
+   "int 更快",
+   "没有原因"
+  ],
+  "answer": 1,
+  "explanation": "若用 char 接收，0xFF 在某些平台上会被解释成 -1，与 EOF 混淆，导致文件被提前判为结束。所以必须用 int 接收再比较 EOF。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-554",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "在 Windows 上以 \"rb\" 方式打开文件，与 \"r\" 的区别是（ ）",
+  "options": [
+   "\"rb\" 只读，\"r\" 可写",
+   "\"rb\" 不做换行符转换，按原始字节读写",
+   "两者完全相同",
+   "\"rb\" 只能读二进制整数"
+  ],
+  "answer": 1,
+  "explanation": "文本模式下 Windows 会把 \\r\\n 读成 \\n、写时再补回，导致字节数与文件大小对不上；二进制模式原样传输，处理图片、结构体块读写时必须用它。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-555",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "#define N 10 与 const int N = 10; 的本质区别是（ ）",
+  "options": [
+   "没有区别",
+   "前者是预处理阶段的文本替换，没有类型；后者是有类型的只读变量",
+   "后者不能被修改",
+   "前者占用更多内存"
+  ],
+  "answer": 1,
+  "explanation": "宏在预处理阶段就被替换成字面量，编译器根本看不到 N 这个名字，因此不做类型检查、调试时也看不到符号；const 变量是有类型、有地址的真实对象。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-556",
+  "ch": "ch12",
+  "type": "judge",
+  "stem": "宏定义没有类型检查，参数带副作用时还可能被重复求值。",
+  "options": [],
+  "answer": true,
+  "explanation": "#define SQ(x) ((x)*(x)) 中若传 i++，展开后 i 会被自增两次。这是宏相对函数最大的隐患，能用 inline 函数就别用宏。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-557",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "头文件保护（防止重复包含）的标准写法是（ ）",
+  "options": [
+   "#pragma once 是唯一标准写法",
+   "#ifndef XXX_H / #define XXX_H / … / #endif",
+   "#ifdef XXX_H / #endif",
+   "#include once"
+  ],
+  "answer": 1,
+  "explanation": "#ifndef / #define / #endif 三件套是 C 标准支持的通用写法；#pragma once 是编译器扩展，更简洁但不属于标准。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-558",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "#include <stdio.h> 与 #include \"my.h\" 的区别在于：前者到______目录中查找，后者优先在当前目录查找。",
+  "options": [],
+  "answer": "系统 | 标准库 | 系统头文件 | 标准",
+  "explanation": "尖括号只查系统/编译器指定的包含路径；双引号先在源文件所在目录找，找不到再去系统路径找。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-559",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "若有 #define SQ(x) x*x，则 SQ(2+3) 展开后的结果值是（ ）",
+  "options": [
+   "25",
+   "11",
+   "13",
+   "10"
+  ],
+  "answer": 1,
+  "explanation": "宏是纯文本替换：2+3*2+3 = 11。这就是「参数与整体都要加括号」这条铁律的由来：写成 ((x)*(x)) 才得到 25。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-560",
+  "ch": "ch12",
+  "type": "judge",
+  "stem": "#define 定义的宏行末必须加分号。",
+  "options": [],
+  "answer": false,
+  "explanation": "宏定义不是语句，加分号会把分号也纳入替换文本，导致展开后出现意外的空语句或语法错误。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-561",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "判断整数 n 是奇数还是偶数，效率最高的写法是（ ）",
+  "options": [
+   "n % 2 == 1",
+   "n & 1",
+   "n / 2 * 2 == n",
+   "n % 2 != 0"
+  ],
+  "answer": 1,
+  "explanation": "n & 1 直接取最低位，只有一次位运算；% 2 要触发除法指令。两者对负数的表现也不同：-3 % 2 得 -1，而 -3 & 1 仍是 1（判奇偶更稳）。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-562",
+  "ch": "ch13",
+  "type": "judge",
+  "stem": "在 C 语言中，^ 表示乘方运算。",
+  "options": [],
+  "answer": false,
+  "explanation": "^ 是「按位异或」，不是乘方。C 没有乘方运算符，要用 pow() 函数（需 math.h，且返回 double）。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-563",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "对正整数执行 n << 1，等价于（ ）",
+  "options": [
+   "n + 1",
+   "n * 2",
+   "n / 2",
+   "n 的平方"
+  ],
+  "answer": 1,
+  "explanation": "左移 1 位即所有二进制位左移、低位补 0，数值翻倍。右移 1 位对正整数相当于除以 2（向下取整）。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-564",
+  "ch": "ch13",
+  "type": "fill",
+  "stem": "按位异或运算的规则是：两个二进制位相同得______，不同得 1。",
+  "options": [],
+  "answer": "0",
+  "explanation": "异或（^）是「相同为 0、不同为 1」。由此得到 a^a=0、a^0=a，这也是异或能用来交换两个数、找出只出现一次的数字的原因。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-565",
+  "ch": "ch13",
+  "type": "single",
+  "stem": "表达式 ~0 的值是（ ）",
+  "options": [
+   "0",
+   "-1",
+   "1",
+   "最大值"
+  ],
+  "answer": 1,
+  "explanation": "0 的所有位取反得到全 1，按补码解释就是 -1。类似地 ~0u 是 unsigned 的最大值。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-566",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "malloc 申请失败时返回（ ）",
+  "options": [
+   "0 字节的内存",
+   "NULL",
+   "-1",
+   "随机地址"
+  ],
+  "answer": 1,
+  "explanation": "malloc 失败返回 NULL（申请 0 字节的实现未定义，可能返回可 free 的指针）。所以每次 malloc 后都要判空再使用。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-567",
+  "ch": "ch14",
+  "type": "judge",
+  "stem": "free(p) 之后，p 会自动变成 NULL。",
+  "options": [],
+  "answer": false,
+  "explanation": "free 只把内存归还给堆管理器，不改变指针变量的值，p 变成「悬垂指针」。再解引用或二次 free 都是未定义行为，所以 free 后应手动 p = NULL。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-568",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "所谓「内存泄漏」是指（ ）",
+  "options": [
+   "内存被写坏",
+   "申请的内存没有释放，程序运行期间再也无法回收",
+   "指针越界",
+   "栈溢出"
+  ],
+  "answer": 1,
+  "explanation": "malloc 之后丢了指针（或忘记 free），这块内存就一直被占用直到进程结束。长期运行的服务程序会因此耗尽内存。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-569",
+  "ch": "ch14",
+  "type": "fill",
+  "stem": "释放 malloc/calloc/realloc 申请的内存，应使用______函数。",
+  "options": [],
+  "answer": "free | free()",
+  "explanation": "有 malloc 就必须有配对的 free，且只能 free 一次；free 的必须是 malloc 系列返回的原始地址，不能是它上面的偏移量。",
+  "src": "《C Primer Plus（第 6 版）》改编"
+ },
+ {
+  "id": "t-570",
+  "ch": "ch14",
+  "type": "single",
+  "stem": "calloc(n, size) 与 malloc(n * size) 的主要区别是（ ）",
+  "options": [
+   "calloc 更快",
+   "calloc 会把申请到的内存全部置 0",
+   "calloc 不需要 free",
+   "两者完全等价"
+  ],
+  "answer": 1,
+  "explanation": "calloc 分配后清零，malloc 的内容是不确定的垃圾值。需要「初始为 0」的数组时用 calloc 更省事，也避免了读未初始化内存的隐蔽 bug。",
+  "src": "《C Primer Plus（第 6 版）》改编"
  }
 ]
