@@ -12019,5 +12019,785 @@
   "answer": "有穷性 | 有限性",
   "explanation": "有穷性是算法与无限计算过程的本质区别。",
   "src": "原创·机考风格"
+ },
+ {
+  "id": "t-927",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "已有定义：int x=3,y=4,z=5;，则表达式 (x+y)+z-1 && y+z/2 的值是（ ）",
+  "options": [
+   "6",
+   "0",
+   "2",
+   "1"
+  ],
+  "answer": 3,
+  "explanation": "(x+y)+z-1 = 11，(y+z/2) 里 z/2 是整除得 2，故 4+2 = 6；11 && 6 两边都非零，逻辑与结果为 1。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-928",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "执行以下程序段后的输出结果是（ ）\nint w=3,z=7,x=10;\nprintf(\"%d,\", x>10?x+100:x-10);\nprintf(\"%d,\", w++||z++);\nprintf(\"%d,\", !w>z);\nprintf(\"%d\\n\", w&&z);",
+  "options": [
+   "0,1,1,1",
+   "1,1,1,1",
+   "0,1,0,1",
+   "0,1,0,0"
+  ],
+  "answer": 2,
+  "explanation": "x>10 假，取 x-10 = 0；w++ 为 3（真），|| 短路所以 z 不自增，输出 1、w 变 4；!w = !4 = 0，0>7 为假输出 0；w&&z 即 4&&7 输出 1。合计 0,1,0,1。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-929",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "设有定义：int k=1,m=2; float f=7;，则以下选项中错误的表达式是（ ）",
+  "options": [
+   "k=k>=m",
+   "-k++",
+   "k%int(f)",
+   "k>=f>=m"
+  ],
+  "answer": 2,
+  "explanation": "强制类型转换要写成 (int)f，int(f) 是函数调用语法，C 里不成立，所以 k%int(f) 非法。注意 k=k>=m 合法（赋值为 0），k>=f>=m 也合法（结果是 0 或 1 再与 m 比较）。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-930",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "下列运算符中，不属于关系运算符的是（ ）",
+  "options": [
+   "<",
+   ">=",
+   "==",
+   "!"
+  ],
+  "answer": 3,
+  "explanation": "<、<=、>、>=、==、!= 六个是关系运算符；! 是逻辑非，属于逻辑运算符。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-931",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下不是死循环的语句为（ ）\nA: for(y=0,x=1; x>++y; x+=i)\nB: for(;;x+=i)\nC: while(1){x++;}\nD: for(i=10;;i--) sum+=i;",
+  "options": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ],
+  "answer": 0,
+  "explanation": "A 的循环条件是 x>++y，每判断一次 y 就自增，终会有 y 追上 x 而退出；B、C、D 的条件恒真或省略，都是死循环。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-932",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "在下列选项中，没有构成死循环的程序段是（ ）\nA: int i=100; while(1){ i=i%100+1; if(i>100) break; }\nB: for(;;);\nC: int k=1000; do{ ++k; }while(k>=10000);\nD: int s=36; while(s); --s;",
+  "options": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ],
+  "answer": 2,
+  "explanation": "C 中 k 从 1000 递增到 10000 时条件为假退出，是有限循环；A 的 i 永远在 1~100 之间循环，B 是空语句死循环，D 的 while(s) 后面紧跟分号，循环体为空且 s 恒为 36，也是死循环。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-933",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "若 I 为整型变量，则 for(I=2; I==0;) printf(\"%d\",I--); 的循环执行次数是（ ）",
+  "options": [
+   "无限次",
+   "0 次",
+   "1 次",
+   "2 次"
+  ],
+  "answer": 1,
+  "explanation": "初值 I=2，第一次判断 I==0 就不成立，循环体一次也不进。for 是「先判断后执行」。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-934",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "有如下程序段：\nint n; float x,y,p,t;\nscanf(\"%f\",&x);\ny=x; n=1; p=x; t=1;\ndo{ p=-1*p*x*x; t=t*(2*n)*(2*n+1); y=y+p/t; n++; }while(fabs(p/t)>0.00001);\nprintf(\"%f\\n\",y);\n运行后所实现的数学运算式是（ ）",
+  "options": [
+   "x - 3x³/2 + 5x⁵/4 - 7x⁷/6 + …",
+   "x - x³/3! + x⁵/5! - x⁷/7! + …",
+   "x - x³/2! + x⁵/3! - x⁷/4! + …",
+   "x - x³/3 + x⁵/5 - x⁷/7 + …"
+  ],
+  "answer": 1,
+  "explanation": "t 每轮乘 (2n)(2n+1)，从 1 开始得到 2·3=3!、4·5=5!…，所以分母是阶乘；p 每轮乘 -x²，符号交替、幂次为 3、5、7…这正是 sin x 的泰勒展开 x - x³/3! + x⁵/5! - …。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-935",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "若变量已正确定义，要求程序段完成求 5! 的计算，不能完成此操作的程序段是（ ）",
+  "options": [
+   "for(i=1,p=1;i<=5;i++) p*=i;",
+   "for(i=1;i<=5;i++){ p=1; p*=i; }",
+   "i=1;p=1; while(i<=5){ p*=i; i++; }",
+   "i=1;p=1; do{ p*=i; i++; }while(i<=5);"
+  ],
+  "answer": 1,
+  "explanation": "B 把 p=1 写在了循环体内，每轮都清零，最后 p 只等于 5。累乘变量必须在循环外初始化一次。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-936",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的功能是在输入的一批正整数中求出最大者，输入 0 结束循环，请选择填空。\n#include<stdio.h>\nmain()\n{ int a,max=0;\n  scanf(\"%d\",&a);\n  while( ____ )\n  { if(max<a) max=a;\n    scanf(\"%d\",&a); }\n  printf(\"%d\",max); }",
+  "options": [
+   "a==0",
+   "a",
+   "!a==1",
+   "!a"
+  ],
+  "answer": 1,
+  "explanation": "需要「a 不为 0 时继续」，写成 while(a) 最直接。a==0 会让循环在 a 为 0 时继续，逻辑正好相反。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-937",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "若已定义 int a=25,b=14,c=19;，则下列语句执行后输出的是（ ）\na<=25 && b--<=2 && c ? printf(\"***a=%d,b=%d,c=%d\\n\",a,b,c) : printf(\"###a=%d,b=%d,c=%d\\n\",a,b,c);",
+  "options": [
+   "***a=25,b=13,c=19",
+   "***a=26,b=14,c=19",
+   "###a=25,b=13,c=19",
+   "###a=26,b=14,c=19"
+  ],
+  "answer": 2,
+  "explanation": "25<=25 为真，继续算 b--<=2：b 取 14 与 2 比较为假，b 自减为 13；&& 短路，c 不参与判断，整个条件为假，走冒号后的分支输出 ###，此时 b 已是 13。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-938",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的运行结果是（ ）\n#include<stdio.h>\nmain()\n{ int x,i;\n  for(i=1;i<=100;i++)\n  { x=i;\n    if(++x%2==0)\n      if(++x%3==0)\n        if(++x%7==0) printf(\"%d \",x); } }",
+  "options": [
+   "39 81",
+   "42 84",
+   "26 68",
+   "28 70"
+  ],
+  "answer": 3,
+  "explanation": "三个 ++x 依次把 x 变成 i+1、i+2、i+3，要求 i+1 为偶数、i+2 被 3 整除、i+3 被 7 整除。i=25 时 26%2=0、27%3=0、28%7=0，输出 28；i=67 时同理输出 70。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-939",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下列程序段不是死循环的是（ ）\nA: int i=100; while(1){ i=i%100+1; if(i>100) break; }\nB: for(;;);\nC: int k=0; do{ ++k; }while(--k>0);\nD: int s=36; while(s); --s;",
+  "options": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ],
+  "answer": 2,
+  "explanation": "C 第一次：k 变 1，判断 --k 得 0，0>0 为假，循环结束，只执行一次。A 的 i 恒在 1~100 之间；B 是空循环；D 的 while(s); 后面带分号，循环体为空且 s 不变。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-940",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序段的运行结果是（ ）\n#include<stdio.h>\nmain()\n{ int k=0; char c='A';\n  do{\n    switch(c++)\n    { case 'A': k++; break;\n      case 'B': k--;\n      case 'C': k+=2; break;\n      case 'D': k=k%2; continue;\n      case 'E': k=k*10; break;\n      default: k/=3; }\n    k++; }while(c<'G');\n  printf(\"k=%d\\n\",k); }",
+  "options": [
+   "k=3",
+   "k=4",
+   "k=2",
+   "k=0"
+  ],
+  "answer": 1,
+  "explanation": "逐轮：c='A' 时 k=1 后 k++ 得 2；'B' 时 k-- 得 1 再穿透 case 'C' 加 2 得 3、k++ 得 4；'C' 时加 2 得 6、k++ 得 7；'D' 时 k=7%2=1 且 continue 跳过 k++；'E' 时 k=10、k++ 得 11；'F' 走 default 得 11/3=3、k++ 得 4；c 变 'G' 退出。最终 k=4。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-941",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的功能是把 316 表示为两个加数的和，使两个加数分别能被 13 和 11 整除，请选择填空。\n#include<stdio.h>\nmain()\n{ int i=0,j,k;\n  do{ i++; k=316-13*i; }while( ____ );\n  j=k/11;\n  printf(\"316=%d+%d\",13*i,11*j); }",
+  "options": [
+   "k/11",
+   "k%11",
+   "k/11==0",
+   "k%11==0"
+  ],
+  "answer": 1,
+  "explanation": "要「k 不能被 11 整除就继续找」，即 while(k%11) 继续循环；当 k%11 为 0 时退出，此时 k 正好能被 11 整除。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-942",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "若运行时从键盘输入 3.6 2.4，则下面程序的运行结果是（ ）\n#include<math.h>\n#include<stdio.h>\nmain()\n{ float x,y,z;\n  scanf(\"%f%f\",&x,&y);\n  z=x/y;\n  while(1)\n  { if(fabs(z)>1.0){ x=y; y=z; z=x/y; } else break; }\n  printf(\"%f\\n\",y); }",
+  "options": [
+   "1.500000",
+   "1.600000",
+   "2.000000",
+   "2.400000"
+  ],
+  "answer": 1,
+  "explanation": "z=3.6/2.4=1.5>1，进入循环：x=2.4，y=1.5，z=1.6；1.6>1 再进：x=1.5，y=1.6，z=0.9375；不大于 1 退出，输出 y=1.600000。这是辗转相除求比例的过程。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-943",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的运行结果是（ ）\nmain()\n{ int i,j,a=0;\n  for(i=0;i<2;i++)\n  { for(j=0;j<4;j++)\n    { if(j%2) break; a++; }\n    a++; }\n  printf(\"%d\\n\",a); }",
+  "options": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "answer": 0,
+  "explanation": "内层 j=0 时 a++，j=1 时 break 退出内层；每轮外层随后再 a++。外层执行 2 次，每次 a 增加 2，共 4。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-944",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "若有如下程序，则语句 a+=1 执行的次数是（ ）\nmain()\n{ int x=1,a=0;\n  while(x, --x)\n  { a+=1; printf(\"%d\",a); } }",
+  "options": [
+   "0",
+   "1",
+   "无限次",
+   "2"
+  ],
+  "answer": 0,
+  "explanation": "while 的条件是逗号表达式 (x, --x)，其值为 --x 的结果：x 从 1 变成 0，条件为假，循环体一次也不执行。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-945",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "设有程序段 int k=10; while(k=0) k=k-1; 则下面描述中正确的是（ ）",
+  "options": [
+   "while 循环执行 10 次",
+   "循环是无限循环",
+   "循环体语句一次也不执行",
+   "循环体语句执行一次"
+  ],
+  "answer": 2,
+  "explanation": "条件是赋值表达式 k=0，值为 0（假），所以循环体一次也不执行。若写成 while(k==0) 才是比较。",
+  "src": "1-6 章测试卷"
+ },
+ {
+  "id": "t-946",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "执行以下语句后 b 的值是（ ）\nint a,b,c;\na=b=c=1;\n++a || ++b && ++c;",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "4"
+  ],
+  "answer": 0,
+  "explanation": "|| 左侧 ++a 得 2（真），按短路原则右侧 && 整段不再求值，b 保持 1。短路：&& 左边为假则右边不算；|| 左边为真则右边不算。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-947",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "若有以下定义：float x; int a,b,c=2; 则正确的 switch 语句是（ ）",
+  "options": [
+   "switch(x){case 1.0: printf(\"*\\n\"); case 2.0: printf(\"**\\n\");}",
+   "switch(int(x)){case 1: printf(\"*\\n\"); case 2: printf(\"**\\n\");}",
+   "switch(a+b){case 1: printf(\"*\\n\"); case 1+2: printf(\"**\\n\");}",
+   "switch(a+b){case 1: printf(\"*\\n\"); case c: printf(\"**\\n\");}"
+  ],
+  "answer": 2,
+  "explanation": "A 的表达式是 float，switch 只接受整型；B 的 int(x) 写法错误，应为 (int)x；D 的 case c 用了变量，case 后必须是常量；C 的 case 1+2 是常量表达式，合法。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-948",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "程序运行后的输出结果是（ ）\nmain()\n{ int i;\n  for(i=0;i<3;i++)\n    switch(i)\n    { case 0: printf(\"%d\",i);\n      case 2: printf(\"%d\",i);\n      default: printf(\"%d\",i); } }",
+  "options": [
+   "022111",
+   "021021",
+   "000122",
+   "012"
+  ],
+  "answer": 2,
+  "explanation": "i=0 命中 case 0 后一路穿透，输出 0、0、0（000）；i=1 无匹配，只执行 default 输出 1；i=2 命中 case 2 后穿透到 default，输出 2、2（22）。合起来是 000122。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-949",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "有以下程序，运行结果是（ ）\n#include<stdio.h>\nint main()\n{ int a=15,b=21,m=0;\n  switch(a%2)\n  { case 0: m++; break;\n    case 1: m++;\n      switch(b%2)\n      { default: m++;\n        case 0: m++; break; } }\n  printf(\"%d\\n\",m); }",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "4"
+  ],
+  "answer": 2,
+  "explanation": "a%2=1 命中 case 1，m 变 1；内层 switch(b%2=1) 无匹配走 default，m 变 2，无 break 继续穿透 case 0，m 变 3。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-950",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序段的运行结果是（ ）\n#include<stdio.h>\nmain()\n{ int k=0; char c='A';\n  do{ switch(c++)\n      { case 'A': k++; break;\n        case 'B': k--;\n        case 'C': k+=2; break;\n        case 'D': k=k%2; continue;\n        case 'E': k=k*10; break;\n        default: k=k/3; }\n      k++; }while(c<'G');\n  printf(\"k=%d\\n\",k); }",
+  "options": [
+   "k=3",
+   "k=4",
+   "k=2",
+   "k=0"
+  ],
+  "answer": 1,
+  "explanation": "c++ 先用后加。逐轮：A→k=1、k++→2；B→k--=1、穿透 C 再 +2=3、k++→4；C→+2=6、k++→7；D→k=7%2=1、continue 跳过 k++；E→k=1*10=10、k++→11；F→default 得 11/3=3、k++→4；c 变 G 时退出。最终 k=4。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-951",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的运行结果是（ ）\n#include<stdio.h>\nint main()\n{ int i,b,k=0;\n  for(i=1;i<=5;i++)\n  { b=i%2;\n    while(b-->=0) k++; }\n  printf(\"%d,%d\",k,b); }",
+  "options": [
+   "8,-2",
+   "8,0",
+   "10,-2",
+   "10,0"
+  ],
+  "answer": 0,
+  "explanation": "b>=0 判断后 b 还要自减：i 为奇数时 b=1，b-- 分别取 1、0、-1，前两次成立，k 加 2；i 为偶数时 b=0，只有 0 那次成立，k 加 1。5 轮下来 2+1+2+1+2 = 8，最后 b 停在 -2。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-952",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序的运行结果是（ ）\n#include<stdio.h>\nint main()\n{ int x,y;\n  x=y=0;\n  while(x<15) y++, x+=++y;\n  printf(\"%d,%d\",y,x); }",
+  "options": [
+   "8,20",
+   "7,20",
+   "8,15",
+   "7,15"
+  ],
+  "answer": 0,
+  "explanation": "循环体是逗号表达式，从左到右：y++ 先取值后加 1，x += ++y 先把 y 加 1 再累加。每轮 y 增加 2、x 增加 y 的新值，累计到 y=8、x=20 时退出（x=20 已不小于 15 的那个判断点）。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-953",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\n#include<stdio.h>\nint main()\n{ int i=0,a=0;\n  while(i<20)\n  { for(;;)\n      if((i%10)==0) break;\n      else i--;\n    i+=11;\n    a+=i; }\n  printf(\"%d\\n\",a); }",
+  "options": [
+   "21",
+   "3",
+   "32",
+   "11"
+  ],
+  "answer": 2,
+  "explanation": "内层 for(;;) 靠 break 退出：i%10 为 0 时跳出，否则 i 递减。第一次 i=0 直接 break，i+=11 得 11、a=11；第二次 i=11 → 递减到 10 时 break，i+=11 得 21、a=32；第三次 i=21 ≥20 外层结束。输出 32。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-954",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "设 w 和 k 都是整型变量，则不能与下面程序段等价的循环语句是（ ）\nw=k;\nLB: if(w==0) goto LE;\nw--;\nprintf(\"*\");\ngoto LB;\nLE: ……",
+  "options": [
+   "for(w=k;w!=0;w--) printf(\"*\");",
+   "w=k; while(w--!=0) printf(\"*\");w++;",
+   "w=k; do{ w--; printf(\"*\"); }while(w!=0);",
+   "for(w=k;w;--w) printf(\"*\");"
+  ],
+  "answer": 2,
+  "explanation": "原程序是「先判断 w 是否为 0，再决定是否执行」，A、B、D 都先判断；C 是 do-while 先执行，当 k=0 时会死循环，所以不等价。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-955",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "下面程序段的运行结果是（ ）\nfor(y=1;y<10;)\n  y=((x=3*y, x+1), x-1);\nprintf(\"x=%d,y=%d\",x,y);",
+  "options": [
+   "x=27,y=27",
+   "x=12,y=13",
+   "x=15,y=14",
+   "x=y=27"
+  ],
+  "answer": 2,
+  "explanation": "赋值号右边是嵌套逗号表达式：先 (x=3*y, x+1) 的值是 x+1，再与 x-1 组成逗号表达式，最终取 x-1 赋给 y。逐轮：y=1→x=3→y=2；y=2→x=6→y=5；y=5→x=15→y=14（此时 y<10 不成立退出），输出 x=15,y=14。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-956",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "设有程序段：\nt=0;\nwhile(printf(\"*\"))\n{ t++;\n  if(t<3) break; }\n下面描述正确的是（ ）",
+  "options": [
+   "其中循环控制表达式与 0 等价",
+   "其中循环控制表达式与 1 等价",
+   "其中循环控制表达式是不合法的",
+   "以上说法都不对"
+  ],
+  "answer": 1,
+  "explanation": "printf 的返回值是实际输出的字符个数，输出 \"*\" 返回 1，非零即为真，所以循环条件是恒真（与 1 等价），靠 break 退出。",
+  "src": "老师解析卷·循环"
+ },
+ {
+  "id": "t-957",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i;\nfor(i=0;i<4;i++)\n  switch(i)\n  { case 1: printf(\"A\");\n    case 2: printf(\"B\"); break;\n    default: printf(\"C\"); }",
+  "options": [
+   "CABBC",
+   "CABC",
+   "CABB",
+   "ABBC"
+  ],
+  "answer": 0,
+  "explanation": "i=0 无匹配走 default 输出 C；i=1 命中 case 1 输出 A 后穿透 case 2 再输出 B；i=2 命中 case 2 输出 B 并 break；i=3 走 default 输出 C。合起来 C + AB + B + C = CABBC。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-958",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint x=2;\nswitch(x)\n{ case 1: printf(\"one\");\n  case 2: printf(\"two\");\n  case 3: printf(\"three\"); break;\n  case 4: printf(\"four\"); }",
+  "options": [
+   "two",
+   "twothree",
+   "twothreefour",
+   "one two three"
+  ],
+  "answer": 1,
+  "explanation": "命中 case 2 后没有 break，继续执行 case 3 的语句，遇到 break 才停，输出 twothree。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-959",
+  "ch": "ch5",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nchar c='b';\nswitch(c)\n{ case 'a': printf(\"1\");\n  case 'b': printf(\"2\");\n  default: printf(\"3\"); }",
+  "options": [],
+  "answer": "23",
+  "explanation": "命中 case 'b' 输出 2，没有 break 继续执行 default 输出 3，得 23。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-960",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "执行以下程序段后，b、c 的值分别是（ ）\nint a=1,b=2,c=3;\na || (b=10);\na && (c=20);",
+  "options": [
+   "b=10, c=20",
+   "b=2, c=20",
+   "b=10, c=3",
+   "b=2, c=3"
+  ],
+  "answer": 1,
+  "explanation": "a 为真，|| 右侧不求值，b 保持 2；a 也为真，&& 右侧**要**求值，c 变成 20。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-961",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=0;\nif(i++ && i++)\n  printf(\"%d\", i);\nelse\n  printf(\"%d\", i);",
+  "options": [
+   "0",
+   "1",
+   "2",
+   "3"
+  ],
+  "answer": 1,
+  "explanation": "i++ 先用 0 参与判断，为假即短路，第二个 i++ 不执行；输出时 i 已自增为 1。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-962",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint a=0,b=0;\nif(a++ || b++) printf(\"%d,%d\",a,b); else printf(\"none\");",
+  "options": [],
+  "answer": "none",
+  "explanation": "a++ 用 0 判断为假后自增为 1，继续算 b++（用 0 判断，也自增为 1），|| 两边都为假，整个条件为假，走 else 输出 none。关键点是：虽然最终没进 if，两个自增都已经发生了。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-963",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=5;\nprintf(\"%d,\", i++);\nprintf(\"%d\", i);",
+  "options": [
+   "5,5",
+   "5,6",
+   "6,6",
+   "6,5"
+  ],
+  "answer": 1,
+  "explanation": "第一条 printf 用后置自增，先输出 5 再让 i 变 6；第二条输出 6，结果是 5,6。注意写成 printf(\"%d,%d\", i++, i++) 时两个实参的求值顺序未规定，gcc 实测反而输出 6,5——这类写法要避开。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-964",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=3;\ni = i++ + 0;\nprintf(\"%d\", i);",
+  "options": [
+   "3",
+   "4",
+   "0",
+   "未定义，不可靠"
+  ],
+  "answer": 3,
+  "explanation": "同一表达式内既读又改 i，属未定义行为，不同编译器结果不同。考试中遇到这种写法应回答「未定义」。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-965",
+  "ch": "ch3",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint i=3;\nprintf(\"%d\", ++i);",
+  "options": [],
+  "answer": "4",
+  "explanation": "前置自增先加后用，i 变 4 再输出 4。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-966",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint n=0;\nwhile(n++ < 3) ;\nprintf(\"%d\", n);",
+  "options": [
+   "3",
+   "4",
+   "5",
+   "死循环"
+  ],
+  "answer": 1,
+  "explanation": "n 依次取 0、1、2 时条件成立（用后自增），n=3 时判断为假但已自增为 4，退出后输出 4。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-967",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=10;\nwhile(i--) ;\nprintf(\"%d\", i);",
+  "options": [
+   "0",
+   "-1",
+   "1",
+   "9"
+  ],
+  "answer": 1,
+  "explanation": "i 递减到 0 时条件为假退出，但 0 这次判断后已自减为 -1，所以输出 -1。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-968",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint k=0;\nwhile(k=0) k--;\nprintf(\"%d\", k);",
+  "options": [],
+  "answer": "0",
+  "explanation": "条件是赋值表达式 k=0，值为 0（假），循环体不执行，k 保持 0。若写成 while(k==0) 则是死循环。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-969",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i,j,c=0;\nfor(i=1;i<=3;i++)\n  for(j=1;j<=3;j++)\n  { if(i==j) continue; c++; }\nprintf(\"%d\", c);",
+  "options": [
+   "9",
+   "6",
+   "3",
+   "0"
+  ],
+  "answer": 1,
+  "explanation": "共 9 次内层循环，其中 3 次 i==j 被 continue 跳过，实际计数 6。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-970",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i,j;\nfor(i=0;i<3;i++){\n  for(j=0;j<3;j++)\n    if(j==1) break;\n  printf(\"%d\", i);\n}",
+  "options": [
+   "012",
+   "0",
+   "111",
+   "000"
+  ],
+  "answer": 0,
+  "explanation": "内层 break 只跳出内层，外层循环照常继续，每轮输出一次 i，得 012。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-971",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint i,j,s=0;\nfor(i=1;i<=3;i++)\n  for(j=1;j<=i;j++)\n    s+=j;\nprintf(\"%d\",s);",
+  "options": [],
+  "answer": "10",
+  "explanation": "i=1 加 1；i=2 加 1+2=3；i=3 加 1+2+3=6，合计 10。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-972",
+  "ch": "ch3",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint x;\nx = (1, 2, 3);\nprintf(\"%d\", x);",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "语法错误"
+  ],
+  "answer": 2,
+  "explanation": "逗号表达式依次求值，整个表达式的值是最后一个，所以 x=3。若写成 x = 1, 2, 3; 则 x 只得到 1。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-973",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i, x, y;\nx=y=0;\nfor(i=0;i<3;i++) x++, y+=2;\nprintf(\"%d,%d\", x, y);",
+  "options": [
+   "3,6",
+   "2,4",
+   "3,3",
+   "6,6"
+  ],
+  "answer": 0,
+  "explanation": "循环体是逗号表达式，x 每轮加 1、y 每轮加 2，执行 3 轮得 3,6。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-974",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "以下程序运行后的输出结果是______。\nint i,p=1;\nfor(i=1;i<=4;i++) p*=2;\nprintf(\"%d\",p);",
+  "options": [],
+  "answer": "16",
+  "explanation": "2 累乘 4 次得 16。累乘变量初值必须是 1。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-975",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i, cnt=0;\nfor(i=1;i<=20;i++)\n  if(i%3==0 || i%5==0) cnt++;\nprintf(\"%d\", cnt);",
+  "options": [
+   "6",
+   "9",
+   "10",
+   "12"
+  ],
+  "answer": 1,
+  "explanation": "3 的倍数 6 个、5 的倍数 4 个，其中 15 被重复计算一次，6+4-1 = 9。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-976",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=1;\nwhile(i<=4)\n{ printf(\"%d\", i);\n  if(i==3) break;\n  i++; }",
+  "options": [
+   "1234",
+   "123",
+   "1233",
+   "12"
+  ],
+  "answer": 1,
+  "explanation": "i=1、2 正常递增，i=3 时先输出 3 再被 break 打断，得 123。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-977",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint n=0;\ndo{ n++; }while(n<0);\nprintf(\"%d\", n);",
+  "options": [
+   "0",
+   "1",
+   "死循环",
+   "不确定"
+  ],
+  "answer": 1,
+  "explanation": "do-while 先执行后判断，循环体至少执行一次，n 变成 1，判断 1<0 为假退出。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-978",
+  "ch": "ch5",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i=1, s=0;\nwhile(i<=4)\n{ switch(i)\n  { case 1: s+=1;\n    case 2: s+=2; break;\n    case 3: s+=3; break;\n    default: s+=4; }\n  i++; }\nprintf(\"%d\", s);",
+  "options": [
+   "10",
+   "12",
+   "13",
+   "6"
+  ],
+  "answer": 1,
+  "explanation": "i=1 命中 case 1 后穿透 case 2，加 1+2=3；i=2 加 2；i=3 加 3；i=4 走 default 加 4，合计 3+2+3+4 = 12。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-979",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint i, s=0;\nfor(i=1;i<=5;i++);\n  s+=i;\nprintf(\"%d\", s);",
+  "options": [
+   "15",
+   "6",
+   "21",
+   "0"
+  ],
+  "answer": 1,
+  "explanation": "for 后面多写了分号，循环体是空语句；循环结束时 i=6，然后执行 s+=6，输出 6。",
+  "src": "原创·程序阅读专练"
+ },
+ {
+  "id": "t-980",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "以下程序的输出结果是（ ）\nint s=3;\nwhile(s);\nprintf(\"%d\", s);",
+  "options": [
+   "3",
+   "0",
+   "死循环",
+   "无输出"
+  ],
+  "answer": 2,
+  "explanation": "while(s); 的循环体是空语句，而 s 一直为 3（非零），条件恒真，形成死循环，printf 永远执行不到。",
+  "src": "原创·程序阅读专练"
  }
 ]

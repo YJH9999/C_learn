@@ -346,38 +346,6 @@ function renderTheory(bank){
   if(TH.stage==='setup') renderTheorySetup(bank);
 }
 
-/* ---- 出题方向预测（按江南机考卷面风格推演） ---- */
-var PREDICT=[
-  {id:'p1', name:'第 1~5 章 · 概述 / 数据 / 顺序 / 分支', chs:['ch1','ch2','ch3','ch4','ch5'],
-   hi:'已考过（76 分），补漏优先',
-   pts:['程序输出结果（if 嵌套、switch 穿透）','合法常量与合法声明','复合赋值从右往左求值',
-        'if ↔ switch 等价改写','四舍五入到 n 位小数的表达式','整除与取余的符号','逻辑短路与自增自减']},
-  {id:'p2', name:'第 6~8 章 · 循环 / 数组与字符串 / 函数', chs:['ch6','ch7','ch8'],
-   hi:'下一场最可能考到这里',
-   pts:['循环执行次数与嵌套输出','break 与 continue 的差别','数组部分初始化与越界',
-        'strlen 与 sizeof 的差','传值 vs 地址传递','递归求阶乘 / 斐波那契','static 局部变量']},
-  {id:'p3', name:'第 9~10 章 · 指针 / 结构体', chs:['ch9','ch10'],
-   hi:'拉开差距的一段',
-   pts:['*(p+i) 与 p[i] 等价','p++ 与 (*p)++ 的区别','数组指针 vs 指针数组',
-        '结构体内存对齐','p->m 与 (*p).m','结构体整体赋值与比较']},
-  {id:'p4', name:'第 11~14 章 · 文件 / 宏 / 位运算 / 堆', chs:['ch11','ch12','ch13','ch14'],
-   hi:'偏僻但必考一两道',
-   pts:['fopen 六种模式与 feof 误用','宏展开与括号陷阱','掩码置位 / 清位 / 取位',
-        'malloc 四步曲与 realloc 搬家','位运算优先级低于关系运算']}
-];
-function predictHTML(){
-  return '<div class="panel" id="th-predict"><h2>出题方向预测 <span class="muted">按江南机考卷面风格推演</span></h2>'
-    +PREDICT.map(function(g){
-      return '<div class="pr-row" data-chs="'+g.chs.join(',')+'">'
-        +'<div class="pr-h"><b>'+esc(g.name)+'</b><i>'+esc(g.hi)+'</i>'
-        +'<button class="btn btn-sm" type="button" data-act="go">按此档组卷</button></div>'
-        +'<div class="pr-pts">'+g.pts.map(function(t){return '<span class="pr-pt">'+esc(t)+'</span>'}).join('')+'</div>'
-        +'</div>';
-    }).join('')
-    +'<div class="muted" style="margin-top:8px">点「按此档组卷」会自动锁定对应章节并按 15 单选 + 10 填空 + 5 判断 配题。</div>'
-    +'</div>';
-}
-
 /* ---- 组卷面板 ---- */
 function chChecks(idAll){
   return '<div class="ex-chgrid">'+CH.map(function(c){
@@ -409,7 +377,9 @@ var SRC_TABS=[
   {id:'原创',name:'原创 / 易错辨析'},
   {id:'教材',name:'教材样例改编'},
   {id:'实验与辅导',name:'实验与辅导'},
-  {id:'二级',name:'二级真题改编'}
+  {id:'二级',name:'二级真题改编'},
+  {id:'测试卷',name:'1-6 章测试卷'},
+  {id:'老师',name:'老师解析卷'}
 ];
 var counts=Object.assign({},PRESETS.std);
 var filterChs=[], filterSrc='';
@@ -453,8 +423,7 @@ function renderTheorySetup(bank){
       +'<span class="wl-stem">'+esc(st)+'</span></div>';
   }).join('');
   $('#th-stage').innerHTML=
-    predictHTML()
-    +(last?'<div class="ex-banner">上次成绩：<b>'+last.score+'/'+last.total+'</b>（'+last.pct+'%）· '+esc(last.date)
+    (last?'<div class="ex-banner">上次成绩：<b>'+last.score+'/'+last.total+'</b>（'+last.pct+'%）· '+esc(last.date)
       +'　<button class="btn btn-sm" id="th-review-last">查看卷面</button></div>':'')
     +'<div class="panel">'
     +'<h2>快速套卷</h2>'
@@ -498,24 +467,6 @@ function renderTheorySetup(bank){
         +'<button class="btn btn-sm btn-ghost" id="th-clear-wrong">清空错题本</button></div>':'')
     +'</div>';
 
-  /* 出题方向预测：一键锁章节 + 配题量 */
-  $$('#th-predict .pr-row').forEach(function(row){
-    var b=row.querySelector('[data-act=go]');
-    if(!b) return;
-    b.addEventListener('click',function(){
-      filterChs = row.dataset.chs.split(',');
-      filterSrc = '';
-      counts = {single:15, judge:5, fill:10, read:0};
-      $$('#th-presets .chip').forEach(function(x){ x.classList.remove('on'); });
-      $$('#th-ch-row .chip').forEach(function(x){
-        var vv=x.dataset.ch;
-        x.classList.toggle('on', vv? filterChs.indexOf(vv)>=0 : !filterChs.length);
-      });
-      $$('#th-src-row .chip').forEach(function(x){ x.classList.toggle('on', !x.dataset.src); });
-      refreshSetup();
-      var st=$('#th-stage'); if(st) st.scrollIntoView({block:'start',behavior:'smooth'});
-    });
-  });
   /* 快速套卷 */
   $$('#th-presets .chip').forEach(function(b){
     b.addEventListener('click',function(){
