@@ -66,11 +66,17 @@ var DATA={review:null, theory:null, prog:null};
 var BK={kind:'theory', bound:false, loaded:{}};   /* 题库浏览状态（须先于 showView 初始化） */
 var loading={};
 var EXFILE={review:'review_data', theory:'theory_bank', prog:'prog_bank'};
+/* 题库 JSON 带上与脚本一致的版本号，避免浏览器缓存旧数据 */
+var EXVER=(function(){
+  var el=document.querySelector('script[src*="exam_app.js"]');
+  var m=el&&el.src.match(/[?&]v=([^&]+)/);
+  return m?m[1]:'';
+})();
 function loadJSON(name, cb){
   if(DATA[name]){ cb(DATA[name]); return; }
   if(loading[name]){ loading[name].push(cb); return; }
   loading[name]=[cb];
-  fetch('assets/exam/'+EXFILE[name]+'.json').then(function(r){
+  fetch('assets/exam/'+EXFILE[name]+'.json'+(EXVER?'?v='+EXVER:'')).then(function(r){
     if(!r.ok) throw new Error(r.status);
     return r.json();
   }).then(function(j){
