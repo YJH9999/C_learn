@@ -17502,5 +17502,1285 @@
   "explanation": "%.2f 是精度控制；%d 输出 int；%c 输出字符本身；%s 输出字符串。",
   "src": "原创·机考风格",
   "lv": "mid"
+ },
+ {
+  "id": "t-1287",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·冰雹猜想】这段程序用 while (n != 1) 而不是 do-while，主要原因是（ ）",
+  "options": [
+   "while 执行更快",
+   "输入为 1 时不应做任何变换",
+   "do-while 不能写复合条件",
+   "while 可以省略花括号"
+  ],
+  "answer": 1,
+  "explanation": "题意是「一直变到 1」，本身已是 1 就不该再变。do-while 会强制执行一次，把 1 变成 4，属于逻辑错误。",
+  "src": "《案例式教程》第 3 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1288",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·百钱百鸡】把三重循环降成两重循环的关键是（ ）",
+  "options": [
+   "把公鸡的循环上界改小",
+   "小鸡数量由总数减去公鸡和母鸡直接算出",
+   "用 while 代替 for",
+   "把小鸡的循环放到最外层"
+  ],
+  "answer": 1,
+  "explanation": "总数固定为 100，所以 chick = 100 - cock - hen，少一层枚举，循环次数从约 7 万降到 714。",
+  "src": "《案例式教程》第 3 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1289",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "【案例·百钱百鸡】若把判断条件里的 <code>k % 3 == 0</code> 去掉，只写 <code>5*c+3*h+k/3 == 100</code>，方案数会变成______种。",
+  "options": [],
+  "answer": "7",
+  "explanation": "少了整除约束，k=76、79 这类不能被 3 整除的数也会被 k/3 截断后凑成 100，方案数被虚增到 7 种，属于典型的「只算钱数不算整只」错误。",
+  "src": "《案例式教程》第 3 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1290",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·自守数】把 i 的平方存进 int 变量，在求 90625 这种数时会出错，原因是（ ）",
+  "options": [
+   "int 不能存大于 32767 的数",
+   "90625² ≈ 8.2×10⁹，超出 32 位 int 的范围",
+   "平方运算在 C 中不支持",
+   "int 默认是无符号的"
+  ],
+  "answer": 1,
+  "explanation": "32 位 int 最大约 21.47 亿，90625 的平方是 82 亿，会溢出成负数，导致自守数被漏判。应使用 long long。",
+  "src": "《案例式教程》第 3 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1291",
+  "ch": "ch6",
+  "type": "fill",
+  "stem": "【案例·自守数】求 n 的位数时，程序用 <code>while (m &lt;= i) m *= 10;</code> 让 m 变成______（填「比 i 多一位的 10 的幂」或具体数值形式）。",
+  "options": [],
+  "answer": "10的k次幂 | 比i多一位的10的幂 | 10^k",
+  "explanation": "循环结束时 m 是恰好大于 i 的最小 10 的幂，例如 i=25 时 m=100，取末两位正好用 sq%100。",
+  "src": "《案例式教程》第 3 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1292",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·杨辉三角】如果定义数组时写成 <code>int a[10][10];</code> 而没有 <code>= {0}</code>，程序可能出现的问题是（ ）",
+  "options": [
+   "编译错误",
+   "第 0 行数据错误",
+   "计算 a[i][j] 时读到未初始化的垃圾值",
+   "不会出问题"
+  ],
+  "answer": 2,
+  "explanation": "递推只依赖上一行，但 a[0][0] 没被显式赋值时会参与 a[1][0]、a[1][1] 的计算，必须先整体清零。",
+  "src": "《案例式教程》第 5 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1293",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "【案例·杨辉三角】内层循环写成 <code>for (j = 1; j &lt; i; j++)</code> 而不是 <code>j &lt;= i</code>，是因为每行的首尾两个元素已经______。",
+  "options": [],
+  "answer": "置为1 | 赋值为1 | 手动置1",
+  "explanation": "a[i][0] 与 a[i][i] 已单独赋 1，中间的元素才需要由上一行相加得到；写 j<=i 会把 a[i][i] 也参与递推，结果就错了。",
+  "src": "《案例式教程》第 5 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1294",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·矩阵转置】把一个 2×3 的矩阵转置，下列说法正确的是（ ）",
+  "options": [
+   "可以不用额外数组，原地交换",
+   "必须借助另一个 3×2 的数组",
+   "转置后仍是 2×3",
+   "只能转置方阵"
+  ],
+  "answer": 1,
+  "explanation": "非方阵转置后行列数互换（2×3 → 3×2），原数组放不下，必须借助另一个数组；只有方阵才能原地转置。",
+  "src": "《案例式教程》第 5 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1295",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·矩阵转置】方阵原地转置时，内层循环写成 <code>for (j = 0; j &lt; n; j++)</code> 会导致（ ）",
+  "options": [
+   "只转置一半",
+   "每个元素被交换两次，等于没转",
+   "数组越界",
+   "编译错误"
+  ],
+  "answer": 1,
+  "explanation": "内层应从 j = i+1 开始：只遍历上三角，每个元素与对称位置交换一次。从 0 开始会把已经换好的又换回去。",
+  "src": "《案例式教程》第 5 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1296",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·魔方阵】奇数阶魔方阵的每行之和可以用公式（ ）直接算出（N 为阶数）",
+  "options": [
+   "N(N+1)/2",
+   "N(N²+1)/2",
+   "N²/2",
+   "N(N²-1)/2"
+  ],
+  "answer": 1,
+  "explanation": "每行和 = N(N²+1)/2，5 阶是 5×26/2 = 65。因为 1~N² 的总和是 N²(N²+1)/2，平摊到 N 行即得。",
+  "src": "《案例式教程》第 5 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1297",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·删除子串】左移循环的条件写成 <code>i + len &lt;= n</code> 而不是 <code>&lt; n</code>，是为了（ ）",
+  "options": [
+   "防止下标越界",
+   "把结尾的 '\\0' 一起搬过去",
+   "让循环多跑一次",
+   "提高效率"
+  ],
+  "answer": 1,
+  "explanation": "n 是 strlen，第 n 位正是 '\\0'。条件只到 i+len < n 的话，结束符搬不过来，字符串就没有结尾了。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1298",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·删除子串】如果调用 del(s, 10, 3) 而 s 只有 6 个字符，函数会（ ）",
+  "options": [
+   "越界写坏内存",
+   "直接返回，什么也不做",
+   "删除最后 3 个字符",
+   "补空格"
+  ],
+  "answer": 1,
+  "explanation": "函数开头有 pos >= n 的判断，越界的位置直接 return。这类边界检查是手写字符串函数必须加的。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1299",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·统计单词】为什么不能简单地「数空格个数再加 1」？（ ）",
+  "options": [
+   "因为空格不是字符",
+   "单词之间可能有多个空格，行首行尾也可能有空格",
+   "因为 gets 会吞掉空格",
+   "因为汉字占两个字节"
+  ],
+  "answer": 1,
+  "explanation": "连续空格会让「空格数+1」多算，行首空格还会再多算。用「状态标记」才能正确处理所有空白分布。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1300",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·统计单词】读入一行文字时用 fgets 而不是 gets 的主要原因是（ ）",
+  "options": [
+   "fgets 更快",
+   "gets 不检查缓冲区长度，已从 C11 中删除",
+   "gets 不能读空格",
+   "fgets 会自动转小写"
+  ],
+  "answer": 1,
+  "explanation": "gets 是典型的缓冲区溢出漏洞来源，C11 标准已将其移除。fgets 需要指定长度，虽然会保留换行符，但安全。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1301",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·插入字符】右移操作必须从字符串末尾（'\\0'）开始往前做，原因是（ ）",
+  "options": [
+   "这样循环次数更少",
+   "从前往后会覆盖还没搬走的字符",
+   "因为数组下标必须递增",
+   "strlen 只能从后往前算"
+  ],
+  "answer": 1,
+  "explanation": "从前往后做的话，s[1] 先被 s[0] 覆盖，s[1] 的原值就丢了，整个字符串会被写成一串相同字符。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1302",
+  "ch": "ch7",
+  "type": "fill",
+  "stem": "【案例·插入字符】若字符数组定义为 <code>char s[6] = \"hello\";</code> 再执行插入，会发生______（填四个字）。",
+  "options": [],
+  "answer": "数组越界 | 越界 | 缓冲区溢出",
+  "explanation": "hello 加 '\\0' 正好占 6 字节，没有空位放新字符，s[i+1] 会写到数组之外，属于典型的越界写。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1303",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·手写 strcpy】my_strcpy 的返回值类型写成 char* 而不是 void，是为了（ ）",
+  "options": [
+   "节省内存",
+   "支持链式调用，如 printf(\"%s\", my_strcpy(a,b))",
+   "让函数可以返回多个值",
+   "避免编译警告"
+  ],
+  "answer": 1,
+  "explanation": "标准库 strcpy 也返回目标串首地址，这样可以把调用嵌在别的表达式里。注意返回的是首地址，不是循环结束时的 dst。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1304",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·手写 strcpy】<code>while ((*dst++ = *src++) != '\\0')</code> 这行代码里，判断的是（ ）",
+  "options": [
+   "指针是否非空",
+   "刚赋过去的那一个字符是否为 '\\0'",
+   "两个指针是否相等",
+   "字符串长度是否为 0"
+  ],
+  "answer": 1,
+  "explanation": "赋值表达式的值就是刚赋的字符，遇到 '\\0' 时停止，此时 '\\0' 已经被写入目标串，所以复制是完整的。",
+  "src": "《案例式教程》第 7 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1305",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·汉诺塔】汉诺塔递归的时间复杂度是（ ）",
+  "options": [
+   "O(n)",
+   "O(n log n)",
+   "O(n²)",
+   "O(2ⁿ)"
+  ],
+  "answer": 3,
+  "explanation": "T(n) = 2T(n-1) + 1，解得 T(n) = 2ⁿ - 1，是指数级的。64 个圆盘在现实中不可能完成。",
+  "src": "《案例式教程》第 4 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1306",
+  "ch": "ch8",
+  "type": "fill",
+  "stem": "【案例·汉诺塔】n 个圆盘的移动次数通项公式是______（用 n 表示）。",
+  "options": [],
+  "answer": "2^n-1 | 2的n次方-1 | 2^n - 1",
+  "explanation": "每增加一个盘，步数翻倍再加 1：1、3、7、15、31…… 通项即 2ⁿ - 1。",
+  "src": "《案例式教程》第 4 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1307",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·RSA】求私钥 d 时，循环条件写 <code>while (d * e % phi != 1) d++;</code>，若误写成 <code>== 1</code> 会（ ）",
+  "options": [
+   "立刻结束循环",
+   "陷入死循环",
+   "结果仍然正确",
+   "编译错误"
+  ],
+  "answer": 1,
+  "explanation": "d 初值为 1 时 1×e % phi 通常不等于 1，写成 == 1 则条件一开始就不成立…… 反过来若写成 while(d*e%phi == 1) 则一开始不成立直接结束；本项考查「条件写反导致 d 找不到正确值或空转」。",
+  "src": "《案例式教程》第 4 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1308",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·RSA】若明文 m 大于模数 n，直接加密会出问题，原因是（ ）",
+  "options": [
+   "m 会被截断",
+   "解密后得到的是 m mod n，无法还原原始明文",
+   "n 会变成 0",
+   "加密速度太慢"
+  ],
+  "answer": 1,
+  "explanation": "RSA 的运算都在模 n 下进行，m ≥ n 时不同明文可能映射到同一密文，必须先分组或用更大的 n。",
+  "src": "《案例式教程》第 4 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1309",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·全排列】递归返回后必须把 s[k] 与 s[i] 换回来，这一步叫「恢复现场」，不加会（ ）",
+  "options": [
+   "内存泄漏",
+   "后面的分支拿到被改乱的字符串，结果重复或缺失",
+   "数组越界",
+   "栈溢出"
+  ],
+  "answer": 1,
+  "explanation": "交换是就地修改，递归回来后若不复原，下一轮 for 循环就基于错误的数据继续，排列会重复或漏掉。",
+  "src": "《案例式教程》第 4 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1310",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·全排列】若把 <code>char s[] = \"abc\";</code> 改成 <code>char *s = \"abc\";</code>，程序会（ ）",
+  "options": [
+   "正常运行",
+   "交换字符时崩溃（字面量在只读区）",
+   "结果变成 3 个字符",
+   "编译错误"
+  ],
+  "answer": 1,
+  "explanation": "字符串字面量位于只读段，修改它属于未定义行为，通常表现为段错误。需要可修改的副本必须用数组。",
+  "src": "《案例式教程》第 4 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1311",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·冰雹猜想】n 从 6 开始，按「偶数除 2、奇数乘 3 加 1」变换，共需多少步到达 1（ ）",
+  "options": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "answer": 1,
+  "explanation": "6→3→10→5→16→8→4→2→1，共 8 次变换。注意循环条件是「还没到 1」，n=1 时一次都不进。",
+  "src": "《案例式教程》第 3 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int n = 6, step = 0;\n    while (n != 1)\n    {\n        n = (n % 2) ? n * 3 + 1 : n / 2;\n        step++;\n    }\n    printf(\"%d\", step);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1312",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·冰雹猜想】n 从 27 开始变换，序列中出现的最大的数是（ ）",
+  "options": [
+   "3077",
+   "9232",
+   "4616",
+   "18464"
+  ],
+  "answer": 1,
+  "explanation": "27 这条序列要 111 步，中途最高冲到 9232。这也是为什么这题要用 long long 而不是 int。",
+  "src": "《案例式教程》第 3 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int n = 27, mx = 27;\n    while (n != 1)\n    {\n        n = (n % 2) ? n * 3 + 1 : n / 2;\n        if (n > mx) mx = n;\n    }\n    printf(\"%d\", mx);\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1313",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·百钱百鸡】公鸡 5 元、母鸡 3 元、小鸡 1 元 3 只，100 元买 100 只，共有多少种方案（ ）",
+  "options": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": 1,
+  "explanation": "四种：(0,25,75)、(4,18,78)、(8,11,81)、(12,4,84)。注意小鸡数必须是 3 的倍数，否则 k/3 会被整除截断。",
+  "src": "《案例式教程》第 3 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int c, h, k, n = 0;\n    for (c = 0; c <= 20; c++)\n        for (h = 0; h <= 33; h++)\n        {\n            k = 100 - c - h;\n            if (k % 3 == 0 && 5 * c + 3 * h + k / 3 == 100) n++;\n        }\n    printf(\"%d\", n);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1314",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·百钱百鸡】所有方案中，公鸡最多能买多少只（ ）",
+  "options": [
+   "10",
+   "12",
+   "15",
+   "20"
+  ],
+  "answer": 1,
+  "explanation": "公鸡 12 只、母鸡 4 只、小鸡 84 只时成立，12 是最大值。上界 20 只是理论极限（100/5），实际受「总数 = 100」约束。",
+  "src": "《案例式教程》第 3 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int c, h, k, mx = 0;\n    for (c = 0; c <= 20; c++)\n        for (h = 0; h <= 33; h++)\n        {\n            k = 100 - c - h;\n            if (k % 3 == 0 && 5 * c + 3 * h + k / 3 == 100 && c > mx) mx = c;\n        }\n    printf(\"%d\", mx);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1315",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·自守数】1~100 之间的自守数共有几个（ ）",
+  "options": [
+   "3",
+   "4",
+   "5",
+   "6"
+  ],
+  "answer": 2,
+  "explanation": "1、5、6、25、76 共 5 个。1²=1、5²=25、6²=36、25²=625、76²=5776，末尾都等于自身。",
+  "src": "《案例式教程》第 3 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    long long i, sq, m;\n    int cnt = 0;\n    for (i = 1; i <= 100; i++)\n    {\n        sq = i * i;\n        m = 1;\n        while (m <= i) m *= 10;\n        if (sq % m == i) cnt++;\n    }\n    printf(\"%d\", cnt);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1316",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·自守数】判断 25 是不是自守数，下面的程序输出（ ）",
+  "options": [
+   "yes",
+   "no",
+   "25",
+   "625"
+  ],
+  "answer": 0,
+  "explanation": "sq=625，m 乘到 100（比 25 多一位），625%100=25 等于自身，输出 yes。",
+  "src": "《案例式教程》第 3 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    long long i = 25, sq = i * i, m = 1;\n    while (m <= i) m *= 10;\n    printf(\"%s\", sq % m == i ? \"yes\" : \"no\");\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1317",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·杨辉三角】按 a[i][j] = a[i-1][j-1] + a[i-1][j] 递推，a[6][3] 的值是（ ）",
+  "options": [
+   "15",
+   "20",
+   "10",
+   "35"
+  ],
+  "answer": 1,
+  "explanation": "第 6 行（从 0 计）是 1 6 15 20 15 6 1，第 3 个是 20。杨辉三角第 n 行第 k 个等于组合数 C(n,k)。",
+  "src": "《案例式教程》第 5 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[10][10] = {0}, i, j;\n    for (i = 0; i < 10; i++)\n    {\n        a[i][0] = 1;\n        a[i][i] = 1;\n        for (j = 1; j < i; j++)\n            a[i][j] = a[i-1][j-1] + a[i-1][j];\n    }\n    printf(\"%d\", a[6][3]);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1318",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·杨辉三角】前 5 行（第 0~4 行）所有元素之和是（ ）",
+  "options": [
+   "16",
+   "31",
+   "32",
+   "15"
+  ],
+  "answer": 1,
+  "explanation": "每行和是 2^i：1+2+4+8+16 = 31 = 2^5 - 1。这是杨辉三角的经典性质。",
+  "src": "《案例式教程》第 5 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[10][10] = {0}, i, j, s = 0;\n    for (i = 0; i < 10; i++)\n    {\n        a[i][0] = 1;\n        a[i][i] = 1;\n        for (j = 1; j < i; j++)\n            a[i][j] = a[i-1][j-1] + a[i-1][j];\n    }\n    for (i = 0; i < 5; i++)\n        for (j = 0; j <= i; j++) s += a[i][j];\n    printf(\"%d\", s);\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1319",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·矩阵转置】a 为 {{1,2,3},{4,5,6}}，执行 b[j][i]=a[i][j] 之后 b[2][1] 的值是（ ）",
+  "options": [
+   "3",
+   "6",
+   "4",
+   "5"
+  ],
+  "answer": 1,
+  "explanation": "b[j][i]=a[i][j]，所以 b[2][1]=a[1][2]=6。转置后原矩阵的第 2 行变成了第 2 列。",
+  "src": "《案例式教程》第 5 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[2][3] = {{1,2,3},{4,5,6}}, b[3][2], i, j;\n    for (i = 0; i < 2; i++)\n        for (j = 0; j < 3; j++)\n            b[j][i] = a[i][j];\n    printf(\"%d\", b[2][1]);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1320",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·魔方阵】5 阶魔方阵的中心元素（第 3 行第 3 列）是（ ）",
+  "options": [
+   "13",
+   "12",
+   "25",
+   "1"
+  ],
+  "answer": 0,
+  "explanation": "5 阶魔方阵每行和为 65，中心格是中间值 (N²+1)/2 = 13。",
+  "src": "《案例式教程》第 5 章",
+  "code": "#include <stdio.h>\n#define N 5\nint main(void)\n{\n    int a[N][N] = {0};\n    int i = 0, j = N / 2, k, ni, nj;\n    for (k = 1; k <= N * N; k++)\n    {\n        a[i][j] = k;\n        ni = (i - 1 + N) % N;\n        nj = (j + 1) % N;\n        if (a[ni][nj] != 0) { ni = (i + 1) % N; nj = j; }\n        i = ni; j = nj;\n    }\n    printf(\"%d\", a[N/2][N/2]);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1321",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·魔方阵】程序里 <code>(i - 1 + N) % N</code> 中的 <code>+ N</code> 如果去掉，i=0 时得到（ ）",
+  "options": [
+   "4 4",
+   "-1 4",
+   "-1 -1",
+   "4 -1"
+  ],
+  "answer": 1,
+  "explanation": "C 语言中负数取模结果仍是负数：-1 % 5 = -1，+N 之后才是 4。位运算、环形队列里都要这么处理。",
+  "src": "《案例式教程》第 5 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int i = 0, N = 5;\n    printf(\"%d %d\", (i - 1) % N, (i - 1 + N) % N);\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1322",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·删除子串】执行 del(s, 2, 2) 后，字符串 \"abcdef\" 变成（ ）",
+  "options": [
+   "abef",
+   "abcf",
+   "abcd",
+   "abdef"
+  ],
+  "answer": 0,
+  "explanation": "从下标 2 开始的 2 个字符（c、d）被删掉，ef 左移两位，结果 abef。",
+  "src": "《案例式教程》第 7 章",
+  "code": "#include <stdio.h>\n#include <string.h>\nvoid del(char s[], int pos, int len)\n{\n    int n = (int)strlen(s), i;\n    if (pos < 0 || pos >= n || len <= 0) return;\n    if (pos + len > n) len = n - pos;\n    for (i = pos; i + len <= n; i++) s[i] = s[i + len];\n    s[n - len] = '\\0';\n}\nint main(void)\n{\n    char s[50] = \"abcdef\";\n    del(s, 2, 2);\n    printf(\"%s\", s);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1323",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·统计单词】输入 \"a  bb ccc\"（单词间两个空格），统计结果的输出是（ ）",
+  "options": [
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "answer": 1,
+  "explanation": "状态法只在「从空白进入字符」时计数，连续空格不会重复计数，结果为 3。",
+  "src": "《案例式教程》第 7 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    char s[200];\n    int i, cnt = 0, in = 0;\n    fgets(s, sizeof(s), stdin);\n    for (i = 0; s[i] != '\\0'; i++)\n    {\n        if (s[i] == ' ' || s[i] == '\\t' || s[i] == '\\n') in = 0;\n        else if (!in) { in = 1; cnt++; }\n    }\n    printf(\"%d\", cnt);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1324",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·插入字符】在 \"hello\" 的下标 0 处插入 'X'，输出结果是（ ）",
+  "options": [
+   "Xhello",
+   "Xello",
+   "hellXo",
+   "helloX"
+  ],
+  "answer": 0,
+  "explanation": "从 '\\0' 开始整体右移一位，再把 X 放到下标 0，得到 Xhello。",
+  "src": "《案例式教程》第 7 章",
+  "code": "#include <stdio.h>\n#include <string.h>\nvoid insert(char s[], int pos, char c)\n{\n    int n = (int)strlen(s), i;\n    for (i = n; i >= pos; i--) s[i + 1] = s[i];\n    s[pos] = c;\n}\nint main(void)\n{\n    char s[20] = \"hello\";\n    insert(s, 0, 'X');\n    printf(\"%s\", s);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1325",
+  "ch": "ch7",
+  "type": "single",
+  "stem": "【案例·手写 strcpy】下面程序输出的第二个值是（ ）",
+  "options": [
+   "5",
+   "6",
+   "20",
+   "21"
+  ],
+  "answer": 2,
+  "explanation": "sizeof(b) 求的是数组本身的大小 20，与内容长度无关——要拿长度得用 strlen，结果是 5。",
+  "src": "《案例式教程》第 7 章",
+  "code": "#include <stdio.h>\nchar *my_strcpy(char *dst, const char *src)\n{\n    char *p = dst;\n    while ((*dst++ = *src++) != '\\0') ;\n    return p;\n}\nint main(void)\n{\n    char a[20] = \"hello\", b[20];\n    my_strcpy(b, a);\n    printf(\"%d\", (int)sizeof(b));\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1326",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·汉诺塔】4 个圆盘需要移动多少步（ ）",
+  "options": [
+   "7",
+   "8",
+   "15",
+   "16"
+  ],
+  "answer": 2,
+  "explanation": "步数是 2^n - 1，4 个盘即 15 步。3 个盘 7 步、5 个盘 31 步。",
+  "src": "《案例式教程》第 4 章",
+  "code": "#include <stdio.h>\nint cnt = 0;\nvoid hanoi(int n, char a, char b, char c)\n{\n    if (n == 1) { cnt++; return; }\n    hanoi(n-1, a, c, b);\n    cnt++;\n    hanoi(n-1, b, a, c);\n}\nint main(void)\n{\n    hanoi(4, 'A', 'B', 'C');\n    printf(\"%d\", cnt);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1327",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·RSA】快速幂函数 modpow(2, 10, 1000) 的返回值是（ ）",
+  "options": [
+   "24",
+   "1024",
+   "24.0",
+   "1"
+  ],
+  "answer": 0,
+  "explanation": "2^10 = 1024，对 1000 取模得 24。快速幂把指数按二进制拆分，边乘边取模，避免溢出。",
+  "src": "《案例式教程》第 4 章",
+  "code": "#include <stdio.h>\nlong long modpow(long long a, long long b, long long m)\n{\n    long long r = 1;\n    a %= m;\n    while (b > 0)\n    {\n        if (b & 1) r = r * a % m;\n        a = a * a % m;\n        b >>= 1;\n    }\n    return r;\n}\nint main(void)\n{\n    printf(\"%lld\", modpow(2, 10, 1000));\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1328",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·RSA】modpow(3, 5, 7) 的返回值是（ ）",
+  "options": [
+   "5",
+   "243",
+   "2",
+   "3"
+  ],
+  "answer": 0,
+  "explanation": "3^5 = 243，243 ÷ 7 = 34 余 5，故结果为 5。等价于逐步取模：(3×3)%7=2，(2×3)%7=6，(6×3)%7=4，(4×3)%7=5。",
+  "src": "《案例式教程》第 4 章",
+  "code": "#include <stdio.h>\nlong long modpow(long long a, long long b, long long m)\n{\n    long long r = 1;\n    a %= m;\n    while (b > 0)\n    {\n        if (b & 1) r = r * a % m;\n        a = a * a % m;\n        b >>= 1;\n    }\n    return r;\n}\nint main(void)\n{\n    printf(\"%lld\", modpow(3, 5, 7));\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1329",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·全排列】用交换法生成 \"abcd\" 的全排列，共输出多少行（ ）",
+  "options": [
+   "4",
+   "16",
+   "24",
+   "64"
+  ],
+  "answer": 2,
+  "explanation": "n 个不同字符的全排列是 n!，4! = 24。",
+  "src": "《案例式教程》第 4 章",
+  "code": "#include <stdio.h>\nint cnt = 0;\nvoid perm(char s[], int k, int n)\n{\n    int i;\n    char t;\n    if (k == n) { cnt++; return; }\n    for (i = k; i < n; i++)\n    {\n        t = s[k]; s[k] = s[i]; s[i] = t;\n        perm(s, k + 1, n);\n        t = s[k]; s[k] = s[i]; s[i] = t;\n    }\n}\nint main(void)\n{\n    char s[] = \"abcd\";\n    perm(s, 0, 4);\n    printf(\"%d\", cnt);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1330",
+  "ch": "ch6",
+  "type": "single",
+  "stem": "【案例·冰雹猜想】若把循环写成 do-while，即先变换再判断，输入 n=1 时输出 step 是（ ）",
+  "options": [
+   "0",
+   "2",
+   "3",
+   "死循环"
+  ],
+  "answer": 2,
+  "explanation": "n=1 是奇数，先变成 4（step=1），4 变 2（step=2），2 再变 1（step=3）后退出，输出 3。do-while 至少执行一次，输入 1 也会走三步。",
+  "src": "《案例式教程》第 3 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int n = 1, step = 0;\n    do\n    {\n        n = (n % 2) ? n * 3 + 1 : n / 2;\n        step++;\n    } while (n != 1);\n    printf(\"%d\", step);\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1331",
+  "ch": "ch8",
+  "type": "single",
+  "stem": "【案例·汉诺塔】3 个圆盘时，第一步和第二步移动的是（ ）",
+  "options": [
+   "AC AB",
+   "AB AC",
+   "AC BC",
+   "AB BA"
+  ],
+  "answer": 0,
+  "explanation": "3 个盘的顺序是 A→C、A→B、C→B、A→C、B→A、B→C、A→C。前两步是「先把小盘挪到中转柱 B」，所以是 AC 然后 AB。",
+  "src": "《案例式教程》第 4 章",
+  "code": "#include <stdio.h>\nchar buf[64];\nint p = 0;\nvoid hanoi(int n, char a, char b, char c)\n{\n    if (n == 1) { buf[p++] = a; buf[p++] = c; buf[p++] = ' '; return; }\n    hanoi(n-1, a, c, b);\n    buf[p++] = a; buf[p++] = c; buf[p++] = ' ';\n    hanoi(n-1, b, a, c);\n}\nint main(void)\n{\n    hanoi(3, 'A', 'B', 'C');\n    buf[5] = '\\0';\n    printf(\"%s\", buf);\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1332",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·快速排序】对 {49,38,65,97,76,13,27} 做一趟挖坑填数划分，基准 49 最终落在下标（ ）",
+  "options": [
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "answer": 1,
+  "explanation": "一趟划分后左边都比 49 小、右边都比它大：27 38 13 49 76 97 65，49 落在下标 3。",
+  "src": "《案例式教程》第 6 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int a[] = {49, 38, 65, 97, 76, 13, 27};\n    int i = 0, j = 6, key = a[0];\n    while (i < j)\n    {\n        while (i < j && a[j] >= key) j--;\n        a[i] = a[j];\n        while (i < j && a[i] <= key) i++;\n        a[j] = a[i];\n    }\n    a[i] = key;\n    printf(\"%d\", i);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1333",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·快速排序】对 {49,38,65,97,76,13,27} 递归排序完成后，数组第一个元素是（ ）",
+  "options": [
+   "13",
+   "27",
+   "38",
+   "49"
+  ],
+  "answer": 0,
+  "explanation": "升序结果 13 27 38 49 65 76 97，第一个是 13。",
+  "src": "《案例式教程》第 6 章",
+  "code": "#include <stdio.h>\nvoid quick(int a[], int l, int r)\n{\n    int i = l, j = r, key = a[l], t;\n    if (l >= r) return;\n    while (i < j)\n    {\n        while (i < j && a[j] >= key) j--;\n        a[i] = a[j];\n        while (i < j && a[i] <= key) i++;\n        a[j] = a[i];\n    }\n    a[i] = key;\n    quick(a, l, i - 1);\n    quick(a, i + 1, r);\n}\nint main(void)\n{\n    int a[] = {49, 38, 65, 97, 76, 13, 27};\n    quick(a, 0, 6);\n    printf(\"%d\", a[0]);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1334",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·快速排序】快速排序在什么情况下退化成 O(n²)（ ）",
+  "options": [
+   "元素随机分布时",
+   "每次选的基准都是当前区间的最大或最小值",
+   "元素全部相等时",
+   "数据量很小时"
+  ],
+  "answer": 1,
+  "explanation": "基准选到极值时，每次划分只能分出一个元素，递归深度变成 n。已排好序的数组取首元素作基准就是这种最坏情况。",
+  "src": "《案例式教程》第 6 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1335",
+  "ch": "ch9",
+  "type": "fill",
+  "stem": "【案例·快速排序】快速排序的平均时间复杂度是______。",
+  "options": [],
+  "answer": "O(nlogn) | O(n log n) | nlogn",
+  "explanation": "每次划分把区间分成两半，递归深度 log n，每层总工作量 n，故为 O(n log n)。",
+  "src": "《案例式教程》第 6 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1336",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·函数指针】下面程序的输出是（ ）",
+  "options": [
+   "13",
+   "42",
+   "67",
+   "0"
+  ],
+  "answer": 1,
+  "explanation": "op 是函数指针数组，op[1] 指向 mul，op[1](6,7) 即 mul(6,7)=42。",
+  "src": "《案例式教程》第 6 章",
+  "code": "#include <stdio.h>\nint add(int a, int b) { return a + b; }\nint mul(int a, int b) { return a * b; }\nint main(void)\n{\n    int (*op[2])(int, int) = {add, mul};\n    printf(\"%d\", op[1](6, 7));\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1337",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·函数指针】声明 <code>int (*p[3])(int, int);</code> 中，p 的类型是（ ）",
+  "options": [
+   "指向函数的指针",
+   "含 3 个元素的函数指针数组",
+   "返回指针的函数",
+   "指向数组的指针"
+  ],
+  "answer": 1,
+  "explanation": "读法：p 先与 [3] 结合成数组，元素是 int(*)(int,int) 型函数指针。若写成 int (*p)(int,int) 才是单个函数指针。",
+  "src": "《案例式教程》第 6 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1338",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·函数指针】下面程序输出的是（ ）",
+  "options": [
+   "5",
+   "地址值",
+   "0",
+   "编译错误"
+  ],
+  "answer": 0,
+  "explanation": "(*f)(2,3) 与 f(2,3) 完全等价，都是调用 add，结果为 5。函数名本身就是地址，赋初值不必写 &add。",
+  "src": "《案例式教程》第 6 章",
+  "code": "#include <stdio.h>\nint add(int a, int b) { return a + b; }\nint main(void)\n{\n    int (*f)(int, int) = add;\n    printf(\"%d\", (*f)(2, 3));\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1339",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·指针数组排序】对 {\"banana\",\"apple\",\"cherry\",\"date\"} 按字典序排序后，第一个字符串是（ ）",
+  "options": [
+   "apple",
+   "banana",
+   "cherry",
+   "date"
+  ],
+  "answer": 0,
+  "explanation": "字典序最小的是 apple，排序后 s[0] 指向它。",
+  "src": "《案例式教程》第 6 章",
+  "code": "#include <stdio.h>\n#include <string.h>\nvoid sort(char *s[], int n)\n{\n    int i, j;\n    char *t;\n    for (i = 0; i < n - 1; i++)\n        for (j = 0; j < n - 1 - i; j++)\n            if (strcmp(s[j], s[j+1]) > 0)\n            {\n                t = s[j]; s[j] = s[j+1]; s[j+1] = t;\n            }\n}\nint main(void)\n{\n    char *s[] = {\"banana\", \"apple\", \"cherry\", \"date\"};\n    sort(s, 4);\n    printf(\"%s\", s[0]);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1340",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·指针数组排序】排序时只交换指针而不搬动字符，好处是（ ）",
+  "options": [
+   "更省内存",
+   "交换代价从「搬整个字符串」降到「换两个地址」",
+   "可以修改字符串内容",
+   "避免使用 strcmp"
+  ],
+  "answer": 1,
+  "explanation": "移动一个指针只要复制 4/8 字节，而搬字符串要逐字节复制；字符串本身在只读段时更不能改，只能换指针。",
+  "src": "《案例式教程》第 6 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1341",
+  "ch": "ch9",
+  "type": "single",
+  "stem": "【案例·指针数组排序】下面程序输出的是（ ）",
+  "options": [
+   "1 1",
+   "0 1",
+   "1 0",
+   "-1 0"
+  ],
+  "answer": 0,
+  "explanation": "strcmp 按字符 ASCII 比较，'a'<'b' 返回负数，<0 为真；相等时返回 0。两个判断都成立，输出 1 1。",
+  "src": "《案例式教程》第 6 章",
+  "code": "#include <stdio.h>\n#include <string.h>\nint main(void)\n{\n    printf(\"%d %d\", strcmp(\"apple\", \"banana\") < 0, strcmp(\"abc\", \"abc\") == 0);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1342",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "【案例·学生成绩排序】按成绩从高到低排序后，输出第一行的学号是（ ）",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "0"
+  ],
+  "answer": 1,
+  "explanation": "成绩最高的是 Amy（95），学号 2，排在第一位。",
+  "src": "《案例式教程》第 9 章",
+  "code": "#include <stdio.h>\ntypedef struct { int no; char name[12]; int score; } Stu;\nint main(void)\n{\n    Stu a[3] = {{1,\"Tom\",78},{2,\"Amy\",95},{3,\"Bob\",86}}, t;\n    int i, j;\n    for (i = 0; i < 2; i++)\n        for (j = 0; j < 2 - i; j++)\n            if (a[j].score < a[j+1].score)\n            {\n                t = a[j]; a[j] = a[j+1]; a[j+1] = t;\n            }\n    printf(\"%d\", a[0].no);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1343",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "【案例·学生成绩排序】交换两个结构体变量时可以直接写 <code>t = a[j];</code>，这说明（ ）",
+  "options": [
+   "结构体是基本数据类型",
+   "同类型结构体支持整体赋值（逐字节复制）",
+   "结构体只能比较不能赋值",
+   "结构体指针不能交换"
+  ],
+  "answer": 1,
+  "explanation": "C 允许同类型结构体整体赋值，等价于 memcpy；但不支持 == 比较，比较必须逐成员进行。",
+  "src": "《案例式教程》第 9 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1344",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "【案例·学生成绩排序】用 <code>typedef struct {...} Stu;</code> 之后，定义变量可以写______（而不是 struct Stu s;）。",
+  "options": [],
+  "answer": "Stu s | Stu s;",
+  "explanation": "typedef 给结构体类型起了别名 Stu，之后直接用 Stu 就是类型名，省掉 struct 关键字。",
+  "src": "《案例式教程》第 9 章",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1345",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "【案例·单向链表】删除链表头结点时，函数必须（ ）",
+  "options": [
+   "直接 free 头结点即可",
+   "修改头指针指向第二个结点并返回新头",
+   "把头结点的值改成 0",
+   "什么也不用做"
+  ],
+  "answer": 1,
+  "explanation": "头结点没有前驱，摘链要靠 <code>h = p-&gt;next</code>，并且这个新头要返回给调用者，否则整条链就丢了。",
+  "src": "《案例式教程》第 9 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1346",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "【案例·单向链表】结构体自引用时，next 必须声明为______（写出完整类型）。",
+  "options": [],
+  "answer": "struct Node * | struct Node *next",
+  "explanation": "typedef 别名在结构体内部还没生效，所以必须写 struct Node *；写成 Node * 会报「未知类型」。",
+  "src": "《案例式教程》第 9 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1347",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "【案例·打鱼晒网】从 2010-01-01 起三天打鱼两天晒网，2010-01-06 这天的状态是（ ）",
+  "options": [
+   "打鱼",
+   "晒网",
+   "无法判断",
+   "两者都有"
+  ],
+  "answer": 0,
+  "explanation": "01-01 是第 0 天（已过 0 天），01-06 已过 5 天，5%5=0，对应周期第 1 天，属于打鱼的三天之内。",
+  "src": "《案例式教程》第 9 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int total = 5;\n    printf(\"%s\", (total % 5) < 3 ? \"打鱼\" : \"晒网\");\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1348",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "【案例·打鱼晒网】接着上题，2010-01-09 这天的状态是（ ）",
+  "options": [
+   "打鱼",
+   "晒网",
+   "无法判断",
+   "休息"
+  ],
+  "answer": 1,
+  "explanation": "01-09 已过 8 天，8%5=3，落在周期的第 4 天，属于晒网的区间（余数 3、4）。",
+  "src": "《案例式教程》第 9 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    int total = 8;\n    printf(\"%s\", (total % 5) < 3 ? \"打鱼\" : \"晒网\");\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1349",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "【案例·打鱼晒网】判断闰年的正确写法是（ ）",
+  "options": [
+   "y % 4 == 0",
+   "y % 4 == 0 || y % 100 == 0",
+   "(y % 4 == 0 && y % 100 != 0) || y % 400 == 0",
+   "y % 400 == 0"
+  ],
+  "answer": 2,
+  "explanation": "口诀「四年一闰、百年不闰、四百年再闰」，三个条件缺一不可。1900 不是闰年，2000 是闰年。",
+  "src": "《案例式教程》第 9 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1350",
+  "ch": "ch10",
+  "type": "fill",
+  "stem": "【案例·打鱼晒网】周期题的通法是先算经过的天数对周期取余，本题周期是______天。",
+  "options": [],
+  "answer": "5",
+  "explanation": "三天打鱼加两天晒网共 5 天一个循环，所以对 5 取余，余 0~2 打鱼、3~4 晒网。",
+  "src": "《案例式教程》第 9 章",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1351",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·文件定位】每条记录 20 字节，要直接读取第 3 条，fseek 的偏移量应为（ ）",
+  "options": [
+   "20",
+   "40",
+   "60",
+   "3"
+  ],
+  "answer": 1,
+  "explanation": "第 n 条的偏移是 (n-1)×记录长度，第 3 条即 2×20=40。注意 sizeof(int[5]) 也是 20 字节。",
+  "src": "《案例式教程》第 10 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    printf(\"%d\", 2 * (int)sizeof(int[5]));\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1352",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·文件定位】关于 fseek，下列说法正确的是（ ）",
+  "options": [
+   "任何文件都能任意定位到字节",
+   "文本文件里只能定位到 ftell 返回过的位置",
+   "fseek 会自动清零缓冲区",
+   "fseek 的单位是行"
+  ],
+  "answer": 1,
+  "explanation": "文本模式存在换行符转换，字节位置不唯一对应，标准只保证定位到 ftell 曾返回的位置；二进制文件才可以任意跳。",
+  "src": "《案例式教程》第 10 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1353",
+  "ch": "ch11",
+  "type": "fill",
+  "stem": "【案例·文件定位】把文件指针移到文件末尾应写 <code>fseek(fp, 0, ______);</code>。",
+  "options": [],
+  "answer": "SEEK_END",
+  "explanation": "三个宏：SEEK_SET（文件开头）、SEEK_CUR（当前位置）、SEEK_END（文件末尾）。配合 ftell 可以求文件大小。",
+  "src": "《案例式教程》第 10 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1354",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·删除记录】4 条记录中删掉学号 3，用「边读边写临时文件」的方法处理后，文件里还剩几条（ ）",
+  "options": [
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "answer": 1,
+  "explanation": "4 条里跳过学号 3，剩 1、2、4 三条。",
+  "src": "《案例式教程》第 10 章",
+  "code": "#include <stdio.h>\ntypedef struct { int no; char name[12]; int score; } Stu;\nint main(void)\n{\n    Stu a[4] = {{1,\"Tom\",78},{2,\"Amy\",95},{3,\"Bob\",86},{4,\"Cid\",90}}, t;\n    int n = 0;\n    FILE *in, *out;\n    in = fopen(\"a.dat\", \"wb\");\n    fwrite(a, sizeof(Stu), 4, in);\n    fclose(in);\n    in = fopen(\"a.dat\", \"rb\");\n    out = fopen(\"b.dat\", \"wb\");\n    while (fread(&t, sizeof(Stu), 1, in) == 1)\n        if (t.no != 3) fwrite(&t, sizeof(Stu), 1, out);\n    fclose(in);\n    fclose(out);\n    in = fopen(\"b.dat\", \"rb\");\n    while (fread(&t, sizeof(Stu), 1, in) == 1) n++;\n    fclose(in);\n    printf(\"%d\", n);\n    return 0;\n}",
+  "lv": "easy"
+ },
+ {
+  "id": "t-1355",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·删除记录】读记录时循环条件写 <code>fread(...) == 1</code> 而不是 <code>while (!feof(fp))</code>，是因为（ ）",
+  "options": [
+   "前者更快",
+   "feof 要等读失败之后才置位，会多处理一条重复记录",
+   "fread 不能和 feof 一起用",
+   "feof 只能用于文本文件"
+  ],
+  "answer": 1,
+  "explanation": "feof 是「读失败之后才发现」的标志，用 while(!feof) 时最后一次读失败，缓冲区还是上一条的旧数据，会被重复写入。",
+  "src": "《案例式教程》第 10 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1356",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·删除记录】用临时文件替换原文件时，必须先 fclose 再 remove/rename，原因是（ ）",
+  "options": [
+   "否则文件指针会失效",
+   "文件仍打开时在 Windows 上无法删除或改名",
+   "rename 只能处理空文件",
+   "不关闭会丢失数据"
+  ],
+  "answer": 1,
+  "explanation": "Windows 对已打开的文件加了独占锁，rename 会失败；而且缓冲区没刷盘时改名，数据可能不完整。",
+  "src": "《案例式教程》第 10 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1357",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·文件加密】执行 <code>printf(\"%d\", 'A' ^ 0x20);</code> 输出（ ）",
+  "options": [
+   "65",
+   "97",
+   "32",
+   "0"
+  ],
+  "answer": 1,
+  "explanation": "'A' 是 65（0x41），异或 0x20 把第 5 位取反，得到 97 即 'a'。大小写转换就是这一位在起作用。",
+  "src": "《案例式教程》第 10 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    printf(\"%d\", 'A' ^ 0x20);\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1358",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·文件加密】fgetc 的返回值类型是 int 而不是 char，原因是（ ）",
+  "options": [
+   "为了兼容中文",
+   "需要能返回 EOF(-1)，char 无法区分 0xFF 和 EOF",
+   "int 读写更快",
+   "历史遗留问题"
+  ],
+  "answer": 1,
+  "explanation": "若用 char 接收，读到字节 0xFF 会被当成 -1（即 EOF），文件会被提前判为结束，这是极难发现的 bug。",
+  "src": "《案例式教程》第 10 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1359",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "【案例·宏的括号】<code>#define SQ(x) x*x</code> 时，SQ(2+3) 展开后的值（ ）",
+  "options": [
+   "25",
+   "11",
+   "10",
+   "13"
+  ],
+  "answer": 1,
+  "explanation": "展开成 2+3*2+3，先算乘法得 2+6+3=11。这正是「形参必须加括号」的原因。",
+  "src": "《案例式教程》第 8 章",
+  "code": "#include <stdio.h>\n#define SQ(x) x*x\nint main(void)\n{\n    printf(\"%d\", SQ(2 + 3));\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1360",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "【案例·宏的括号】<code>#define MAX(a,b) a&gt;b?a:b</code>（整体没括号）时，<code>2 * MAX(3,5)</code> 的值是（ ）",
+  "options": [
+   "10",
+   "3",
+   "5",
+   "6"
+  ],
+  "answer": 1,
+  "explanation": "展开成 2*3>5?3:5，即 (6>5)?3:5，结果取 3。要有正确结果必须写成 #define MAX(a,b) ((a)>(b)?(a):(b))。",
+  "src": "《案例式教程》第 8 章",
+  "code": "#include <stdio.h>\n#define MAX(a,b) a>b?a:b\nint main(void)\n{\n    printf(\"%d\", 2 * MAX(3, 5));\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1361",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "【案例·宏的括号】宏与函数相比，最危险的差异是（ ）",
+  "options": [
+   "宏不能返回值",
+   "宏的参数可能被求值多次，带副作用时会出错",
+   "宏不能嵌套",
+   "宏只能处理整数"
+  ],
+  "answer": 1,
+  "explanation": "MAX(i++, j++) 展开后 i++ 可能出现两次，i 被加了两次。函数则是先求值再传参，只求一次。",
+  "src": "《案例式教程》第 8 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1362",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "【案例·32还是64】在 64 位 Windows（MinGW）下，下面程序的输出是（ ）",
+  "options": [
+   "4 4 8",
+   "4 8 8",
+   "4 4 4",
+   "8 8 8"
+  ],
+  "answer": 0,
+  "explanation": "Windows 采用 LLP64 模型：long 仍是 4 字节，只有指针变成 8 字节。Linux 的 LP64 下 long 才是 8 字节。",
+  "src": "《案例式教程》第 8 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    printf(\"%d %d %d\", (int)sizeof(int), (int)sizeof(long), (int)sizeof(void *));\n    return 0;\n}",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1363",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "【案例·井号运算符】下面程序的输出是（ ）",
+  "options": [
+   "42",
+   "ab12",
+   "12",
+   "编译错误"
+  ],
+  "answer": 0,
+  "explanation": "## 把 ab 和 12 粘成标识符 ab12，取它的值即 42。这个运算符只能用在宏定义里。",
+  "src": "《案例式教程》第 8 章",
+  "code": "#include <stdio.h>\n#define CAT(a,b) a##b\nint main(void)\n{\n    int ab12 = 42;\n    printf(\"%d\", CAT(ab, 12));\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1364",
+  "ch": "ch12",
+  "type": "single",
+  "stem": "【案例·井号运算符】<code>#define PRINT(n) printf(#n \" = %d\\n\", n)</code> 中，<code>#n</code> 的作用是（ ）",
+  "options": [
+   "把 n 的值转成字符串",
+   "把 n 原样变成字符串字面量",
+   "对 n 取地址",
+   "注释掉 n"
+  ],
+  "answer": 1,
+  "explanation": "# 是「字符串化」运算符，PRINT(3 + 4) 展开后第一个参数就是字符串 \"3 + 4\"（不是值 7）。",
+  "src": "《案例式教程》第 8 章",
+  "lv": "hard"
+ },
+ {
+  "id": "t-1365",
+  "ch": "ch12",
+  "type": "fill",
+  "stem": "【案例·井号运算符】<code>PRINT(3 + 4)</code> 展开后，两个相邻字符串 <code>\"3 + 4\"</code> 与 <code>\" = %d\\n\"</code> 会被编译器______。",
+  "options": [],
+  "answer": "拼接 | 自动拼接 | 连接",
+  "explanation": "C 语言规定相邻的字符串字面量会自动拼接成一个，这是语法特性，不是宏的功劳。",
+  "src": "《案例式教程》第 8 章",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1366",
+  "ch": "ch10",
+  "type": "single",
+  "stem": "【案例·单向链表】链表 10→20→30→40→50，删除值为 30 的结点后输出为（ ）",
+  "options": [
+   "10 20 40 50",
+   "10 20 30 40 50",
+   "20 40 50",
+   "10 20 40 50 0"
+  ],
+  "answer": 0,
+  "explanation": "摘掉 30 那个结点后剩 4 个，输出 10 20 40 50。",
+  "src": "《案例式教程》第 9 章",
+  "code": "#include <stdio.h>\n#include <stdlib.h>\ntypedef struct Node { int data; struct Node *next; } Node;\nNode *create(int n)\n{\n    Node *h = NULL, *t = NULL, *p;\n    int i;\n    for (i = 1; i <= n; i++)\n    {\n        p = (Node *)malloc(sizeof(Node));\n        p->data = i * 10;\n        p->next = NULL;\n        if (!h) h = t = p; else { t->next = p; t = p; }\n    }\n    return h;\n}\nNode *del(Node *h, int x)\n{\n    Node *p = h, *pre = NULL;\n    while (p && p->data != x) { pre = p; p = p->next; }\n    if (!p) return h;\n    if (!pre) h = p->next; else pre->next = p->next;\n    free(p);\n    return h;\n}\nint main(void)\n{\n    Node *h = create(5);\n    h = del(h, 30);\n    while (h) { printf(\"%d\", h->data); h = h->next; if (h) printf(\" \"); }\n    return 0;\n}",
+  "lv": "mid"
+ },
+ {
+  "id": "t-1367",
+  "ch": "ch11",
+  "type": "single",
+  "stem": "【案例·文件加密】把 \"Hello C\" 每字节异或 0x5A 后，密文前 3 个字节是（ ）",
+  "options": [
+   "18 63 54",
+   "72 101 108",
+   "0 0 0",
+   "18 63 55"
+  ],
+  "answer": 0,
+  "explanation": "'H'(72)^90=18、'e'(101)^90=63、'l'(108)^90=54。再异或一次 0x5A 就还原。",
+  "src": "《案例式教程》第 10 章",
+  "code": "#include <stdio.h>\nint main(void)\n{\n    char s[] = \"Hello C\";\n    int i;\n    for (i = 0; i < 3; i++) printf(i ? \" %d\" : \"%d\", s[i] ^ 0x5A);\n    return 0;\n}",
+  "lv": "hard"
  }
 ]

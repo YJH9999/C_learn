@@ -2328,5 +2328,215 @@
    "in": "apple pear apple banana apple pear",
    "out": "word=apple\r\ncount=3\r"
   }
+ },
+ {
+  "id": "p-154",
+  "ch": "ch6",
+  "level": 2,
+  "title": "冰雹猜想（3n+1）步数",
+  "stem": "任给一个正整数 n，若是偶数就除以 2，若是奇数就乘 3 加 1，重复到变成 1 为止。求一共进行了多少次变换（n 本身为 1 时输出 0）。\n输入格式：一行，一个正整数 n（1 ≤ n ≤ 10^6）。\n输出格式：一行，一个整数，表示变换次数。\n样例输入：\n6\n样例输出：\n8",
+  "hint": "用 while (n != 1) 控制循环；n 可能中途冲高，建议用 long long。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    long long n;\n    int step = 0;\n\n    scanf(\"%lld\", &n);\n    while (n != 1)\n    {\n        n = (n % 2) ? n * 3 + 1 : n / 2;\n        step++;\n    }\n    printf(\"%d\\n\", step);\n    return 0;\n}\n",
+  "explanation": "经典 3n+1 问题。n=6 时序列为 6→3→10→5→16→8→4→2→1，共 8 次变换。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "6",
+   "out": "8\r"
+  }
+ },
+ {
+  "id": "p-155",
+  "ch": "ch6",
+  "level": 2,
+  "title": "百钱百鸡方案数",
+  "stem": "公鸡 5 元一只，母鸡 3 元一只，小鸡 1 元 3 只。用 100 元买 100 只鸡，求一共有多少种方案（每种鸡的数量都可以为 0）。\n输入格式：无输入。\n输出格式：一行，一个整数，表示方案数。\n样例输入：\n（无输入）\n样例输出：\n4",
+  "hint": "两重循环枚举公鸡和母鸡，小鸡用 100 减去两者直接算出；注意小鸡数必须是 3 的倍数。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int cock, hen, chick, n = 0;\n\n    for (cock = 0; cock <= 20; cock++)\n        for (hen = 0; hen <= 33; hen++)\n        {\n            chick = 100 - cock - hen;\n            if (chick % 3 == 0 && 5 * cock + 3 * hen + chick / 3 == 100)\n                n++;\n        }\n\n    printf(\"%d\\n\", n);\n    return 0;\n}\n",
+  "explanation": "四种方案：(0,25,75)、(4,18,78)、(8,11,81)、(12,4,84)。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "",
+   "out": "4\r"
+  }
+ },
+ {
+  "id": "p-156",
+  "ch": "ch6",
+  "level": 3,
+  "title": "区间内自守数个数",
+  "stem": "一个数的平方的末尾几位等于它本身，这个数叫自守数（如 5²=25、25²=625）。给定区间 [a, b]，统计其中自守数的个数。\n输入格式：一行，两个正整数 a 和 b（1 ≤ a ≤ b ≤ 10^6）。\n输出格式：一行，一个整数，表示区间内自守数的个数。\n样例输入：\n1 100\n样例输出：\n5",
+  "hint": "求「比 i 多一位的 10 的幂」再取模；平方可能超出 int，必须用 long long。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    long long a, b, i, sq, m;\n    int cnt = 0;\n\n    scanf(\"%lld %lld\", &a, &b);\n    for (i = a; i <= b; i++)\n    {\n        sq = i * i;\n        m = 1;\n        while (m <= i)\n            m *= 10;\n        if (sq % m == i)\n            cnt++;\n    }\n    printf(\"%d\\n\", cnt);\n    return 0;\n}\n",
+  "explanation": "1~100 之间的自守数是 1、5、6、25、76，共 5 个。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "1 100",
+   "out": "5\r"
+  }
+ },
+ {
+  "id": "p-157",
+  "ch": "ch7",
+  "level": 3,
+  "title": "杨辉三角第 n 行",
+  "stem": "输出杨辉三角的第 n 行（从第 1 行开始计数），同一行数字之间用一个空格分隔。\n输入格式：一行，一个整数 n（1 ≤ n ≤ 30）。\n输出格式：一行，n 个整数，为该行的全部数字。\n样例输入：\n6\n样例输出：\n1 5 10 10 5 1",
+  "hint": "a[i][j] = a[i-1][j-1] + a[i-1][j]，每行首尾为 1。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int a[31][31] = {0};\n    int n, i, j;\n\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n    {\n        a[i][0] = 1;\n        a[i][i] = 1;\n        for (j = 1; j < i; j++)\n            a[i][j] = a[i - 1][j - 1] + a[i - 1][j];\n    }\n\n    for (j = 0; j < n; j++)\n        printf(j ? \" %d\" : \"%d\", a[n - 1][j]);\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "第 6 行为 1 5 10 10 5 1。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "6",
+   "out": "1 5 10 10 5 1\r"
+  }
+ },
+ {
+  "id": "p-158",
+  "ch": "ch7",
+  "level": 2,
+  "title": "矩阵转置输出",
+  "stem": "读入一个 m 行 n 列的整数矩阵，输出它的转置（n 行 m 列）。\n输入格式：第一行两个整数 m、n（1 ≤ m, n ≤ 20）；接下来 m 行，每行 n 个整数。\n输出格式：共 n 行，每行 m 个整数，为转置后的矩阵，数字之间用一个空格分隔。\n样例输入：\n2 3\n1 2 3\n4 5 6\n样例输出：\n1 4\n2 5\n3 6",
+  "hint": "b[j][i] = a[i][j]；输出时两个循环的上界要互换。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    int m, n, i, j;\n    int a[20][20];\n\n    scanf(\"%d %d\", &m, &n);\n    for (i = 0; i < m; i++)\n        for (j = 0; j < n; j++)\n            scanf(\"%d\", &a[i][j]);\n\n    for (j = 0; j < n; j++)\n    {\n        for (i = 0; i < m; i++)\n            printf(i ? \" %d\" : \"%d\", a[i][j]);\n        printf(\"\\n\");\n    }\n    return 0;\n}\n",
+  "explanation": "2 行 3 列的矩阵转置后是 3 行 2 列。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "2 3\n1 2 3\n4 5 6",
+   "out": "1 4\r\n2 5\r\n3 6\r"
+  }
+ },
+ {
+  "id": "p-159",
+  "ch": "ch7",
+  "level": 3,
+  "title": "删除字符串中指定的一段",
+  "stem": "读入一行字符串，再从下标 pos（从 0 开始）开始删除 len 个字符，输出处理后的字符串。若 pos 越界或 len 不大于 0，则原样输出。\n输入格式：第一行一个字符串（长度不超过 100，可能含空格）；第二行两个整数 pos 和 len。\n输出格式：一行，处理后的字符串。\n样例输入：\nabcdef\n2 2\n样例输出：\nabef",
+  "hint": "把删除区间后面的字符整体左移 len 位，连结尾的 '\\0' 一起搬。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nint main(void)\n{\n    char s[200];\n    int n, pos, len, i;\n\n    fgets(s, sizeof(s), stdin);\n    n = (int)strlen(s);\n    while (n > 0 && (s[n - 1] == '\\n' || s[n - 1] == '\\r'))\n        s[--n] = '\\0';\n\n    scanf(\"%d %d\", &pos, &len);\n\n    if (pos >= 0 && pos < n && len > 0)\n    {\n        if (pos + len > n)\n            len = n - pos;\n        for (i = pos; i + len <= n; i++)\n            s[i] = s[i + len];\n        s[n - len] = '\\0';\n    }\n\n    printf(\"%s\\n\", s);\n    return 0;\n}\n",
+  "explanation": "从 \"abcdef\" 的下标 2 开始删 2 个字符（c、d），剩下 abef。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "abcdef\n2 2",
+   "out": "abef\r"
+  }
+ },
+ {
+  "id": "p-160",
+  "ch": "ch7",
+  "level": 2,
+  "title": "统计一行中的单词数",
+  "stem": "读入一行文字，统计其中单词的个数。单词之间可能有一个或多个空格，行首行尾也可能有空格。\n输入格式：一行文字（长度不超过 200）。\n输出格式：一行，一个整数，表示单词个数。\n样例输入：\n  hello   world  c  \n样例输出：\n3",
+  "hint": "用状态标记记住「是否在单词内部」，只在从空白进入字符时加 1。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    char s[200];\n    int i, cnt = 0, in = 0;\n\n    fgets(s, sizeof(s), stdin);\n\n    for (i = 0; s[i] != '\\0'; i++)\n    {\n        if (s[i] == ' ' || s[i] == '\\t' || s[i] == '\\n')\n            in = 0;\n        else if (!in)\n        {\n            in = 1;\n            cnt++;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}\n",
+  "explanation": "连续空格不能重复计数，所以不能简单用「空格数 + 1」。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "  hello   world  c  ",
+   "out": "3\r"
+  }
+ },
+ {
+  "id": "p-161",
+  "ch": "ch7",
+  "level": 2,
+  "title": "在指定位置插入字符",
+  "stem": "读入一行字符串，在其下标 pos 处插入一个字符 c，输出结果（原字符串长度足够）。\n输入格式：第一行一个字符串（不含空格，长度不超过 100）；第二行一个整数 pos 和一个字符 c。\n输出格式：一行，插入后的字符串。\n样例输入：\nhello\n0 X\n样例输出：\nXhello",
+  "hint": "从字符串末尾（'\\0'）开始整体右移一位，再从前往后会把数据覆盖掉。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nint main(void)\n{\n    char s[120], c;\n    int n, pos, i;\n\n    scanf(\"%s\", s);\n    scanf(\"%d %c\", &pos, &c);\n\n    n = (int)strlen(s);\n    for (i = n; i >= pos; i--)\n        s[i + 1] = s[i];\n    s[pos] = c;\n\n    printf(\"%s\\n\", s);\n    return 0;\n}\n",
+  "explanation": "在 \"hello\" 的下标 0 处插入 X，得到 Xhello。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "hello\n0 X",
+   "out": "Xhello\r"
+  }
+ },
+ {
+  "id": "p-162",
+  "ch": "ch8",
+  "level": 3,
+  "title": "汉诺塔移动序列",
+  "stem": "三根柱子 A、B、C，A 上有 n 个圆盘。按规则把它们全部移到 C，输出每一步的移动。每步格式为「序号:起点终点」，例如第 1 步从 A 到 C 输出 1:AC。\n输入格式：一行，一个整数 n（1 ≤ n ≤ 10）。\n输出格式：共 2^n-1 行，每行一步移动。\n样例输入：\n2\n样例输出：\n1:AB\n2:AC\n3:BC",
+  "hint": "递归三步：先把 n-1 个从 A 借助 C 移到 B，再移最大的，最后把 n-1 个从 B 借助 A 移到 C。",
+  "answer": "#include <stdio.h>\n\nint cnt = 0;\n\nvoid hanoi(int n, char from, char via, char to)\n{\n    if (n == 1)\n    {\n        printf(\"%d:%c%c\\n\", ++cnt, from, to);\n        return;\n    }\n    hanoi(n - 1, from, to, via);\n    printf(\"%d:%c%c\\n\", ++cnt, from, to);\n    hanoi(n - 1, via, from, to);\n}\n\nint main(void)\n{\n    int n;\n\n    scanf(\"%d\", &n);\n    hanoi(n, 'A', 'B', 'C');\n    return 0;\n}\n",
+  "explanation": "n=2 时三步：A→C、A→B、C→B。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "2",
+   "out": "1:AB\r\n2:AC\r\n3:BC\r"
+  }
+ },
+ {
+  "id": "p-163",
+  "ch": "ch8",
+  "level": 4,
+  "title": "按字典序输出全排列",
+  "stem": "读入一个不含重复字符的字符串，按字典序输出它的全部排列，每行一个。\n输入格式：一行，一个长度不超过 8 的字符串（只含小写字母，字符互不相同）。\n输出格式：每行一个排列，按字典序从小到大输出。\n样例输入：\nabc\n样例输出：\nabc\nacb\nbac\nbca\ncab\ncba",
+  "hint": "先把字符串排序，再用回溯：按顺序尝试每个还没用过的字符。",
+  "answer": "#include <stdio.h>\n#include <string.h>\n\nchar s[12], buf[12];\nint used[12], n;\n\nvoid dfs(int k)\n{\n    int i;\n\n    if (k == n)\n    {\n        buf[n] = '\\0';\n        printf(\"%s\\n\", buf);\n        return;\n    }\n    for (i = 0; i < n; i++)\n        if (!used[i])\n        {\n            used[i] = 1;\n            buf[k] = s[i];\n            dfs(k + 1);\n            used[i] = 0;         /* 恢复现场 */\n        }\n}\n\nint main(void)\n{\n    int i, j;\n    char t;\n\n    scanf(\"%s\", s);\n    n = (int)strlen(s);\n\n    for (i = 0; i < n; i++)      /* 先排序，保证字典序 */\n        for (j = i + 1; j < n; j++)\n            if (s[i] > s[j])\n            {\n                t = s[i]; s[i] = s[j]; s[j] = t;\n            }\n\n    dfs(0);\n    return 0;\n}\n",
+  "explanation": "字典序输出靠「已排序的候选集 + 按顺序取用」，而不是简单的位置交换。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "abc",
+   "out": "abc\r\nacb\r\nbac\r\nbca\r\ncab\r\ncba\r"
+  }
+ },
+ {
+  "id": "p-164",
+  "ch": "ch9",
+  "level": 3,
+  "title": "用快速排序升序输出",
+  "stem": "读入 n 个整数，用快速排序把它们升序排列后输出。\n输入格式：第一行一个整数 n（1 ≤ n ≤ 1000）；第二行 n 个整数。\n输出格式：一行，n 个整数，升序排列，用一个空格分隔。\n样例输入：\n7\n49 38 65 97 76 13 27\n样例输出：\n13 27 38 49 65 76 97",
+  "hint": "挖坑填数法：取第一个元素作基准，右指针找小的填左坑，左指针找大的填右坑。",
+  "answer": "#include <stdio.h>\n\nvoid quick(int a[], int left, int right)\n{\n    int i = left, j = right;\n    int key = a[left];\n\n    if (left >= right)\n        return;\n\n    while (i < j)\n    {\n        while (i < j && a[j] >= key)\n            j--;\n        a[i] = a[j];\n        while (i < j && a[i] <= key)\n            i++;\n        a[j] = a[i];\n    }\n    a[i] = key;\n\n    quick(a, left, i - 1);\n    quick(a, i + 1, right);\n}\n\nint main(void)\n{\n    int a[1005], n, i;\n\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++)\n        scanf(\"%d\", &a[i]);\n\n    quick(a, 0, n - 1);\n\n    for (i = 0; i < n; i++)\n        printf(i ? \" %d\" : \"%d\", a[i]);\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "平均 O(n log n)；数组已有序且取首元素作基准时会退化成 O(n²)。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "7\n49 38 65 97 76 13 27",
+   "out": "13 27 38 49 65 76 97\r"
+  }
+ },
+ {
+  "id": "p-165",
+  "ch": "ch10",
+  "level": 4,
+  "title": "链表删除指定值",
+  "stem": "用单向链表存放 n 个整数（尾插法），删除第一个值为 x 的结点，输出删除后的链表。若 x 不存在，则原样输出。\n输入格式：第一行两个整数 n 和 x（1 ≤ n ≤ 100）；第二行 n 个整数。\n输出格式：一行，删除后的链表，数字之间用一个空格分隔。\n样例输入：\n5 30\n10 20 30 40 50\n样例输出：\n10 20 40 50",
+  "hint": "删除时要记住前驱；若要删的是头结点，必须修改头指针。",
+  "answer": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct Node\n{\n    int data;\n    struct Node *next;\n} Node;\n\nint main(void)\n{\n    int n, x, i, v;\n    Node *head = NULL, *tail = NULL, *p, *pre;\n\n    scanf(\"%d %d\", &n, &x);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &v);\n        p = (Node *)malloc(sizeof(Node));\n        p->data = v;\n        p->next = NULL;\n        if (head == NULL)\n            head = tail = p;\n        else\n        {\n            tail->next = p;\n            tail = p;\n        }\n    }\n\n    pre = NULL;\n    p = head;\n    while (p != NULL && p->data != x)\n    {\n        pre = p;\n        p = p->next;\n    }\n    if (p != NULL)\n    {\n        if (pre == NULL)\n            head = p->next;\n        else\n            pre->next = p->next;\n        free(p);\n    }\n\n    for (p = head; p != NULL; p = p->next)\n        printf(p == head ? \"%d\" : \" %d\", p->data);\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "链表删除的核心是摘链 pre->next = p->next，再 free(p)。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "5 30\n10 20 30 40 50",
+   "out": "10 20 40 50\r"
+  }
+ },
+ {
+  "id": "p-166",
+  "ch": "ch10",
+  "level": 3,
+  "title": "打鱼还是晒网",
+  "stem": "某人从 2010 年 1 月 1 日起「三天打鱼、两天晒网」，即第 1~3 天打鱼、第 4~5 天晒网，如此循环。给定一个日期，判断这天在做什么（日期不早于 2010-01-01）。\n输入格式：一行，三个整数 y、m、d（2010 ≤ y ≤ 2100）。\n输出格式：一行，输出「打鱼」或「晒网」。\n样例输入：\n2010 1 6\n样例输出：\n打鱼",
+  "hint": "先算目标日距 2010-01-01 经过的天数，再对 5 取余：余 0~2 打鱼，3~4 晒网。",
+  "answer": "#include <stdio.h>\n\nint isLeap(int y)\n{\n    return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);\n}\n\nint dayOfYear(int y, int m, int d)\n{\n    int md[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};\n    int i, sum = 0;\n\n    for (i = 0; i < m - 1; i++)\n        sum += md[i];\n    sum += d;\n    if (m > 2 && isLeap(y))\n        sum++;\n    return sum;\n}\n\nint main(void)\n{\n    int y, m, d, i, total = 0;\n\n    scanf(\"%d %d %d\", &y, &m, &d);\n\n    for (i = 2010; i < y; i++)\n        total += isLeap(i) ? 366 : 365;\n    total += dayOfYear(y, m, d) - 1;\n\n    printf(\"%s\\n\", (total % 5) < 3 ? \"打鱼\" : \"晒网\");\n    return 0;\n}\n",
+  "explanation": "闰年判断口诀：四年一闰、百年不闰、四百年再闰。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "2010 1 6",
+   "out": "打鱼\r"
+  }
+ },
+ {
+  "id": "p-167",
+  "ch": "ch11",
+  "level": 3,
+  "title": "文件异或加密（输出密文）",
+  "stem": "把一行文本按字节与密钥做异或，输出每个字节的十进制值（用空格分隔）。同一个密钥再异或一次即可还原。\n输入格式：第一行一个字符串（可能含空格，长度不超过 100）；第二行一个整数密钥 key（0 ≤ key ≤ 255）。\n输出格式：一行，各字符异或后的十进制值，用一个空格分隔。\n样例输入：\nHello C\n90\n样例输出：\n18 63 54 54 53 122 25",
+  "hint": "逐字节异或即可；注意读入整行要用 fgets，scanf(\"%s\") 读不到空格。",
+  "answer": "#include <stdio.h>\n\nint main(void)\n{\n    char s[200];\n    int n, key, i;\n\n    fgets(s, sizeof(s), stdin);\n    n = 0;\n    while (s[n] != '\\0' && s[n] != '\\n' && s[n] != '\\r')\n        n++;\n\n    scanf(\"%d\", &key);\n\n    for (i = 0; i < n; i++)\n        printf(i ? \" %d\" : \"%d\", s[i] ^ key);\n    printf(\"\\n\");\n    return 0;\n}\n",
+  "explanation": "'H'^90=18、'e'^90=63、'l'^90=54，再异或 90 就还原成原文。",
+  "src": "《案例式教程》改编",
+  "io": {
+   "in": "Hello C\n90",
+   "out": "18 63 54 54 53 122 25\r"
+  }
  }
 ]

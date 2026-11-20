@@ -377,15 +377,16 @@ var PRESETS={
 /* 江南大学机考范围：第 1~5 章（条件分支为止） */
 var JN_CHS=['ch1','ch2','ch3','ch4','ch5'];
 var SRC_TABS=[
-  {id:'',name:'全部来源'},
-  {id:'真题',name:'历年真题'},
-  {id:'模拟',name:'模拟卷'},
-  {id:'原创',name:'原创 / 易错辨析'},
-  {id:'教材',name:'教材样例改编'},
-  {id:'实验与辅导',name:'实验与辅导'},
-  {id:'二级',name:'二级真题改编'},
-  {id:'测试卷',name:'1-6 章测试卷'},
-  {id:'老师',name:'老师解析卷'}
+  {id:'',name:'全部'},
+  {id:'真题',name:'真题'},
+  {id:'模拟',name:'模拟'},
+  {id:'原创',name:'原创'},
+  {id:'教材',name:'教材'},
+  {id:'案例',name:'案例'},
+  {id:'实验与辅导',name:'实验'},
+  {id:'二级',name:'二级'},
+  {id:'测试卷',name:'校内卷'},
+  {id:'老师',name:'老师解析'}
 ];
 var counts=Object.assign({},PRESETS.std);
 var filterChs=[], filterSrc='';
