@@ -384,9 +384,16 @@ var SRC_TABS=[
 var counts=Object.assign({},PRESETS.std);
 var filterChs=[], filterSrc='';
 
+/* 程序阅读题已并入单选（type=single + sub=read），按 sub 单独成池 */
+function tyHit(q,ty){
+  return ty==='read' ? q.sub==='read' : (q.type===ty && q.sub!=='read');
+}
+function tyCount(bank,ty){
+  return bank.filter(function(q){ return tyHit(q,ty); }).length;
+}
 function poolOf(bank,ty){
   return bank.filter(function(q){
-    return q.type===ty
+    return tyHit(q,ty)
       && (!filterChs.length || filterChs.indexOf(q.ch)>=0)
       && (!filterSrc || String(q.src||'').indexOf(filterSrc)>=0);
   });
@@ -550,7 +557,7 @@ function pickQuestions(bank,chs,types,want){
 var EXAM_MIN={single:1.5, judge:1.2, fill:3, read:6};   /* 每题预计分钟 */
 function estSecondsC(){
   var s=0;
-  (TH.paper && TH.paper.qs ? TH.paper.qs : []).forEach(function(q){ s+=(EXAM_MIN[q.type]||2); });
+  (TH.paper && TH.paper.qs ? TH.paper.qs : []).forEach(function(q){ s+=(EXAM_MIN[q.sub==='read'?'read':q.type]||2); });
   return Math.round(Math.min(s,150)*60);
 }
 function estFromRec(rec){
@@ -558,7 +565,7 @@ function estFromRec(rec){
   var map={};
   (DATA.theory||[]).forEach(function(q){ map[q.id]=q; });
   var s=0;
-  ((rec&&rec.qs)||[]).forEach(function(id){ var q=map[id]; if(q) s+=(EXAM_MIN[q.type]||2); });
+  ((rec&&rec.qs)||[]).forEach(function(id){ var q=map[id]; if(q) s+=(EXAM_MIN[q.sub==='read'?'read':q.type]||2); });
   return Math.round(Math.min(s,150)*60);
 }
 function askMode(bank){
@@ -1114,7 +1121,7 @@ function bkFilters(){
       ? '<button class="chip'+(BK.ty?'':' on')+'" data-ty="">全部题型</button>'
         +TY.map(function(t){
             return '<button class="chip'+(BK.ty===t.id?' on':'')+'" data-ty="'+t.id+'">'
-              +t.name.replace('题','')+'<small>'+bank.filter(function(q){return q.type===t.id}).length+'</small></button>';
+              +t.name.replace('题','')+'<small>'+tyCount(bank,t.id)+'</small></button>';
           }).join('')
       : '<button class="chip'+(BK.lv?'':' on')+'" data-lv="0">全部难度</button>'
         +'<button class="chip'+(BK.lv===1?' on':'')+'" data-lv="1">★ 基础</button>'
@@ -1164,7 +1171,7 @@ function bkFiltered(){
   var isT=BK.kind==='theory';
   var k=norm(BK.kw);
   return bkData().filter(function(q){
-    if(isT){ if(BK.ty && q.type!==BK.ty) return false; }
+    if(isT){ if(BK.ty && !tyHit(q,BK.ty)) return false; }
     else{ if(BK.lv && +q.level!==BK.lv) return false; }
     if(BK.ch && q.ch!==BK.ch) return false;
     if(BK.src && String(q.src||'').indexOf(BK.src)<0) return false;
