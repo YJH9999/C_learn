@@ -449,7 +449,7 @@
         (opts.total?(' · 满分 '+opts.total+' 分'):'')+
         (est?(' · 预计考试用时约 '+est+' 分钟'):'')+'</p>'+
       '<div class="kbm-opt" data-m="online" tabindex="0" role="button">'+
-        '<b>线上做题</b><span>在页面上直接作答，逐题即时判分、用时自动记录；中途关掉也能从历史试卷接着做。</span></div>'+
+        '<b>线上做题</b><span>在页面上直接作答，交卷后统一判分并出详解；中途关掉也能从历史试卷接着做。</span></div>'+
       '<div class="kbm-opt" data-m="offline" tabindex="0" role="button">'+
         '<b>离线做题</b><span>打印空白卷手写作答，做完拍照或导入 PDF 交回'+
         (will?('；上传后按考试用时的 60%（约 '+will+' 分钟）计入本站学习时长'):'')+'。</span></div>'+

@@ -63,7 +63,7 @@ function lget(k,d){ try{var s=localStorage.getItem(k); return s?JSON.parse(s):d}
 
 /* ---------- 数据惰性加载 ---------- */
 var DATA={review:null, theory:null, prog:null};
-var BK={kind:'theory', bound:false, loaded:{}};   /* 题库浏览状态（须先于 showView 初始化） */
+var BK={kind:'theory', bound:false, loaded:{}, picks:[]};   /* 题库浏览状态（含自选组卷） */
 var loading={};
 var EXFILE={review:'review_data', theory:'theory_bank', prog:'prog_bank'};
 /* 题库 JSON 带上与脚本一致的版本号，避免浏览器缓存旧数据 */
@@ -293,7 +293,39 @@ function markNav(ch){
    ============================================================ */
 var TH={stage:'setup', paper:null, rec:null};
 var SYNC_T=null;
+/* ---- 分值：默认整卷 100 分，按题数均分，可在作答页逐题改 ---- */
+var TH_TARGET=(function(){ var v=+lget('ex-th-target',100); return (v>0?v:100); })();
+function setTarget(v){ TH_TARGET=Math.max(1,Math.round(v*10)/10); lstore('ex-th-target',TH_TARGET); }
+function ptsOf(q){ return q&&q.pts!=null?+q.pts:0; }
+function paperTotal(qs){ var t=0; (qs||[]).forEach(function(q){ t+=ptsOf(q); }); return Math.round(t*10)/10; }
+/* 按目标总分给每道题分配分值（最后一题吃掉误差，保证总和精确） */
+function assignPts(qs){
+  var n=qs.length; if(!n) return;
+  var each=Math.round(TH_TARGET/n*10)/10, acc=0;
+  qs.forEach(function(q,i){
+    if(i===n-1){ q.pts=Math.max(0,Math.round((TH_TARGET-acc)*10)/10); }
+    else{ q.pts=each; acc+=each; }
+  });
+}
+function cloneQ(q){ var o={}; for(var k in q){ if(Object.prototype.hasOwnProperty.call(q,k)) o[k]=q[k]; } return o; }
 function pad2(n){ return ('0'+n).slice(-2); }
+/* ---------- 错题本：{id,status:'open'|'fixed',ts,tries} ---------- */
+function wrongRead(){
+  var raw=lget('ex-th-wrong',[]);
+  if(!Array.isArray(raw)) raw=[];
+  var out=[];
+  raw.forEach(function(x){
+    if(typeof x==='string'){ out.push({id:x, status:'open', ts:0, tries:1}); }
+    else if(x && x.id){ out.push({id:x.id, status:x.status||'open', ts:x.ts||0, tries:x.tries||1}); }
+  });
+  return out;
+}
+function wrongWrite(list){ lstore('ex-th-wrong', list||[]); }
+function wrongStat(){
+  var w=wrongRead();
+  return {all:w, open:w.filter(function(x){return x.status!=='fixed'}), fixed:w.filter(function(x){return x.status==='fixed'})};
+}
+
 /* ---------- 试卷记录（kb-paper.js） ---------- */
 function makeRec(qs){
   if(!window.KBPaper) return;
@@ -301,10 +333,11 @@ function makeRec(qs){
   TH.rec={
     id:KBPaper.uid(), ts:Date.now(),
     title:(d.getMonth()+1)+'月'+d.getDate()+'日 '+pad2(d.getHours())+':'+pad2(d.getMinutes())+' 组卷',
-    n:qs.length, total:qs.length,
+    n:qs.length, total:paperTotal(qs),
     qs:qs.map(function(q){ return q.id; }),
-    ans:{}, done:false, score:null, secs:0
+    pts:{}, ans:{}, done:false, score:null, secs:0
   };
+  qs.forEach(function(q){ TH.rec.pts[q.id]=ptsOf(q); });
   KBPaper.put(TH.rec);
 }
 function syncRec(){
@@ -312,6 +345,9 @@ function syncRec(){
   var a={};
   TH.paper.qs.forEach(function(q,i){ var u=userAns(i); if(u!==null) a[q.id]=u; });
   TH.rec.ans=a;
+  TH.rec.pts=TH.rec.pts||{};
+  TH.paper.qs.forEach(function(q){ TH.rec.pts[q.id]=ptsOf(q); });
+  TH.rec.total=paperTotal(TH.paper.qs);
   if(!TH.rec.done) TH.rec.secs=Math.round((Date.now()-TH.rec.ts)/1000);
   KBPaper.put(TH.rec);
 }
@@ -326,6 +362,12 @@ function openRec(rec, act){
     genTheory(bank, null, qs.map(function(q){ return q.id; }));
     return;
   }
+  qs=qs.map(function(q){
+    var o=cloneQ(q);
+    o.pts=(rec.pts&&rec.pts[q.id]!=null)?rec.pts[q.id]:0;
+    return o;
+  });
+  if(!rec.pts) assignPts(qs);
   TH.paper={qs:qs, t0:rec.ts||Date.now()};
   TH.rec=rec;
   TH.stage='paper';
@@ -418,24 +460,27 @@ function refreshSetup(){
   var total=0; TY.forEach(function(t){ total+=+counts[t.id]||0; });
   var per=TY.map(function(t){ return counts[t.id]?(t.name.replace('题','')+' '+counts[t.id]):''; })
              .filter(Boolean).join(' · ');
-  $('#th-total').textContent=total?('本次组卷：'+total+' 题　'+per):'';
+  $('#th-total').innerHTML=total
+    ? ('本次组卷：<b>'+total+'</b> 题　'+per+'　·　满分 <b>'+TH_TARGET+'</b> 分'
+       +'（每题约 '+(Math.round(TH_TARGET/total*10)/10)+' 分）')
+    : '';
   $('#th-stat').textContent='题库共 '+bank.length+' 题 — '
-    +TY.map(function(t){
-        return t.name+' '+bank.filter(function(q){ return q.type===t.id; }).length;
-      }).join(' · ');
+    +TY.map(function(t){ return t.name+' '+tyCount(bank,t.id); }).join(' · ');
 }
 function renderTheorySetup(bank){
   TH.stage='setup';
   bank=bank||DATA.theory||[];
   var last=lget('ex-th-last',null);
-  var wrong=lget('ex-th-wrong',[]);
+  var ws=wrongStat();
   var map={}; bank.forEach(function(q){ map[q.id]=q; });
-  var wl=wrong.slice(-6).reverse().map(function(id,k){
-    var q=map[id]; if(!q) return '';
+  function wrongRow(w,k){
+    var q=map[w.id]; if(!q) return '';
     var st=String(q.stem||'').replace(/\s+/g,' ').slice(0,58);
     return '<div class="wl-item"><b>'+(k+1)+'</b><span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
       +'<span class="wl-stem">'+esc(st)+'</span></div>';
-  }).join('');
+  }
+  var wl=ws.open.slice(-6).reverse().map(wrongRow).join('');
+  var wlFixed=ws.fixed.slice(-30).map(wrongRow).join('');
   $('#th-stage').innerHTML=
     (last?'<div class="ex-banner">上次成绩：<b>'+last.score+'/'+last.total+'</b>（'+last.pct+'%）· '+esc(last.date)
       +'　<button class="btn btn-sm" id="th-review-last">查看卷面</button></div>':'')
@@ -449,6 +494,9 @@ function renderTheorySetup(bank){
       +'<button class="chip" data-preset="err">易错专练 30<small>只抽易错辨析题</small></button>'
       +'<button class="chip" data-preset="jn">江南机考 20+15<small>考到第 5 章分支</small></button>'
     +'</div>'
+    +'<h2>分值设置 <span class="muted" style="font-weight:400;font-size:12px">默认 100 分，组卷后按题数均分</span></h2>'
+    +'<div class="pts-row"><label class="tt-lab">目标总分 <input class="tt-in" id="th-target" type="number" min="1" step="5" value="'+TH_TARGET+'"> 分</label>'
+      +'<span class="muted pts-hint">作答页还能逐题改分</span></div>'
     +'<h2>题型与题量</h2>'
     +'<div class="muted" id="th-stat" style="margin:-6px 0 10px"></div>'
     +'<div class="type-row" id="th-type-row">'
@@ -473,12 +521,18 @@ function renderTheorySetup(bank){
     +'<div class="panel"><h2>历史试卷 <span class="muted" id="th-hist-n">'
       +(window.KBPaper&&KBPaper.list().length?KBPaper.list().length+' 份':'')+'</span></h2>'
       +'<div id="th-hist"></div></div>'
-    +'<div class="panel"><h2>错题待巩固 <span class="muted">'+(wrong.length?wrong.length+' 道':'')+'</span></h2>'
+    +'<div class="panel" id="th-wrong-panel"><h2>错题待巩固 <span class="muted">'+(ws.open.length?ws.open.length+' 道':'')+'</span></h2>'
+      +'<p class="muted wb-tip">答错的题先进「待巩固」；重做答对后自动转入下面折叠的「已攻克」，记录不会丢。</p>'
+      +'<div class="wrong-tools">'
+        +'<button class="btn btn-sm" id="th-redo-random" type="button">随机错题 10 道</button>'
+        +'<button class="btn btn-sm" id="th-redo-all" type="button">全部错题做一遍</button>'
+        +'<button class="btn btn-sm" id="th-exp-wrong" type="button">导出错题</button>'
+        +'<button class="btn btn-sm btn-ghost" id="th-clear-wrong" type="button">清空</button>'
+        +'<label class="wfix"><input type="checkbox" id="th-wfix-join"> 已攻克的题也一起练</label>'
+      +'</div>'
       +'<div class="wrong-list">'+(wl||'<div class="muted">还没有错题，交卷后答错的题会自动收进来</div>')+'</div>'
-      +(wrong.length?'<div class="btnrow" style="margin-top:10px">'
-        +'<button class="btn btn-sm" id="th-redo">重练错题</button>'
-        +'<button class="btn btn-sm" id="th-exp-wrong">导出错题</button>'
-        +'<button class="btn btn-sm btn-ghost" id="th-clear-wrong">清空错题本</button></div>':'')
+      +(ws.fixed.length?'<details class="wrong-fixed" id="th-fixed-wrap"><summary>已攻克 <span>'+ws.fixed.length+' 题</span></summary>'
+        +'<div class="wrong-list">'+wlFixed+'</div></details>':'')
     +'</div>';
 
   /* 快速套卷 */
@@ -531,17 +585,31 @@ function renderTheorySetup(bank){
       b.classList.add('on'); filterSrc=b.dataset.src; refreshSetup();
     });
   });
+  var tt=$('#th-target');
+  if(tt) tt.addEventListener('change',function(){
+    var v=Math.max(1,Math.round((+tt.value||0)*10)/10);
+    tt.value=v; setTarget(v); refreshSetup();
+  });
   $('#th-gen').addEventListener('click',function(){ genTheory(bank); });
   var rl=$('#th-review-last');
   if(rl) rl.addEventListener('click',function(){
     if(TH.lastPaper) renderTheoryResult(TH.lastPaper,TH.lastResult,true);
   });
-  var rd=$('#th-redo'), cw=$('#th-clear-wrong'), ew=$('#th-exp-wrong');
-  if(rd) rd.addEventListener('click',function(){ genTheory(bank,null,lget('ex-th-wrong',[])); });
+  var rr=$('#th-redo-random'), ra=$('#th-redo-all'), cw=$('#th-clear-wrong'), ew=$('#th-exp-wrong');
+  function redoWrong(mode){
+    var inc=$('#th-wfix-join')&&$('#th-wfix-join').checked;
+    var ids=wrongRead().filter(function(w){ return w.status!=='fixed'||inc; })
+                       .map(function(w){ return w.id; });
+    if(!ids.length) return alert(inc?'错题本是空的':'没有待巩固的错题');
+    if(mode!=='all') ids=shuffle(ids).slice(0,10);
+    genTheory(bank,null,ids);
+  }
+  if(rr) rr.addEventListener('click',function(){ redoWrong('random'); });
+  if(ra) ra.addEventListener('click',function(){ redoWrong('all'); });
   if(ew) ew.addEventListener('click',function(){ doPrint('wrong'); });
   if(cw) cw.addEventListener('click',function(){
-    if(!confirm('清空错题本？（只影响本机这一份错题记录）')) return;
-    lstore('ex-th-wrong',[]); renderTheorySetup(bank);
+    if(!confirm('清空错题本？已攻克的记录也会一起清掉。')) return;
+    wrongWrite([]); renderTheorySetup(bank);
   });
   if(window.KBPaper) KBPaper.render($('#th-hist'),{onOpen:openRec, attOpts:function(rec){ return {estSec:estFromRec(rec)}; }});
   refreshSetup();
@@ -611,6 +679,8 @@ function genTheory(bank, mode, fixedIds){
     qs=shuffle(qs);
     if(tips.length) setTimeout(function(){ alert('题量提示：\n'+tips.join('\n')+'\n\n已按实际可用数量组卷。'); },80);
   }
+  qs=qs.map(cloneQ);
+  assignPts(qs);
   TH.paper={qs:qs, t0:Date.now()};
   TH.rec=null;
   makeRec(qs);
@@ -624,6 +694,7 @@ function qHTML(q,i){
     +'<span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
     +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
     +'<span class="ex-tag s">'+esc(q.src||'')+'</span>'
+    +'<span class="ex-pts">分值 <input class="ptq" type="number" min="0" step="0.5" value="'+ptsOf(q)+'" data-i="'+i+'"> 分</span>'
     +'<span class="ex-mark" hidden></span></div>';
   h+='<div class="ex-stem">'+inl(q.stem)+'</div>';
   if(q.code) h+='<pre class="ex-code">'+esc(q.code)+'</pre>';
@@ -646,7 +717,7 @@ function qHTML(q,i){
 function renderTheoryPaper(){
   var p=TH.paper;
   $('#th-stage').innerHTML=
-    '<div class="ex-paperbar"><span>共 <b>'+p.qs.length+'</b> 题 · 已答 <b id="th-done">0</b>'
+    '<div class="ex-paperbar"><span>共 <b>'+p.qs.length+'</b> 题 · 满分 <b id="th-max">'+paperTotal(p.qs)+'</b> 分 · 已答 <b id="th-done">0</b>'
     +' · 用时 <b id="th-time">0:00</b></span>'
     +'<button class="btn btn-sm" id="th-abort">保存并退出</button>'
     +'<button class="btn btn-sm" id="th-exp">导出试卷</button>'
@@ -656,6 +727,15 @@ function renderTheoryPaper(){
     +'<button class="btn btn-primary" id="th-submit">交卷</button></div>'
     +'<div class="ex-qs">'+p.qs.map(qHTML).join('')+'</div>';
   document.getElementById('th-done').textContent='0';
+  $$('#th-stage .ptq').forEach(function(inp){
+    inp.addEventListener('change',function(){
+      var i=+inp.dataset.i, q=p.qs[i]; if(!q) return;
+      var v=Math.max(0,Math.round((+inp.value||0)*10)/10);
+      q.pts=v; inp.value=v;
+      var mx=$('#th-max'); if(mx) mx.textContent=paperTotal(p.qs);
+      queueSync();
+    });
+  });
   $$('#th-stage input, #th-stage textarea.ex-input').forEach(function(el){
     el.addEventListener('input',updateDone);
     el.addEventListener('change',updateDone);
@@ -719,9 +799,11 @@ function gradeTheory(replay){
     var ua=userAns(i);
     return {ok:judgeOne(q,ua), ua:ua, q:q};
   });
-  var score=results.filter(function(r){return r.ok}).length;
-  var total=results.length;
-  var pct=Math.round(score/total*100);
+  var total=paperTotal(p.qs);
+  var score=0;
+  results.forEach(function(r){ if(r.ok) score+=ptsOf(r.q); });
+  score=Math.round(score*10)/10;
+  var pct=total?Math.round(score/total*100):0;
   var secs=Math.floor((Date.now()-p.t0)/1000);
   var result={score:score,total:total,pct:pct,secs:secs,results:results};
   if(!replay && window.KBStats){
@@ -735,13 +817,21 @@ function gradeTheory(replay){
       score:score,total:total,pct:pct,
       date:new Date().toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})
     }))}catch(e){}
-    /* 错题并入 localStorage（去重，保留最近 120 道；未作答的题不算错题） */
-    var wrong=lget('ex-th-wrong',[]);
+    /* 错题：答错进「待巩固」，之后答对转入「已攻克」但保留记录；未作答不算 */
+    var wl=wrongRead();
     results.forEach(function(r){
-      if(!r.ok && r.ua!==null && wrong.indexOf(r.q.id)<0) wrong.push(r.q.id);
-      if(r.ok){ var ix=wrong.indexOf(r.q.id); if(ix>=0) wrong.splice(ix,1); }
+      if(r.ua===null) return;
+      var ix=-1;
+      for(var k=0;k<wl.length;k++){ if(wl[k].id===r.q.id){ ix=k; break; } }
+      if(ix<0){
+        if(!r.ok) wl.push({id:r.q.id, status:'open', ts:Date.now(), tries:1});
+      }else{
+        wl[ix].status = r.ok ? 'fixed' : 'open';
+        wl[ix].ts = Date.now();
+        wl[ix].tries = (wl[ix].tries||1)+1;
+      }
     });
-    lstore('ex-th-wrong',wrong.slice(-120));
+    wrongWrite(wl.slice(-200));
   }
   /* 试卷记录：交卷后写回分数与用时 */
   if(!replay && TH.rec && window.KBPaper){
@@ -781,10 +871,10 @@ function buildSheet(mode){
   if(!host) return;
   var h='';
   if(mode==='wrong'){
-    var ids=lget('ex-th-wrong',[]), bank=DATA.theory||[], map={};
+    var wsAll=wrongStat(), bank=DATA.theory||[], map={};
     bank.forEach(function(q){ map[q.id]=q; });
-    var wqs=ids.map(function(id){ return map[id]; }).filter(Boolean);
-    h=sheetHead('C 语言 · 错题本','共 '+wqs.length+' 题',false);
+    var wqs=wsAll.all.map(function(w){ return map[w.id]; }).filter(Boolean);
+    h=sheetHead('C 语言 · 错题本','共 '+wqs.length+' 题 · 待巩固 '+wsAll.open.length+' · 已攻克 '+wsAll.fixed.length,false);
     wqs.forEach(function(q,i){
       h+='<div class="ps-q">'+psQHead(q,i)+psStem(q)+psOpts(q)
         +'<p class="cmp">参考答案：<b>'+esc(ansText(q))+'</b></p>'
@@ -856,7 +946,7 @@ function printAfterFonts(){
 }
 function doPrint(mode){
   if(mode==='answers' && !TH.paper) return alert('还没有试卷');
-  if(mode==='wrong' && !lget('ex-th-wrong',[]).length) return alert('错题本是空的');
+  if(mode==='wrong' && !wrongRead().length) return alert('错题本是空的');
   buildSheet(mode);
   printAfterFonts();
 }
@@ -1105,7 +1195,7 @@ topBtn.addEventListener('click',function(){ window.scrollTo({top:0}); });
    版块四：题库浏览（chip 行筛选 + 搜索 + 分页 + 答案折叠，
    与 GS / XD 的题库总览保持一致）
    ============================================================ */
-var BK={kind:'theory', ty:'', lv:0, ch:'', src:'', kw:'', pg:1, bound:false};
+var BK={kind:'theory', ty:'', lv:0, ch:'', src:'', kw:'', pg:1, bound:false, picks:[]};
 var BKSZ=30;
 
 function bkData(){ return (BK.kind==='theory'?DATA.theory:DATA.prog)||[]; }
@@ -1207,12 +1297,51 @@ function bkRender(){
   var p1=$('#bk-prev'), p2=$('#bk-next');
   if(p1) p1.addEventListener('click',function(){ BK.pg--; bkRender(); window.scrollTo({top:180,behavior:'smooth'}); });
   if(p2) p2.addEventListener('click',function(){ BK.pg++; bkRender(); window.scrollTo({top:180,behavior:'smooth'}); });
+  bindPicks();
 }
+function bindPicks(){
+  $$('#bk-list .bk-ck').forEach(function(lb){
+    lb.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); });
+  });
+  $$('#bk-list .bk-pick').forEach(function(cb){
+    cb.addEventListener('click',function(e){
+      e.preventDefault(); e.stopPropagation();
+      var id=cb.dataset.id, i=BK.picks.indexOf(id);
+      if(i>=0) BK.picks.splice(i,1); else BK.picks.push(id);
+      var art=cb.closest('.bk-it');
+      if(art) art.classList.toggle('picked', BK.picks.indexOf(id)>=0);
+      cb.checked=BK.picks.indexOf(id)>=0;
+      syncPickbar();
+    });
+  });
+  syncPickbar();
+}
+function syncPickbar(){
+  var bar=$('#bk-pickbar'); if(!bar) return;
+  bar.hidden=!(BK.kind==='theory' && BK.picks.length);
+  var n=$('#bk-pick-n'); if(n) n.textContent=BK.picks.length;
+  var cnt=$('#bk-cnt');
+  if(cnt && BK.kind==='theory' && BK.picks.length)
+    cnt.textContent='显示 '+bkFiltered().length+' / '+bkData().length+' 题 · 已选 '+BK.picks.length;
+}
+(function(){
+  var c=$('#bk-pick-clear'), b=$('#bk-pick-build');
+  if(c) c.addEventListener('click',function(){ BK.picks=[]; bkRender(); });
+  if(b) b.addEventListener('click',function(){
+    if(!BK.picks.length) return;
+    var ids=BK.picks.slice();
+    BK.picks=[];
+    showView('theory');
+    genTheory(DATA.theory, null, ids);
+  });
+})();
 
 function bankItem(q,i){
   if(BK.kind==='theory'){
-    var h='<article class="ex-q bk-it">'
-      +'<div class="ex-qh"><b>'+('00'+(i+1)).slice(-3)+'</b>'
+    var on=BK.picks.indexOf(q.id)>=0;
+    var h='<article class="ex-q bk-it'+(on?' picked':'')+'" data-id="'+q.id+'">'
+      +'<div class="ex-qh"><label class="bk-ck" title="勾选后可用自选题目组卷"><input type="checkbox" class="bk-pick" data-id="'+q.id+'"'+(on?' checked':'')+'></label>'
+      +'<b>'+('00'+(i+1)).slice(-3)+'</b>'
       +'<span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
       +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
       +'<span class="ex-tag s">'+esc(q.src||'')+'</span></div>'

@@ -455,6 +455,62 @@ mark.mk{background:rgba(250,204,21,.45);color:inherit;border-radius:3px;padding:
   .rev-tag{padding:4px 7px;font-size:10.5px}
 }
 
+/* 分值设置行 */
+.pts-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:-2px 0 8px}
+.tt-lab{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--fg-2)}
+.tt-in{width:74px;border:.5px solid var(--line-2);border-radius:9px;background:var(--panel-solid);
+  color:var(--fg);font:600 13.5px var(--mono);padding:6px 9px;outline:0;text-align:center}
+.tt-in:focus{border-color:var(--ac)}
+.pts-hint{font-size:11.5px}
+#th-total b{color:var(--ac);font-family:var(--mono)}
+
+/* ============ PAPER-V2: 分值 / 题库自选 / 错题分区 ============ */
+/* 作答页逐题分值 */
+.ex-pts{margin-left:auto;font:600 11px var(--mono);color:var(--fg-3);
+  display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.ptq{width:44px;border:.5px solid var(--line-2);border-radius:6px;background:var(--panel-solid);
+  color:var(--ac);font:700 11.5px var(--mono);text-align:center;padding:2px 3px;outline:0;
+  -moz-appearance:textfield;appearance:textfield}
+.ptq::-webkit-outer-spin-button,.ptq::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ptq:focus{border-color:var(--ac)}
+
+/* 题库自选 */
+.bank-hint{margin:6px 0 0;font-size:12px;line-height:1.6}
+.bk-ck{display:inline-flex;align-items:center;margin-right:6px;cursor:pointer;flex:none}
+.bk-ck input{width:15px;height:15px;accent-color:var(--ac);cursor:pointer;margin:0}
+.bk-it.picked{border-color:var(--ac-dim-2);background:var(--ac-dim)}
+.bk-it.picked .ex-qh b{color:var(--ac)}
+.pickbar{position:sticky;bottom:14px;z-index:40;display:flex;align-items:center;gap:10px;
+  margin:16px 0 0;padding:11px 16px;border-radius:14px;
+  background:var(--panel-solid);border:.5px solid var(--line-2);box-shadow:var(--sh-1);
+  font-size:12.5px;color:var(--fg-2)}
+.pickbar[hidden]{display:none}
+.pickbar b{color:var(--ac);font:700 14px var(--mono)}
+.pickbar #bk-pick-build{margin-left:auto}
+
+/* 错题分区 */
+.wb-tip{margin:-4px 0 10px;font-size:12px;line-height:1.6}
+.wrong-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.wfix{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--fg-2);
+  cursor:pointer;margin-left:auto;white-space:nowrap}
+.wfix input{accent-color:var(--ac);margin:0;cursor:pointer}
+.wrong-fixed{margin-top:12px;border-top:.5px solid var(--line);padding-top:10px}
+.wrong-fixed>summary{cursor:pointer;font:600 12.5px var(--sans);color:var(--fg-2);
+  list-style:none;display:flex;align-items:center;gap:6px}
+.wrong-fixed>summary::-webkit-details-marker{display:none}
+.wrong-fixed>summary::before{content:'▸';color:var(--ac);font-size:11px}
+.wrong-fixed[open]>summary::before{content:'▾'}
+.wrong-fixed>summary span{color:var(--fg-3);font-weight:400}
+.wrong-fixed .wrong-list{opacity:.78;margin-top:6px}
+
+@media(max-width:640px){
+  .ex-pts{font-size:10.5px}
+  .ptq{width:40px}
+  .pickbar{bottom:8px;padding:9px 12px;gap:8px;font-size:12px}
+  .wrong-tools .btn{flex:1 1 auto}
+  .wfix{margin-left:0;flex:1 1 100%}
+}
+
 /* ============ MOBILE-ENHANCE-EXAM:BEGIN 备考中心 移动/平板排版 ============
    追加到 exam.css（在 style.css 之后加载，用来覆盖 exam.css 自己的 flex 规则） */
 

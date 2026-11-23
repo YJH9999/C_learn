@@ -9,9 +9,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" href="assets/favicon-180.png">
-<link rel="stylesheet" href="assets/fonts.css?v=20261120e">
-<link rel="stylesheet" href="assets/style.css?v=20261120e">
-<link rel="stylesheet" href="assets/exam.css?v=20261120e">
+<link rel="stylesheet" href="assets/fonts.css?v=20261123b">
+<link rel="stylesheet" href="assets/style.css?v=20261123b">
+<link rel="stylesheet" href="assets/exam.css?v=20261123b">
 </head>
 <body>
 
@@ -88,10 +88,16 @@
       <span class="kicker">BANK</span>
       <h1>题库总览</h1>
       <p class="sub">按题型、章节、来源筛选，也可直接搜关键词。答案与解析默认折叠，先自查再展开对照。</p>
+      <p class="muted bank-hint">勾选题目左上角的方框即可自选组卷；不勾选也能回「理论模拟」按题型随机抽。</p>
     </div>
     <div class="panel" id="bk-filters"><div class="empty-tip">正在加载题库…</div></div>
     <div id="bk-list"></div>
     <div class="pager" id="bk-pager"></div>
+    <div class="pickbar" id="bk-pickbar" hidden>
+      <span>已选 <b id="bk-pick-n">0</b> 题</span>
+      <button class="btn btn-sm btn-ghost" id="bk-pick-clear" type="button">清空</button>
+      <button class="btn btn-sm btn-primary" id="bk-pick-build" type="button">用选中的题组卷</button>
+    </div>
   </section>
 
 </main>
@@ -101,9 +107,9 @@
 <!-- 打印导出容器（浏览器打印为 PDF） -->
 <div id="print-wrap" aria-hidden="true"><div id="print-sheet"></div></div>
 
-<script src="assets/sync.js?v=20261120e" data-site="c"></script>
-<script src="assets/kb-paper.js?v=20261120e" data-site="c"></script>
-<script src="assets/profile.js?v=20261120e" data-site="c"></script>
-<script src="assets/exam_app.js?v=20261120e"></script>
+<script src="assets/sync.js?v=20261123b" data-site="c"></script>
+<script src="assets/kb-paper.js?v=20261123b" data-site="c"></script>
+<script src="assets/profile.js?v=20261123b" data-site="c"></script>
+<script src="assets/exam_app.js?v=20261123b"></script>
 </body>
 </html>

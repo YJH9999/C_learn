@@ -1229,3 +1229,11 @@ header .fb-tip{font-size:10px;color:var(--fg-3)}
   .opt{padding:12px 14px}
 }
 /* ================= MOBILE-ENHANCE:END ================= */
+
+/* ================= 弹窗锁滚动：浮层打开时背景不再跟着滚 ================= */
+html:has(#kbp2-mask.on),
+html:has(#kb-sync-mask.on),
+html:has(#kbp-panel.on){overflow:hidden}
+html:has(#kbp2-mask.on) body,
+html:has(#kb-sync-mask.on) body,
+html:has(#kbp-panel.on) body{overflow:hidden}
