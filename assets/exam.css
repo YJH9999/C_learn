@@ -237,6 +237,16 @@ select.ex-num{width:auto}
 .ex-det summary:hover{background:var(--ac-dim)}
 .ex-det[open] summary{margin-bottom:9px}
 .ex-det.ans[open] summary{display:none}
+/* v1.9：错题本 / 成绩页的折叠块保留 summary（可再点收起），文案随开合切换 */
+.ex-det.togg[open]>summary{display:inline-block;color:var(--fg-3);border-color:var(--line-2)}
+.det-open-t{display:none}
+.ex-det[open] .det-open-t{display:inline}
+.ex-det[open] .det-closed-t{display:none}
+/* 错题本里的题目卡片：题干展开、答案与解析收起 */
+.wrong-list .ex-q{margin:8px 0}
+.wrong-list .ex-q .ex-stem{font-size:13px}
+.wrong-list .ex-q:last-child{margin-bottom:2px}
+.wrong-list .wb-card.is-fixed .ex-qh b{color:var(--fg-3)}
 .ex-det p{margin:6px 0;font-size:12.8px;line-height:1.75}
 
 /* ---------- 回到顶部 ---------- */

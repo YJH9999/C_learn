@@ -473,11 +473,25 @@ function renderTheorySetup(bank){
   var last=lget('ex-th-last',null);
   var ws=wrongStat();
   var map={}; bank.forEach(function(q){ map[q.id]=q; });
+  /* v1.9：错题卡与题库一致 —— 题干展开、答案与解析收起 */
   function wrongRow(w,k){
     var q=map[w.id]; if(!q) return '';
-    var st=String(q.stem||'').replace(/\s+/g,' ').slice(0,58);
-    return '<div class="wl-item"><b>'+(k+1)+'</b><span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
-      +'<span class="wl-stem">'+esc(st)+'</span></div>';
+    var h='<article class="ex-q wb-card'+(w.status==='fixed'?' is-fixed':'')+'">'
+      +'<div class="ex-qh"><b>'+(k+1)+'</b>'
+      +'<span class="ex-tag t">'+TYPE_NAME[q.type]+'</span>'
+      +'<span class="ex-tag c">'+esc(CHMAP[q.ch]||q.ch)+'</span>'
+      +'<span class="ex-tag s">'+esc(q.src||'')+'</span>'
+      +(w.tries>1?'<span class="ex-tag n">做过 '+w.tries+' 次</span>':'')+'</div>'
+      +'<div class="ex-stem">'+inl(q.stem)+'</div>';
+    if(q.code) h+='<pre class="ex-code">'+esc(q.code)+'</pre>';
+    if(q.type==='single' && q.options){
+      h+='<div class="ex-opts">'+q.options.map(function(o,j){
+        return '<label class="ex-opt"><input type="radio" disabled><i>'+String.fromCharCode(65+j)+'．</i>'+inl(o)+'</label>';
+      }).join('')+'</div>';
+    }
+    return h+'<details class="ex-det ans togg"><summary><span class="det-closed-t">答案与解析</span><span class="det-open-t">收起答案与解析</span></summary>'
+      +'<div class="ex-ansline">正确答案：<b class="ok">'+esc(ansText(q))+'</b></div>'
+      +'<div class="ex-exp"><b>解析</b>'+inl(q.explanation||'')+'</div></details></article>';
   }
   var wl=ws.open.slice(-6).reverse().map(wrongRow).join('');
   var wlFixed=ws.fixed.slice(-30).map(wrongRow).join('');
@@ -1015,12 +1029,13 @@ function renderTheoryResult(p,res,isReplay){
           return '<label class="'+cls+'"><input type="radio" disabled'+chk+'><i>'
             +String.fromCharCode(65+j)+'．</i>'+inl(o)+'</label>';
         }).join('')+'</div>';
-      }else{
-        h+='<div class="ex-ansline">你的答案：<b class="'+(r.ok?'ok':'bad')+'">'
-          +esc(r.ua===null?'（未作答）':r.ua)+'</b>'
-          +(r.ok?'':'　正确答案：<b class="ok">'+esc(ansText(q))+'</b>')+'</div>';
       }
-      h+='<div class="ex-exp"><b>解析</b>'+inl(q.explanation||'')+'</div></article>';
+      /* v1.9：只留「你的答案」，正确答案与解析收进折叠块 */
+      var mine=r.ua===null?'（未作答）':(q.type==='single'?String.fromCharCode(65+(+r.ua)):r.ua);
+      h+='<div class="ex-ansline">你的答案：<b class="'+(r.ok?'ok':'bad')+'">'+esc(mine)+'</b></div>';
+      h+='<details class="ex-det ans togg"><summary><span class="det-closed-t">查看答案与详解</span><span class="det-open-t">收起答案与详解</span></summary>'
+        +'<div class="ex-ansline">正确答案：<b class="ok">'+esc(ansText(q))+'</b></div>'
+        +'<div class="ex-exp"><b>解析</b>'+inl(q.explanation||'')+'</div></details></article>';
       return h;
     }).join('')+'</div>';
   $('#th-again').addEventListener('click',function(){
